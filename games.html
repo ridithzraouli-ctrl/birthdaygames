@@ -1,1 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Arcade ♡</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at 12% 12%, #f3dce3 0, transparent 25%), #faf5f2;
+            color: #60434c;
+            font-family: Georgia, "Times New Roman", serif;
+        }
 
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid #ead3dc;
+        }
+
+        .nav-link { color: #985f72; text-decoration: none; font-weight: bold; }
+        .coin-display { background: #fff0f3; border: 1px solid #d7b4be; padding: 6px 14px; border-radius: 20px; font-weight: bold; color: #91596c; }
+
+        main { max-width: 800px; margin: 0 auto; padding: 40px 20px; text-align: center; }
+        h1 { color: #985f72; font-weight: normal; margin-bottom: 30px; }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .game-card {
+            background: #fffdfb;
+            border: 1px solid #ead9dd;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 15px rgba(91, 52, 65, .08);
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .game-card:hover { transform: translateY(-3px); background: #fff8fa; }
+        .game-card h3 { color: #985f72; margin: 0 0 10px; }
+        .game-card p { font-size: 14px; color: #7a5863; margin: 0 0 15px; }
+        .reward-badge { display: inline-block; background: #f9e5ea; color: #ae7183; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="nav-link">← Home</a>
+        <div class="coin-display">🪙 <span class="coin-count">0</span> Coins</div>
+    </header>
+
+    <main>
+        <h1>Game Arcade ♡</h1>
+
+        <div class="games-grid">
+            <a href="games/crossword.html" class="game-card">
+                <h3>🧩 Crossword</h3>
+                <p>Solve the birthday clues grid!</p>
+                <span class="reward-badge">+50 Coins</span>
+            </a>
+            <!-- We will add cards here whenever we make new games! -->
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
