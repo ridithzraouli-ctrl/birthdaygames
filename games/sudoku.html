@@ -3,72 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sudoku ♡</title>
+    <title>Sudoku</title>
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             margin: 0;
             min-height: 100vh;
-            background: radial-gradient(circle at 12% 12%, #f3dce3 0, transparent 25%), #faf5f2;
-            color: #60434c;
-            font-family: Georgia, "Times New Roman", serif;
+            background: #faf7f5;
+            color: #4a3e3d;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 30px;
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid #ead3dc;
+            padding: 18px 30px;
+            background: #ffffff;
+            border-bottom: 1px solid #eee8e5;
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
-        .nav-link { color: #985f72; text-decoration: none; font-weight: bold; }
-        .coin-display { background: #fff0f3; border: 1px solid #d7b4be; padding: 6px 14px; border-radius: 20px; font-weight: bold; color: #91596c; }
+        .nav-link { color: #7d6b6d; text-decoration: none; font-size: 14px; font-weight: 500; }
+        .nav-link:hover { color: #4a3e3d; }
+        .coin-display { background: #f4ece9; border: 1px solid #e2d7d3; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; color: #635052; }
 
         main {
-            min-height: calc(100vh - 60px);
-            padding: 20px 10px;
+            padding: 40px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
         }
 
-        h1 { color: #985f72; font-weight: normal; margin: 0 0 15px; font-size: 24px; }
+        h1 { color: #4a3e3d; font-weight: 500; font-size: 24px; margin: 0 0 24px; }
 
-        /* SUDOKU BOARD */
         #sudoku-board {
             display: grid;
             grid-template-columns: repeat(9, 1fr);
             width: 100%;
-            max-width: 400px;
+            max-width: 360px;
             aspect-ratio: 1;
-            background: #b98294;
-            border: 2px solid #a96e81;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(91, 52, 65, .12);
+            background: #8c7b7d;
+            border: 2px solid #8c7b7d;
+            border-radius: 6px;
+            overflow: hidden;
         }
 
         .sudoku-cell {
-            width: 100%;
-            height: 100%;
-            background: #fffdfb;
-            border: 1px solid #ead9dd;
+            background: #ffffff;
+            border: 1px solid #eee8e5;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        /* Thick borders for 3x3 grids */
-        .sudoku-cell:nth-child(3n) { border-right: 2px solid #a96e81; }
+        .sudoku-cell:nth-child(3n) { border-right: 2px solid #8c7b7d; }
         .sudoku-cell:nth-child(9n) { border-right: none; }
         .sudoku-cell:nth-child(n+19):nth-child(-n+27),
-        .sudoku-cell:nth-child(n+46):nth-child(-n+54) { border-bottom: 2px solid #a96e81; }
+        .sudoku-cell:nth-child(n+46):nth-child(-n+54) { border-bottom: 2px solid #8c7b7d; }
 
         .sudoku-cell input {
             width: 100%;
@@ -77,125 +71,100 @@
             outline: 0;
             background: transparent;
             text-align: center;
-            font-family: Georgia, serif;
-            font-size: 20px;
-            font-weight: bold;
-            color: #63434d;
+            font-size: 18px;
+            font-weight: 600;
+            color: #4a3e3d;
         }
 
-        .sudoku-cell input:focus { background: #f9e5ea; }
-        .sudoku-cell.given input { color: #a96e81; background: #f8ecef; font-weight: normal; }
-        .sudoku-cell.correct { background: #e9f1e5 !important; }
-        .sudoku-cell.wrong { background: #f8dfe4 !important; }
+        .sudoku-cell input:focus { background: #f4ece9; }
+        .sudoku-cell.given input { color: #8c7b7d; background: #faf7f5; font-weight: 500; }
+        .sudoku-cell.correct { background: #e2efe0 !important; }
+        .sudoku-cell.wrong { background: #f9e2e2 !important; }
 
-        .controls { display: flex; gap: 12px; margin-top: 20px; }
+        .controls { display: flex; gap: 12px; margin-top: 24px; }
 
         .btn {
-            padding: 10px 24px;
-            border: 1px solid #bd8294;
-            border-radius: 100px;
-            background: #fffaf9;
-            color: #91596c;
-            font-family: Georgia, serif;
-            font-size: 14px;
+            padding: 10px 20px;
+            border: 1px solid #d1c4c0;
+            border-radius: 6px;
+            background: #ffffff;
+            color: #4a3e3d;
+            font-size: 13px;
+            font-weight: 500;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(91, 52, 65, .08);
-            transition: .2s ease;
+            transition: background 0.2s;
         }
 
-        .btn:hover { background: #f9e9ed; transform: translateY(-1px); }
+        .btn:hover { background: #faf7f5; }
 
-        /* REWARD MODAL */
         .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(4px);
+            background: rgba(0,0,0,0.3);
             z-index: 200;
             align-items: center;
             justify-content: center;
         }
 
         .modal-card {
-            background: #faf5f2;
-            border: 2px solid #b98294;
-            border-radius: 16px;
+            background: #ffffff;
+            border-radius: 8px;
             padding: 30px;
-            max-width: 380px;
+            max-width: 320px;
             width: 90%;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
     </style>
 </head>
 <body>
 
     <header>
-        <a href="../games.html" class="nav-link">← Games Hub</a>
-        <div class="coin-display">🪙 <span class="coin-count">0</span> Coins</div>
+        <a href="../index.html" class="nav-link">← Games</a>
+        <div class="coin-display"><span class="coin-count">0</span> Coins</div>
     </header>
 
     <main>
-        <h1>Sudoku ♡</h1>
+        <h1>Sudoku</h1>
 
         <div id="sudoku-board"></div>
 
         <div class="controls">
-            <button class="btn" onclick="checkBoard()">Check Board ♡</button>
-            <button class="btn" onclick="generateNewGame()" style="background: #f8ecef;">New Puzzle 🔄</button>
+            <button class="btn" onclick="checkBoard()">Check Board</button>
+            <button class="btn" onclick="generateNewGame()">New Puzzle</button>
         </div>
     </main>
 
     <div id="reward-modal" class="modal-overlay">
         <div class="modal-card">
-            <h2 style="color: #985f72;">Congratulations! 🎉</h2>
-            <p>You solved the Sudoku completely and earned <strong>50 Coins</strong>! 🪙</p>
-            <button class="btn" onclick="closeModalAndReset()">Play Another Puzzle 🔄</button>
+            <h2 style="font-size: 20px; margin: 0 0 10px;">Complete</h2>
+            <p style="color: #8c7b7d; font-size: 14px; margin: 0 0 20px;">You earned 50 Coins.</p>
+            <button class="btn" onclick="closeModalAndReset()" style="width: 100%;">Next Puzzle</button>
         </div>
-    </div>
-
-    <!-- Music Player -->
-    <div id="lofi-player" style="position: fixed; bottom: 15px; right: 15px; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(8px); border: 1px solid #d7b4be; padding: 8px 14px; border-radius: 30px; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); z-index: 1000; font-size: 13px; color: #91596c;">
-        <span>🎵 Lofi Chill</span>
-        <button id="music-toggle" style="background: #b98294; color: white; border: none; padding: 4px 10px; border-radius: 15px; cursor: pointer; font-size: 12px;">Play ▶</button>
-        <audio id="bg-music" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3"></audio>
     </div>
 
     <script src="../script.js"></script>
     <script>
-        // Music Sync
-        const music = document.getElementById('bg-music');
-        const toggleBtn = document.getElementById('music-toggle');
-        if (localStorage.getItem('musicPlaying') === 'true') {
-            music.play().then(() => toggleBtn.innerText = 'Pause ⏸').catch(() => {});
-        }
-        toggleBtn.addEventListener('click', () => {
-            if (music.paused) { music.play(); toggleBtn.innerText = 'Pause ⏸'; localStorage.setItem('musicPlaying', 'true'); }
-            else { music.pause(); toggleBtn.innerText = 'Play ▶'; localStorage.setItem('musicPlaying', 'false'); }
-        });
-
-        // Sudoku Generator Logic
         let solution = [];
         let boardState = [];
 
-        function generateSudoku() {
-            let board = Array(9).fill(0).map(() => Array(9).fill(0));
-            fillBoard(board);
-            solution = board.map(row => [...row]);
-
-            // Remove cells to create puzzle
-            let puzzle = board.map(row => [...row]);
-            let removed = 35; // Number of clues removed
-            while (removed > 0) {
-                let r = Math.floor(Math.random() * 9);
-                let c = Math.floor(Math.random() * 9);
-                if (puzzle[r][c] !== 0) {
-                    puzzle[r][c] = 0;
-                    removed--;
+        function solveSudoku(board) {
+            for (let r = 0; r < 9; r++) {
+                for (let c = 0; c < 9; c++) {
+                    if (board[r][c] === 0) {
+                        let nums = [1,2,3,4,5,6,7,8,9].sort(() => Math.random() - 0.5);
+                        for (let k of nums) {
+                            if (isValid(board, r, c, k)) {
+                                board[r][c] = k;
+                                if (solveSudoku(board)) return true;
+                                board[r][c] = 0;
+                            }
+                        }
+                        return false;
+                    }
                 }
             }
-            return puzzle;
+            return true;
         }
 
         function isValid(board, r, c, k) {
@@ -207,23 +176,22 @@
             return true;
         }
 
-        function fillBoard(board) {
-            for (let r = 0; r < 9; r++) {
-                for (let c = 0; c < 9; c++) {
-                    if (board[r][c] === 0) {
-                        let nums = [1,2,3,4,5,6,7,8,9].sort(() => Math.random() - 0.5);
-                        for (let k of nums) {
-                            if (isValid(board, r, c, k)) {
-                                board[r][c] = k;
-                                if (fillBoard(board)) return true;
-                                board[r][c] = 0;
-                            }
-                        }
-                        return false;
-                    }
+        function generateSudoku() {
+            let board = Array(9).fill(0).map(() => Array(9).fill(0));
+            solveSudoku(board);
+            solution = board.map(row => [...row]);
+
+            let puzzle = board.map(row => [...row]);
+            let removed = 35;
+            while (removed > 0) {
+                let r = Math.floor(Math.random() * 9);
+                let c = Math.floor(Math.random() * 9);
+                if (puzzle[r][c] !== 0) {
+                    puzzle[r][c] = 0;
+                    removed--;
                 }
             }
-            return true;
+            return puzzle;
         }
 
         function renderBoard() {
@@ -249,7 +217,7 @@
                     } else {
                         input.addEventListener('input', (e) => {
                             e.target.value = e.target.value.replace(/[^1-9]/g, '');
-                            cell.classList.remove('correct', 'wrong');
+                            cell.parentElement.classList.remove('correct', 'wrong');
                         });
                     }
 
@@ -299,9 +267,7 @@
             generateNewGame();
         }
 
-        // Initialize on load
         generateNewGame();
     </script>
 </body>
-  </html>
-  
+</html>
