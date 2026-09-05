@@ -1,1 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess</title>
+    <!-- Chessboard CSS & JS Libraries -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.css">
+    <style>
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #faf7f5;
+            color: #4a3e3d;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
 
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 30px;
+            background: #ffffff;
+            border-bottom: 1px solid #eee8e5;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-link { color: #7d6b6d; text-decoration: none; font-size: 14px; font-weight: 500; }
+        .nav-link:hover { color: #4a3e3d; }
+        .coin-display { background: #f4ece9; border: 1px solid #e2d7d3; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; color: #635052; }
+
+        main {
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 { color: #4a3e3d; font-weight: 500; font-size: 24px; margin: 0 0 8px; }
+        p.subtitle { color: #8c7b7d; margin: 0 0 24px; font-size: 14px; }
+
+        #board {
+            width: 100%;
+            max-width: 360px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .controls { display: flex; gap: 12px; margin-top: 24px; }
+
+        .btn {
+            padding: 10px 20px;
+            border: 1px solid #d1c4c0;
+            border-radius: 6px;
+            background: #ffffff;
+            color: #4a3e3d;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn:hover { background: #faf7f5; }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.3);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 30px;
+            max-width: 320px;
+            width: 90%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="../index.html" class="nav-link">← Games</a>
+        <div class="coin-display"><span class="coin-count">0</span> Coins</div>
+    </header>
+
+    <main>
+        <h1>Chess</h1>
+        <p class="subtitle" id="status">Your turn (White)</p>
+
+        <div id="board"></div>
+
+        <div class="controls">
+            <button class="btn" onclick="resetGame()">New Game</button>
+        </div>
+    </main>
+
+    <div id="reward-modal" class="modal-overlay">
+        <div class="modal-card">
+            <h2 style="font-size: 20px; margin: 0 0 10px;">Victory</h2>
+            <p style="color: #8c7b7d; font-size: 14px; margin: 0 0 20px;">You won the game and earned 50 Coins.</p>
+            <button class="btn" onclick="closeModalAndReset()" style="width: 100%;">Play Again</button>
+        </div>
+    </div>
+
+    <!-- External dependencies for Chess logic and board rendering -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.js"></script>
+    <script src="../script.js"></script>
+
+    <script>
+        let board = null;
+        let game = new Chess();
+        const statusEl = document.getElementById('status');
+
+        function onDragStart (source, piece, position, orientation) {
+            // Do not allow moving pieces if the game is over
+            if (game.game_over()) return false;
+
+            // Only allow picking up White pieces
+            if (piece.search(/^b/) !== -1) return false;
+        }
+
+        function makeRandomMove () {
+            const possibleMoves = game.moves();
+
+            // Game over checks
+            if (possibleMoves.length === 0) return;
+
+            const randomIdx = Math.floor(Math.random() * possibleMoves.length);
+            game.move(possibleMoves[randomIdx]);
+            board.position(game.fen());
+            updateStatus();
+        }
+
+        function onDrop (source, target) {
+            // Check if move is legal
+            const move = game.move({
+                from: source,
+                to: target,
+                promotion: 'q' // Always promote to Queen for simplicity
+            });
+
+            // Illegal move
+            if (move === null) return 'snapback';
+
+            updateStatus();
+
+            // Computer plays black after a short delay
+            if (!game.game_over()) {
+                window.setTimeout(makeRandomMove, 250);
+            }
+        }
+
+        function onSnapEnd () {
+            board.position(game.fen());
+        }
+
+        function updateStatus () {
+            let status = '';
+
+            let moveColor = 'White';
+            if (game.turn() === 'b') {
+                moveColor = 'Black';
+            }
+
+            if (game.in_checkmate()) {
+                status = 'Game over, ' + moveColor + ' is in checkmate.';
+                if (game.turn() === 'b') {
+                    // White won
+                    addCoins(50);
+                    document.getElementById('reward-modal').style.display = 'flex';
+                }
+            } else if (game.in_draw()) {
+                status = 'Game over, drawn position.';
+            } else {
+                status = moveColor + ' to move';
+                if (game.in_check()) {
+                    status += ', ' + moveColor + ' is in check';
+                }
+            }
+
+            statusEl.innerText = status;
+        }
+
+        function resetGame() {
+            game.reset();
+            board.start();
+            updateStatus();
+        }
+
+        function closeModalAndReset() {
+            document.getElementById('reward-modal').style.display = 'none';
+            resetGame();
+        }
+
+        const config = {
+            draggable: true,
+            position: 'start',
+            onDragStart: onDragStart,
+            onDrop: onDrop,
+            onSnapEnd: onSnapEnd
+        };
+
+        board = Chessboard('board', config);
+        updateStatus();
+    </script>
+</body>
+</html>
