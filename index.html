@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arcade Hub</title>
+    <title>Arcade</title>
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
@@ -26,77 +26,97 @@
             z-index: 100;
         }
 
-        .logo { font-size: 18px; font-weight: 600; color: #4a3e3d; text-decoration: none; }
-        .coin-display { background: #f4ece9; border: 1px solid #e2d7d3; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; color: #635052; }
+        .brand { font-weight: 600; font-size: 16px; color: #4a3e3d; text-decoration: none; }
+        .header-right { display: flex; align-items: center; gap: 20px; }
+        
+        .shop-link {
+            color: #7d6b6d;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .shop-link:hover { color: #4a3e3d; }
 
-        main {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 20px;
+        .coin-display {
+            background: #f4ece9;
+            border: 1px solid #e2d7d3;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #635052;
         }
 
-        h1 { color: #4a3e3d; font-weight: 500; font-size: 28px; margin: 0 0 8px; }
+        main { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        h1 { color: #4a3e3d; font-weight: 500; font-size: 24px; margin: 0 0 8px; }
         p.subtitle { color: #8c7b7d; margin: 0 0 32px; font-size: 15px; }
 
-        .game-grid {
+        .games-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 20px;
         }
 
         .game-card {
             background: #ffffff;
             border: 1px solid #eee8e5;
-            border-radius: 12px;
+            border-radius: 8px;
             padding: 24px;
             text-decoration: none;
             color: inherit;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            transition: border-color 0.2s, transform 0.2s;
         }
 
         .game-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.06);
-            border-color: #e2d7d3;
+            border-color: #d1c4c0;
+            transform: translateY(-2px);
         }
 
-        .game-title { font-size: 18px; font-weight: 600; margin: 0 0 8px; }
-        .game-desc { font-size: 13px; color: #8c7b7d; margin: 0 0 20px; line-height: 1.4; }
-        .play-btn {
+        .game-card h3 { color: #4a3e3d; font-weight: 600; margin: 0 0 8px; font-size: 17px; }
+        .game-card p { font-size: 14px; color: #8c7b7d; margin: 0 0 16px; line-height: 1.4; }
+        .reward-badge {
             display: inline-block;
-            padding: 8px 14px;
             background: #f4ece9;
             color: #635052;
-            border-radius: 6px;
+            padding: 4px 10px;
+            border-radius: 4px;
             font-size: 12px;
-            font-weight: 600;
-            text-align: center;
+            font-weight: 500;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <a href="index.html" class="logo">🎮 Arcade Hub</a>
-        <div class="coin-display"><span class="coin-count">0</span> Coins</div>
+        <a href="index.html" class="brand">Arcade</a>
+        <div class="header-right">
+            <a href="shop.html" class="shop-link">Shop →</a>
+            <div class="coin-display"><span class="coin-count">0</span> Coins</div>
+        </div>
     </header>
 
     <main>
-        <h1>Games Library</h1>
-        <p class="subtitle">Select a game to play and earn coins.</p>
+        <h1>Games</h1>
+        <p class="subtitle">Play games to earn coins for the shop.</p>
 
-        <div class="game-grid">
-            <!-- Chess Card -->
+        <div class="games-grid">
+            <a href="games/sudoku.html" class="game-card">
+                <h3>Sudoku</h3>
+                <p>Classic numbers puzzle.</p>
+                <span class="reward-badge">+50 Coins</span>
+            </a>
+            
+            <a href="games/crossword.html" class="game-card">
+                <h3>Crossword</h3>
+                <p>Solve the grid clues.</p>
+                <span class="reward-badge">+50 Coins</span>
+            </a>
+
             <a href="games/chess.html" class="game-card">
-                <div>
-                    <h2 class="game-title">Chess</h2>
-                    <p class="game-desc">Play against the AI and earn 50 coins for every checkmate victory.</p>
-                </div>
-                <span class="play-btn">Play Now →</span>
+                <h3>Chess</h3>
+                <p>Play against the computer.</p>
+                <span class="reward-badge">+50 Coins</span>
             </a>
         </div>
     </main>
