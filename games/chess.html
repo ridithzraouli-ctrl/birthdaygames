@@ -1,1 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess</title>
+    <style>
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #faf7f5;
+            color: #4a3e3d;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
 
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 30px;
+            background: #ffffff;
+            border-bottom: 1px solid #eee8e5;
+            position: relative;
+            z-index: 100;
+        }
+
+        .nav-link { color: #7d6b6d; text-decoration: none; font-size: 14px; font-weight: 500; cursor: pointer; }
+        .nav-link:hover { color: #4a3e3d; }
+        .coin-display { background: #f4ece9; border: 1px solid #e2d7d3; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; color: #635052; }
+
+        main {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 { color: #4a3e3d; font-weight: 500; font-size: 24px; margin: 0 0 8px; }
+        p.subtitle { color: #8c7b7d; margin: 0 0 24px; font-size: 14px; }
+
+        #board-wrapper {
+            width: min(90vw, 380px);
+            height: min(90vw, 380px);
+        }
+
+        #board {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(8, 1fr);
+            width: 100%;
+            height: 100%;
+            border: 2px solid #8c7b7d;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            user-select: none;
+        }
+
+        .square {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .square.white { background: #ffffff; }
+        .square.black { background: #d1c4c0; }
+        .square.selected { background: #f4ece9 !important; outline: 3px solid #8c7b7d; outline-offset: -3px; }
+
+        .square img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+            pointer-events: none;
+            display: block;
+        }
+
+        .fallback-text {
+            font-size: 18px;
+            font-weight: bold;
+            color: #4a3e3d;
+        }
+
+        .controls { display: flex; gap: 12px; margin-top: 24px; }
+
+        .btn {
+            padding: 10px 20px;
+            border: 1px solid #d1c4c0;
+            border-radius: 6px;
+            background: #ffffff;
+            color: #4a3e3d;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn:hover { background: #faf7f5; }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.3);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 30px;
+            max-width: 320px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .promo-options {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+        }
+
+        .promo-btn {
+            padding: 8px 12px;
+            border: 1px solid #d1c4c0;
+            border-radius: 4px;
+            background: #fff;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .promo-btn:hover { background: #f4ece9; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a onclick="goBack()" class="nav-link">← Back to Games</a>
+        <div class="coin-display"><span class="coin-count">0</span> Coins</div>
+    </header>
+
+    <main>
+        <h1>Chess</h1>
+        <p class="subtitle" id="status">Click a piece to select, then click a square to move.</p>
+
+        <div id="board-wrapper">
+            <div id="board"></div>
+        </div>
+
+        <div class="controls">
+            <button class="btn" onclick="resetGame()">New Game</button>
+        </div>
+    </main>
+
+    <!-- Reward Modal -->
+    <div id="reward-modal" class="modal-overlay">
+        <div class="modal-card">
+            <h2 style="font-size: 20px; margin: 0 0 10px;">Victory</h2>
+            <p style="color: #8c7b7d; font-size: 14px; margin: 0 0 20px;">You won the game and earned 50 Coins.</p>
+            <button class="btn" onclick="closeModalAndReset()" style="width: 100%;">Play Again</button>
+        </div>
+    </div>
+
+    <!-- Promotion Modal -->
+    <div id="promo-modal" class="modal-overlay">
+        <div class="modal-card">
+            <h3 style="margin: 0 0 10px; font-size: 18px;">Promote Pawn</h3>
+            <p style="color: #8c7b7d; font-size: 13px; margin: 0 0 15px;">Choose piece promotion:</p>
+            <div class="promo-options">
+                <button class="promo-btn" onclick="executePromotion('q')">Queen</button>
+                <button class="promo-btn" onclick="executePromotion('r')">Rook</button>
+                <button class="promo-btn" onclick="executePromotion('b')">Bishop</button>
+                <button class="promo-btn" onclick="executePromotion('n')">Knight</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+    <script src="../script.js"></script>
+
+    <script>
+        const pieceImages = {
+            'wP': '1000080928-removebg-preview.png',
+            'wR': '1000080930-removebg-preview.png',
+            'wN': '1000080931-removebg-preview.png',
+            'wB': '1000080932-removebg-preview.png',
+            'wQ': '1000080933-removebg-preview.png',
+            'wK': '1000080934-removebg-preview.png',
+
+            'bP': '1000080935-removebg-preview.png',
+            'bR': '1000080936-removebg-preview.png',
+            'bN': '1000080937-removebg-preview.png',
+            'bB': '1000080938-removebg-preview.png',
+            'bQ': '1000080940-removebg-preview.png',
+            'bK': '1000080939-removebg-preview.png'
+        };
+
+        const game = new Chess();
+        const boardEl = document.getElementById('board');
+        const statusEl = document.getElementById('status');
+        let selectedSquare = null;
+        let pendingMove = null;
+
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = '../index.html';
+            }
+        }
+
+        function renderBoard() {
+            boardEl.innerHTML = '';
+            const board = game.board();
+
+            for (let r = 0; r < 8; r++) {
+                for (let c = 0; c < 8; c++) {
+                    const squareEl = document.createElement('div');
+                    const squareName = String.fromCharCode(97 + c) + (8 - r);
+                    const isWhiteSquare = (r + c) % 2 === 0;
+
+                    squareEl.className = `square ${isWhiteSquare ? 'white' : 'black'}`;
+                    squareEl.dataset.square = squareName;
+
+                    if (selectedSquare === squareName) {
+                        squareEl.classList.add('selected');
+                    }
+
+                    const piece = board[r][c];
+                    if (piece) {
+                        const pieceKey = piece.color + piece.type.toUpperCase();
+                        const fileName = pieceImages[pieceKey];
+
+                        if (fileName) {
+                            const img = document.createElement('img');
+                            img.src = fileName;
+                            
+                            // Auto-handles subfolders or root folders
+                            img.onerror = function() {
+                                if (!this.dataset.triedPieces) {
+                                    this.dataset.triedPieces = "true";
+                                    this.src = "pieces/" + fileName;
+                                } else if (!this.dataset.triedParent) {
+                                    this.dataset.triedParent = "true";
+                                    this.src = "../" + fileName;
+                                } else {
+                                    this.style.display = 'none';
+                                    const span = document.createElement('span');
+                                    span.className = 'fallback-text';
+                                    span.innerText = pieceKey;
+                                    squareEl.appendChild(span);
+                                }
+                            };
+
+                            img.alt = pieceKey;
+                            squareEl.appendChild(img);
+                        }
+                    }
+
+                    squareEl.addEventListener('click', () => handleSquareClick(squareName));
+                    boardEl.appendChild(squareEl);
+                }
+            }
+        }
+
+        function isPromotionMove(from, to) {
+            const piece = game.get(from);
+            if (!piece || piece.type !== 'p') return false;
+            if (piece.color === 'w' && to[1] === '8') return true;
+            if (piece.color === 'b' && to[1] === '1') return true;
+            return false;
+        }
+
+        function handleSquareClick(square) {
+            if (game.game_over() || game.turn() !== 'w') return;
+
+            if (selectedSquare === null) {
+                const piece = game.get(square);
+                if (piece && piece.color === 'w') {
+                    selectedSquare = square;
+                }
+            } else {
+                const from = selectedSquare;
+                const to = square;
+
+                if (isPromotionMove(from, to)) {
+                    const tempMove = game.move({ from, to, promotion: 'q' });
+                    if (tempMove !== null) {
+                        game.undo();
+                        pendingMove = { from, to };
+                        document.getElementById('promo-modal').style.display = 'flex';
+                        selectedSquare = null;
+                        renderBoard();
+                        return;
+                    }
+                }
+
+                const move = game.move({ from, to, promotion: 'q' });
+                selectedSquare = null;
+
+                if (move !== null) {
+                    renderBoard();
+                    updateStatus();
+
+                    if (!game.game_over()) {
+                        window.setTimeout(makeComputerMove, 300);
+                    }
+                    return;
+                }
+
+                const piece = game.get(square);
+                if (piece && piece.color === 'w') {
+                    selectedSquare = square;
+                }
+            }
+            renderBoard();
+        }
+
+        function executePromotion(pieceType) {
+            document.getElementById('promo-modal').style.display = 'none';
+            if (!pendingMove) return;
+
+            game.move({
+                from: pendingMove.from,
+                to: pendingMove.to,
+                promotion: pieceType
+            });
+
+            pendingMove = null;
+            renderBoard();
+            updateStatus();
+
+            if (!game.game_over()) {
+                window.setTimeout(makeComputerMove, 300);
+            }
+        }
+
+        function makeComputerMove() {
+            const moves = game.moves({ verbose: true });
+            if (moves.length === 0) return;
+
+            const randomMove = moves[Math.floor(Math.random() * moves.length)];
+            
+            if (randomMove.flags.includes('p')) {
+                randomMove.promotion = 'q';
+            }
+
+            game.move(randomMove);
+            renderBoard();
+            updateStatus();
+        }
+
+        function updateStatus() {
+            if (game.in_checkmate()) {
+                if (game.turn() === 'b') {
+                    statusEl.innerText = 'Checkmate! You won!';
+                    if (typeof addCoins === 'function') addCoins(50);
+                    document.getElementById('reward-modal').style.display = 'flex';
+                } else {
+                    statusEl.innerText = 'Checkmate! Computer won.';
+                }
+            } else if (game.in_draw()) {
+                statusEl.innerText = 'Game over (Draw).';
+            } else {
+                statusEl.innerText = game.turn() === 'w' ? 'Your turn (White)' : 'Computer is thinking...';
+            }
+        }
+
+        function resetGame() {
+            game.reset();
+            selectedSquare = null;
+            pendingMove = null;
+            renderBoard();
+            updateStatus();
+        }
+
+        function closeModalAndReset() {
+            document.getElementById('reward-modal').style.display = 'none';
+            resetGame();
+        }
+
+        renderBoard();
+    </script>
+</body>
+</html>
