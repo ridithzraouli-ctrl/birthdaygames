@@ -1,1 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Shop ♡</title>
+    <style>
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at 12% 12%, #f3dce3 0, transparent 25%), #faf5f2;
+            color: #60434c;
+            font-family: Georgia, "Times New Roman", serif;
+        }
 
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid #ead3dc;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-link { color: #985f72; text-decoration: none; font-weight: bold; }
+        .coin-display { background: #fff0f3; border: 1px solid #d7b4be; padding: 6px 14px; border-radius: 20px; font-weight: bold; color: #91596c; }
+
+        main { max-width: 800px; margin: 0 auto; padding: 40px 20px; text-align: center; }
+        h1 { color: #985f72; font-weight: normal; margin-bottom: 8px; }
+        p.subtitle { color: #7a5863; margin-bottom: 30px; }
+
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .shop-card {
+            background: #fffdfb;
+            border: 1px solid #ead9dd;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 15px rgba(91, 52, 65, .08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .shop-card h3 { color: #985f72; margin: 10px 0 5px; }
+        .shop-card p { font-size: 14px; color: #7a5863; margin: 0 0 15px; }
+        .icon { font-size: 40px; }
+
+        .buy-btn {
+            padding: 10px 20px;
+            border: 1px solid #bd8294;
+            border-radius: 100px;
+            background: #fffaf9;
+            color: #91596c;
+            font-family: Georgia, serif;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .buy-btn:hover { background: #f9e9ed; }
+        .buy-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* UNLOCKED CONTENT STYLING */
+        .unlocked-content {
+            display: none;
+            margin-top: 15px;
+            padding: 12px;
+            background: #fff0f3;
+            border-radius: 8px;
+            border: 1px dashed #d7b4be;
+            font-size: 14px;
+            color: #60434c;
+            width: 100%;
+        }
+
+        .unlocked-content img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="nav-link">← Home</a>
+        <div class="coin-display">🪙 <span class="coin-count">0</span> Coins</div>
+    </header>
+
+    <main>
+        <h1>Birthday Shop ♡</h1>
+        <p class="subtitle">Exchange your coins to unlock birthday surprises!</p>
+
+        <div class="shop-grid">
+            
+            <!-- ITEM 1 -->
+            <div class="shop-card" id="item-1">
+                <div class="icon">💌</div>
+                <h3>Birthday Letter</h3>
+                <p>A special heartfelt note written just for you.</p>
+                <button class="buy-btn" onclick="buyItem('item-1', 50)">Unlock (50 🪙)</button>
+                <div class="unlocked-content">
+                    "Happy Birthday! Thank you for being such an amazing friend/partner..."
+                </div>
+            </div>
+
+            <!-- ITEM 2 -->
+            <div class="shop-card" id="item-2">
+                <div class="icon">🎨</div>
+                <h3>Custom Drawing</h3>
+                <p>A cute drawing made specially for your big day.</p>
+                <button class="buy-btn" onclick="buyItem('item-2', 100)">Unlock (100 🪙)</button>
+                <div class="unlocked-content">
+                    <p>Here is your drawing!</p>
+                    <!-- Replace with your actual drawing image URL or local file path -->
+                    <img src="https://via.placeholder.com/200" alt="Birthday Drawing">
+                </div>
+            </div>
+
+            <!-- ITEM 3 -->
+            <div class="shop-card" id="item-3">
+                <div class="icon">🎟️</div>
+                <h3>Favors Coupon</h3>
+                <p>Redeemable for 1 free coffee/treat on me!</p>
+                <button class="buy-btn" onclick="buyItem('item-3', 30)">Unlock (30 🪙)</button>
+                <div class="unlocked-content">
+                    🎟️ <strong>Valid for:</strong> One free coffee/treat hangout whenever you want!
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        // Check unlocked items on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            ['item-1', 'item-2', 'item-3'].forEach(itemId => {
+                if (localStorage.getItem(itemId + '_unlocked') === 'true') {
+                    revealItem(itemId);
+                }
+            });
+        });
+
+        function buyItem(itemId, cost) {
+            if (localStorage.getItem(itemId + '_unlocked') === 'true') return;
+
+            if (spendCoins(cost)) {
+                localStorage.setItem(itemId + '_unlocked', 'true');
+                revealItem(itemId);
+            } else {
+                alert("You don't have enough coins yet! Play more games to earn more 🪙");
+            }
+        }
+
+        function revealItem(itemId) {
+            const card = document.getElementById(itemId);
+            const btn = card.querySelector('.buy-btn');
+            const content = card.querySelector('.unlocked-content');
+
+            btn.innerText = 'Unlocked ✨';
+            btn.disabled = true;
+            content.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
