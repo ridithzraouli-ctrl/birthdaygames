@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arcade</title>
+    <title>Chess</title>
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
@@ -26,101 +26,254 @@
             z-index: 100;
         }
 
-        .brand { font-weight: 600; font-size: 16px; color: #4a3e3d; text-decoration: none; }
-        .header-right { display: flex; align-items: center; gap: 20px; }
-        
-        .shop-link {
-            color: #7d6b6d;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-        .shop-link:hover { color: #4a3e3d; }
+        .nav-link { color: #7d6b6d; text-decoration: none; font-size: 14px; font-weight: 500; }
+        .nav-link:hover { color: #4a3e3d; }
+        .coin-display { background: #f4ece9; border: 1px solid #e2d7d3; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; color: #635052; }
 
-        .coin-display {
-            background: #f4ece9;
-            border: 1px solid #e2d7d3;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #635052;
+        main {
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        main { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
         h1 { color: #4a3e3d; font-weight: 500; font-size: 24px; margin: 0 0 8px; }
-        p.subtitle { color: #8c7b7d; margin: 0 0 32px; font-size: 15px; }
+        p.subtitle { color: #8c7b7d; margin: 0 0 24px; font-size: 14px; }
 
-        .games-grid {
+        #board {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(8, 1fr);
+            width: 100%;
+            max-width: 360px;
+            aspect-ratio: 1;
+            border: 2px solid #8c7b7d;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            user-select: none;
         }
 
-        .game-card {
+        .square {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .square.white { background: #ffffff; }
+        .square.black { background: #d1c4c0; }
+        .square.selected { background: #f4ece9 !important; outline: 2px solid #8c7b7d; outline-offset: -2px; }
+
+        .square img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        .controls { display: flex; gap: 12px; margin-top: 24px; }
+
+        .btn {
+            padding: 10px 20px;
+            border: 1px solid #d1c4c0;
+            border-radius: 6px;
             background: #ffffff;
-            border: 1px solid #eee8e5;
-            border-radius: 8px;
-            padding: 24px;
-            text-decoration: none;
-            color: inherit;
-            transition: border-color 0.2s, transform 0.2s;
-        }
-
-        .game-card:hover {
-            border-color: #d1c4c0;
-            transform: translateY(-2px);
-        }
-
-        .game-card h3 { color: #4a3e3d; font-weight: 600; margin: 0 0 8px; font-size: 17px; }
-        .game-card p { font-size: 14px; color: #8c7b7d; margin: 0 0 16px; line-height: 1.4; }
-        .reward-badge {
-            display: inline-block;
-            background: #f4ece9;
-            color: #635052;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 12px;
+            color: #4a3e3d;
+            font-size: 13px;
             font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn:hover { background: #faf7f5; }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.3);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 30px;
+            max-width: 320px;
+            width: 90%;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <a href="index.html" class="brand">Arcade</a>
-        <div class="header-right">
-            <a href="shop.html" class="shop-link">Shop →</a>
-            <div class="coin-display"><span class="coin-count">0</span> Coins</div>
-        </div>
+        <a href="../index.html" class="nav-link">← Games</a>
+        <div class="coin-display"><span class="coin-count">0</span> Coins</div>
     </header>
 
     <main>
-        <h1>Games</h1>
-        <p class="subtitle">Play games to earn coins for the shop.</p>
+        <h1>Chess</h1>
+        <p class="subtitle" id="status">Click a piece to select, then click a square to move.</p>
 
-        <div class="games-grid">
-            <a href="games/sudoku.html" class="game-card">
-                <h3>Sudoku</h3>
-                <p>Classic numbers puzzle.</p>
-                <span class="reward-badge">+50 Coins</span>
-            </a>
-            
-            <a href="games/crossword.html" class="game-card">
-                <h3>Crossword</h3>
-                <p>Solve the grid clues.</p>
-                <span class="reward-badge">+50 Coins</span>
-            </a>
+        <div id="board"></div>
 
-            <a href="games/chess.html" class="game-card">
-                <h3>Chess</h3>
-                <p>Play against the computer.</p>
-                <span class="reward-badge">+50 Coins</span>
-            </a>
+        <div class="controls">
+            <button class="btn" onclick="resetGame()">New Game</button>
         </div>
     </main>
 
-    <script src="script.js"></script>
+    <div id="reward-modal" class="modal-overlay">
+        <div class="modal-card">
+            <h2 style="font-size: 20px; margin: 0 0 10px;">Victory</h2>
+            <p style="color: #8c7b7d; font-size: 14px; margin: 0 0 20px;">You won the game and earned 50 Coins.</p>
+            <button class="btn" onclick="closeModalAndReset()" style="width: 100%;">Play Again</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+    <script src="../script.js"></script>
+
+    <script>
+        // =========================================================
+        // MANUALLY ADD YOUR PIECE IMAGE PATHS OR URLS HERE:
+        // =========================================================
+        const pieceImages = {
+            'wP': '', // White Pawn
+            'wR': '', // White Rook
+            'wN': '', // White Knight
+            'wB': '', // White Bishop
+            'wQ': '', // White Queen
+            'wK': '', // White King
+
+            'bP': '', // Black Pawn
+            'bR': '', // Black Rook
+            'bN': '', // Black Knight
+            'bB': '', // Black Bishop
+            'bQ': '', // Black Queen
+            'bK': ''  // Black King
+        };
+
+        const game = new Chess();
+        const boardEl = document.getElementById('board');
+        const statusEl = document.getElementById('status');
+        let selectedSquare = null;
+
+        function renderBoard() {
+            boardEl.innerHTML = '';
+            const board = game.board();
+
+            for (let r = 0; r < 8; r++) {
+                for (let c = 0; c < 8; c++) {
+                    const squareEl = document.createElement('div');
+                    const squareName = String.fromCharCode(97 + c) + (8 - r);
+                    const isWhiteSquare = (r + c) % 2 === 0;
+
+                    squareEl.className = `square ${isWhiteSquare ? 'white' : 'black'}`;
+                    squareEl.dataset.square = squareName;
+
+                    if (selectedSquare === squareName) {
+                        squareEl.classList.add('selected');
+                    }
+
+                    const piece = board[r][c];
+                    if (piece) {
+                        const pieceKey = piece.color + piece.type.toUpperCase();
+                        const imgSrc = pieceImages[pieceKey];
+
+                        if (imgSrc) {
+                            const img = document.createElement('img');
+                            img.src = imgSrc;
+                            img.alt = pieceKey;
+                            squareEl.appendChild(img);
+                        } else {
+                            // Fallback text if an image link isn't provided yet
+                            squareEl.innerText = pieceKey;
+                        }
+                    }
+
+                    squareEl.addEventListener('click', () => handleSquareClick(squareName));
+                    boardEl.appendChild(squareEl);
+                }
+            }
+        }
+
+        function handleSquareClick(square) {
+            if (game.game_over() || game.turn() !== 'w') return;
+
+            if (selectedSquare === null) {
+                const piece = game.get(square);
+                if (piece && piece.color === 'w') {
+                    selectedSquare = square;
+                }
+            } else {
+                const move = game.move({
+                    from: selectedSquare,
+                    to: square,
+                    promotion: 'q'
+                });
+
+                selectedSquare = null;
+
+                if (move !== null) {
+                    renderBoard();
+                    updateStatus();
+
+                    if (!game.game_over()) {
+                        window.setTimeout(makeComputerMove, 300);
+                    }
+                    return;
+                }
+
+                const piece = game.get(square);
+                if (piece && piece.color === 'w') {
+                    selectedSquare = square;
+                }
+            }
+            renderBoard();
+        }
+
+        function makeComputerMove() {
+            const moves = game.moves();
+            if (moves.length === 0) return;
+
+            const randomMove = moves[Math.floor(Math.random() * moves.length)];
+            game.move(randomMove);
+            renderBoard();
+            updateStatus();
+        }
+
+        function updateStatus() {
+            if (game.in_checkmate()) {
+                if (game.turn() === 'b') {
+                    statusEl.innerText = 'Checkmate! You won!';
+                    addCoins(50);
+                    document.getElementById('reward-modal').style.display = 'flex';
+                } else {
+                    statusEl.innerText = 'Checkmate! Computer won.';
+                }
+            } else if (game.in_draw()) {
+                statusEl.innerText = 'Game over (Draw).';
+            } else {
+                statusEl.innerText = game.turn() === 'w' ? 'Your turn (White)' : 'Computer is thinking...';
+            }
+        }
+
+        function resetGame() {
+            game.reset();
+            selectedSquare = null;
+            renderBoard();
+            updateStatus();
+        }
+
+        function closeModalAndReset() {
+            document.getElementById('reward-modal').style.display = 'none';
+            resetGame();
+        }
+
+        renderBoard();
+    </script>
 </body>
 </html>
