@@ -37,11 +37,12 @@
         }
 
         h1 { color: #4a3e3d; font-weight: 500; font-size: 24px; margin: 0 0 8px; }
-        p.subtitle { color: #8c7b7d; margin: 0 0 24px; font-size: 14px; }
+        p.subtitle { color: #8c7b7d; margin: 0 0 24px; font-size: 14px; text-align: center; }
 
         #board-wrapper {
-            width: min(90vw, 380px);
-            height: min(90vw, 380px);
+            width: min(88vw, 360px);
+            height: min(88vw, 360px);
+            margin: 0 auto;
         }
 
         #board {
@@ -66,23 +67,26 @@
             cursor: pointer;
             position: relative;
             box-sizing: border-box;
+            overflow: hidden;
         }
 
         .square.white { background: #ffffff; }
         .square.black { background: #d1c4c0; }
-        .square.selected { background: #f4ece9 !important; outline: 3px solid #8c7b7d; outline-offset: -3px; }
+        .square.selected { background: #e2d7d3 !important; outline: 3px solid #8c7b7d; outline-offset: -3px; }
 
         .square img {
-            width: 80%;
-            height: 80%;
+            width: 75%;
+            height: 75%;
             object-fit: contain;
             pointer-events: none;
             display: block;
+            /* Auto-rotates sideways PNGs right-side up */
+            transform: rotate(90deg);
         }
 
         .fallback-text {
-            font-size: 18px;
-            font-weight: bold;
+            font-size: 13px;
+            font-weight: 600;
             color: #4a3e3d;
         }
 
@@ -120,22 +124,6 @@
             width: 90%;
             text-align: center;
         }
-
-        .promo-options {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 15px;
-        }
-
-        .promo-btn {
-            padding: 8px 12px;
-            border: 1px solid #d1c4c0;
-            border-radius: 4px;
-            background: #fff;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .promo-btn:hover { background: #f4ece9; }
     </style>
 </head>
 <body>
@@ -158,26 +146,11 @@
         </div>
     </main>
 
-    <!-- Reward Modal -->
     <div id="reward-modal" class="modal-overlay">
         <div class="modal-card">
-            <h2 style="font-size: 20px; margin: 0 0 10px;">Victory</h2>
+            <h2 style="font-size: 20px; margin: 0 0 10px;">Victory!</h2>
             <p style="color: #8c7b7d; font-size: 14px; margin: 0 0 20px;">You won the game and earned 50 Coins.</p>
             <button class="btn" onclick="closeModalAndReset()" style="width: 100%;">Play Again</button>
-        </div>
-    </div>
-
-    <!-- Promotion Modal -->
-    <div id="promo-modal" class="modal-overlay">
-        <div class="modal-card">
-            <h3 style="margin: 0 0 10px; font-size: 18px;">Promote Pawn</h3>
-            <p style="color: #8c7b7d; font-size: 13px; margin: 0 0 15px;">Choose piece promotion:</p>
-            <div class="promo-options">
-                <button class="promo-btn" onclick="executePromotion('q')">Queen</button>
-                <button class="promo-btn" onclick="executePromotion('r')">Rook</button>
-                <button class="promo-btn" onclick="executePromotion('b')">Bishop</button>
-                <button class="promo-btn" onclick="executePromotion('n')">Knight</button>
-            </div>
         </div>
     </div>
 
@@ -205,7 +178,6 @@
         const boardEl = document.getElementById('board');
         const statusEl = document.getElementById('status');
         let selectedSquare = null;
-        let pendingMove = null;
 
         function goBack() {
             if (window.history.length > 1) {
@@ -239,23 +211,14 @@
 
                         if (fileName) {
                             const img = document.createElement('img');
-                            img.src = fileName;
+                            img.src = './' + fileName;
                             
-                            // Auto-handles subfolders or root folders
                             img.onerror = function() {
-                                if (!this.dataset.triedPieces) {
-                                    this.dataset.triedPieces = "true";
-                                    this.src = "pieces/" + fileName;
-                                } else if (!this.dataset.triedParent) {
-                                    this.dataset.triedParent = "true";
-                                    this.src = "../" + fileName;
-                                } else {
-                                    this.style.display = 'none';
-                                    const span = document.createElement('span');
-                                    span.className = 'fallback-text';
-                                    span.innerText = pieceKey;
-                                    squareEl.appendChild(span);
-                                }
+                                this.style.display = 'none';
+                                const span = document.createElement('span');
+                                span.className = 'fallback-text';
+                                span.innerText = pieceKey;
+                                squareEl.appendChild(span);
                             };
 
                             img.alt = pieceKey;
@@ -269,14 +232,6 @@
             }
         }
 
-        function isPromotionMove(from, to) {
-            const piece = game.get(from);
-            if (!piece || piece.type !== 'p') return false;
-            if (piece.color === 'w' && to[1] === '8') return true;
-            if (piece.color === 'b' && to[1] === '1') return true;
-            return false;
-        }
-
         function handleSquareClick(square) {
             if (game.game_over() || game.turn() !== 'w') return;
 
@@ -288,18 +243,6 @@
             } else {
                 const from = selectedSquare;
                 const to = square;
-
-                if (isPromotionMove(from, to)) {
-                    const tempMove = game.move({ from, to, promotion: 'q' });
-                    if (tempMove !== null) {
-                        game.undo();
-                        pendingMove = { from, to };
-                        document.getElementById('promo-modal').style.display = 'flex';
-                        selectedSquare = null;
-                        renderBoard();
-                        return;
-                    }
-                }
 
                 const move = game.move({ from, to, promotion: 'q' });
                 selectedSquare = null;
@@ -322,34 +265,12 @@
             renderBoard();
         }
 
-        function executePromotion(pieceType) {
-            document.getElementById('promo-modal').style.display = 'none';
-            if (!pendingMove) return;
-
-            game.move({
-                from: pendingMove.from,
-                to: pendingMove.to,
-                promotion: pieceType
-            });
-
-            pendingMove = null;
-            renderBoard();
-            updateStatus();
-
-            if (!game.game_over()) {
-                window.setTimeout(makeComputerMove, 300);
-            }
-        }
-
         function makeComputerMove() {
             const moves = game.moves({ verbose: true });
             if (moves.length === 0) return;
 
             const randomMove = moves[Math.floor(Math.random() * moves.length)];
-            
-            if (randomMove.flags.includes('p')) {
-                randomMove.promotion = 'q';
-            }
+            if (randomMove.flags.includes('p')) randomMove.promotion = 'q';
 
             game.move(randomMove);
             renderBoard();
@@ -368,14 +289,13 @@
             } else if (game.in_draw()) {
                 statusEl.innerText = 'Game over (Draw).';
             } else {
-                statusEl.innerText = game.turn() === 'w' ? 'Your turn (White)' : 'Computer is thinking...';
+                statusEl.innerText = game.turn() === 'w' ? 'Your turn (White)' : 'Computer thinking...';
             }
         }
 
         function resetGame() {
             game.reset();
             selectedSquare = null;
-            pendingMove = null;
             renderBoard();
             updateStatus();
         }
