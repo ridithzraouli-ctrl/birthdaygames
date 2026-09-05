@@ -25,7 +25,7 @@
             z-index: 100;
         }
 
-        .nav-link { color: #7d6b6d; text-decoration: none; font-size: 14px; font-weight: 500; }
+        .nav-link { color: #7d6b6d; text-decoration: none; font-size: 14px; font-weight: 500; cursor: pointer; }
         .nav-link:hover { color: #4a3e3d; }
         .coin-display { background: #f4ece9; border: 1px solid #e2d7d3; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; color: #635052; }
 
@@ -39,12 +39,17 @@
         h1 { color: #4a3e3d; font-weight: 500; font-size: 24px; margin: 0 0 8px; }
         p.subtitle { color: #8c7b7d; margin: 0 0 24px; font-size: 14px; }
 
+        #board-wrapper {
+            width: min(90vw, 360px);
+            height: min(90vw, 360px);
+        }
+
         #board {
             display: grid;
             grid-template-columns: repeat(8, 1fr);
             grid-template-rows: repeat(8, 1fr);
-            width: min(90vw, 360px);
-            height: min(90vw, 360px);
+            width: 100%;
+            height: 100%;
             border: 2px solid #8c7b7d;
             border-radius: 6px;
             overflow: hidden;
@@ -60,25 +65,17 @@
             justify-content: center;
             cursor: pointer;
             box-sizing: border-box;
-            position: relative;
         }
 
         .square.white { background: #ffffff; }
         .square.black { background: #d1c4c0; }
         .square.selected { background: #f4ece9 !important; outline: 2px solid #8c7b7d; outline-offset: -2px; }
 
-        .square img {
-            width: 80%;
-            height: 80%;
-            object-fit: contain;
+        .square svg {
+            width: 75%;
+            height: 75%;
             pointer-events: none;
             display: block;
-        }
-
-        .square .fallback-text {
-            font-size: 12px;
-            font-weight: bold;
-            color: #4a3e3d;
         }
 
         .controls { display: flex; gap: 12px; margin-top: 24px; }
@@ -136,7 +133,7 @@
 <body>
 
     <header>
-        <a href="../index.html" class="nav-link">← Games</a>
+        <a href="javascript:history.back()" class="nav-link">← Back to Games</a>
         <div class="coin-display"><span class="coin-count">0</span> Coins</div>
     </header>
 
@@ -144,14 +141,15 @@
         <h1>Chess</h1>
         <p class="subtitle" id="status">Click a piece to select, then click a square to move.</p>
 
-        <div id="board"></div>
+        <div id="board-wrapper">
+            <div id="board"></div>
+        </div>
 
         <div class="controls">
             <button class="btn" onclick="resetGame()">New Game</button>
         </div>
     </main>
 
-    <!-- Reward Modal -->
     <div id="reward-modal" class="modal-overlay">
         <div class="modal-card">
             <h2 style="font-size: 20px; margin: 0 0 10px;">Victory</h2>
@@ -160,7 +158,6 @@
         </div>
     </div>
 
-    <!-- Promotion Modal -->
     <div id="promo-modal" class="modal-overlay">
         <div class="modal-card">
             <h3 style="margin: 0 0 10px; font-size: 18px;">Promote Pawn</h3>
@@ -175,23 +172,21 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
-    <script src="../script.js"></script>
-
     <script>
-        const pieceImages = {
-            'wP': '1000080928-removebg-preview.png',
-            'wR': '1000080930-removebg-preview.png',
-            'wN': '1000080931-removebg-preview.png',
-            'wB': '1000080932-removebg-preview.png',
-            'wQ': '1000080933-removebg-preview.png',
-            'wK': '1000080934-removebg-preview.png',
-
-            'bP': '1000080935-removebg-preview.png',
-            'bR': '1000080936-removebg-preview.png',
-            'bN': '1000080937-removebg-preview.png',
-            'bB': '1000080938-removebg-preview.png',
-            'bQ': '1000080938-removebg-preview.png',
-            'bK': '1000080939-removebg-preview.png'
+        const pieceSVGs = {
+            'wP': '<svg viewBox="0 0 45 45"><path d="M22.5 9c-2.21 0-4 1.79-4 4 0 1.38.7 2.6 1.75 3.32-.22.28-.45.61-.7 1.01-1.3 2.12-2.55 5.77-2.55 10.67h11c0-4.9-1.25-8.55-2.55-10.67-.25-.4-.48-.73-.7-1.01 1.05-.72 1.75-1.94 1.75-3.32 0-2.21-1.79-4-4-4z" fill="#fff" stroke="#000" stroke-width="1.5"/><path d="M11.5 30c0-1 2.5-1.5 11-1.5s11 .5 11 1.5M11.5 33.5h22M11.5 37h22" stroke="#000" stroke-width="1.5" fill="none"/></svg>',
+            'wR': '<svg viewBox="0 0 45 45"><path d="M9 39h27v-3H9v3zm3-3v-4h21v4H12zm1-5V18h19v13H13zm-1-13V9h4v3h5V9h4v3h5V9h4v9H12z" fill="#fff" stroke="#000" stroke-width="1.5"/></svg>',
+            'wN': '<svg viewBox="0 0 45 45"><path d="M22 10c-3 0-8 2-8 10 0 4 2 7 5 9l-3 8h18l-1-5c-3 0-6-3-6-6 0-3 2-4 3-6l-2-2c-2 0-4-3-4-6V10z" fill="#fff" stroke="#000" stroke-width="1.5"/></svg>',
+            'wB': '<svg viewBox="0 0 45 45"><path d="M9 36h27v-2H9v2zm3-3h21v-2H12v2zm3-3c0-5 3-9 7.5-11.5 1.5-.8 3-1.5 3-3.5 0-1.5-1-2.5-2.5-2.5S18 11.5 18 13h-3c0-3 2.5-5.5 6.5-5.5s6.5 2.5 6.5 5.5c0 3-2 4.5-4 5.5C22.5 20.5 21 24 21 27h-6z" fill="#fff" stroke="#000" stroke-width="1.5"/><circle cx="22.5" cy="10" r="2.5" fill="#fff" stroke="#000" stroke-width="1.5"/></svg>',
+            'wQ': '<svg viewBox="0 0 45 45"><path d="M9 26c0 2 1.5 3 3.5 3s3.5-1 3.5-3c0-3-3.5-5-3.5-5s-3.5 2-3.5 5zm10 0c0 2 1.5 3 3.5 3s3.5-1 3.5-3c0-3-3.5-5-3.5-5s-3.5 2-3.5 5zm10 0c0 2 1.5 3 3.5 3s3.5-1 3.5-3c0-3-3.5-5-3.5-5s-3.5 2-3.5 5zM12 33h21v3H12vz" fill="#fff" stroke="#000" stroke-width="1.5"/></svg>',
+            'wK': '<svg viewBox="0 0 45 45"><path d="M22.5 11.5V6M20 8.5h5M11.5 37h22M11.5 33.5h22M22.5 14c-4 0-8 3-8 8 0 4 3 8 8 8s8-4 8-8c0-5-4-8-8-8z" fill="#fff" stroke="#000" stroke-width="1.5"/></svg>',
+            
+            'bP': '<svg viewBox="0 0 45 45"><path d="M22.5 9c-2.21 0-4 1.79-4 4 0 1.38.7 2.6 1.75 3.32-.22.28-.45.61-.7 1.01-1.3 2.12-2.55 5.77-2.55 10.67h11c0-4.9-1.25-8.55-2.55-10.67-.25-.4-.48-.73-.7-1.01 1.05-.72 1.75-1.94 1.75-3.32 0-2.21-1.79-4-4-4z" fill="#000" stroke="#000" stroke-width="1.5"/><path d="M11.5 30c0-1 2.5-1.5 11-1.5s11 .5 11 1.5M11.5 33.5h22M11.5 37h22" stroke="#fff" stroke-width="1.5" fill="none"/></svg>',
+            'bR': '<svg viewBox="0 0 45 45"><path d="M9 39h27v-3H9v3zm3-3v-4h21v4H12zm1-5V18h19v13H13zm-1-13V9h4v3h5V9h4v3h5V9h4v9H12z" fill="#000" stroke="#000" stroke-width="1.5"/></svg>',
+            'bN': '<svg viewBox="0 0 45 45"><path d="M22 10c-3 0-8 2-8 10 0 4 2 7 5 9l-3 8h18l-1-5c-3 0-6-3-6-6 0-3 2-4 3-6l-2-2c-2 0-4-3-4-6V10z" fill="#000" stroke="#000" stroke-width="1.5"/></svg>',
+            'bB': '<svg viewBox="0 0 45 45"><path d="M9 36h27v-2H9v2zm3-3h21v-2H12v2zm3-3c0-5 3-9 7.5-11.5 1.5-.8 3-1.5 3-3.5 0-1.5-1-2.5-2.5-2.5S18 11.5 18 13h-3c0-3 2.5-5.5 6.5-5.5s6.5 2.5 6.5 5.5c0 3-2 4.5-4 5.5C22.5 20.5 21 24 21 27h-6z" fill="#000" stroke="#000" stroke-width="1.5"/><circle cx="22.5" cy="10" r="2.5" fill="#000" stroke="#000" stroke-width="1.5"/></svg>',
+            'bQ': '<svg viewBox="0 0 45 45"><path d="M9 26c0 2 1.5 3 3.5 3s3.5-1 3.5-3c0-3-3.5-5-3.5-5s-3.5 2-3.5 5zm10 0c0 2 1.5 3 3.5 3s3.5-1 3.5-3c0-3-3.5-5-3.5-5s-3.5 2-3.5 5zm10 0c0 2 1.5 3 3.5 3s3.5-1 3.5-3c0-3-3.5-5-3.5-5s-3.5 2-3.5 5zM12 33h21v3H12vz" fill="#000" stroke="#000" stroke-width="1.5"/></svg>',
+            'bK': '<svg viewBox="0 0 45 45"><path d="M22.5 11.5V6M20 8.5h5M11.5 37h22M11.5 33.5h22M22.5 14c-4 0-8 3-8 8 0 4 3 8 8 8s8-4 8-8c0-5-4-8-8-8z" fill="#000" stroke="#000" stroke-width="1.5"/></svg>'
         };
 
         const game = new Chess();
@@ -220,28 +215,8 @@
                     const piece = board[r][c];
                     if (piece) {
                         const pieceKey = piece.color + piece.type.toUpperCase();
-                        const fileName = pieceImages[pieceKey];
-
-                        if (fileName) {
-                            const img = document.createElement('img');
-                            
-                            // Try current folder, fallback to pieces/ subfolder
-                            img.src = fileName;
-                            img.onerror = function() {
-                                if (!this.dataset.retried) {
-                                    this.dataset.retried = "true";
-                                    this.src = "pieces/" + fileName;
-                                } else {
-                                    this.style.display = 'none';
-                                    const span = document.createElement('span');
-                                    span.className = 'fallback-text';
-                                    span.innerText = pieceKey;
-                                    squareEl.appendChild(span);
-                                }
-                            };
-
-                            img.alt = pieceKey;
-                            squareEl.appendChild(img);
+                        if (pieceSVGs[pieceKey]) {
+                            squareEl.innerHTML = pieceSVGs[pieceKey];
                         }
                     }
 
@@ -342,7 +317,6 @@
             if (game.in_checkmate()) {
                 if (game.turn() === 'b') {
                     statusEl.innerText = 'Checkmate! You won!';
-                    if (typeof addCoins === 'function') addCoins(50);
                     document.getElementById('reward-modal').style.display = 'flex';
                 } else {
                     statusEl.innerText = 'Checkmate! Computer won.';
