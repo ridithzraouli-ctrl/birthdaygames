@@ -3,110 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birthday World ♡</title>
+    <title>Arcade</title>
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             margin: 0;
             min-height: 100vh;
-            background: radial-gradient(circle at 12% 12%, #f3dce3 0, transparent 25%),
-                        radial-gradient(circle at 88% 82%, #ead3dc 0, transparent 27%), #faf5f2;
-            color: #60434c;
-            font-family: Georgia, "Times New Roman", serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            background: #faf7f5;
+            color: #4a3e3d;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         header {
-            width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 30px;
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid #ead3dc;
+            padding: 18px 30px;
+            background: #ffffff;
+            border-bottom: 1px solid #eee8e5;
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
+        .brand { font-weight: 600; font-size: 16px; color: #4a3e3d; text-decoration: none; }
+        .header-right { display: flex; align-items: center; gap: 20px; }
+        
+        .shop-link {
+            color: #7d6b6d;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .shop-link:hover { color: #4a3e3d; }
+
         .coin-display {
-            background: #fff0f3;
-            border: 1px solid #d7b4be;
+            background: #f4ece9;
+            border: 1px solid #e2d7d3;
             padding: 6px 14px;
             border-radius: 20px;
-            font-weight: bold;
-            color: #91596c;
+            font-size: 13px;
+            font-weight: 600;
+            color: #635052;
         }
 
-        main {
-            text-align: center;
-            padding: 40px 20px;
-            max-width: 600px;
-        }
+        main { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        h1 { color: #4a3e3d; font-weight: 500; font-size: 24px; margin: 0 0 8px; }
+        p.subtitle { color: #8c7b7d; margin: 0 0 32px; font-size: 15px; }
 
-        .ornament {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 11px;
-            height: 22px;
-            margin-bottom: 25px;
-            color: #b8798b;
-        }
-
-        .ornament i { width: 40px; height: 1px; background: #d4adb8; }
-
-        h1 { color: #985f72; font-size: 28px; font-weight: normal; margin-bottom: 8px; }
-        p { line-height: 1.6; color: #7a5863; font-size: 16px; }
-
-        .nav-buttons {
-            display: flex;
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 20px;
-            justify-content: center;
-            margin-top: 30px;
-            flex-wrap: wrap;
         }
 
-        .btn {
-            padding: 14px 28px;
-            border: 1px solid #bd8294;
-            border-radius: 100px;
-            background: #fffaf9;
-            color: #91596c;
+        .game-card {
+            background: #ffffff;
+            border: 1px solid #eee8e5;
+            border-radius: 8px;
+            padding: 24px;
             text-decoration: none;
-            font-size: 16px;
-            box-shadow: 0 6px 17px rgba(91, 52, 65, .11);
-            transition: .2s ease;
+            color: inherit;
+            transition: border-color 0.2s, transform 0.2s;
         }
 
-        .btn:hover { background: #f9e9ed; transform: translateY(-2px); }
+        .game-card:hover {
+            border-color: #d1c4c0;
+            transform: translateY(-2px);
+        }
+
+        .game-card h3 { color: #4a3e3d; font-weight: 600; margin: 0 0 8px; font-size: 17px; }
+        .game-card p { font-size: 14px; color: #8c7b7d; margin: 0 0 16px; line-height: 1.4; }
+        .reward-badge {
+            display: inline-block;
+            background: #f4ece9;
+            color: #635052;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <div style="font-weight: bold; color: #985f72;">Birthday World ♡</div>
-        <div class="coin-display">🪙 <span class="coin-count">0</span> Coins</div>
+        <a href="index.html" class="brand">Arcade</a>
+        <div class="header-right">
+            <a href="shop.html" class="shop-link">Shop →</a>
+            <div class="coin-display"><span class="coin-count">0</span> Coins</div>
+        </div>
     </header>
 
     <main>
-        <div class="ornament">
-            <span>✦</span><i></i><span>♡</span><i></i><span>✦</span>
-        </div>
+        <h1>Games</h1>
+        <p class="subtitle">Play games to earn coins for the shop.</p>
 
-        <h1>Happy Birthday! 🎉</h1>
-        <p>Welcome to your personal birthday Arcade & Gift Shop! Play minigames in the Game Arcade to earn coins, then spend those coins in the Birthday Shop to unlock drawings, letters, and surprises!</p>
-
-        <div class="nav-buttons">
-            <a href="games.html" class="btn">🎮 Game Arcade</a>
-            <a href="shop.html" class="btn">🎁 Birthday Shop</a>
+        <div class="games-grid">
+            <a href="games/sudoku.html" class="game-card">
+                <h3>Sudoku</h3>
+                <p>Classic numbers puzzle.</p>
+                <span class="reward-badge">+50 Coins</span>
+            </a>
+            
+            <a href="games/crossword.html" class="game-card">
+                <h3>Crossword</h3>
+                <p>Solve the grid clues.</p>
+                <span class="reward-badge">+50 Coins</span>
+            </a>
         </div>
     </main>
 
     <script src="script.js"></script>
 </body>
-  </html>
-  
+</html>
