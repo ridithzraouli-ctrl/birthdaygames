@@ -76,21 +76,22 @@
         .square.selected { background: #e2d7d3 !important; outline: 3px solid #8c7b7d; outline-offset: -3px; }
 
         .piece {
-            width: 85%;
-            height: 85%;
+            width: 88%;
+            height: 88%;
             position: absolute;
-            top: 7.5%;
-            left: 7.5%;
-            transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+            top: 6%;
+            left: 6%;
             pointer-events: none;
             z-index: 10;
+            will-change: transform;
+            transition: transform 0.28s cubic-bezier(0.4, 0.0, 0.2, 1);
         }
 
         .piece img {
             width: 100%;
             height: 100%;
             display: block;
-            filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.18));
+            filter: drop-shadow(0px 3px 4px rgba(0,0,0,0.18));
         }
 
         .controls { display: flex; gap: 12px; margin-top: 24px; }
@@ -122,10 +123,39 @@
         .modal-card {
             background: #ffffff;
             border-radius: 8px;
-            padding: 30px;
+            padding: 24px;
             max-width: 320px;
             width: 90%;
             text-align: center;
+        }
+
+        .promotion-options {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .promo-choice {
+            width: 52px;
+            height: 52px;
+            border: 1px solid #d1c4c0;
+            border-radius: 6px;
+            background: #ffffff;
+            cursor: pointer;
+            padding: 4px;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .promo-choice:hover {
+            background: #f4ece9;
+            transform: scale(1.05);
+        }
+
+        .promo-choice img {
+            width: 100%;
+            height: 100%;
+            display: block;
         }
     </style>
 </head>
@@ -149,6 +179,21 @@
         </div>
     </main>
 
+    <!-- Promotion Modal -->
+    <div id="promotion-modal" class="modal-overlay">
+        <div class="modal-card">
+            <h2 style="font-size: 18px; margin: 0 0 8px; color: #4a3e3d;">Promote Pawn</h2>
+            <p style="color: #8c7b7d; font-size: 13px; margin: 0;">Choose a piece to promote to:</p>
+            <div class="promotion-options">
+                <button class="promo-choice" onclick="selectPromotion('q')"><img id="p-q" alt="Queen"></button>
+                <button class="promo-choice" onclick="selectPromotion('r')"><img id="p-r" alt="Rook"></button>
+                <button class="promo-choice" onclick="selectPromotion('b')"><img id="p-b" alt="Bishop"></button>
+                <button class="promo-choice" onclick="selectPromotion('n')"><img id="p-n" alt="Knight"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reward Modal -->
     <div id="reward-modal" class="modal-overlay">
         <div class="modal-card">
             <h2 style="font-size: 20px; margin: 0 0 10px;">Victory!</h2>
@@ -161,21 +206,20 @@
     <script src="../script.js"></script>
 
     <script>
-        // High quality standard Cburnett SVG piece set hosted via Wikimedia
         const pieceCDN = {
-            'wP': 'https://upload.wikimedia.org/wikipedia/commons/4/45/Chess_plt45.svg',
-            'wR': 'https://upload.wikimedia.org/wikipedia/commons/7/72/Chess_rlt45.svg',
-            'wN': 'https://upload.wikimedia.org/wikipedia/commons/7/70/Chess_nlt45.svg',
-            'wB': 'https://upload.wikimedia.org/wikipedia/commons/b/b1/Chess_blt45.svg',
-            'wQ': 'https://upload.wikimedia.org/wikipedia/commons/1/15/Chess_qlt45.svg',
-            'wK': 'https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg',
+            'wP': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/wP.svg',
+            'wR': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/wR.svg',
+            'wN': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/wN.svg',
+            'wB': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/wB.svg',
+            'wQ': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/wQ.svg',
+            'wK': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/wK.svg',
 
-            'bP': 'https://upload.wikimedia.org/wikipedia/commons/c/c7/Chess_pdt45.svg',
-            'bR': 'https://upload.wikimedia.org/wikipedia/commons/f/ff/Chess_rdt45.svg',
-            'bN': 'https://upload.wikimedia.org/wikipedia/commons/e/ef/Chess_ndt45.svg',
-            'bB': 'https://upload.wikimedia.org/wikipedia/commons/9/9b/Chess_bdt45.svg',
-            'bQ': 'https://upload.wikimedia.org/wikipedia/commons/4/47/Chess_qdt45.svg',
-            'bK': 'https://upload.wikimedia.org/wikipedia/commons/f/f0/Chess_kdt45.svg'
+            'bP': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/bP.svg',
+            'bR': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/bR.svg',
+            'bN': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/bN.svg',
+            'bB': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/bB.svg',
+            'bQ': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/bQ.svg',
+            'bK': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/bK.svg'
         };
 
         const game = new Chess();
@@ -183,6 +227,7 @@
         const statusEl = document.getElementById('status');
         let selectedSquare = null;
         let isAnimating = false;
+        let pendingMove = null;
 
         function goBack() {
             if (window.history.length > 1) {
@@ -235,6 +280,16 @@
             });
         }
 
+        function isPromotionMove(from, to) {
+            const piece = game.get(from);
+            if (!piece || piece.type !== 'p') return false;
+            if ((piece.color === 'w' && to[1] === '8') || (piece.color === 'b' && to[1] === '1')) {
+                const moves = game.moves({ square: from, verbose: true });
+                return moves.some(m => m.to === to && m.flags.includes('p'));
+            }
+            return false;
+        }
+
         function handleSquareClick(square) {
             if (game.game_over() || game.turn() !== 'w' || isAnimating) return;
 
@@ -253,28 +308,55 @@
                     return;
                 }
 
-                animateMove(from, to, () => {
-                    const move = game.move({ from, to, promotion: 'q' });
-                    selectedSquare = null;
+                if (isPromotionMove(from, to)) {
+                    pendingMove = { from, to };
+                    openPromotionModal();
+                    return;
+                }
 
-                    if (move !== null) {
-                        renderPieces();
-                        updateStatus();
-
-                        if (!game.game_over()) {
-                            window.setTimeout(makeComputerMove, 250);
-                        }
-                    } else {
-                        const piece = game.get(square);
-                        if (piece && piece.color === 'w') {
-                            selectedSquare = square;
-                        }
-                        renderPieces();
-                    }
-                });
+                executePlayerMove(from, to, 'q');
                 return;
             }
             renderPieces();
+        }
+
+        function executePlayerMove(from, to, promotionPiece) {
+            animateMove(from, to, () => {
+                const move = game.move({ from, to, promotion: promotionPiece });
+                selectedSquare = null;
+
+                if (move !== null) {
+                    renderPieces();
+                    updateStatus();
+
+                    if (!game.game_over()) {
+                        window.setTimeout(makeComputerMove, 300);
+                    }
+                } else {
+                    const piece = game.get(to);
+                    if (piece && piece.color === 'w') {
+                        selectedSquare = to;
+                    }
+                    renderPieces();
+                }
+            });
+        }
+
+        function openPromotionModal() {
+            document.getElementById('p-q').src = pieceCDN['wQ'];
+            document.getElementById('p-r').src = pieceCDN['wR'];
+            document.getElementById('p-b').src = pieceCDN['wB'];
+            document.getElementById('p-n').src = pieceCDN['wN'];
+            document.getElementById('promotion-modal').style.display = 'flex';
+        }
+
+        function selectPromotion(piece) {
+            document.getElementById('promotion-modal').style.display = 'none';
+            if (pendingMove) {
+                const { from, to } = pendingMove;
+                pendingMove = null;
+                executePlayerMove(from, to, piece);
+            }
         }
 
         function animateMove(fromSquare, toSquare, callback) {
@@ -294,12 +376,13 @@
             const deltaX = toRect.left - fromRect.left;
             const deltaY = toRect.top - fromRect.top;
 
-            fromEl.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+            fromEl.style.zIndex = '50';
+            fromEl.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0)`;
 
             setTimeout(() => {
                 isAnimating = false;
                 callback();
-            }, 220);
+            }, 280);
         }
 
         function makeComputerMove() {
@@ -335,6 +418,7 @@
         function resetGame() {
             game.reset();
             selectedSquare = null;
+            pendingMove = null;
             isAnimating = false;
             renderPieces();
             updateStatus();
@@ -349,5 +433,4 @@
         renderPieces();
     </script>
 </body>
-    </html>
-    
+</html>
