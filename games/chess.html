@@ -21,8 +21,7 @@
             padding: 18px 30px;
             background: #ffffff;
             border-bottom: 1px solid #eee8e5;
-            position: sticky;
-            top: 0;
+            position: relative;
             z-index: 100;
         }
 
@@ -31,7 +30,7 @@
         .coin-display { background: #f4ece9; border: 1px solid #e2d7d3; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; color: #635052; }
 
         main {
-            padding: 40px 20px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -44,9 +43,8 @@
             display: grid;
             grid-template-columns: repeat(8, 1fr);
             grid-template-rows: repeat(8, 1fr);
-            width: 100%;
-            max-width: 360px;
-            aspect-ratio: 1;
+            width: min(90vw, 360px);
+            height: min(90vw, 360px);
             border: 2px solid #8c7b7d;
             border-radius: 6px;
             overflow: hidden;
@@ -55,13 +53,14 @@
         }
 
         .square {
+            width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
+            box-sizing: border-box;
+            position: relative;
         }
 
         .square.white { background: #ffffff; }
@@ -69,11 +68,17 @@
         .square.selected { background: #f4ece9 !important; outline: 2px solid #8c7b7d; outline-offset: -2px; }
 
         .square img {
-            max-width: 85%;
-            max-height: 85%;
+            width: 80%;
+            height: 80%;
             object-fit: contain;
             pointer-events: none;
             display: block;
+        }
+
+        .square .fallback-text {
+            font-size: 12px;
+            font-weight: bold;
+            color: #4a3e3d;
         }
 
         .controls { display: flex; gap: 12px; margin-top: 24px; }
@@ -173,21 +178,20 @@
     <script src="../script.js"></script>
 
     <script>
-        // Prefix added to match images placed in games/pieces/
         const pieceImages = {
-            'wP': 'pieces/1000080928-removebg-preview.png',
-            'wR': 'pieces/1000080930-removebg-preview.png',
-            'wN': 'pieces/1000080931-removebg-preview.png',
-            'wB': 'pieces/1000080932-removebg-preview.png',
-            'wQ': 'pieces/1000080933-removebg-preview.png',
-            'wK': 'pieces/1000080934-removebg-preview.png',
+            'wP': '1000080928-removebg-preview.png',
+            'wR': '1000080930-removebg-preview.png',
+            'wN': '1000080931-removebg-preview.png',
+            'wB': '1000080932-removebg-preview.png',
+            'wQ': '1000080933-removebg-preview.png',
+            'wK': '1000080934-removebg-preview.png',
 
-            'bP': 'pieces/1000080935-removebg-preview.png',
-            'bR': 'pieces/1000080936-removebg-preview.png',
-            'bN': 'pieces/1000080937-removebg-preview.png',
-            'bB': 'pieces/1000080938-removebg-preview.png',
-            'bQ': 'pieces/1000080938-removebg-preview.png',
-            'bK': 'pieces/1000080939-removebg-preview.png'
+            'bP': '1000080935-removebg-preview.png',
+            'bR': '1000080936-removebg-preview.png',
+            'bN': '1000080937-removebg-preview.png',
+            'bB': '1000080938-removebg-preview.png',
+            'bQ': '1000080938-removebg-preview.png',
+            'bK': '1000080939-removebg-preview.png'
         };
 
         const game = new Chess();
@@ -216,15 +220,28 @@
                     const piece = board[r][c];
                     if (piece) {
                         const pieceKey = piece.color + piece.type.toUpperCase();
-                        const imgSrc = pieceImages[pieceKey];
+                        const fileName = pieceImages[pieceKey];
 
-                        if (imgSrc) {
+                        if (fileName) {
                             const img = document.createElement('img');
-                            img.src = imgSrc;
+                            
+                            // Try current folder, fallback to pieces/ subfolder
+                            img.src = fileName;
+                            img.onerror = function() {
+                                if (!this.dataset.retried) {
+                                    this.dataset.retried = "true";
+                                    this.src = "pieces/" + fileName;
+                                } else {
+                                    this.style.display = 'none';
+                                    const span = document.createElement('span');
+                                    span.className = 'fallback-text';
+                                    span.innerText = pieceKey;
+                                    squareEl.appendChild(span);
+                                }
+                            };
+
                             img.alt = pieceKey;
                             squareEl.appendChild(img);
-                        } else {
-                            squareEl.innerText = pieceKey;
                         }
                     }
 
@@ -325,7 +342,7 @@
             if (game.in_checkmate()) {
                 if (game.turn() === 'b') {
                     statusEl.innerText = 'Checkmate! You won!';
-                    addCoins(50);
+                    if (typeof addCoins === 'function') addCoins(50);
                     document.getElementById('reward-modal').style.display = 'flex';
                 } else {
                     statusEl.innerText = 'Checkmate! Computer won.';
