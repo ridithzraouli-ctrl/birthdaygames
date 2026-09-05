@@ -37,7 +37,28 @@
         }
 
         h1 { color: #4a3e3d; font-weight: 500; font-size: 24px; margin: 0 0 8px; }
-        p.subtitle { color: #8c7b7d; margin: 0 0 24px; font-size: 14px; text-align: center; }
+        p.subtitle { color: #8c7b7d; margin: 0 0 16px; font-size: 14px; text-align: center; }
+
+        .difficulty-selector {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #635052;
+            font-weight: 500;
+        }
+
+        select {
+            padding: 6px 12px;
+            border: 1px solid #d1c4c0;
+            border-radius: 6px;
+            background: #ffffff;
+            color: #4a3e3d;
+            font-size: 13px;
+            outline: none;
+            cursor: pointer;
+        }
 
         #board-wrapper {
             width: min(88vw, 360px);
@@ -147,16 +168,8 @@
             transition: background 0.2s, transform 0.1s;
         }
 
-        .promo-choice:hover {
-            background: #f4ece9;
-            transform: scale(1.05);
-        }
-
-        .promo-choice img {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
+        .promo-choice:hover { background: #f4ece9; transform: scale(1.05); }
+        .promo-choice img { width: 100%; height: 100%; display: block; }
     </style>
 </head>
 <body>
@@ -169,6 +182,15 @@
     <main>
         <h1>Chess</h1>
         <p class="subtitle" id="status">Click a piece to select, then click a square to move.</p>
+
+        <div class="difficulty-selector">
+            <label for="elo">Bot Rating:</label>
+            <select id="elo" onchange="resetGame()">
+                <option value="500">500 Elo (Beginner)</option>
+                <option value="1000" selected>1000 Elo (Intermediate)</option>
+                <option value="1500">1500 Elo (Advanced)</option>
+            </select>
+        </div>
 
         <div id="board-wrapper">
             <div id="board"></div>
@@ -206,6 +228,53 @@
     <script src="../script.js"></script>
 
     <script>
+        // Web Audio API Synthesizer for Chess.com style sounds
+        const AudioFX = {
+            ctx: null,
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            },
+            play(type) {
+                this.init();
+                if (!this.ctx) return;
+
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+
+                const now = this.ctx.currentTime;
+
+                if (type === 'move') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(320, now);
+                    osc.frequency.exponentialRampToValueAtTime(140, now + 0.08);
+                    gain.gain.setValueAtTime(0.3, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+                    osc.start(now);
+                    osc.stop(now + 0.08);
+                } else if (type === 'capture') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(600, now);
+                    osc.frequency.exponentialRampToValueAtTime(180, now + 0.12);
+                    gain.gain.setValueAtTime(0.4, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+                    osc.start(now);
+                    osc.stop(now + 0.12);
+                } else if (type === 'check') {
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(440, now);
+                    osc.frequency.setValueAtTime(880, now + 0.08);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+                    osc.start(now);
+                    osc.stop(now + 0.2);
+                }
+            }
+        };
+
         const pieceCDN = {
             'wP': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/wP.svg',
             'wR': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/wR.svg',
@@ -221,6 +290,8 @@
             'bQ': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/bQ.svg',
             'bK': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/bK.svg'
         };
+
+        const pieceValues = { p: 10, n: 30, b: 35, r: 50, q: 90, k: 1000 };
 
         const game = new Chess();
         const boardEl = document.getElementById('board');
@@ -321,11 +392,20 @@
         }
 
         function executePlayerMove(from, to, promotionPiece) {
+            const isCapture = game.get(to) !== null;
             animateMove(from, to, () => {
                 const move = game.move({ from, to, promotion: promotionPiece });
                 selectedSquare = null;
 
                 if (move !== null) {
+                    if (game.in_check()) {
+                        AudioFX.play('check');
+                    } else if (isCapture || move.flags.includes('e')) {
+                        AudioFX.play('capture');
+                    } else {
+                        AudioFX.play('move');
+                    }
+
                     renderPieces();
                     updateStatus();
 
@@ -385,52 +465,78 @@
             }, 280);
         }
 
+        // --- ELO AI LOGIC ---
+        function evaluateBoard(b) {
+            let total = 0;
+            for (let r = 0; r < 8; r++) {
+                for (let c = 0; c < 8; c++) {
+                    const p = b[r][c];
+                    if (p) {
+                        const val = pieceValues[p.type] || 0;
+                        total += p.color === 'b' ? val : -val;
+                    }
+                }
+            }
+            return total;
+        }
+
+        function minimax(depth, isMaximizing, alpha, beta) {
+            if (depth === 0 || game.game_over()) {
+                return evaluateBoard(game.board());
+            }
+
+            const moves = game.moves();
+            if (isMaximizing) {
+                let maxEval = -Infinity;
+                for (let move of moves) {
+                    game.move(move);
+                    let evalVal = minimax(depth - 1, false, alpha, beta);
+                    game.undo();
+                    maxEval = Math.max(maxEval, evalVal);
+                    alpha = Math.max(alpha, evalVal);
+                    if (beta <= alpha) break;
+                }
+                return maxEval;
+            } else {
+                let minEval = Infinity;
+                for (let move of moves) {
+                    game.move(move);
+                    let evalVal = minimax(depth - 1, true, alpha, beta);
+                    game.undo();
+                    minEval = Math.min(minEval, evalVal);
+                    beta = Math.min(beta, evalVal);
+                    if (beta <= alpha) break;
+                }
+                return minEval;
+            }
+        }
+
         function makeComputerMove() {
             const moves = game.moves({ verbose: true });
             if (moves.length === 0) return;
 
-            const randomMove = moves[Math.floor(Math.random() * moves.length)];
-            if (randomMove.flags.includes('p')) randomMove.promotion = 'q';
+            const elo = parseInt(document.getElementById('elo').value);
+            let selectedMove;
 
-            animateMove(randomMove.from, randomMove.to, () => {
-                game.move(randomMove);
-                renderPieces();
-                updateStatus();
-            });
-        }
-
-        function updateStatus() {
-            if (game.in_checkmate()) {
-                if (game.turn() === 'b') {
-                    statusEl.innerText = 'Checkmate! You won!';
-                    if (typeof addCoins === 'function') addCoins(50);
-                    document.getElementById('reward-modal').style.display = 'flex';
+            if (elo === 500) {
+                // 500 Elo: Mostly random, occasionally takes pieces
+                if (Math.random() < 0.4) {
+                    const captures = moves.filter(m => m.flags.includes('c') || m.flags.includes('e'));
+                    selectedMove = captures.length > 0 ? captures[Math.floor(Math.random() * captures.length)] : moves[Math.floor(Math.random() * moves.length)];
                 } else {
-                    statusEl.innerText = 'Checkmate! Computer won.';
+                    selectedMove = moves[Math.floor(Math.random() * moves.length)];
                 }
-            } else if (game.in_draw()) {
-                statusEl.innerText = 'Game over (Draw).';
             } else {
-                statusEl.innerText = game.turn() === 'w' ? 'Your turn (White)' : 'Computer thinking...';
-            }
-        }
+                // 1000 & 1500 Elo: Minimax engine evaluation
+                const depth = elo === 1000 ? 2 : 3;
+                let bestEval = -Infinity;
+                let bestMoves = [];
 
-        function resetGame() {
-            game.reset();
-            selectedSquare = null;
-            pendingMove = null;
-            isAnimating = false;
-            renderPieces();
-            updateStatus();
-        }
+                for (let move of moves) {
+                    game.move(move);
+                    let evalVal = minimax(depth - 1, false, -Infinity, Infinity);
+                    game.undo();
 
-        function closeModalAndReset() {
-            document.getElementById('reward-modal').style.display = 'none';
-            resetGame();
-        }
-
-        createGrid();
-        renderPieces();
-    </script>
-</body>
-</html>
+                    if (evalVal > bestEval) {
+                        bestEval = evalVal;
+              
