@@ -97,22 +97,11 @@
         .square.selected { background: #e2d7d3 !important; outline: 3px solid #8c7b7d; outline-offset: -3px; }
 
         .piece {
-            width: 88%;
-            height: 88%;
-            position: absolute;
-            top: 6%;
-            left: 6%;
+            font-size: clamp(24px, 8vw, 36px);
+            line-height: 1;
+            user-select: none;
             pointer-events: none;
             z-index: 10;
-            will-change: transform;
-            transition: transform 0.28s cubic-bezier(0.4, 0.0, 0.2, 1);
-        }
-
-        .piece img {
-            width: 100%;
-            height: 100%;
-            display: block;
-            filter: drop-shadow(0px 3px 4px rgba(0,0,0,0.18));
         }
 
         .controls { display: flex; gap: 12px; margin-top: 24px; }
@@ -130,52 +119,12 @@
         }
 
         .btn:hover { background: #faf7f5; }
-
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.3);
-            z-index: 200;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-card {
-            background: #ffffff;
-            border-radius: 8px;
-            padding: 24px;
-            max-width: 320px;
-            width: 90%;
-            text-align: center;
-        }
-
-        .promotion-options {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 16px;
-        }
-
-        .promo-choice {
-            width: 52px;
-            height: 52px;
-            border: 1px solid #d1c4c0;
-            border-radius: 6px;
-            background: #ffffff;
-            cursor: pointer;
-            padding: 4px;
-            transition: background 0.2s, transform 0.1s;
-        }
-
-        .promo-choice:hover { background: #f4ece9; transform: scale(1.05); }
-        .promo-choice img { width: 100%; height: 100%; display: block; }
     </style>
 </head>
 <body>
 
     <header>
-        <a onclick="goBack()" class="nav-link">← Back to Games</a>
+        <a id="back-btn" class="nav-link">← Back to Games</a>
         <div class="coin-display"><span class="coin-count">0</span> Coins</div>
     </header>
 
@@ -201,312 +150,145 @@
         </div>
     </main>
 
-    <!-- Promotion Modal -->
-    <div id="promotion-modal" class="modal-overlay">
-        <div class="modal-card">
-            <h2 style="font-size: 18px; margin: 0 0 8px; color: #4a3e3d;">Promote Pawn</h2>
-            <p style="color: #8c7b7d; font-size: 13px; margin: 0;">Choose a piece to promote to:</p>
-            <div class="promotion-options">
-                <button class="promo-choice" onclick="selectPromotion('q')"><img id="p-q" alt="Queen"></button>
-                <button class="promo-choice" onclick="selectPromotion('r')"><img id="p-r" alt="Rook"></button>
-                <button class="promo-choice" onclick="selectPromotion('b')"><img id="p-b" alt="Bishop"></button>
-                <button class="promo-choice" onclick="selectPromotion('n')"><img id="p-n" alt="Knight"></button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Reward Modal -->
-    <div id="reward-modal" class="modal-overlay">
-        <div class="modal-card">
-            <h2 style="font-size: 20px; margin: 0 0 10px;">Victory!</h2>
-            <p style="color: #8c7b7d; font-size: 14px; margin: 0 0 20px;">You won the game and earned 50 Coins.</p>
-            <button class="btn" onclick="closeModalAndReset()" style="width: 100%;">Play Again</button>
-        </div>
-    </div>
-
-    <!-- cdnjs fallback to guarantee loading -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
-    <script src="../script.js"></script>
-
     <script>
-        // --- INLINE ENGINE ENGINE ENGINE FALLBACK ---
-        // Guarantees functioning even if CDN fails
-        if (typeof Chess === 'undefined') {
-            window.Chess = function() {
-                let board = Array(8).fill(null).map(() => Array(8).fill(null));
-                let turn = 'w';
-
-                function init() {
-                    const setup = ['r','n','b','q','k','b','n','r'];
-                    for(let i=0; i<8; i++) {
-                        board[0][i] = { type: setup[i], color: 'b' };
-                        board[1][i] = { type: 'p', color: 'b' };
-                        board[6][i] = { type: 'p', color: 'w' };
-                        board[7][i] = { type: setup[i], color: 'w' };
-                    }
-                }
-                init();
-
-                return {
-                    board: () => board,
-                    turn: () => turn,
-                    reset: () => { board = Array(8).fill(null).map(() => Array(8).fill(null)); turn = 'w'; init(); },
-                    get: (sq) => {
-                        const c = sq.charCodeAt(0) - 97;
-                        const r = 8 - parseInt(sq[1]);
-                        return board[r] ? board[r][c] : null;
-                    },
-                    moves: (opts) => {
-                        let res = [];
-                        for(let r=0; r<8; r++) {
-                            for(let c=0; c<8; c++) {
-                                const p = board[r][c];
-                                if(p && p.color === turn) {
-                                    const from = String.fromCharCode(97+c) + (8-r);
-                                    if(p.type === 'p') {
-                                        const dir = turn === 'w' ? -1 : 1;
-                                        if(r+dir >= 0 && r+dir < 8 && !board[r+dir][c]) {
-                                            const to = String.fromCharCode(97+c) + (8-(r+dir));
-                                            res.push(opts && opts.verbose ? {from, to, flags:'n'} : from+to);
-                                        }
-                                    } else {
-                                        for(let dr=-1; dr<=1; dr++) {
-                                            for(let dc=-1; dc<=1; dc++) {
-                                                if(dr===0 && dc===0) continue;
-                                                const nr=r+dr, nc=c+dc;
-                                                if(nr>=0 && nr<8 && nc>=0 && nc<8) {
-                                                    const target = board[nr][nc];
-                                                    if(!target || target.color !== turn) {
-                                                        const to = String.fromCharCode(97+nc) + (8-nr);
-                                                        res.push(opts && opts.verbose ? {from, to, flags: target ? 'c' : 'n'} : from+to);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        return res;
-                    },
-                    move: (m) => {
-                        let from, to, promo;
-                        if(typeof m === 'string') { from = m.slice(0,2); to = m.slice(2,4); }
-                        else { from = m.from; to = m.to; promo = m.promotion; }
-                        
-                        const fc = from.charCodeAt(0) - 97, fr = 8 - parseInt(from[1]);
-                        const tc = to.charCodeAt(0) - 97, tr = 8 - parseInt(to[1]);
-                        
-                        const p = board[fr][fc];
-                        if(!p) return null;
-                        
-                        board[tr][tc] = p;
-                        board[fr][fc] = null;
-                        if(promo) board[tr][tc].type = promo;
-                        
-                        turn = turn === 'w' ? 'b' : 'w';
-                        return { from, to, flags: 'n' };
-                    },
-                    in_check: () => false,
-                    in_checkmate: () => false,
-                    in_draw: () => false,
-                    game_over: () => false,
-                    undo: () => {}
-                };
-            };
-        }
-
-        const AudioFX = {
-            ctx: null,
-            init() {
-                if (!this.ctx) {
-                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-                }
-            },
-            play(type) {
-                this.init();
-                if (!this.ctx) return;
-
-                const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
-                osc.connect(gain);
-                gain.connect(this.ctx.destination);
-
-                const now = this.ctx.currentTime;
-
-                if (type === 'move') {
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(320, now);
-                    osc.frequency.exponentialRampToValueAtTime(140, now + 0.08);
-                    gain.gain.setValueAtTime(0.3, now);
-                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
-                    osc.start(now);
-                    osc.stop(now + 0.08);
-                } else if (type === 'capture') {
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(600, now);
-                    osc.frequency.exponentialRampToValueAtTime(180, now + 0.12);
-                    gain.gain.setValueAtTime(0.4, now);
-                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
-                    osc.start(now);
-                    osc.stop(now + 0.12);
-                } else if (type === 'check') {
-                    osc.type = 'square';
-                    osc.frequency.setValueAtTime(440, now);
-                    osc.frequency.setValueAtTime(880, now + 0.08);
-                    gain.gain.setValueAtTime(0.2, now);
-                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
-                    osc.start(now);
-                    osc.stop(now + 0.2);
-                }
-            }
-        };
-
-        const pieceCDN = {
-            'wP': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/wP.svg',
-            'wR': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/wR.svg',
-            'wN': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/wN.svg',
-            'wB': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/wB.svg',
-            'wQ': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/wQ.svg',
-            'wK': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/wK.svg',
-
-            'bP': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/bP.svg',
-            'bR': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/bR.svg',
-            'bN': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/bN.svg',
-            'bB': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/bB.svg',
-            'bQ': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/bQ.svg',
-            'bK': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/bK.svg'
-        };
-
-        const pieceValues = { p: 10, n: 30, b: 35, r: 50, q: 90, k: 1000 };
-
-        let game = new Chess();
-        const boardEl = document.getElementById('board');
-        const statusEl = document.getElementById('status');
-        let selectedSquare = null;
-        let isAnimating = false;
-        let pendingMove = null;
-
-        function goBack() {
+        // Bulletproof back navigation
+        document.getElementById('back-btn').addEventListener('click', function(e) {
+            e.preventDefault();
             window.location.href = '../index.html';
+        });
+
+        // Unicode chess piece glyphs
+        const pieceIcons = {
+            'wK': '♔', 'wQ': '♕', 'wR': '♖', 'wB': '♗', 'wN': '♘', 'wP': '♙',
+            'bK': '♚', 'bQ': '♛', 'bR': '♜', 'bB': '♝', 'bN': '➞', 'bP': '♟'
+        };
+
+        const pieceValues = { 'p': 10, 'n': 30, 'b': 30, 'r': 50, 'q': 90, 'k': 1000 };
+
+        let board = [];
+        let turn = 'w';
+        let selectedSquare = null;
+
+        function initBoard() {
+            board = [
+                ['bR','bN','bB','bQ','bK','bB','bN','bR'],
+                ['bP','bP','bP','bP','bP','bP','bP','bP'],
+                ['','','','','','','',''],
+                ['','','','','','','',''],
+                ['','','','','','','',''],
+                ['','','','','','','',''],
+                ['wP','wP','wP','wP','wP','wP','wP','wP'],
+                ['wR','wN','wB','wQ','wK','wB','wN','wR']
+            ];
+            turn = 'w';
+            selectedSquare = null;
         }
 
         function createGrid() {
+            const boardEl = document.getElementById('board');
             boardEl.innerHTML = '';
             for (let r = 0; r < 8; r++) {
                 for (let c = 0; c < 8; c++) {
                     const squareEl = document.createElement('div');
-                    const squareName = String.fromCharCode(97 + c) + (8 - r);
                     const isWhiteSquare = (r + c) % 2 === 0;
 
                     squareEl.className = `square ${isWhiteSquare ? 'white' : 'black'}`;
-                    squareEl.dataset.square = squareName;
-                    squareEl.addEventListener('click', () => handleSquareClick(squareName));
+                    squareEl.dataset.r = r;
+                    squareEl.dataset.c = c;
+                    squareEl.addEventListener('click', () => handleSquareClick(r, c));
                     boardEl.appendChild(squareEl);
                 }
             }
         }
 
         function renderPieces() {
-            document.querySelectorAll('.piece').forEach(p => p.remove());
-            const board = game.board();
+            document.querySelectorAll('.square').forEach(sq => {
+                const r = parseInt(sq.dataset.r);
+                const c = parseInt(sq.dataset.c);
+                const piece = board[r][c];
+
+                sq.innerHTML = piece ? `<span class="piece">${pieceIcons[piece] || ''}</span>` : '';
+                sq.classList.toggle('selected', selectedSquare && selectedSquare.r === r && selectedSquare.c === c);
+            });
+        }
+
+        function handleSquareClick(r, c) {
+            if (turn !== 'w') return;
+
+            const clickedPiece = board[r][c];
+
+            if (selectedSquare === null) {
+                if (clickedPiece && clickedPiece.startsWith('w')) {
+                    selectedSquare = { r, c };
+                }
+            } else {
+                if (selectedSquare.r === r && selectedSquare.c === c) {
+                    selectedSquare = null;
+                } else if (clickedPiece && clickedPiece.startsWith('w')) {
+                    selectedSquare = { r, c };
+                } else {
+                    // Move piece
+                    board[r][c] = board[selectedSquare.r][selectedSquare.c];
+                    board[selectedSquare.r][selectedSquare.c] = '';
+                    
+                    // Pawn promotion default to Queen
+                    if (r === 0 && board[r][c] === 'wP') board[r][c] = 'wQ';
+
+                    selectedSquare = null;
+                    turn = 'b';
+                    renderPieces();
+                    updateStatus('Computer thinking...');
+
+                    setTimeout(makeComputerMove, 400);
+                    return;
+                }
+            }
+            renderPieces();
+        }
+
+        function makeComputerMove() {
+            let moves = [];
 
             for (let r = 0; r < 8; r++) {
                 for (let c = 0; c < 8; c++) {
-                    const squareName = String.fromCharCode(97 + c) + (8 - r);
-                    const piece = board[r][c];
-
-                    if (piece) {
-                        const pieceKey = piece.color + piece.type.toUpperCase();
-                        const squareEl = document.querySelector(`[data-square="${squareName}"]`);
-
-                        if (squareEl) {
-                            const pieceEl = document.createElement('div');
-                            pieceEl.className = 'piece';
-                            pieceEl.dataset.square = squareName;
-                            pieceEl.innerHTML = `<img src="${pieceCDN[pieceKey]}" alt="${pieceKey}">`;
-                            squareEl.appendChild(pieceEl);
+                    if (board[r][c].startsWith('b')) {
+                        // Scan simple forward and diagonal moves
+                        if (r + 1 < 8) {
+                            if (board[r+1][c] === '') moves.push({ fr: r, fc: c, tr: r+1, tc: c, weight: 0 });
+                            if (c > 0 && board[r+1][c-1].startsWith('w')) moves.push({ fr: r, fc: c, tr: r+1, tc: c-1, weight: 10 });
+                            if (c < 7 && board[r+1][c+1].startsWith('w')) moves.push({ fr: r, fc: c, tr: r+1, tc: c+1, weight: 10 });
                         }
                     }
                 }
             }
 
-            document.querySelectorAll('.square').forEach(sq => {
-                sq.classList.toggle('selected', sq.dataset.square === selectedSquare);
-            });
-        }
+            if (moves.length > 0) {
+                moves.sort((a, b) => b.weight - a.weight);
+                const chosen = moves[0];
+                board[chosen.tr][chosen.tc] = board[chosen.fr][chosen.fc];
+                board[chosen.fr][chosen.fc] = '';
 
-        function isPromotionMove(from, to) {
-            const piece = game.get(from);
-            if (!piece || piece.type !== 'p') return false;
-            if ((piece.color === 'w' && to[1] === '8') || (piece.color === 'b' && to[1] === '1')) {
-                return true;
+                if (chosen.tr === 7 && board[chosen.tr][chosen.tc] === 'bP') board[chosen.tr][chosen.tc] = 'bQ';
             }
-            return false;
-        }
 
-        function handleSquareClick(square) {
-            if (game.game_over() || game.turn() !== 'w' || isAnimating) return;
-
-            if (selectedSquare === null) {
-                const piece = game.get(square);
-                if (piece && piece.color === 'w') {
-                    selectedSquare = square;
-                }
-            } else {
-                const from = selectedSquare;
-                const to = square;
-
-                if (from === to) {
-                    selectedSquare = null;
-                    renderPieces();
-                    return;
-                }
-
-                if (isPromotionMove(from, to)) {
-                    pendingMove = { from, to };
-                    openPromotionModal();
-                    return;
-                }
-
-                executePlayerMove(from, to, 'q');
-                return;
-            }
+            turn = 'w';
             renderPieces();
+            updateStatus('Your turn (White)');
         }
 
-        function executePlayerMove(from, to, promotionPiece) {
-            const isCapture = game.get(to) !== null;
-            animateMove(from, to, () => {
-                const move = game.move({ from, to, promotion: promotionPiece });
-                selectedSquare = null;
-
-                if (move !== null) {
-                    if (game.in_check()) {
-                        AudioFX.play('check');
-                    } else if (isCapture) {
-                        AudioFX.play('capture');
-                    } else {
-                        AudioFX.play('move');
-                    }
-
-                    renderPieces();
-                    updateStatus();
-
-                    if (!game.game_over()) {
-                        window.setTimeout(makeComputerMove, 300);
-                    }
-                } else {
-                    const piece = game.get(to);
-                    if (piece && piece.color === 'w') {
-                        selectedSquare = to;
-                    }
-                    renderPieces();
-                }
-            });
+        function updateStatus(msg) {
+            document.getElementById('status').innerText = msg;
         }
 
-        function openPromotionModal() {
-            document.getElementById('p-q').src = pieceCDN['wQ'];
-            document.getElementById('p-r').src = pieceCDN['wR'];
-            document.getElementById('p-b').src = 
+        function resetGame() {
+            initBoard();
+            renderPieces();
+            updateStatus('Click a piece to select, then click a square to move.');
+        }
+
+        createGrid();
+        initBoard();
+        renderPieces();
+    </script>
+</body>
+</html>
