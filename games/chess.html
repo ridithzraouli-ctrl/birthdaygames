@@ -96,11 +96,23 @@
         .square.black { background: #d1c4c0; }
         .square.selected { background: #e2d7d3 !important; outline: 3px solid #8c7b7d; outline-offset: -3px; }
 
-        .piece-img {
-            width: 85%;
-            height: 85%;
+        .piece {
+            width: 88%;
+            height: 88%;
+            position: absolute;
+            top: 6%;
+            left: 6%;
             pointer-events: none;
-            filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.2));
+            z-index: 10;
+            will-change: transform;
+            transition: transform 0.28s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        .piece img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            filter: drop-shadow(0px 3px 4px rgba(0,0,0,0.18));
         }
 
         .controls { display: flex; gap: 12px; margin-top: 24px; }
@@ -118,12 +130,52 @@
         }
 
         .btn:hover { background: #faf7f5; }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.3);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 24px;
+            max-width: 320px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .promotion-options {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .promo-choice {
+            width: 52px;
+            height: 52px;
+            border: 1px solid #d1c4c0;
+            border-radius: 6px;
+            background: #ffffff;
+            cursor: pointer;
+            padding: 4px;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .promo-choice:hover { background: #f4ece9; transform: scale(1.05); }
+        .promo-choice img { width: 100%; height: 100%; display: block; }
     </style>
 </head>
 <body>
 
     <header>
-        <a id="back-btn" class="nav-link">← Back to Games</a>
+        <a onclick="goBack()" class="nav-link">← Back to Games</a>
         <div class="coin-display"><span class="coin-count">0</span> Coins</div>
     </header>
 
@@ -149,14 +201,34 @@
         </div>
     </main>
 
-    <script>
-        // Direct Back Navigation
-        document.getElementById('back-btn').addEventListener('click', function(e) {
-            e.preventDefault();
-            window.location.href = '../index.html';
-        });
+    <!-- Promotion Modal -->
+    <div id="promotion-modal" class="modal-overlay">
+        <div class="modal-card">
+            <h2 style="font-size: 18px; margin: 0 0 8px; color: #4a3e3d;">Promote Pawn</h2>
+            <p style="color: #8c7b7d; font-size: 13px; margin: 0;">Choose a piece to promote to:</p>
+            <div class="promotion-options">
+                <button class="promo-choice" onclick="selectPromotion('q')"><img id="p-q" alt="Queen"></button>
+                <button class="promo-choice" onclick="selectPromotion('r')"><img id="p-r" alt="Rook"></button>
+                <button class="promo-choice" onclick="selectPromotion('b')"><img id="p-b" alt="Bishop"></button>
+                <button class="promo-choice" onclick="selectPromotion('n')"><img id="p-n" alt="Knight"></button>
+            </div>
+        </div>
+    </div>
 
-        // Web Audio Synthesizer (No Audio Files Required)
+    <!-- Reward Modal -->
+    <div id="reward-modal" class="modal-overlay">
+        <div class="modal-card">
+            <h2 style="font-size: 20px; margin: 0 0 10px;">Victory!</h2>
+            <p style="color: #8c7b7d; font-size: 14px; margin: 0 0 20px;">You won the game and earned 50 Coins.</p>
+            <button class="btn" onclick="closeModalAndReset()" style="width: 100%;">Play Again</button>
+        </div>
+    </div>
+
+    <!-- Reliable jsDelivr CDN link for Chess.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chess.js@0.10.3/chess.min.js"></script>
+    <script src="../script.js"></script>
+
+    <script>
         const AudioFX = {
             ctx: null,
             init() {
@@ -177,217 +249,298 @@
 
                 if (type === 'move') {
                     osc.type = 'sine';
-                    osc.frequency.setValueAtTime(300, now);
-                    osc.frequency.exponentialRampToValueAtTime(150, now + 0.08);
+                    osc.frequency.setValueAtTime(320, now);
+                    osc.frequency.exponentialRampToValueAtTime(140, now + 0.08);
                     gain.gain.setValueAtTime(0.3, now);
                     gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
                     osc.start(now);
                     osc.stop(now + 0.08);
                 } else if (type === 'capture') {
                     osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(500, now);
+                    osc.frequency.setValueAtTime(600, now);
                     osc.frequency.exponentialRampToValueAtTime(180, now + 0.12);
                     gain.gain.setValueAtTime(0.4, now);
                     gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
                     osc.start(now);
                     osc.stop(now + 0.12);
+                } else if (type === 'check') {
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(440, now);
+                    osc.frequency.setValueAtTime(880, now + 0.08);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+                    osc.start(now);
+                    osc.stop(now + 0.2);
                 }
             }
         };
 
-        // Wikipedia Standard Vector Graphics (Embedded Data URLs to prevent 403 Forbidden errors)
-        const wikiPieces = {
-            'wP': 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><path d="M22.5 9c-2.21 0-4 1.79-4 4 0 .89.29 1.71.78 2.38C17.33 16.5 16 18.59 16 21c0 2.03.94 3.84 2.41 5.03-3 1.06-7.41 5.55-7.41 13.47h23c0-7.92-4.41-12.41-7.41-13.47 1.47-1.19 2.41-3 2.41-5.03 0-2.41-1.33-4.5-3.28-5.62.49-.67.78-1.49.78-2.38 0-2.21-1.79-4-4-4z" fill="%23fff" stroke="%23000" stroke-width="1.5" stroke-linecap="round"/></svg>',
-            'wR': 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g fill="%23fff" stroke="%23000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 39h27v-3H9v3zM12 36v-4h21v4H12zM11 14h23l-2 18H13L11 14zM9 10h4v4H9v-4zM16 10h4v4h-4v-4zM23 10h4v4h-4v-4zM30 10h4v4h-4v-4z"/><path d="M11 14h23v-4H11v4z"/></g></svg>',
-            'wN': 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><path d="M22 10c-3 0-6 2-7 6-2 0-3 2-2 4 1 2 2 2 3 1 1 3 3 5 6 5 2 2 5 2 7 0 2-2 2-6 0-8-1-1-3-2-4-2-1 0-2 1-3 1 0-2 2-4 4-4 3 0 5 2 6 5 1 2 2 5 0 8-2 2-5 3-8 3-4 0-7-2-8-6 0-3 2-6 6-6z" fill="%23fff" stroke="%23000" stroke-width="1.5"/></svg>',
-            'wB': 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g fill="%23fff" stroke="%23000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 36h27c0-2-1-4-3-4H12c-2 0-3 2-3 4zM15 32c-1.2 0-2.3-2.6-2.9-4C10.7 25 12 18 17 12c2.3-2.7 4.2-3 5.5-3 1.3 0 3.2.3 5.5 3 5 6 6.3 13 4.9 16-.6 1.4-1.7 4-2.9 4H15z"/><circle cx="22.5" cy="6.5" r="2.5"/></g></svg>',
-            'wQ': 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g fill="%23fff" stroke="%23000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 26c0 2 1.5 2 2.5 4 1 1.5 1 1.5 1 4.5h20c0-3 0-3 1-4.5 1-2 2.5-2 2.5-4-3-1.5-6 1-9.5-2C24 26 23.5 22 22.5 22s-1.5 4-4 6c-3.5 3-6.5.5-9.5 2z"/><circle cx="9" cy="23" r="2"/><circle cx="15.5" cy="15.5" r="2"/><circle cx="22.5" cy="13" r="2"/><circle cx="29.5" cy="15.5" r="2"/><circle cx="36" cy="23" r="2"/></g></svg>',
-            'wK': 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g fill="%23fff" stroke="%23000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22.5 11.63V6M20 8h5M22.5 25c-4 0-7-2.5-7-7 0-4 3-7 7-7s7 3 7 7c0 4.5-3 7-7 7z"/><path d="M11.5 37c0-3 2.5-5.5 5.5-5.5h11c3 0 5.5 2.5 5.5 5.5v2h-22v-2z"/></g></svg>',
+        const pieceCDN = {
+            'wP': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/wP.svg',
+            'wR': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/wR.svg',
+            'wN': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/wN.svg',
+            'wB': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/wB.svg',
+            'wQ': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/wQ.svg',
+            'wK': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/wK.svg',
 
-            'bP': 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><path d="M22.5 9c-2.21 0-4 1.79-4 4 0 .89.29 1.71.78 2.38C17.33 16.5 16 18.59 16 21c0 2.03.94 3.84 2.41 5.03-3 1.06-7.41 5.55-7.41 13.47h23c0-7.92-4.41-12.41-7.41-13.47 1.47-1.19 2.41-3 2.41-5.03 0-2.41-1.33-4.5-3.28-5.62.49-.67.78-1.49.78-2.38 0-2.21-1.79-4-4-4z" fill="%23000" stroke="%23000" stroke-width="1.5" stroke-linecap="round"/></svg>',
-            'bR': 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g fill="%23000" stroke="%23000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 39h27v-3H9v3zM12 36v-4h21v4H12zM11 14h23l-2 18H13L11 14zM9 10h4v4H9v-4zM16 10h4v4h-4v-4zM23 10h4v4h-4v-4zM30 10h4v4h-4v-4z"/><path d="M11 14h23v-4H11v4z"/></g></svg>',
-            'bN': 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><path d="M22 10c-3 0-6 2-7 6-2 0-3 2-2 4 1 2 2 2 3 1 1 3 3 5 6 5 2 2 5 2 7 0 2-2 2-6 0-8-1-1-3-2-4-2-1 0-2 1-3 1 0-2 2-4 4-4 3 0 5 2 6 5 1 2 2 5 0 8-2 2-5 3-8 3-4 0-7-2-8-6 0-3 2-6 6-6z" fill="%23000" stroke="%23000" stroke-width="1.5"/></svg>',
-            'bB': 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g fill="%23000" stroke="%23000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 36h27c0-2-1-4-3-4H12c-2 0-3 2-3 4zM15 32c-1.2 0-2.3-2.6-2.9-4C10.7 25 12 18 17 12c2.3-2.7 4.2-3 5.5-3 1.3 0 3.2.3 5.5 3 5 6 6.3 13 4.9 16-.6 1.4-1.7 4-2.9 4H15z"/><circle cx="22.5" cy="6.5" r="2.5"/></g></svg>',
-            'bQ': 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g fill="%23000" stroke="%23000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 26c0 2 1.5 2 2.5 4 1 1.5 1 1.5 1 4.5h20c0-3 0-3 1-4.5 1-2 2.5-2 2.5-4-3-1.5-6 1-9.5-2C24 26 23.5 22 22.5 22s-1.5 4-4 6c-3.5 3-6.5.5-9.5 2z"/><circle cx="9" cy="23" r="2"/><circle cx="15.5" cy="15.5" r="2"/><circle cx="22.5" cy="13" r="2"/><circle cx="29.5" cy="15.5" r="2"/><circle cx="36" cy="23" r="2"/></g></svg>',
-            'bK': 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45"><g fill="%23000" stroke="%23000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22.5 11.63V6M20 8h5M22.5 25c-4 0-7-2.5-7-7 0-4 3-7 7-7s7 3 7 7c0 4.5-3 7-7 7z"/><path d="M11.5 37c0-3 2.5-5.5 5.5-5.5h11c3 0 5.5 2.5 5.5 5.5v2h-22v-2z"/></g></svg>'
+            'bP': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/bP.svg',
+            'bR': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/bR.svg',
+            'bN': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/bN.svg',
+            'bB': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/bB.svg',
+            'bQ': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/bQ.svg',
+            'bK': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/bK.svg'
         };
 
-        const pieceValues = { 'P': 10, 'N': 30, 'B': 30, 'R': 50, 'Q': 90, 'K': 1000 };
+        const pieceValues = { p: 10, n: 30, b: 35, r: 50, q: 90, k: 1000 };
 
-        let board = [];
-        let turn = 'w';
+        let game;
+        try {
+            game = new Chess();
+        } catch(e) {
+            console.error("Chess.js failed to initialize:", e);
+        }
+
+        const boardEl = document.getElementById('board');
+        const statusEl = document.getElementById('status');
         let selectedSquare = null;
+        let isAnimating = false;
+        let pendingMove = null;
 
-        function initBoard() {
-            board = [
-                ['bR','bN','bB','bQ','bK','bB','bN','bR'],
-                ['bP','bP','bP','bP','bP','bP','bP','bP'],
-                ['','','','','','','',''],
-                ['','','','','','','',''],
-                ['','','','','','','',''],
-                ['','','','','','','',''],
-                ['wP','wP','wP','wP','wP','wP','wP','wP'],
-                ['wR','wN','wB','wQ','wK','wB','wN','wR']
-            ];
-            turn = 'w';
-            selectedSquare = null;
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = '../index.html';
+            }
         }
 
         function createGrid() {
-            const boardEl = document.getElementById('board');
             boardEl.innerHTML = '';
             for (let r = 0; r < 8; r++) {
                 for (let c = 0; c < 8; c++) {
                     const squareEl = document.createElement('div');
+                    const squareName = String.fromCharCode(97 + c) + (8 - r);
                     const isWhiteSquare = (r + c) % 2 === 0;
 
                     squareEl.className = `square ${isWhiteSquare ? 'white' : 'black'}`;
-                    squareEl.dataset.r = r;
-                    squareEl.dataset.c = c;
-                    squareEl.addEventListener('click', () => handleSquareClick(r, c));
+                    squareEl.dataset.square = squareName;
+                    squareEl.addEventListener('click', () => handleSquareClick(squareName));
                     boardEl.appendChild(squareEl);
                 }
             }
         }
 
         function renderPieces() {
-            document.querySelectorAll('.square').forEach(sq => {
-                const r = parseInt(sq.dataset.r);
-                const c = parseInt(sq.dataset.c);
-                const piece = board[r][c];
+            if (!game) return;
+            document.querySelectorAll('.piece').forEach(p => p.remove());
+            const board = game.board();
 
-                sq.innerHTML = piece ? `<img class="piece-img" src="${wikiPieces[piece]}" alt="${piece}">` : '';
-                sq.classList.toggle('selected', selectedSquare && selectedSquare.r === r && selectedSquare.c === c);
+            for (let r = 0; r < 8; r++) {
+                for (let c = 0; c < 8; c++) {
+                    const squareName = String.fromCharCode(97 + c) + (8 - r);
+                    const piece = board[r][c];
+
+                    if (piece) {
+                        const pieceKey = piece.color + piece.type.toUpperCase();
+                        const squareEl = document.querySelector(`[data-square="${squareName}"]`);
+
+                        const pieceEl = document.createElement('div');
+                        pieceEl.className = 'piece';
+                        pieceEl.dataset.square = squareName;
+                        pieceEl.innerHTML = `<img src="${pieceCDN[pieceKey]}" alt="${pieceKey}">`;
+                        squareEl.appendChild(pieceEl);
+                    }
+                }
+            }
+
+            document.querySelectorAll('.square').forEach(sq => {
+                sq.classList.toggle('selected', sq.dataset.square === selectedSquare);
             });
         }
 
-        function handleSquareClick(r, c) {
-            if (turn !== 'w') return;
+        function isPromotionMove(from, to) {
+            const piece = game.get(from);
+            if (!piece || piece.type !== 'p') return false;
+            if ((piece.color === 'w' && to[1] === '8') || (piece.color === 'b' && to[1] === '1')) {
+                const moves = game.moves({ square: from, verbose: true });
+                return moves.some(m => m.to === to && m.flags.includes('p'));
+            }
+            return false;
+        }
 
-            const clickedPiece = board[r][c];
+        function handleSquareClick(square) {
+            if (!game || game.game_over() || game.turn() !== 'w' || isAnimating) return;
 
             if (selectedSquare === null) {
-                if (clickedPiece && clickedPiece.startsWith('w')) {
-                    selectedSquare = { r, c };
+                const piece = game.get(square);
+                if (piece && piece.color === 'w') {
+                    selectedSquare = square;
                 }
             } else {
-                if (selectedSquare.r === r && selectedSquare.c === c) {
+                const from = selectedSquare;
+                const to = square;
+
+                if (from === to) {
                     selectedSquare = null;
-                } else if (clickedPiece && clickedPiece.startsWith('w')) {
-                    selectedSquare = { r, c };
-                } else {
-                    const targetPiece = board[r][c];
-                    
-                    // Move player piece
-                    board[r][c] = board[selectedSquare.r][selectedSquare.c];
-                    board[selectedSquare.r][selectedSquare.c] = '';
-                    
-                    if (targetPiece) {
+                    renderPieces();
+                    return;
+                }
+
+                if (isPromotionMove(from, to)) {
+                    pendingMove = { from, to };
+                    openPromotionModal();
+                    return;
+                }
+
+                executePlayerMove(from, to, 'q');
+                return;
+            }
+            renderPieces();
+        }
+
+        function executePlayerMove(from, to, promotionPiece) {
+            const isCapture = game.get(to) !== null;
+            animateMove(from, to, () => {
+                const move = game.move({ from, to, promotion: promotionPiece });
+                selectedSquare = null;
+
+                if (move !== null) {
+                    if (game.in_check()) {
+                        AudioFX.play('check');
+                    } else if (isCapture || move.flags.includes('e')) {
                         AudioFX.play('capture');
                     } else {
                         AudioFX.play('move');
                     }
 
-                    // Pawn promotion
-                    if (r === 0 && board[r][c] === 'wP') board[r][c] = 'wQ';
-
-                    selectedSquare = null;
-                    turn = 'b';
                     renderPieces();
-                    updateStatus('Computer thinking...');
+                    updateStatus();
 
-                    setTimeout(makeComputerMove, 350);
-                    return;
+                    if (!game.game_over()) {
+                        window.setTimeout(makeComputerMove, 300);
+                    }
+                } else {
+                    const piece = game.get(to);
+                    if (piece && piece.color === 'w') {
+                        selectedSquare = to;
+                    }
+                    renderPieces();
                 }
-            }
-            renderPieces();
+            });
         }
 
-        function makeComputerMove() {
-            const elo = parseInt(document.getElementById('elo').value);
-            let moves = [];
+        function openPromotionModal() {
+            document.getElementById('p-q').src = pieceCDN['wQ'];
+            document.getElementById('p-r').src = pieceCDN['wR'];
+            document.getElementById('p-b').src = pieceCDN['wB'];
+            document.getElementById('p-n').src = pieceCDN['wN'];
+            document.getElementById('promotion-modal').style.display = 'flex';
+        }
 
-            // Scan all possible moves for Black
+        function selectPromotion(piece) {
+            document.getElementById('promotion-modal').style.display = 'none';
+            if (pendingMove) {
+                const { from, to } = pendingMove;
+                pendingMove = null;
+                executePlayerMove(from, to, piece);
+            }
+        }
+
+        function animateMove(fromSquare, toSquare, callback) {
+            const fromEl = document.querySelector(`[data-square="${fromSquare}"] .piece`);
+            const toSqEl = document.querySelector(`[data-square="${toSquare}"]`);
+
+            if (!fromEl || !toSqEl) {
+                callback();
+                return;
+            }
+
+            isAnimating = true;
+
+            const fromRect = fromEl.getBoundingClientRect();
+            const toRect = toSqEl.getBoundingClientRect();
+
+            const deltaX = toRect.left - fromRect.left;
+            const deltaY = toRect.top - fromRect.top;
+
+            fromEl.style.zIndex = '50';
+            fromEl.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0)`;
+
+            setTimeout(() => {
+                isAnimating = false;
+                callback();
+            }, 280);
+        }
+
+        function evaluateBoard(b) {
+            let total = 0;
             for (let r = 0; r < 8; r++) {
                 for (let c = 0; c < 8; c++) {
-                    const p = board[r][c];
-                    if (p && p.startsWith('b')) {
-                        const type = p[1];
-                        
-                        // Pawns
-                        if (type === 'P' && r + 1 < 8) {
-                            if (board[r+1][c] === '') moves.push({ fr: r, fc: c, tr: r+1, tc: c, score: 0 });
-                            if (c > 0 && board[r+1][c-1].startsWith('w')) moves.push({ fr: r, fc: c, tr: r+1, tc: c-1, score: pieceValues[board[r+1][c-1][1]] || 10 });
-                            if (c < 7 && board[r+1][c+1].startsWith('w')) moves.push({ fr: r, fc: c, tr: r+1, tc: c+1, score: pieceValues[board[r+1][c+1][1]] || 10 });
-                        }
-                        
-                        // Knights, Bishops, Rooks, Queen, King general moves
-                        if (type !== 'P') {
-                            for (let dr = -2; dr <= 2; dr++) {
-                                for (let dc = -2; dc <= 2; dc++) {
-                                    if (dr === 0 && dc === 0) continue;
-                                    const nr = r + dr;
-                                    const nc = c + dc;
-                                    if (nr >= 0 && nr < 8 && nc >= 0 && nc < 8) {
-                                        const target = board[nr][nc];
-                                        if (!target || target.startsWith('w')) {
-                                            const score = target ? (pieceValues[target[1]] || 10) : 0;
-                                            moves.push({ fr: r, fc: c, tr: nr, tc: nc, score });
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                    const p = b[r][c];
+                    if (p) {
+                        const val = pieceValues[p.type] || 0;
+                        total += p.color === 'b' ? val : -val;
                     }
                 }
             }
+            return total;
+        }
 
-            if (moves.length > 0) {
-                let chosen;
-                if (elo === 500) {
-                    // Random move
-                    chosen = moves[Math.floor(Math.random() * moves.length)];
-                } else if (elo === 1000) {
-                    // Slight preference to capture
-                    moves.sort((a, b) => b.score - a.score);
-                    chosen = Math.random() < 0.6 ? moves[0] : moves[Math.floor(Math.random() * moves.length)];
-                } else {
-                    // Smartest capture search
-                    moves.sort((a, b) => b.score - a.score);
-                    chosen = moves[0];
-                }
-
-                const captured = board[chosen.tr][chosen.tc];
-                board[chosen.tr][chosen.tc] = board[chosen.fr][chosen.fc];
-                board[chosen.fr][chosen.fc] = '';
-
-                if (captured) {
-                    AudioFX.play('capture');
-                } else {
-                    AudioFX.play('move');
-                }
-
-                if (chosen.tr === 7 && board[chosen.tr][chosen.tc] === 'bP') board[chosen.tr][chosen.tc] = 'bQ';
+        function minimax(depth, isMaximizing, alpha, beta) {
+            if (depth === 0 || game.game_over()) {
+                return evaluateBoard(game.board());
             }
 
-            turn = 'w';
-            renderPieces();
-            updateStatus('Your turn (White)');
+            const moves = game.moves();
+            if (isMaximizing) {
+                let maxEval = -Infinity;
+                for (let move of moves) {
+                    game.move(move);
+                    let evalVal = minimax(depth - 1, false, alpha, beta);
+                    game.undo();
+                    maxEval = Math.max(maxEval, evalVal);
+                    alpha = Math.max(alpha, evalVal);
+                    if (beta <= alpha) break;
+                }
+                return maxEval;
+            } else {
+                let minEval = Infinity;
+                for (let move of moves) {
+                    game.move(move);
+                    let evalVal = minimax(depth - 1, true, alpha, beta);
+                    game.undo();
+                    minEval = Math.min(minEval, evalVal);
+                    beta = Math.min(beta, evalVal);
+                    if (beta <= alpha) break;
+                }
+                return minEval;
+            }
         }
 
-        function updateStatus(msg) {
-            document.getElementById('status').innerText = msg;
-        }
+        function makeComputerMove() {
+            const moves = game.moves({ verbose: true });
+            if (moves.length === 0) return;
 
-        function resetGame() {
-            initBoard();
-            renderPieces();
-            updateStatus('Click a piece to select, then click a square to move.');
-        }
+            const elo = parseInt(document.getElementById('elo').value);
+            let selectedMove;
 
-        createGrid();
-        initBoard();
-        renderPieces();
-    </script>
-</body>
-</html>
+            if (elo === 500) {
+                if (Math.random() < 0.4) {
+                    const captures = moves.filter(m => m.flags.includes('c') || m.flags.includes('e'));
+                    selectedMove = captures.length > 0 ? captures[Math.floor(Math.random() * captures.length)] : moves[Math.floor(Math.random() * moves.length)];
+                } else {
+                    selectedMove = moves[Math.floor(Math.random() * moves.length)];
+                }
+            } else {
+                const depth = elo === 1000 ? 2 : 3;
+                let bestEval = -Infinity;
+                let bestMoves = [];
+
+                for (let move of moves) {
+                    game.move(move);
+                    let evalVal = minimax(depth - 1, false, -Infinity, Infinity);
+                    game.undo();
+
+                    if (evalVal > bestEval) {
+                        bestEval = evalVal;
+                        bestMove
