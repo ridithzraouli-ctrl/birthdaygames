@@ -43,6 +43,7 @@
         #board {
             display: grid;
             grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(8, 1fr);
             width: 100%;
             max-width: 360px;
             aspect-ratio: 1;
@@ -58,6 +59,9 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
         }
 
         .square.white { background: #ffffff; }
@@ -65,11 +69,10 @@
         .square.selected { background: #f4ece9 !important; outline: 2px solid #8c7b7d; outline-offset: -2px; }
 
         .square img {
-            width: 80%;
-            height: 80%;
+            max-width: 85%;
+            max-height: 85%;
             object-fit: contain;
             pointer-events: none;
-            margin: auto;
             display: block;
         }
 
@@ -170,21 +173,21 @@
     <script src="../script.js"></script>
 
     <script>
-        // Adjust filenames below to match your exact files in games/pieces/
+        // Prefix added to match images placed in games/pieces/
         const pieceImages = {
-            'wP': '1000080928-removebg-preview.png',
-            'wR': '1000080930-removebg-preview.png',
-            'wN': '1000080931-removebg-preview.png',
-            'wB': '1000080932-removebg-preview.png',
-            'wQ': '1000080933-removebg-preview.png',
-            'wK': '1000080934-removebg-preview.png',
+            'wP': 'pieces/1000080928-removebg-preview.png',
+            'wR': 'pieces/1000080930-removebg-preview.png',
+            'wN': 'pieces/1000080931-removebg-preview.png',
+            'wB': 'pieces/1000080932-removebg-preview.png',
+            'wQ': 'pieces/1000080933-removebg-preview.png',
+            'wK': 'pieces/1000080934-removebg-preview.png',
 
-            'bP': '1000080935-removebg-preview.png',
-            'bR': '1000080936-removebg-preview.png',
-            'bN': '1000080937-removebg-preview.png',
-            'bB': '1000080938-removebg-preview.png',
-            'bQ': '1000080938-removebg-preview.png',
-            'bK': '1000080939-removebg-preview.png'
+            'bP': 'pieces/1000080935-removebg-preview.png',
+            'bR': 'pieces/1000080936-removebg-preview.png',
+            'bN': 'pieces/1000080937-removebg-preview.png',
+            'bB': 'pieces/1000080938-removebg-preview.png',
+            'bQ': 'pieces/1000080938-removebg-preview.png',
+            'bK': 'pieces/1000080939-removebg-preview.png'
         };
 
         const game = new Chess();
@@ -252,7 +255,6 @@
                 const to = square;
 
                 if (isPromotionMove(from, to)) {
-                    // Test legality before opening modal
                     const tempMove = game.move({ from, to, promotion: 'q' });
                     if (tempMove !== null) {
                         game.undo();
@@ -310,7 +312,6 @@
 
             const randomMove = moves[Math.floor(Math.random() * moves.length)];
             
-            // Auto-promote computer pawns to queen
             if (randomMove.flags.includes('p')) {
                 randomMove.promotion = 'q';
             }
@@ -352,5 +353,4 @@
         renderBoard();
     </script>
 </body>
-            </html>
-            
+</html>
