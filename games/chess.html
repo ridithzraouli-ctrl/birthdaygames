@@ -56,6 +56,7 @@
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             user-select: none;
+            will-change: transform;
         }
 
         .square {
@@ -74,20 +75,11 @@
         .square.black { background: #d1c4c0; }
         .square.selected { background: #e2d7d3 !important; outline: 3px solid #8c7b7d; outline-offset: -3px; }
 
-        .square img {
-            width: 75%;
-            height: 75%;
-            object-fit: contain;
+        .square svg {
+            width: 80%;
+            height: 80%;
             pointer-events: none;
             display: block;
-            /* Auto-rotates sideways PNGs right-side up */
-            transform: rotate(90deg);
-        }
-
-        .fallback-text {
-            font-size: 13px;
-            font-weight: 600;
-            color: #4a3e3d;
         }
 
         .controls { display: flex; gap: 12px; margin-top: 24px; }
@@ -158,20 +150,20 @@
     <script src="../script.js"></script>
 
     <script>
-        const pieceImages = {
-            'wP': '1000080928-removebg-preview.png',
-            'wR': '1000080930-removebg-preview.png',
-            'wN': '1000080931-removebg-preview.png',
-            'wB': '1000080932-removebg-preview.png',
-            'wQ': '1000080933-removebg-preview.png',
-            'wK': '1000080934-removebg-preview.png',
+        const piecesSVG = {
+            'wP': '<svg viewBox="0 0 45 45"><path d="M22.5 9c-2.21 0-4 1.79-4 4 0 .89.29 1.71.78 2.38C17.33 16.5 16 18.59 16 21c0 2.03.94 3.84 2.41 5.03-3 1.06-7.41 5.55-7.41 13.47h23c0-7.92-4.41-12.41-7.41-13.47 1.47-1.19 2.41-3 2.41-5.03 0-2.41-1.33-4.5-3.28-5.62.49-.67.78-1.49.78-2.38 0-2.21-1.79-4-4-4z" fill="#fff" stroke="#4a3e3d" stroke-width="1.5"/></svg>',
+            'wR': '<svg viewBox="0 0 45 45"><path d="M9 39h27v-3H9v3zm3-3h21v-4H12v4zm1.5-4.5h18v-3h-18v3zm1.5-3h15v-12h-15v12zm-3-13.5h21v-3H12v3zm0-4.5h3v-3h-3v3zm6 0h3v-3h-3v3zm6 0h3v-3h-3v3zm6 0h3v-3h-3v3z" fill="#fff" stroke="#4a3e3d" stroke-width="1.5"/></svg>',
+            'wN': '<svg viewBox="0 0 45 45"><path d="M22 10c-5 0-10 4-10 10 0 3 1 6 3 8 1 1 1 3 0 4-1 1-2 3-2 5h24c0-2-1-4-2-5-1-1-1-3 0-4 2-2 3-5 3-8 0-6-5-10-10-10z" fill="#fff" stroke="#4a3e3d" stroke-width="1.5"/></svg>',
+            'wB': '<svg viewBox="0 0 45 45"><path d="M22.5 8a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm-4 7a5 5 0 0 0-5 5c0 4 3 8 9 13 6-5 9-9 9-13a5 5 0 0 0-5-5h-8zM12 39h21v-3H12v3z" fill="#fff" stroke="#4a3e3d" stroke-width="1.5"/></svg>',
+            'wQ': '<svg viewBox="0 0 45 45"><path d="M9 26c0 2 1.5 3 3.5 3s3.5-1 3.5-3-1.5-3-3.5-3S9 24 9 26zm27 0c0 2-1.5 3-3.5 3S29 28 29 26s1.5-3 3.5-3 3.5 1 3.5 3zm-13.5-8c0 2-1.5 3-3.5 3S15.5 20 15.5 18s1.5-3 3.5-3 3.5 1 3.5 3zm0 21h21v-3H12v3z" fill="#fff" stroke="#4a3e3d" stroke-width="1.5"/></svg>',
+            'wK': '<svg viewBox="0 0 45 45"><path d="M22.5 6v4m-2-2h4m-2 4a5 5 0 0 0-5 5c0 4 3 8 9 13 6-5 9-9 9-13a5 5 0 0 0-5-5h-8zM12 39h21v-3H12v3z" fill="#fff" stroke="#4a3e3d" stroke-width="1.5"/></svg>',
 
-            'bP': '1000080935-removebg-preview.png',
-            'bR': '1000080936-removebg-preview.png',
-            'bN': '1000080937-removebg-preview.png',
-            'bB': '1000080938-removebg-preview.png',
-            'bQ': '1000080940-removebg-preview.png',
-            'bK': '1000080939-removebg-preview.png'
+            'bP': '<svg viewBox="0 0 45 45"><path d="M22.5 9c-2.21 0-4 1.79-4 4 0 .89.29 1.71.78 2.38C17.33 16.5 16 18.59 16 21c0 2.03.94 3.84 2.41 5.03-3 1.06-7.41 5.55-7.41 13.47h23c0-7.92-4.41-12.41-7.41-13.47 1.47-1.19 2.41-3 2.41-5.03 0-2.41-1.33-4.5-3.28-5.62.49-.67.78-1.49.78-2.38 0-2.21-1.79-4-4-4z" fill="#4a3e3d" stroke="#4a3e3d" stroke-width="1.5"/></svg>',
+            'bR': '<svg viewBox="0 0 45 45"><path d="M9 39h27v-3H9v3zm3-3h21v-4H12v4zm1.5-4.5h18v-3h-18v3zm1.5-3h15v-12h-15v12zm-3-13.5h21v-3H12v3zm0-4.5h3v-3h-3v3zm6 0h3v-3h-3v3zm6 0h3v-3h-3v3zm6 0h3v-3h-3v3z" fill="#4a3e3d" stroke="#4a3e3d" stroke-width="1.5"/></svg>',
+            'bN': '<svg viewBox="0 0 45 45"><path d="M22 10c-5 0-10 4-10 10 0 3 1 6 3 8 1 1 1 3 0 4-1 1-2 3-2 5h24c0-2-1-4-2-5-1-1-1-3 0-4 2-2 3-5 3-8 0-6-5-10-10-10z" fill="#4a3e3d" stroke="#4a3e3d" stroke-width="1.5"/></svg>',
+            'bB': '<svg viewBox="0 0 45 45"><path d="M22.5 8a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm-4 7a5 5 0 0 0-5 5c0 4 3 8 9 13 6-5 9-9 9-13a5 5 0 0 0-5-5h-8zM12 39h21v-3H12v3z" fill="#4a3e3d" stroke="#4a3e3d" stroke-width="1.5"/></svg>',
+            'bQ': '<svg viewBox="0 0 45 45"><path d="M9 26c0 2 1.5 3 3.5 3s3.5-1 3.5-3-1.5-3-3.5-3S9 24 9 26zm27 0c0 2-1.5 3-3.5 3S29 28 29 26s1.5-3 3.5-3 3.5 1 3.5 3zm-13.5-8c0 2-1.5 3-3.5 3S15.5 20 15.5 18s1.5-3 3.5-3 3.5 1 3.5 3zm0 21h21v-3H12v3z" fill="#4a3e3d" stroke="#4a3e3d" stroke-width="1.5"/></svg>',
+            'bK': '<svg viewBox="0 0 45 45"><path d="M22.5 6v4m-2-2h4m-2 4a5 5 0 0 0-5 5c0 4 3 8 9 13 6-5 9-9 9-13a5 5 0 0 0-5-5h-8zM12 39h21v-3H12v3z" fill="#4a3e3d" stroke="#4a3e3d" stroke-width="1.5"/></svg>'
         };
 
         const game = new Chess();
@@ -207,23 +199,7 @@
                     const piece = board[r][c];
                     if (piece) {
                         const pieceKey = piece.color + piece.type.toUpperCase();
-                        const fileName = pieceImages[pieceKey];
-
-                        if (fileName) {
-                            const img = document.createElement('img');
-                            img.src = './' + fileName;
-                            
-                            img.onerror = function() {
-                                this.style.display = 'none';
-                                const span = document.createElement('span');
-                                span.className = 'fallback-text';
-                                span.innerText = pieceKey;
-                                squareEl.appendChild(span);
-                            };
-
-                            img.alt = pieceKey;
-                            squareEl.appendChild(img);
-                        }
+                        squareEl.innerHTML = piecesSVG[pieceKey] || '';
                     }
 
                     squareEl.addEventListener('click', () => handleSquareClick(squareName));
@@ -252,7 +228,7 @@
                     updateStatus();
 
                     if (!game.game_over()) {
-                        window.setTimeout(makeComputerMove, 300);
+                        window.setTimeout(makeComputerMove, 200);
                     }
                     return;
                 }
