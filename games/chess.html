@@ -224,11 +224,11 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+    <!-- Reliable jsDelivr CDN link for Chess.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chess.js@0.10.3/chess.min.js"></script>
     <script src="../script.js"></script>
 
     <script>
-        // Web Audio API Synthesizer for Chess.com style sounds
         const AudioFX = {
             ctx: null,
             init() {
@@ -293,7 +293,13 @@
 
         const pieceValues = { p: 10, n: 30, b: 35, r: 50, q: 90, k: 1000 };
 
-        const game = new Chess();
+        let game;
+        try {
+            game = new Chess();
+        } catch(e) {
+            console.error("Chess.js failed to initialize:", e);
+        }
+
         const boardEl = document.getElementById('board');
         const statusEl = document.getElementById('status');
         let selectedSquare = null;
@@ -325,6 +331,7 @@
         }
 
         function renderPieces() {
+            if (!game) return;
             document.querySelectorAll('.piece').forEach(p => p.remove());
             const board = game.board();
 
@@ -362,7 +369,7 @@
         }
 
         function handleSquareClick(square) {
-            if (game.game_over() || game.turn() !== 'w' || isAnimating) return;
+            if (!game || game.game_over() || game.turn() !== 'w' || isAnimating) return;
 
             if (selectedSquare === null) {
                 const piece = game.get(square);
@@ -465,7 +472,6 @@
             }, 280);
         }
 
-        // --- ELO AI LOGIC ---
         function evaluateBoard(b) {
             let total = 0;
             for (let r = 0; r < 8; r++) {
@@ -519,7 +525,6 @@
             let selectedMove;
 
             if (elo === 500) {
-                // 500 Elo: Mostly random, occasionally takes pieces
                 if (Math.random() < 0.4) {
                     const captures = moves.filter(m => m.flags.includes('c') || m.flags.includes('e'));
                     selectedMove = captures.length > 0 ? captures[Math.floor(Math.random() * captures.length)] : moves[Math.floor(Math.random() * moves.length)];
@@ -527,7 +532,6 @@
                     selectedMove = moves[Math.floor(Math.random() * moves.length)];
                 }
             } else {
-                // 1000 & 1500 Elo: Minimax engine evaluation
                 const depth = elo === 1000 ? 2 : 3;
                 let bestEval = -Infinity;
                 let bestMoves = [];
@@ -539,4 +543,4 @@
 
                     if (evalVal > bestEval) {
                         bestEval = evalVal;
-              
+                        bestMove
