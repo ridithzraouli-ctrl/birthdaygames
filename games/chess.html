@@ -39,31 +39,23 @@
         h1 { color: #4a3e3d; font-weight: 500; font-size: 24px; margin: 0 0 8px; }
         p.subtitle { color: #8c7b7d; margin: 0 0 16px; font-size: 14px; text-align: center; }
 
-        .difficulty-selector {
+        .game-layout {
             display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            color: #635052;
-            font-weight: 500;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 20px;
         }
 
-        select {
-            padding: 6px 12px;
-            border: 1px solid #d1c4c0;
-            border-radius: 6px;
-            background: #ffffff;
-            color: #4a3e3d;
-            font-size: 13px;
-            outline: none;
-            cursor: pointer;
+        @media (max-width: 600px) {
+            .game-layout {
+                flex-direction: column;
+                align-items: center;
+            }
         }
 
         #board-wrapper {
             width: min(88vw, 360px);
             height: min(88vw, 360px);
-            margin: 0 auto;
             position: relative;
         }
 
@@ -113,6 +105,45 @@
             height: 100%;
             display: block;
             filter: drop-shadow(0px 3px 4px rgba(0,0,0,0.18));
+        }
+
+        .side-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: #ffffff;
+            border: 1px solid #e2d7d3;
+            border-radius: 8px;
+            padding: 16px;
+            min-width: 140px;
+        }
+
+        .panel-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #8c7b7d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .difficulty-btn {
+            padding: 8px 12px;
+            border: 1px solid #d1c4c0;
+            border-radius: 6px;
+            background: #ffffff;
+            color: #4a3e3d;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .difficulty-btn:hover { background: #faf7f5; }
+        .difficulty-btn.active {
+            background: #635052;
+            color: #ffffff;
+            border-color: #635052;
         }
 
         .controls { display: flex; gap: 12px; margin-top: 24px; }
@@ -183,17 +214,17 @@
         <h1>Chess</h1>
         <p class="subtitle" id="status">Click a piece to select, then click a square to move.</p>
 
-        <div class="difficulty-selector">
-            <label for="elo">Bot Rating:</label>
-            <select id="elo" onchange="resetGame()">
-                <option value="500">500 Elo (Beginner)</option>
-                <option value="1000" selected>1000 Elo (Intermediate)</option>
-                <option value="1500">1500 Elo (Advanced)</option>
-            </select>
-        </div>
+        <div class="game-layout">
+            <div id="board-wrapper">
+                <div id="board"></div>
+            </div>
 
-        <div id="board-wrapper">
-            <div id="board"></div>
+            <div class="side-panel">
+                <span class="panel-label">Difficulty</span>
+                <button class="difficulty-btn" data-diff="easy" onclick="setDifficulty('easy')">Easy</button>
+                <button class="difficulty-btn active" data-diff="medium" onclick="setDifficulty('medium')">Medium</button>
+                <button class="difficulty-btn" data-diff="hard" onclick="setDifficulty('hard')">Hard</button>
+            </div>
         </div>
 
         <div class="controls">
@@ -227,52 +258,30 @@
     <!-- jsDelivr CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chess.js@0.10.3/chess.min.js"></script>
     <script src="../script.js"></script>
-    <script>
+<!-- CONTINUED IN PART 2 -->
+        <script>
+        const soundFiles = {
+            move: 'https://images.chesscomfiles.com/chess-themes/sounds/standard/1000/move-self.mp3',
+            capture: 'https://images.chesscomfiles.com/chess-themes/sounds/standard/1000/capture.mp3',
+            check: 'https://images.chesscomfiles.com/chess-themes/sounds/standard/1000/move-check.mp3',
+            end: 'https://images.chesscomfiles.com/chess-themes/sounds/standard/1000/game-end.mp3'
+        };
+
         const AudioFX = {
-            ctx: null,
+            sounds: {},
             init() {
-                if (!this.ctx) {
-                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                for (let key in soundFiles) {
+                    this.sounds[key] = new Audio(soundFiles[key]);
                 }
             },
             play(type) {
-                this.init();
-                if (!this.ctx) return;
-
-                const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
-                osc.connect(gain);
-                gain.connect(this.ctx.destination);
-
-                const now = this.ctx.currentTime;
-
-                if (type === 'move') {
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(320, now);
-                    osc.frequency.exponentialRampToValueAtTime(140, now + 0.08);
-                    gain.gain.setValueAtTime(0.3, now);
-                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
-                    osc.start(now);
-                    osc.stop(now + 0.08);
-                } else if (type === 'capture') {
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(600, now);
-                    osc.frequency.exponentialRampToValueAtTime(180, now + 0.12);
-                    gain.gain.setValueAtTime(0.4, now);
-                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
-                    osc.start(now);
-                    osc.stop(now + 0.12);
-                } else if (type === 'check') {
-                    osc.type = 'square';
-                    osc.frequency.setValueAtTime(440, now);
-                    osc.frequency.setValueAtTime(880, now + 0.08);
-                    gain.gain.setValueAtTime(0.2, now);
-                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
-                    osc.start(now);
-                    osc.stop(now + 0.2);
+                if (this.sounds[type]) {
+                    this.sounds[type].currentTime = 0;
+                    this.sounds[type].play().catch(() => {});
                 }
             }
         };
+        AudioFX.init();
 
         const pieceCDN = {
             'wP': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/wP.svg',
@@ -304,6 +313,7 @@
         let selectedSquare = null;
         let isAnimating = false;
         let pendingMove = null;
+        let currentDifficulty = 'medium';
 
         function goBack() {
             if (window.history.length > 1) {
@@ -311,6 +321,14 @@
             } else {
                 window.location.href = '../index.html';
             }
+        }
+
+        function setDifficulty(diff) {
+            currentDifficulty = diff;
+            document.querySelectorAll('.difficulty-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.diff === diff);
+            });
+            resetGame();
         }
 
         function createGrid() {
@@ -387,6 +405,21 @@
                     return;
                 }
 
+                // Check legal moves first to stop illegal animation glitches
+                const legalMoves = game.moves({ square: from, verbose: true });
+                const isLegal = legalMoves.some(m => m.to === to);
+
+                if (!isLegal) {
+                    const piece = game.get(to);
+                    if (piece && piece.color === 'w') {
+                        selectedSquare = to;
+                    } else {
+                        selectedSquare = null;
+                    }
+                    renderPieces();
+                    return;
+                }
+
                 if (isPromotionMove(from, to)) {
                     pendingMove = { from, to };
                     openPromotionModal();
@@ -418,13 +451,9 @@
                     updateStatus();
 
                     if (!game.game_over()) {
-                        window.setTimeout(makeComputerMove, 300);
+                        window.setTimeout(makeComputerMove, 150);
                     }
                 } else {
-                    const piece = game.get(to);
-                    if (piece && piece.color === 'w') {
-                        selectedSquare = to;
-                    }
                     renderPieces();
                 }
             });
@@ -470,7 +499,7 @@
             setTimeout(() => {
                 isAnimating = false;
                 callback();
-            }, 280);
+            }, 250);
         }
 
         function evaluateBoard(b) {
@@ -523,24 +552,26 @@
             const moves = game.moves({ verbose: true });
             if (moves.length === 0) return;
 
-            const elo = parseInt(document.getElementById('elo').value);
             let selectedMove;
 
-            if (elo === 500) {
-                if (Math.random() < 0.4) {
-                    const captures = moves.filter(m => m.flags.includes('c') || m.flags.includes('e'));
-                    selectedMove = captures.length > 0 ? captures[Math.floor(Math.random() * captures.length)] : moves[Math.floor(Math.random() * moves.length)];
+            if (currentDifficulty === 'easy') {
+                selectedMove = moves[Math.floor(Math.random() * moves.length)];
+            } else if (currentDifficulty === 'medium') {
+                const captures = moves.filter(m => m.flags.includes('c') || m.flags.includes('e'));
+                if (captures.length > 0 && Math.random() < 0.7) {
+                    selectedMove = captures[Math.floor(Math.random() * captures.length)];
                 } else {
                     selectedMove = moves[Math.floor(Math.random() * moves.length)];
                 }
             } else {
-                const depth = elo === 1000 ? 2 : 3;
+                // Hard Difficulty: Depth 2 + prioritized captures for instant search speed
+                moves.sort((a, b) => (b.captured ? 1 : 0) - (a.captured ? 1 : 0));
                 let bestEval = -Infinity;
                 let bestMoves = [];
 
                 for (let move of moves) {
                     game.move(move);
-                    let evalVal = minimax(depth - 1, false, -Infinity, Infinity);
+                    let evalVal = minimax(1, false, -Infinity, Infinity);
                     game.undo();
 
                     if (evalVal > bestEval) {
@@ -556,7 +587,7 @@
             const isCapture = game.get(selectedMove.to) !== null;
 
             animateMove(selectedMove.from, selectedMove.to, () => {
-                const moveResult = game.move(selectedMove);
+                game.move(selectedMove);
 
                 if (game.in_check()) {
                     AudioFX.play('check');
@@ -574,6 +605,7 @@
         function updateStatus() {
             if (!game) return;
             if (game.in_checkmate()) {
+                AudioFX.play('end');
                 if (game.turn() === 'b') {
                     statusEl.innerText = 'Checkmate! You won!';
                     if (typeof addCoins === 'function') addCoins(50);
@@ -582,6 +614,7 @@
                     statusEl.innerText = 'Checkmate! Computer won.';
                 }
             } else if (game.in_draw()) {
+                AudioFX.play('end');
                 statusEl.innerText = 'Game over (Draw).';
             } else {
                 statusEl.innerText = game.turn() === 'w' ? 'Your turn (White)' : 'Computer thinking...';
@@ -607,5 +640,3 @@
     </script>
 </body>
 </html>
-
-    
