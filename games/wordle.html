@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wordle</title>
+    <style>
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #faf7f5;
+            color: #4a3e3d;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 24px;
+            background: #ffffff;
+            border-bottom: 1px solid #eee8e5;
+            position: relative;
+            z-index: 100;
+        }
+
+        .header-left, .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-link { color: #7d6b6d; text-decoration: none; font-size: 14px; font-weight: 500; cursor: pointer; }
+        .nav-link:hover { color: #4a3e3d; }
+        .coin-display { background: #f4ece9; border: 1px solid #e2d7d3; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; color: #635052; }
+
+        main {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        h1 { color: #4a3e3d; font-weight: 500; font-size: 24px; margin: 0 0 4px; }
+        p.subtitle { color: #8c7b7d; margin: 0 0 20px; font-size: 14px; text-align: center; }
+
+        .board {
+            display: grid;
+            grid-template-rows: repeat(6, 1fr);
+            gap: 6px;
+            margin-bottom: 24px;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+        }
+
+        .tile {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #e2d7d3;
+            border-radius: 6px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 700;
+            color: #4a3e3d;
+            text-transform: uppercase;
+            user-select: none;
+            transition: transform 0.15s ease, background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .tile[data-state="active"] {
+            border-color: #8c7b7d;
+            transform: scale(1.05);
+        }
+
+        .tile[data-state="correct"] {
+            background-color: #88b04b;
+            border-color: #88b04b;
+            color: #ffffff;
+        }
+
+        .tile[data-state="present"] {
+            background-color: #f0c961;
+            border-color: #f0c961;
+            color: #ffffff;
+        }
+
+        .tile[data-state="absent"] {
+            background-color: #b8acab;
+            border-color: #b8acab;
+            color: #ffffff;
+        }
+
+        .keyboard {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .kb-row {
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .key-btn {
+            height: 48px;
+            border: 1px solid #d1c4c0;
+            border-radius: 6px;
+            background: #ffffff;
+            color: #4a3e3d;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s;
+            user-select: none;
+        }
+
+        .key-btn.wide { flex: 1.5; font-size: 11px; }
+
+        .key-btn[data-state="correct"] { background: #88b04b; color: #fff; border-color: #88b04b; }
+        .key-btn[data-state="present"] { background: #f0c961; color: #fff; border-color: #f0c961; }
+        .key-btn[data-state="absent"] { background: #eee8e5; color: #b8acab; border-color: #e2d7d3; }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.3);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 24px;
+            max-width: 320px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: 1px solid #d1c4c0;
+            border-radius: 6px;
+            background: #ffffff;
+            color: #4a3e3d;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn:hover { background: #faf7f5; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <a onclick="goBack()" class="nav-link">← Back to Games</a>
+        </div>
+        <div class="header-right">
+            <div class="coin-display"><span class="coin-count">0</span> Coins</div>
+        </div>
+    </header>
+
+    <main>
+        <h1>Wordle</h1>
+        <p class="subtitle">Guess the 5-letter word in 6 tries.</p>
+
+        <div class="board" id="board"></div>
+        <div class="keyboard" id="keyboard"></div>
+    </main>
+
+    <div id="reward-modal" class="modal-overlay">
+        <div class="modal-card">
+            <h2 id="modal-title" style="font-size: 20px; margin: 0 0 10px;">Victory!</h2>
+            <p id="modal-desc" style="color: #8c7b7d; font-size: 14px; margin: 0 0 20px;">You guessed the word and earned 30 Coins.</p>
+            <button class="btn" onclick="closeModalAndReset()" style="width: 100%;">Play Again</button>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+    <script>
+        const AudioFX = {
+            ctx: null,
+            init() {
+                if (!this.ctx) {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    if (AudioCtx) this.ctx = new AudioCtx();
+                }
+            },
+            play(type) {
+                this.init();
+                if (!this.ctx) return;
+                if (this.ctx.state === 'suspended') this.ctx.resume();
+
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+
+                if (type === 'key') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(400, now);
+                    gain.gain.setValueAtTime(0.05, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                    osc.start(now);
+                    osc.stop(now + 0.05);
+                } else if (type === 'win') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, now);
+                    osc.frequency.setValueAtTime(659.25, now + 0.08);
+                    osc.frequency.setValueAtTime(783.99, now + 0.16);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+                    osc.start(now);
+                    osc.stop(now + 0.35);
+                } else if (type === 'lose') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(260, now);
+                    osc.frequency.exponentialRampToValueAtTime(110, now + 0.35);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+                    osc.start(now);
+                    osc.stop(now + 0.35);
+                }
+            }
+        };
+
+        const WORD_LIST = ['PLANT', 'CRANE', 'GHOST', 'FLAME', 'SHARK', 'TRAIN', 'SMART', 'CLOUD', 'BREAD', 'LIGHT', 'HOUSE', 'CROWN', 'STORM', 'BEACH', 'TIGER'];
+        
+        let targetWord = '';
+        let currentRow = 0;
+        let currentTile = 0;
+        let isGameOver = false;
+        const guesses = Array(6).fill('').map(() => Array(5).fill(''));
+
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = '../index.html';
+            }
+        }
+
+        function initBoard() {
+            const boardEl = document.getElementById('board');
+            boardEl.innerHTML = '';
+            for (let r = 0; r < 6; r++) {
+                const rowEl = document.createElement('div');
+                rowEl.className = 'row';
+                rowEl.id = `row-${r}`;
+                for (let c = 0; c < 5; c++) {
+                    const tileEl = document.createElement('div');
+                    tileEl.className = 'tile';
+                    tileEl.id = `tile-${r}-${c}`;
+                    rowEl.appendChild(tileEl);
+                }
+                boardEl.appendChild(rowEl);
+            }
+        }
+
+        function initKeyboard() {
+            const kbEl = document.getElementById('keyboard');
+            kbEl.innerHTML = '';
+            const layout = [
+                ['Q','W','E','R','T','Y','U','I','O','P'],
+                ['A','S','D','F','G','H','J','K','L'],
+                ['ENTER','Z','X','C','V','B','N','M','BACK']
+            ];
+
+            layout.forEach(row => {
+                const rowEl = document.createElement('div');
+                rowEl.className = 'kb-row';
+                row.forEach(key => {
+                    const btn = document.createElement('button');
+                    btn.className = 'key-btn' + (key.length > 1 ? ' wide' : '');
+                    btn.innerText = key === 'BACK' ? '⌫' : key;
+                    btn.id = `key-${key}`;
+                    btn.addEventListener('click', () => handleKeyPress(key));
+                    rowEl.appendChild(btn);
+                });
+                kbEl.appendChild(rowEl);
+            });
+        }
+
+        function handleKeyPress(key) {
+            if (isGameOver) return;
+
+            if (key === 'ENTER') {
+                submitGuess();
+            } else if (key === 'BACK' || key === 'BACKSPACE') {
+                deleteLetter();
+            } else if (/^[A-Z]$/.test(key) && currentTile < 5) {
+                addLetter(key);
+            }
+        }
+
+        function addLetter(letter) {
+            AudioFX.play('key');
+            guesses[currentRow][currentTile] = letter;
+            const tile = document.getElementById(`tile-${currentRow}-${currentTile}`);
+            tile.innerText = letter;
+            tile.setAttribute('data-state', 'active');
+            currentTile++;
+        }
+
+        function deleteLetter() {
+            if (currentTile === 0) return;
+            AudioFX.play('key');
+            currentTile--;
+            guesses[currentRow][currentTile] = '';
+            const tile = document.getElementById(`tile-${currentRow}-${currentTile}`);
+            tile.innerText = '';
+            tile.removeAttribute('data-state');
+        }
+
+        function submitGuess() {
+            if (currentTile < 5) return;
+
+            const guess = guesses[currentRow].join('');
+            const targetArr = targetWord.split('');
+            const result = Array(5).fill('absent');
+            const used = Array(5).fill(false);
+
+            // Exact matches
+            for (let i = 0; i < 5; i++) {
+                if (guess[i] === targetArr[i]) {
+                    result[i] = 'correct';
+                    used[i] = true;
+                }
+            }
+
+            // Present matches
+            for (let i = 0; i < 5; i++) {
+                if (result[i] !== 'correct') {
+                    for (let j = 0; j < 5; j++) {
+                        if (!used[j] && guess[i] === targetArr[j]) {
+                            result[i] = 'present';
+                            used[j] = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // Apply tile colors & update keyboard
+            for (let i = 0; i < 5; i++) {
+                const tile = document.getElementById(`tile-${currentRow}-${i}`);
+                const letter = guess[i];
+                const keyBtn = document.getElementById(`key-${letter}`);
+
+                tile.setAttribute('data-state', result[i]);
+
+                if (keyBtn) {
+                    const currentState = keyBtn.getAttribute('data-state');
+                    if (result[i] === 'correct' || (result[i] === 'present' && currentState !== 'correct') || (!currentState && result[i] === 'absent')) {
+                        keyBtn.setAttribute('data-state', result[i]);
+                    }
+                }
+            }
+
+            if (guess === targetWord) {
+                isGameOver = true;
+                AudioFX.play('win');
+                if (typeof addCoins === 'function') addCoins(30);
+                document.getElementById('modal-title').innerText = 'Victory!';
+                document.getElementById('modal-desc').innerText = `You found "${targetWord}" in ${currentRow + 1} try/tries and earned 30 Coins!`;
+                document.getElementById('reward-modal').style.display = 'flex';
+                return;
+            }
+
+            currentRow++;
+            currentTile = 0;
+
+            if (currentRow === 6) {
+                isGameOver = true;
+                AudioFX.play('lose');
+                document.getElementById('modal-title').innerText = 'Game Over';
+                document.getElementById('modal-desc').innerText = `Out of tries! The word was "${targetWord}".`;
+                document.getElementById('reward-modal').style.display = 'flex';
+            }
+        }
+
+        function resetGame() {
+            targetWord = WORD_LIST[Math.floor(Math.random() * WORD_LIST.length)];
+            currentRow = 0;
+            currentTile = 0;
+            isGameOver = false;
+
+            for (let r = 0; r < 6; r++) {
+                for (let c = 0; c < 5; c++) {
+                    guesses[r][c] = '';
+                }
+            }
+
+            initBoard();
+            initKeyboard();
+        }
+
+        function closeModalAndReset() {
+            document.getElementById('reward-modal').style.display = 'none';
+            resetGame();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            const key = e.key.toUpperCase();
+            handleKeyPress(key);
+        });
+
+        resetGame();
+    </script>
+</body>
+  </html>
+  
