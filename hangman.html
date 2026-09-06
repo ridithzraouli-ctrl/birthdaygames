@@ -260,8 +260,9 @@
         </div>
     </div>
 
+    <!-- Points 1 level up to script.js at root -->
     <script src="../script.js"></script>
-                  <script>
+    <script>
         const AudioFX = {
             ctx: null,
             init() {
@@ -337,6 +338,7 @@
             if (window.history.length > 1) {
                 window.history.back();
             } else {
+                // Points 1 level up to index.html at root
                 window.location.href = '../index.html';
             }
         }
@@ -451,7 +453,6 @@
             resetGame();
         }
 
-        // Global physical keyboard support
         document.addEventListener('keydown', (e) => {
             const char = e.key.toUpperCase();
             if (char.length === 1 && char >= 'A' && char <= 'Z') {
@@ -462,5 +463,5 @@
         resetGame();
     </script>
 </body>
-</html>
-      
+        </html>
+        
