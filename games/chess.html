@@ -239,7 +239,6 @@
         </div>
     </main>
 
-    <!-- Promotion Modal -->
     <div id="promotion-modal" class="modal-overlay">
         <div class="modal-card">
             <h2 style="font-size: 18px; margin: 0 0 8px; color: #4a3e3d;">Promote Pawn</h2>
@@ -253,7 +252,6 @@
         </div>
     </div>
 
-    <!-- Reward Modal -->
     <div id="reward-modal" class="modal-overlay">
         <div class="modal-card">
             <h2 style="font-size: 20px; margin: 0 0 10px;">Victory!</h2>
@@ -262,57 +260,83 @@
         </div>
     </div>
 
-    <!-- jsDelivr CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chess.js@0.10.3/chess.min.js"></script>
     <script src="../script.js"></script>
-<!-- CONTINUED IN PART 2 -->
-
-<script>
-        // Official Chess.com audio assets
-        const soundFiles = {
-            move: 'https://images.chesscomfiles.com/chess-themes/sounds/standard/1000/move-self.mp3',
-            capture: 'https://images.chesscomfiles.com/chess-themes/sounds/standard/1000/capture.mp3',
-            check: 'https://images.chesscomfiles.com/chess-themes/sounds/standard/1000/move-check.mp3',
-            castle: 'https://images.chesscomfiles.com/chess-themes/sounds/standard/1000/castle.mp3',
-            promote: 'https://images.chesscomfiles.com/chess-themes/sounds/standard/1000/promote.mp3',
-            end: 'https://images.chesscomfiles.com/chess-themes/sounds/standard/1000/game-end.mp3'
-        };
-
+        <script>
         const AudioFX = {
-            sounds: {},
-            isUnlocked: false,
+            ctx: null,
             init() {
-                for (let key in soundFiles) {
-                    const audio = new Audio();
-                    audio.src = soundFiles[key];
-                    audio.preload = 'auto';
-                    this.sounds[key] = audio;
+                if (!this.ctx) {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    if (AudioCtx) this.ctx = new AudioCtx();
                 }
-
-                const unlockAudio = () => {
-                    if (this.isUnlocked) return;
-                    for (let key in this.sounds) {
-                        this.sounds[key].play().then(() => {
-                            this.sounds[key].pause();
-                            this.sounds[key].currentTime = 0;
-                        }).catch(() => {});
-                    }
-                    this.isUnlocked = true;
-                    document.removeEventListener('click', unlockAudio);
-                    document.removeEventListener('touchstart', unlockAudio);
-                };
-
-                document.addEventListener('click', unlockAudio, { once: true });
-                document.addEventListener('touchstart', unlockAudio, { once: true });
             },
             play(type) {
-                if (this.sounds[type]) {
-                    const soundClone = this.sounds[type].cloneNode();
-                    soundClone.play().catch(e => console.warn("Audio play blocked:", e));
+                this.init();
+                if (!this.ctx) return;
+                
+                if (this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+
+                if (type === 'move') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(400, now);
+                    osc.frequency.exponentialRampToValueAtTime(200, now + 0.08);
+                    gain.gain.setValueAtTime(0.3, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+                    osc.start(now);
+                    osc.stop(now + 0.08);
+                } else if (type === 'capture') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(800, now);
+                    osc.frequency.exponentialRampToValueAtTime(150, now + 0.12);
+                    gain.gain.setValueAtTime(0.4, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+                    osc.start(now);
+                    osc.stop(now + 0.12);
+                } else if (type === 'check') {
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(520, now);
+                    osc.frequency.setValueAtTime(1040, now + 0.08);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                    osc.start(now);
+                    osc.stop(now + 0.2);
+                } else if (type === 'castle') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(300, now);
+                    osc.frequency.exponentialRampToValueAtTime(500, now + 0.15);
+                    gain.gain.setValueAtTime(0.3, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+                    osc.start(now);
+                    osc.stop(now + 0.15);
+                } else if (type === 'promote') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, now);
+                    osc.frequency.setValueAtTime(659.25, now + 0.08);
+                    osc.frequency.setValueAtTime(783.99, now + 0.16);
+                    gain.gain.setValueAtTime(0.25, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+                } else if (type === 'end') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(440, now);
+                    osc.frequency.exponentialRampToValueAtTime(220, now + 0.4);
+                    gain.gain.setValueAtTime(0.3, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+                    osc.start(now);
+                    osc.stop(now + 0.4);
                 }
             }
         };
-        AudioFX.init();
 
         const pieceCDN = {
             'wP': 'https://cdn.jsdelivr.net/gh/lichess-org/lila@master/public/piece/cburnett/wP.svg',
@@ -463,7 +487,6 @@
                     return;
                 }
 
-                // Block illegal clicks before triggering any animation
                 const legalMoves = game.moves({ square: from, verbose: true });
                 const isLegal = legalMoves.some(m => m.to === to);
 
@@ -615,7 +638,6 @@
                     selectedMove = moves[Math.floor(Math.random() * moves.length)];
                 }
             } else {
-                // Hard Difficulty: Fast calculation via shallow depth & capture-first evaluation
                 moves.sort((a, b) => (b.captured ? 1 : 0) - (a.captured ? 1 : 0));
                 let bestEval = -Infinity;
                 let bestMoves = [];
