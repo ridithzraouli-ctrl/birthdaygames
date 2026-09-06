@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangman</title>
+    <style>
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #faf7f5;
+            color: #4a3e3d;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 24px;
+            background: #ffffff;
+            border-bottom: 1px solid #eee8e5;
+            position: relative;
+            z-index: 100;
+        }
+
+        .header-left, .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-link { color: #7d6b6d; text-decoration: none; font-size: 14px; font-weight: 500; cursor: pointer; }
+        .nav-link:hover { color: #4a3e3d; }
+        .coin-display { background: #f4ece9; border: 1px solid #e2d7d3; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; color: #635052; }
+
+        .category-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .cat-btn {
+            padding: 6px 12px;
+            border: 1px solid #d1c4c0;
+            border-radius: 6px;
+            background: #ffffff;
+            color: #4a3e3d;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .cat-btn:hover { background: #faf7f5; }
+
+        .cat-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: calc(100% + 4px);
+            background: #ffffff;
+            border: 1px solid #d1c4c0;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 200;
+            min-width: 130px;
+            overflow: hidden;
+        }
+
+        .cat-menu.show { display: block; }
+
+        .cat-option {
+            padding: 8px 12px;
+            font-size: 13px;
+            color: #4a3e3d;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .cat-option:hover { background: #f4ece9; }
+        .cat-option.active { font-weight: 600; color: #635052; background: #faf7f5; }
+
+        main {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        h1 { color: #4a3e3d; font-weight: 500; font-size: 24px; margin: 0 0 8px; }
+        p.subtitle { color: #8c7b7d; margin: 0 0 20px; font-size: 14px; text-align: center; }
+
+        .hangman-box {
+            width: 200px;
+            height: 180px;
+            background: #ffffff;
+            border: 1px solid #e2d7d3;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+
+        svg line, svg circle {
+            stroke: #4a3e3d;
+            stroke-width: 3;
+            stroke-linecap: round;
+        }
+
+        .word-display {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .letter-tile {
+            width: 36px;
+            height: 44px;
+            border-bottom: 3px solid #8c7b7d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 700;
+            color: #4a3e3d;
+            text-transform: uppercase;
+        }
+
+        .keyboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .key-btn {
+            width: 36px;
+            height: 42px;
+            border: 1px solid #d1c4c0;
+            border-radius: 6px;
+            background: #ffffff;
+            color: #4a3e3d;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.15s;
+        }
+
+        .key-btn:hover:not(:disabled) { background: #f4ece9; transform: translateY(-1px); }
+        .key-btn:disabled {
+            background: #eee8e5;
+            color: #b8acab;
+            border-color: #e2d7d3;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .controls { display: flex; gap: 12px; }
+
+        .btn {
+            padding: 10px 20px;
+            border: 1px solid #d1c4c0;
+            border-radius: 6px;
+            background: #ffffff;
+            color: #4a3e3d;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn:hover { background: #faf7f5; }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.3);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 24px;
+            max-width: 320px;
+            width: 90%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <a onclick="goBack()" class="nav-link">← Back to Games</a>
+        </div>
+        <div class="header-right">
+            <div class="category-dropdown">
+                <button class="cat-btn" onclick="toggleCatMenu()">
+                    Category: <span id="current-cat-label">Animals</span> ▾
+                </button>
+                <div class="cat-menu" id="cat-menu">
+                    <div class="cat-option active" onclick="setCategory('animals')">Animals</div>
+                    <div class="cat-option" onclick="setCategory('countries')">Countries</div>
+                    <div class="cat-option" onclick="setCategory('tech')">Tech</div>
+                </div>
+            </div>
+            <div class="coin-display"><span class="coin-count">0</span> Coins</div>
+        </div>
+    </header>
+
+    <main>
+        <h1>Hangman</h1>
+        <p class="subtitle" id="status">Guess the hidden word before running out of attempts!</p>
+
+        <div class="hangman-box">
+            <svg width="140" height="150" viewBox="0 0 140 150">
+                <line x1="10" y1="140" x2="70" y2="140" />
+                <line x1="40" y1="140" x2="40" y2="10" />
+                <line x1="40" y1="10" x2="90" y2="10" />
+                <line x1="90" y1="10" x2="90" y2="28" />
+
+                <circle id="part-0" class="figure-part" cx="90" cy="40" r="12" style="display:none;" />
+                <line id="part-1" class="figure-part" x1="90" y1="52" x2="90" y2="90" style="display:none;" />
+                <line id="part-2" class="figure-part" x1="90" y1="62" x2="70" y2="78" style="display:none;" />
+                <line id="part-3" class="figure-part" x1="90" y1="62" x2="110" y2="78" style="display:none;" />
+                <line id="part-4" class="figure-part" x1="90" y1="90" x2="70" y2="115" style="display:none;" />
+                <line id="part-5" class="figure-part" x1="90" y1="90" x2="110" y2="115" style="display:none;" />
+            </svg>
+        </div>
+
+        <div class="word-display" id="word-display"></div>
+        <div class="keyboard" id="keyboard"></div>
+
+        <div class="controls">
+            <button class="btn" onclick="resetGame()">New Word</button>
+        </div>
+    </main>
+
+    <div id="reward-modal" class="modal-overlay">
+        <div class="modal-card">
+            <h2 id="modal-title" style="font-size: 20px; margin: 0 0 10px;">Victory!</h2>
+            <p id="modal-desc" style="color: #8c7b7d; font-size: 14px; margin: 0 0 20px;">You guessed the word and earned 20 Coins.</p>
+            <button class="btn" onclick="closeModalAndReset()" style="width: 100%;">Play Again</button>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+                  <script>
+        const AudioFX = {
+            ctx: null,
+            init() {
+                if (!this.ctx) {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    if (AudioCtx) this.ctx = new AudioCtx();
+                }
+            },
+            play(type) {
+                this.init();
+                if (!this.ctx) return;
+                
+                if (this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+
+                if (type === 'correct') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, now);
+                    osc.frequency.setValueAtTime(659.25, now + 0.08);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                    osc.start(now);
+                    osc.stop(now + 0.2);
+                } else if (type === 'wrong') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(180, now);
+                    osc.frequency.exponentialRampToValueAtTime(110, now + 0.15);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+                    osc.start(now);
+                    osc.stop(now + 0.15);
+                } else if (type === 'win') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, now);
+                    osc.frequency.setValueAtTime(659.25, now + 0.08);
+                    osc.frequency.setValueAtTime(783.99, now + 0.16);
+                    gain.gain.setValueAtTime(0.25, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+                    osc.start(now);
+                    osc.stop(now + 0.35);
+                } else if (type === 'lose') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(300, now);
+                    osc.frequency.exponentialRampToValueAtTime(120, now + 0.4);
+                    gain.gain.setValueAtTime(0.3, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+                    osc.start(now);
+                    osc.stop(now + 0.4);
+                }
+            }
+        };
+
+        const words = {
+            animals: ['ELEPHANT', 'GIRAFFE', 'DOLPHIN', 'PENGUIN', 'LEOPARD', 'KANGAROO', 'CHEETAH'],
+            countries: ['CANADA', 'BRAZIL', 'GERMANY', 'JAPAN', 'AUSTRALIA', 'EGYPT', 'MEXICO'],
+            tech: ['COMPUTER', 'SOFTWARE', 'KEYBOARD', 'INTERNET', 'DATABASE', 'ALGORITHM', 'NETWORK']
+        };
+
+        let currentCategory = 'animals';
+        let currentWord = '';
+        let guessedLetters = new Set();
+        let wrongGuesses = 0;
+        const maxWrong = 6;
+
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = '../index.html';
+            }
+        }
+
+        function toggleCatMenu() {
+            document.getElementById('cat-menu').classList.toggle('show');
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.category-dropdown')) {
+                document.getElementById('cat-menu').classList.remove('show');
+            }
+        });
+
+        function setCategory(cat) {
+            currentCategory = cat;
+            const labelMap = { animals: 'Animals', countries: 'Countries', tech: 'Tech' };
+            document.getElementById('current-cat-label').innerText = labelMap[cat];
+            document.querySelectorAll('.cat-option').forEach(opt => {
+                opt.classList.toggle('active', opt.innerText.toLowerCase() === cat);
+            });
+            document.getElementById('cat-menu').classList.remove('show');
+            resetGame();
+        }
+
+        function buildKeyboard() {
+            const kbEl = document.getElementById('keyboard');
+            kbEl.innerHTML = '';
+            for (let i = 65; i <= 90; i++) {
+                const char = String.fromCharCode(i);
+                const btn = document.createElement('button');
+                btn.className = 'key-btn';
+                btn.innerText = char;
+                btn.id = `key-${char}`;
+                btn.addEventListener('click', () => handleGuess(char));
+                kbEl.appendChild(btn);
+            }
+        }
+
+        function handleGuess(letter) {
+            if (guessedLetters.has(letter) || wrongGuesses >= maxWrong) return;
+
+            guessedLetters.add(letter);
+            const btn = document.getElementById(`key-${letter}`);
+            if (btn) btn.disabled = true;
+
+            if (currentWord.includes(letter)) {
+                AudioFX.play('correct');
+                renderWord();
+                checkWin();
+            } else {
+                AudioFX.play('wrong');
+                wrongGuesses++;
+                updateHangman();
+                checkLoss();
+            }
+        }
+
+        function renderWord() {
+            const displayEl = document.getElementById('word-display');
+            displayEl.innerHTML = '';
+            for (let char of currentWord) {
+                const tile = document.createElement('div');
+                tile.className = 'letter-tile';
+                tile.innerText = guessedLetters.has(char) ? char : '';
+                displayEl.appendChild(tile);
+            }
+        }
+
+        function updateHangman() {
+            for (let i = 0; i < maxWrong; i++) {
+                const part = document.getElementById(`part-${i}`);
+                if (part) {
+                    part.style.display = i < wrongGuesses ? 'block' : 'none';
+                }
+            }
+        }
+
+        function checkWin() {
+            const isWon = [...currentWord].every(char => guessedLetters.has(char));
+            if (isWon) {
+                AudioFX.play('win');
+                if (typeof addCoins === 'function') addCoins(20);
+                document.getElementById('modal-title').innerText = 'Victory!';
+                document.getElementById('modal-desc').innerText = `You correctly guessed "${currentWord}" and earned 20 Coins!`;
+                document.getElementById('reward-modal').style.display = 'flex';
+            }
+        }
+
+        function checkLoss() {
+            if (wrongGuesses >= maxWrong) {
+                AudioFX.play('lose');
+                document.getElementById('modal-title').innerText = 'Game Over';
+                document.getElementById('modal-desc').innerText = `Out of attempts! The word was "${currentWord}".`;
+                document.getElementById('reward-modal').style.display = 'flex';
+            }
+        }
+
+        function resetGame() {
+            const wordList = words[currentCategory];
+            currentWord = wordList[Math.floor(Math.random() * wordList.length)];
+            guessedLetters.clear();
+            wrongGuesses = 0;
+
+            updateHangman();
+            renderWord();
+            buildKeyboard();
+        }
+
+        function closeModalAndReset() {
+            document.getElementById('reward-modal').style.display = 'none';
+            resetGame();
+        }
+
+        // Global physical keyboard support
+        document.addEventListener('keydown', (e) => {
+            const char = e.key.toUpperCase();
+            if (char.length === 1 && char >= 'A' && char <= 'Z') {
+                handleGuess(char);
+            }
+        });
+
+        resetGame();
+    </script>
+</body>
+</html>
+      
