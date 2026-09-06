@@ -266,7 +266,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chess.js@0.10.3/chess.min.js"></script>
     <script src="../script.js"></script>
 <!-- CONTINUED IN PART 2 -->
-        <script>
+
+<script>
         // Official Chess.com audio assets
         const soundFiles = {
             move: 'https://images.chesscomfiles.com/chess-themes/sounds/standard/1000/move-self.mp3',
@@ -279,15 +280,35 @@
 
         const AudioFX = {
             sounds: {},
+            isUnlocked: false,
             init() {
                 for (let key in soundFiles) {
-                    this.sounds[key] = new Audio(soundFiles[key]);
+                    const audio = new Audio();
+                    audio.src = soundFiles[key];
+                    audio.preload = 'auto';
+                    this.sounds[key] = audio;
                 }
+
+                const unlockAudio = () => {
+                    if (this.isUnlocked) return;
+                    for (let key in this.sounds) {
+                        this.sounds[key].play().then(() => {
+                            this.sounds[key].pause();
+                            this.sounds[key].currentTime = 0;
+                        }).catch(() => {});
+                    }
+                    this.isUnlocked = true;
+                    document.removeEventListener('click', unlockAudio);
+                    document.removeEventListener('touchstart', unlockAudio);
+                };
+
+                document.addEventListener('click', unlockAudio, { once: true });
+                document.addEventListener('touchstart', unlockAudio, { once: true });
             },
             play(type) {
                 if (this.sounds[type]) {
-                    this.sounds[type].currentTime = 0;
-                    this.sounds[type].play().catch(() => {});
+                    const soundClone = this.sounds[type].cloneNode();
+                    soundClone.play().catch(e => console.warn("Audio play blocked:", e));
                 }
             }
         };
