@@ -224,10 +224,9 @@
         </div>
     </div>
 
-    <!-- Reliable jsDelivr CDN link for Chess.js -->
+    <!-- jsDelivr CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chess.js@0.10.3/chess.min.js"></script>
     <script src="../script.js"></script>
-
     <script>
         const AudioFX = {
             ctx: null,
@@ -297,7 +296,7 @@
         try {
             game = new Chess();
         } catch(e) {
-            console.error("Chess.js failed to initialize:", e);
+            console.error("Chess.js failed to load from CDN", e);
         }
 
         const boardEl = document.getElementById('board');
@@ -344,11 +343,13 @@
                         const pieceKey = piece.color + piece.type.toUpperCase();
                         const squareEl = document.querySelector(`[data-square="${squareName}"]`);
 
-                        const pieceEl = document.createElement('div');
-                        pieceEl.className = 'piece';
-                        pieceEl.dataset.square = squareName;
-                        pieceEl.innerHTML = `<img src="${pieceCDN[pieceKey]}" alt="${pieceKey}">`;
-                        squareEl.appendChild(pieceEl);
+                        if (squareEl) {
+                            const pieceEl = document.createElement('div');
+                            pieceEl.className = 'piece';
+                            pieceEl.dataset.square = squareName;
+                            pieceEl.innerHTML = `<img src="${pieceCDN[pieceKey]}" alt="${pieceKey}">`;
+                            squareEl.appendChild(pieceEl);
+                        }
                     }
                 }
             }
@@ -518,6 +519,7 @@
         }
 
         function makeComputerMove() {
+            if (!game) return;
             const moves = game.moves({ verbose: true });
             if (moves.length === 0) return;
 
@@ -543,4 +545,67 @@
 
                     if (evalVal > bestEval) {
                         bestEval = evalVal;
-                        bestMove
+                        bestMoves = [move];
+                    } else if (evalVal === bestEval) {
+                        bestMoves.push(move);
+                    }
+                }
+                selectedMove = bestMoves[Math.floor(Math.random() * bestMoves.length)] || moves[0];
+            }
+
+            const isCapture = game.get(selectedMove.to) !== null;
+
+            animateMove(selectedMove.from, selectedMove.to, () => {
+                const moveResult = game.move(selectedMove);
+
+                if (game.in_check()) {
+                    AudioFX.play('check');
+                } else if (isCapture) {
+                    AudioFX.play('capture');
+                } else {
+                    AudioFX.play('move');
+                }
+
+                renderPieces();
+                updateStatus();
+            });
+        }
+
+        function updateStatus() {
+            if (!game) return;
+            if (game.in_checkmate()) {
+                if (game.turn() === 'b') {
+                    statusEl.innerText = 'Checkmate! You won!';
+                    if (typeof addCoins === 'function') addCoins(50);
+                    document.getElementById('reward-modal').style.display = 'flex';
+                } else {
+                    statusEl.innerText = 'Checkmate! Computer won.';
+                }
+            } else if (game.in_draw()) {
+                statusEl.innerText = 'Game over (Draw).';
+            } else {
+                statusEl.innerText = game.turn() === 'w' ? 'Your turn (White)' : 'Computer thinking...';
+            }
+        }
+
+        function resetGame() {
+            if (game) game.reset();
+            selectedSquare = null;
+            pendingMove = null;
+            isAnimating = false;
+            renderPieces();
+            updateStatus();
+        }
+
+        function closeModalAndReset() {
+            document.getElementById('reward-modal').style.display = 'none';
+            resetGame();
+        }
+
+        createGrid();
+        renderPieces();
+    </script>
+</body>
+</html>
+
+    
