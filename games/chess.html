@@ -18,16 +18,70 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 18px 30px;
+            padding: 14px 24px;
             background: #ffffff;
             border-bottom: 1px solid #eee8e5;
             position: relative;
             z-index: 100;
         }
 
+        .header-left, .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         .nav-link { color: #7d6b6d; text-decoration: none; font-size: 14px; font-weight: 500; cursor: pointer; }
         .nav-link:hover { color: #4a3e3d; }
         .coin-display { background: #f4ece9; border: 1px solid #e2d7d3; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; color: #635052; }
+
+        .difficulty-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .diff-btn {
+            padding: 6px 12px;
+            border: 1px solid #d1c4c0;
+            border-radius: 6px;
+            background: #ffffff;
+            color: #4a3e3d;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .diff-btn:hover { background: #faf7f5; }
+
+        .diff-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: calc(100% + 4px);
+            background: #ffffff;
+            border: 1px solid #d1c4c0;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 200;
+            min-width: 120px;
+            overflow: hidden;
+        }
+
+        .diff-menu.show { display: block; }
+
+        .diff-option {
+            padding: 8px 12px;
+            font-size: 13px;
+            color: #4a3e3d;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .diff-option:hover { background: #f4ece9; }
+        .diff-option.active { font-weight: 600; color: #635052; background: #faf7f5; }
 
         main {
             padding: 20px;
@@ -39,23 +93,10 @@
         h1 { color: #4a3e3d; font-weight: 500; font-size: 24px; margin: 0 0 8px; }
         p.subtitle { color: #8c7b7d; margin: 0 0 16px; font-size: 14px; text-align: center; }
 
-        .game-layout {
-            display: flex;
-            flex-direction: row;
-            align-items: flex-start;
-            gap: 20px;
-        }
-
-        @media (max-width: 600px) {
-            .game-layout {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-
         #board-wrapper {
             width: min(88vw, 360px);
             height: min(88vw, 360px);
+            margin: 0 auto;
             position: relative;
         }
 
@@ -105,45 +146,6 @@
             height: 100%;
             display: block;
             filter: drop-shadow(0px 3px 4px rgba(0,0,0,0.18));
-        }
-
-        .side-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            background: #ffffff;
-            border: 1px solid #e2d7d3;
-            border-radius: 8px;
-            padding: 16px;
-            min-width: 140px;
-        }
-
-        .panel-label {
-            font-size: 12px;
-            font-weight: 600;
-            color: #8c7b7d;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .difficulty-btn {
-            padding: 8px 12px;
-            border: 1px solid #d1c4c0;
-            border-radius: 6px;
-            background: #ffffff;
-            color: #4a3e3d;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: center;
-        }
-
-        .difficulty-btn:hover { background: #faf7f5; }
-        .difficulty-btn.active {
-            background: #635052;
-            color: #ffffff;
-            border-color: #635052;
         }
 
         .controls { display: flex; gap: 12px; margin-top: 24px; }
@@ -206,25 +208,30 @@
 <body>
 
     <header>
-        <a onclick="goBack()" class="nav-link">← Back to Games</a>
-        <div class="coin-display"><span class="coin-count">0</span> Coins</div>
+        <div class="header-left">
+            <a onclick="goBack()" class="nav-link">← Back to Games</a>
+        </div>
+        <div class="header-right">
+            <div class="difficulty-dropdown">
+                <button class="diff-btn" onclick="toggleDiffMenu()">
+                    Difficulty: <span id="current-diff-label">Medium</span> ▾
+                </button>
+                <div class="diff-menu" id="diff-menu">
+                    <div class="diff-option" onclick="setDifficulty('easy')">Easy</div>
+                    <div class="diff-option active" id="opt-medium" onclick="setDifficulty('medium')">Medium</div>
+                    <div class="diff-option" onclick="setDifficulty('hard')">Hard</div>
+                </div>
+            </div>
+            <div class="coin-display"><span class="coin-count">0</span> Coins</div>
+        </div>
     </header>
 
     <main>
         <h1>Chess</h1>
         <p class="subtitle" id="status">Click a piece to select, then click a square to move.</p>
 
-        <div class="game-layout">
-            <div id="board-wrapper">
-                <div id="board"></div>
-            </div>
-
-            <div class="side-panel">
-                <span class="panel-label">Difficulty</span>
-                <button class="difficulty-btn" data-diff="easy" onclick="setDifficulty('easy')">Easy</button>
-                <button class="difficulty-btn active" data-diff="medium" onclick="setDifficulty('medium')">Medium</button>
-                <button class="difficulty-btn" data-diff="hard" onclick="setDifficulty('hard')">Hard</button>
-            </div>
+        <div id="board-wrapper">
+            <div id="board"></div>
         </div>
 
         <div class="controls">
@@ -260,10 +267,13 @@
     <script src="../script.js"></script>
 <!-- CONTINUED IN PART 2 -->
         <script>
+        // Official Chess.com audio assets
         const soundFiles = {
             move: 'https://images.chesscomfiles.com/chess-themes/sounds/standard/1000/move-self.mp3',
             capture: 'https://images.chesscomfiles.com/chess-themes/sounds/standard/1000/capture.mp3',
             check: 'https://images.chesscomfiles.com/chess-themes/sounds/standard/1000/move-check.mp3',
+            castle: 'https://images.chesscomfiles.com/chess-themes/sounds/standard/1000/castle.mp3',
+            promote: 'https://images.chesscomfiles.com/chess-themes/sounds/standard/1000/promote.mp3',
             end: 'https://images.chesscomfiles.com/chess-themes/sounds/standard/1000/game-end.mp3'
         };
 
@@ -323,11 +333,24 @@
             }
         }
 
+        function toggleDiffMenu() {
+            document.getElementById('diff-menu').classList.toggle('show');
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.difficulty-dropdown')) {
+                document.getElementById('diff-menu').classList.remove('show');
+            }
+        });
+
         function setDifficulty(diff) {
             currentDifficulty = diff;
-            document.querySelectorAll('.difficulty-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.diff === diff);
+            const labelMap = { easy: 'Easy', medium: 'Medium', hard: 'Hard' };
+            document.getElementById('current-diff-label').innerText = labelMap[diff];
+            document.querySelectorAll('.diff-option').forEach(opt => {
+                opt.classList.toggle('active', opt.innerText.toLowerCase() === diff);
             });
+            document.getElementById('diff-menu').classList.remove('show');
             resetGame();
         }
 
@@ -387,6 +410,20 @@
             return false;
         }
 
+        function playSoundForMove(move, isCapture) {
+            if (game.in_check()) {
+                AudioFX.play('check');
+            } else if (move.flags.includes('k') || move.flags.includes('q')) {
+                AudioFX.play('castle');
+            } else if (move.flags.includes('p')) {
+                AudioFX.play('promote');
+            } else if (isCapture || move.flags.includes('e')) {
+                AudioFX.play('capture');
+            } else {
+                AudioFX.play('move');
+            }
+        }
+
         function handleSquareClick(square) {
             if (!game || game.game_over() || game.turn() !== 'w' || isAnimating) return;
 
@@ -405,7 +442,7 @@
                     return;
                 }
 
-                // Check legal moves first to stop illegal animation glitches
+                // Block illegal clicks before triggering any animation
                 const legalMoves = game.moves({ square: from, verbose: true });
                 const isLegal = legalMoves.some(m => m.to === to);
 
@@ -439,14 +476,7 @@
                 selectedSquare = null;
 
                 if (move !== null) {
-                    if (game.in_check()) {
-                        AudioFX.play('check');
-                    } else if (isCapture || move.flags.includes('e')) {
-                        AudioFX.play('capture');
-                    } else {
-                        AudioFX.play('move');
-                    }
-
+                    playSoundForMove(move, isCapture);
                     renderPieces();
                     updateStatus();
 
@@ -564,7 +594,7 @@
                     selectedMove = moves[Math.floor(Math.random() * moves.length)];
                 }
             } else {
-                // Hard Difficulty: Depth 2 + prioritized captures for instant search speed
+                // Hard Difficulty: Fast calculation via shallow depth & capture-first evaluation
                 moves.sort((a, b) => (b.captured ? 1 : 0) - (a.captured ? 1 : 0));
                 let bestEval = -Infinity;
                 let bestMoves = [];
@@ -587,16 +617,8 @@
             const isCapture = game.get(selectedMove.to) !== null;
 
             animateMove(selectedMove.from, selectedMove.to, () => {
-                game.move(selectedMove);
-
-                if (game.in_check()) {
-                    AudioFX.play('check');
-                } else if (isCapture) {
-                    AudioFX.play('capture');
-                } else {
-                    AudioFX.play('move');
-                }
-
+                const moveResult = game.move(selectedMove);
+                playSoundForMove(moveResult, isCapture);
                 renderPieces();
                 updateStatus();
             });
