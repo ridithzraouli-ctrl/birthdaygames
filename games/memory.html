@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Match</title>
+    <style>
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #faf7f5;
+            color: #4a3e3d;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 24px;
+            background: #ffffff;
+            border-bottom: 1px solid #eee8e5;
+            position: relative;
+            z-index: 100;
+        }
+
+        .header-left, .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-link { color: #7d6b6d; text-decoration: none; font-size: 14px; font-weight: 500; cursor: pointer; }
+        .nav-link:hover { color: #4a3e3d; }
+        .coin-display { background: #f4ece9; border: 1px solid #e2d7d3; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; color: #635052; }
+
+        main {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        h1 { color: #4a3e3d; font-weight: 500; font-size: 24px; margin: 0 0 4px; }
+        p.subtitle { color: #8c7b7d; margin: 0 0 24px; font-size: 14px; text-align: center; }
+
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            width: 100%;
+            max-width: 440px;
+            perspective: 1000px;
+        }
+
+        .card {
+            aspect-ratio: 1 / 1;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.4s ease;
+            cursor: pointer;
+        }
+
+        .card.flipped, .card.matched {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #e2d7d3;
+            overflow: hidden;
+        }
+
+        .card-back {
+            background: #ffffff;
+            color: #c2b5b3;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .card-front {
+            background: #ffffff;
+            transform: rotateY(180deg);
+            padding: 6px;
+        }
+
+        .card-front img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .card.matched .card-front {
+            border-color: #88b04b;
+            background: #f4f8f0;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.3);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 24px;
+            max-width: 320px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: 1px solid #d1c4c0;
+            border-radius: 6px;
+            background: #ffffff;
+            color: #4a3e3d;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn:hover { background: #faf7f5; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <a onclick="goBack()" class="nav-link">← Back to Games</a>
+        </div>
+        <div class="header-right">
+            <div class="coin-display"><span class="coin-count">0</span> Coins</div>
+        </div>
+    </header>
+
+    <main>
+        <h1>Memory Match</h1>
+        <p class="subtitle">Flip cards and find all matching pairs!</p>
+
+        <div class="memory-grid" id="grid"></div>
+    </main>
+
+    <div id="reward-modal" class="modal-overlay">
+        <div class="modal-card">
+            <h2 style="font-size: 20px; margin: 0 0 10px;">Victory!</h2>
+            <p style="color: #8c7b7d; font-size: 14px; margin: 0 0 20px;">You matched all the pictures and earned 40 Coins!</p>
+            <button class="btn" onclick="closeModalAndReset()" style="width: 100%;">Play Again</button>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+    <script>
+        // ========================================================
+        // ADD YOUR CUSTOM IMAGE PATHS HERE
+        // Replace the strings inside quotes with paths to your images
+        // (e.g., "../images/pic1.jpg" or "https://example.com/pic1.jpg")
+        // ========================================================
+        const CARD_IMAGES = [
+            "", // Image 1
+            "", // Image 2
+            "", // Image 3
+            "", // Image 4
+            "", // Image 5
+            ""  // Image 6
+        ];
+
+        const AudioFX = {
+            ctx: null,
+            init() {
+                if (!this.ctx) {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    if (AudioCtx) this.ctx = new AudioCtx();
+                }
+            },
+            play(type) {
+                this.init();
+                if (!this.ctx) return;
+                if (this.ctx.state === 'suspended') this.ctx.resume();
+
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+
+                if (type === 'flip') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(350, now);
+                    gain.gain.setValueAtTime(0.05, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+                    osc.start(now);
+                    osc.stop(now + 0.04);
+                } else if (type === 'match') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, now);
+                    osc.frequency.setValueAtTime(659.25, now + 0.08);
+                    gain.gain.setValueAtTime(0.1, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                    osc.start(now);
+                    osc.stop(now + 0.2);
+                } else if (type === 'win') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, now);
+                    osc.frequency.setValueAtTime(659.25, now + 0.08);
+                    osc.frequency.setValueAtTime(783.99, now + 0.16);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+                    osc.start(now);
+                    osc.stop(now + 0.35);
+                }
+            }
+        };
+
+        let cards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let isBoardLocked = false;
+
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = '../index.html';
+            }
+        }
+
+        function initGame() {
+            const gridEl = document.getElementById('grid');
+            gridEl.innerHTML = '';
+            flippedCards = [];
+            matchedPairs = 0;
+            isBoardLocked = false;
+
+            // Create pairs
+            const deck = [];
+            CARD_IMAGES.forEach((imgSrc, index) => {
+                deck.push({ id: index, src: imgSrc });
+                deck.push({ id: index, src: imgSrc });
+            });
+
+            // Shuffle deck
+            cards = deck.sort(() => Math.random() - 0.5);
+
+            // Render cards
+            cards.forEach((cardData, idx) => {
+                const cardEl = document.createElement('div');
+                cardEl.className = 'card';
+                cardEl.dataset.index = idx;
+                cardEl.dataset.id = cardData.id;
+
+                const cardBack = document.createElement('div');
+                cardBack.className = 'card-back';
+                cardBack.innerText = '?';
+
+                const cardFront = document.createElement('div');
+                cardFront.className = 'card-front';
+
+                const img = document.createElement('img');
+                img.src = cardData.src || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23eee8e5"/><text x="50%" y="50%" fill="%238c7b7d" font-size="12" text-anchor="middle" dy=".3em">Add Image</text></svg>';
+                img.alt = `Card ${cardData.id + 1}`;
+
+                cardFront.appendChild(img);
+                cardEl.appendChild(cardBack);
+                cardEl.appendChild(cardFront);
+
+                cardEl.addEventListener('click', () => handleCardClick(cardEl));
+                gridEl.appendChild(cardEl);
+            });
+        }
+
+        function handleCardClick(cardEl) {
+            if (isBoardLocked) return;
+            if (cardEl.classList.contains('flipped') || cardEl.classList.contains('matched')) return;
+
+            AudioFX.play('flip');
+            cardEl.classList.add('flipped');
+            flippedCards.push(cardEl);
+
+            if (flippedCards.length === 2) {
+                checkMatch();
+            }
+        }
+
+        function checkMatch() {
+            isBoardLocked = true;
+            const [first, second] = flippedCards;
+
+            if (first.dataset.id === second.dataset.id) {
+                AudioFX.play('match');
+                first.classList.add('matched');
+                second.classList.add('matched');
+                flippedCards = [];
+                matchedPairs++;
+                isBoardLocked = false;
+
+                if (matchedPairs === CARD_IMAGES.length) {
+                    setTimeout(() => {
+                        AudioFX.play('win');
+                        if (typeof addCoins === 'function') addCoins(40);
+                        document.getElementById('reward-modal').style.display = 'flex';
+                    }, 500);
+                }
+            } else {
+                setTimeout(() => {
+                    first.classList.remove('flipped');
+                    second.classList.remove('flipped');
+                    flippedCards = [];
+                    isBoardLocked = false;
+                }, 900);
+            }
+        }
+
+        function closeModalAndReset() {
+            document.getElementById('reward-modal').style.display = 'none';
+            initGame();
+        }
+
+        initGame();
+    </script>
+</body>
+</html>
