@@ -13,20 +13,23 @@
             color: #4a3e3d;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             user-select: none;
-            display: flex;
-            flex-direction: column;
         }
 
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 18px 30px;
+            padding: 14px 24px;
             background: #ffffff;
             border-bottom: 1px solid #eee8e5;
-            position: sticky;
-            top: 0;
+            position: relative;
             z-index: 100;
+        }
+
+        .header-left, .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .nav-link { color: #7d6b6d; text-decoration: none; font-size: 14px; font-weight: 500; cursor: pointer; }
@@ -34,121 +37,113 @@
         .coin-display { background: #f4ece9; border: 1px solid #e2d7d3; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; color: #635052; }
 
         main {
-            flex: 1;
-            max-width: 500px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 30px 20px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            max-width: 500px;
+            margin: 0 auto;
         }
 
-        .game-card-container {
+        h1 { color: #4a3e3d; font-weight: 500; font-size: 24px; margin: 0 0 4px; }
+        p.subtitle { color: #8c7b7d; margin: 0 0 20px; font-size: 14px; text-align: center; }
+
+        .game-card {
             background: #ffffff;
             border: 1px solid #eee8e5;
-            border-radius: 12px;
+            border-radius: 8px;
             padding: 24px;
             width: 100%;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 20px;
         }
 
-        .controls-bar {
+        .controls-row {
             width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .status-badge {
+        .turn-badge {
             background: #f4ece9;
             color: #635052;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
         }
 
         .btn {
-            background: #ffffff;
-            border: 1px solid #eee8e5;
-            color: #4a3e3d;
-            padding: 6px 12px;
+            padding: 8px 16px;
+            border: 1px solid #d1c4c0;
             border-radius: 6px;
+            background: #ffffff;
+            color: #4a3e3d;
             font-size: 13px;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: background 0.2s;
         }
 
-        .btn:hover {
-            border-color: #d1c4c0;
-            background: #faf7f5;
-        }
+        .btn:hover { background: #faf7f5; }
 
-        .grid {
+        .board {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
+            gap: 8px;
             width: 100%;
-            max-width: 320px;
+            max-width: 300px;
             aspect-ratio: 1 / 1;
         }
 
-        .cell {
-            background: #faf7f5;
-            border: 1px solid #eee8e5;
-            border-radius: 10px;
+        .tile {
+            border: 2px solid #e2d7d3;
+            border-radius: 6px;
+            background: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 42px;
+            font-size: 40px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: transform 0.15s ease, background-color 0.2s ease, border-color 0.2s ease;
         }
 
-        .cell:hover {
-            border-color: #d1c4c0;
-            background: #f4ece9;
+        .tile:hover {
+            border-color: #8c7b7d;
+            transform: scale(1.02);
         }
 
-        .cell.x-mark { color: #c0564e; }
-        .cell.o-mark { color: #4a7c59; }
+        .tile.x-mark { color: #b85b56; }
+        .tile.o-mark { color: #5b8868; }
 
-        .stats-bar {
+        .score-bar {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 12px;
             width: 100%;
-            background: #faf7f5;
-            border: 1px solid #eee8e5;
-            border-radius: 8px;
-            padding: 12px;
+            border-top: 1px solid #eee8e5;
+            padding-top: 16px;
             text-align: center;
         }
 
-        .stat-item {
+        .score-item {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 2px;
         }
 
-        .stat-label { font-size: 11px; color: #8c7b7d; font-weight: 600; text-transform: uppercase; }
-        .stat-value { font-size: 16px; color: #4a3e3d; font-weight: 600; }
+        .score-label { font-size: 12px; color: #8c7b7d; }
+        .score-val { font-size: 15px; color: #4a3e3d; font-weight: 600; }
 
-        /* Modern Overlay Modal */
         .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(74, 62, 61, 0.4);
-            backdrop-filter: blur(2px);
+            background: rgba(0,0,0,0.3);
             z-index: 200;
             align-items: center;
             justify-content: center;
@@ -156,74 +151,60 @@
 
         .modal-card {
             background: #ffffff;
-            border-radius: 12px;
+            border-radius: 8px;
             padding: 24px;
+            max-width: 320px;
             width: 90%;
-            max-width: 300px;
             text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
         }
-
-        .modal-card h3 { margin: 0; font-size: 18px; color: #4a3e3d; font-weight: 600; }
-        .modal-card p { margin: 0; font-size: 14px; color: #8c7b7d; }
-
-        .modal-btn {
-            background: #f4ece9;
-            border: 1px solid #e2d7d3;
-            color: #635052;
-            padding: 10px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .modal-btn:hover { background: #e8dcd8; }
     </style>
 </head>
 <body>
 
     <header>
-        <a onclick="goBack()" class="nav-link">&lt;- Back to Games</a>
-        <div class="coin-display"><span class="coin-count">0</span> Coins</div>
+        <div class="header-left">
+            <a onclick="goBack()" class="nav-link">← Back to Games</a>
+        </div>
+        <div class="header-right">
+            <div class="coin-display"><span class="coin-count">0</span> Coins</div>
+        </div>
     </header>
 
     <main>
-        <div class="game-card-container">
-            <div class="controls-bar">
-                <span class="status-badge" id="status-text">X'S TURN</span>
+        <h1>Tic-Tac-Toe</h1>
+        <p class="subtitle">Get 3 in a row to win.</p>
+
+        <div class="game-card">
+            <div class="controls-row">
+                <span class="turn-badge" id="status-text">X'S TURN</span>
                 <button class="btn" onclick="openModeModal()"><span id="mode-label">VS AI (EASY)</span> ▼</button>
                 <button class="btn" onclick="resetGame()">Reset</button>
             </div>
 
-            <div class="grid" id="grid">
-                <div class="cell" onclick="handleCellClick(0)"></div>
-                <div class="cell" onclick="handleCellClick(1)"></div>
-                <div class="cell" onclick="handleCellClick(2)"></div>
-                <div class="cell" onclick="handleCellClick(3)"></div>
-                <div class="cell" onclick="handleCellClick(4)"></div>
-                <div class="cell" onclick="handleCellClick(5)"></div>
-                <div class="cell" onclick="handleCellClick(6)"></div>
-                <div class="cell" onclick="handleCellClick(7)"></div>
-                <div class="cell" onclick="handleCellClick(8)"></div>
+            <div class="board" id="board">
+                <div class="tile" onclick="handleCellClick(0)"></div>
+                <div class="tile" onclick="handleCellClick(1)"></div>
+                <div class="tile" onclick="handleCellClick(2)"></div>
+                <div class="tile" onclick="handleCellClick(3)"></div>
+                <div class="tile" onclick="handleCellClick(4)"></div>
+                <div class="tile" onclick="handleCellClick(5)"></div>
+                <div class="tile" onclick="handleCellClick(6)"></div>
+                <div class="tile" onclick="handleCellClick(7)"></div>
+                <div class="tile" onclick="handleCellClick(8)"></div>
             </div>
 
-            <div class="stats-bar">
-                <div class="stat-item">
-                    <span class="stat-label">X Wins</span>
-                    <span class="stat-value" id="x-wins">0</span>
+            <div class="score-bar">
+                <div class="score-item">
+                    <span class="score-label">X Wins</span>
+                    <span class="score-val" id="x-wins">0</span>
                 </div>
-                <div class="stat-item">
-                    <span class="stat-label">Draws</span>
-                    <span class="stat-value" id="draws">0</span>
+                <div class="score-item">
+                    <span class="score-label">Draws</span>
+                    <span class="score-val" id="draws">0</span>
                 </div>
-                <div class="stat-item">
-                    <span class="stat-label">O Wins</span>
-                    <span class="stat-value" id="o-wins">0</span>
+                <div class="score-item">
+                    <span class="score-label">O Wins</span>
+                    <span class="score-val" id="o-wins">0</span>
                 </div>
             </div>
         </div>
@@ -231,22 +212,72 @@
 
     <div id="mode-modal" class="modal-overlay" onclick="closeModeModal()">
         <div class="modal-card" onclick="event.stopPropagation()">
-            <h3>Select Game Mode</h3>
-            <button class="modal-btn" onclick="setMode('easy')">VS AI (Easy)</button>
-            <button class="modal-btn" onclick="setMode('hard')">VS AI (Hard)</button>
-            <button class="modal-btn" onclick="setMode('pvp')">2 Player (Local)</button>
+            <h2 style="font-size: 18px; margin: 0 0 16px; color: #4a3e3d;">Select Mode</h2>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+                <button class="btn" onclick="setMode('easy')">VS AI (Easy)</button>
+                <button class="btn" onclick="setMode('hard')">VS AI (Hard)</button>
+                <button class="btn" onclick="setMode('pvp')">2 Player (Local)</button>
+            </div>
         </div>
     </div>
 
-    <div id="result-modal" class="modal-overlay">
+    <div id="reward-modal" class="modal-overlay">
         <div class="modal-card">
-            <h3 id="res-title">Game Over</h3>
-            <p id="res-msg">Match finished!</p>
-            <button class="modal-btn" onclick="closeResultModal()">Play Again</button>
+            <h2 id="modal-title" style="font-size: 20px; margin: 0 0 10px;">Victory!</h2>
+            <p id="modal-desc" style="color: #8c7b7d; font-size: 14px; margin: 0 0 20px;"></p>
+            <button class="btn" onclick="closeModalAndReset()" style="width: 100%;">Play Again</button>
         </div>
     </div>
-        <script src="../script.js"></script>
+
+    <script src="../script.js"></script>
     <script>
+        const AudioFX = {
+            ctx: null,
+            init() {
+                if (!this.ctx) {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    if (AudioCtx) this.ctx = new AudioCtx();
+                }
+            },
+            play(type) {
+                this.init();
+                if (!this.ctx) return;
+                if (this.ctx.state === 'suspended') this.ctx.resume();
+
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+
+                if (type === 'key') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(400, now);
+                    gain.gain.setValueAtTime(0.05, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                    osc.start(now);
+                    osc.stop(now + 0.05);
+                } else if (type === 'win') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, now);
+                    osc.frequency.setValueAtTime(659.25, now + 0.08);
+                    osc.frequency.setValueAtTime(783.99, now + 0.16);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+                    osc.start(now);
+                    osc.stop(now + 0.35);
+                } else if (type === 'lose') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(260, now);
+                    osc.frequency.exponentialRampToValueAtTime(110, now + 0.35);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+                    osc.start(now);
+                    osc.stop(now + 0.35);
+                }
+            }
+        };
+
         let board = ["", "", "", "", "", "", "", "", ""];
         let currentPlayer = "X";
         let gameActive = true;
@@ -292,10 +323,11 @@
         }
 
         function makeMove(index, player) {
+            AudioFX.play('key');
             board[index] = player;
-            const cell = document.querySelectorAll('.cell')[index];
-            cell.innerText = player;
-            cell.classList.add(player === 'X' ? 'x-mark' : 'o-mark');
+            const tile = document.querySelectorAll('.tile')[index];
+            tile.innerText = player;
+            tile.classList.add(player === 'X' ? 'x-mark' : 'o-mark');
 
             if (checkWin(player)) {
                 endGame(false, player);
@@ -329,41 +361,44 @@
 
         function endGame(isDraw, winner) {
             gameActive = false;
-            const resTitle = document.getElementById('res-title');
-            const resMsg = document.getElementById('res-msg');
+            const title = document.getElementById('modal-title');
+            const desc = document.getElementById('modal-desc');
 
             if (isDraw) {
                 drawCount++;
                 document.getElementById('draws').innerText = drawCount;
-                resTitle.innerText = "Draw!";
-                resMsg.innerText = "It's a tie.";
+                AudioFX.play('lose');
+                title.innerText = "Draw!";
+                desc.innerText = "It's a tie.";
             } else {
                 if (winner === 'X') {
                     xWins++;
                     document.getElementById('x-wins').innerText = xWins;
-                    resTitle.innerText = "Victory!";
-                    resMsg.innerText = "X won the match.";
+                    AudioFX.play('win');
+                    title.innerText = "Victory!";
+                    desc.innerText = "X won the match.";
                     
                     if (gameMode !== 'pvp') {
                         const reward = gameMode === 'easy' ? 10 : 25;
-                        resMsg.innerText += ` +${reward} Coins earned!`;
+                        desc.innerText += ` Earned ${reward} Coins!`;
                         if (typeof addCoins === 'function') addCoins(reward);
                     }
                 } else {
                     oWins++;
                     document.getElementById('o-wins').innerText = oWins;
-                    resTitle.innerText = "Defeat!";
-                    resMsg.innerText = "O won the match.";
+                    AudioFX.play('lose');
+                    title.innerText = "Game Over";
+                    desc.innerText = "O won the match.";
                 }
             }
 
             setTimeout(() => {
-                document.getElementById('result-modal').style.display = 'flex';
+                document.getElementById('reward-modal').style.display = 'flex';
             }, 300);
         }
 
-        function closeResultModal() {
-            document.getElementById('result-modal').style.display = 'none';
+        function closeModalAndReset() {
+            document.getElementById('reward-modal').style.display = 'none';
             resetGame();
         }
 
@@ -373,9 +408,9 @@
             gameActive = true;
             document.getElementById('status-text').innerText = "X'S TURN";
 
-            document.querySelectorAll('.cell').forEach(cell => {
-                cell.innerText = "";
-                cell.classList.remove('x-mark', 'o-mark');
+            document.querySelectorAll('.tile').forEach(tile => {
+                tile.innerText = "";
+                tile.classList.remove('x-mark', 'o-mark');
             });
         }
 
@@ -430,4 +465,5 @@
         }
     </script>
 </body>
-</html>
+    </html>
+    
