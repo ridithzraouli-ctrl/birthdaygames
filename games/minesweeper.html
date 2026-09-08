@@ -2,179 +2,173 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Minesweeper</title>
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             margin: 0;
-            min-height: 100vh;
+            height: 100vh;
+            overflow: hidden;
             background: #faf7f5;
             color: #4a3e3d;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             user-select: none;
+            display: flex;
+            flex-direction: column;
         }
 
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 14px 24px;
+            padding: 8px 16px;
             background: #ffffff;
             border-bottom: 1px solid #eee8e5;
-            position: relative;
-            z-index: 100;
+            flex-shrink: 0;
         }
 
-        .header-left, .header-right {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .nav-link { color: #7d6b6d; text-decoration: none; font-size: 14px; font-weight: 500; cursor: pointer; }
+        .nav-link { color: #7d6b6d; text-decoration: none; font-size: 13px; font-weight: 500; cursor: pointer; }
         .nav-link:hover { color: #4a3e3d; }
-        .coin-display { background: #f4ece9; border: 1px solid #e2d7d3; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; color: #635052; }
+        .coin-display { background: #f4ece9; border: 1px solid #e2d7d3; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; color: #635052; }
 
         main {
-            padding: 20px;
+            flex: 1;
+            padding: 8px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            max-width: 600px;
-            margin: 0 auto;
+            justify-content: center;
+            overflow: hidden;
         }
 
-        h1 { color: #4a3e3d; font-weight: 500; font-size: 24px; margin: 0 0 4px; }
-        p.subtitle { color: #8c7b7d; margin: 0 0 16px; font-size: 14px; text-align: center; }
-
-        .difficulty-selector {
+        .game-window {
+            background: #c0c0c0;
+            border: 3px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            padding: 6px;
             display: flex;
-            gap: 8px;
-            margin-bottom: 16px;
+            flex-direction: column;
+            gap: 6px;
+            max-width: 98vw;
+            max-height: calc(100vh - 65px);
         }
 
-        .diff-btn {
-            padding: 6px 12px;
-            border: 2px solid #d1c4c0;
-            border-radius: 0px;
-            background: #ffffff;
-            color: #4a3e3d;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            text-transform: uppercase;
-            box-shadow: 2px 2px 0px #d1c4c0;
-        }
-
-        .diff-btn.active {
-            background: #635052;
-            color: #ffffff;
-            border-color: #4a3e3d;
-            box-shadow: 2px 2px 0px #342a2b;
-        }
-
-        .game-status {
+        .status-bar {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            padding: 4px 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width: 100%;
-            max-width: 400px;
-            margin-bottom: 16px;
-            background: #ffffff;
-            border: 2px solid #e2d7d3;
-            padding: 8px 12px;
-            box-shadow: 3px 3px 0px #e2d7d3;
         }
 
-        .status-box {
-            font-size: 13px;
-            font-weight: 700;
-            color: #635052;
+        .counter {
+            background: #000000;
+            color: #ff0000;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 20px;
+            font-weight: bold;
+            padding: 1px 5px;
+            border: 1px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            min-width: 44px;
+            text-align: right;
+            line-height: 1;
+        }
+
+        .center-controls {
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        .flag-toggle-btn {
-            padding: 6px 12px;
-            border: 2px solid #d1c4c0;
-            border-radius: 0px;
-            background: #ffffff;
-            color: #4a3e3d;
-            font-size: 12px;
-            font-weight: 600;
+        .control-btn {
+            width: 30px;
+            height: 30px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 6px;
-            box-shadow: 2px 2px 0px #d1c4c0;
-            text-transform: uppercase;
+            justify-content: center;
+            padding: 0;
         }
 
-        .flag-toggle-btn.active {
-            background: #fecdd3;
-            border-color: #e11d48;
-            color: #9f1239;
-            box-shadow: 2px 2px 0px #be123c;
+        .control-btn:active, .control-btn.active {
+            border-color: #808080 #ffffff #ffffff #808080;
+            background: #b5b5b5;
         }
 
-        .grid-container {
-            background: #e2d7d3;
-            padding: 6px;
-            border: 3px solid #c2b5b3;
-            box-shadow: 4px 4px 0px #a39593;
-            max-width: 100%;
-            overflow-x: auto;
+        .diff-select {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            font-size: 11px;
+            font-weight: bold;
+            height: 30px;
+            padding: 0 2px;
+            cursor: pointer;
+            outline: none;
+            color: #000000;
+        }
+
+        .grid-frame {
+            border: 3px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            background: #808080;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .grid {
             display: grid;
-            gap: 2px;
+            gap: 0;
+            background: #808080;
         }
 
         .cell {
-            aspect-ratio: 1 / 1;
-            background: #ffffff;
+            width: 24px;
+            height: 24px;
+            background: #c0c0c0;
             border: 2px solid;
-            border-color: #ffffff #c2b5b3 #c2b5b3 #ffffff;
+            border-color: #ffffff #808080 #808080 #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 800;
-            font-family: monospace, monospace;
+            font-weight: 900;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
             cursor: pointer;
             user-select: none;
             box-sizing: border-box;
-        }
-
-        .cell:active:not(.revealed) {
-            border-color: #c2b5b3 #ffffff #ffffff #c2b5b3;
-            background: #f5eeeb;
+            padding: 0;
         }
 
         .cell.revealed {
-            background: #eae2df;
-            border: 1px solid #d1c4c0;
-            cursor: default;
+            border: 1px solid #7b7b7b;
+            background: #c0c0c0;
         }
 
-        .cell.mine { background: #fecdd3; }
+        .cell.mine { background: #ff0000; }
+
+        .c-1 { color: #0000ff; }
+        .c-2 { color: #008000; }
+        .c-3 { color: #ff0000; }
+        .c-4 { color: #000080; }
+        .c-5 { color: #800000; }
+        .c-6 { color: #008080; }
+        .c-7 { color: #000000; }
+        .c-8 { color: #808080; }
 
         .icon-svg {
-            width: 60%;
-            height: 60%;
+            width: 16px;
+            height: 16px;
             display: block;
         }
-
-        .c-1 { color: #2563eb; }
-        .c-2 { color: #16a34a; }
-        .c-3 { color: #dc2626; }
-        .c-4 { color: #7c3aed; }
-        .c-5 { color: #991b1b; }
-        .c-6 { color: #0891b2; }
-        .c-7 { color: #1f2937; }
-        .c-8 { color: #4b5563; }
 
         .modal-overlay {
             display: none;
@@ -187,75 +181,68 @@
         }
 
         .modal-card {
-            background: #ffffff;
-            border: 3px solid #4a3e3d;
-            border-radius: 0px;
-            padding: 24px;
-            max-width: 320px;
+            background: #c0c0c0;
+            border: 3px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            padding: 16px;
+            max-width: 280px;
             width: 90%;
             text-align: center;
-            box-shadow: 6px 6px 0px #4a3e3d;
         }
 
         .btn {
-            padding: 10px 20px;
-            border: 2px solid #4a3e3d;
-            border-radius: 0px;
-            background: #ffffff;
-            color: #4a3e3d;
-            font-size: 13px;
-            font-weight: 700;
+            padding: 6px 12px;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            background: #c0c0c0;
+            color: #000000;
+            font-size: 12px;
+            font-weight: bold;
             cursor: pointer;
-            box-shadow: 3px 3px 0px #4a3e3d;
-            text-transform: uppercase;
         }
 
         .btn:active {
-            transform: translate(2px, 2px);
-            box-shadow: 1px 1px 0px #4a3e3d;
+            border-color: #808080 #ffffff #ffffff #808080;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="header-left">
-            <a onclick="goBack()" class="nav-link">← Back to Games</a>
-        </div>
-        <div class="header-right">
-            <div class="coin-display"><span class="coin-count">0</span> Coins</div>
-        </div>
+        <a onclick="goBack()" class="nav-link">&lt;- Back to Games</a>
+        <div class="coin-display"><span class="coin-count">0</span> Coins</div>
     </header>
 
     <main>
-        <h1>Minesweeper</h1>
-        <p class="subtitle">Clear the grid without setting off any hidden mines!</p>
-
-        <div class="difficulty-selector">
-            <button class="diff-btn active" onclick="setDifficulty('easy')">Easy (8x8)</button>
-            <button class="diff-btn" onclick="setDifficulty('medium')">Medium (10x10)</button>
-            <button class="diff-btn" onclick="setDifficulty('hard')">Hard (12x12)</button>
-        </div>
-
-        <div class="game-status">
-            <div class="status-box">
-                <svg class="icon-svg" style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="#e11d48" stroke-width="2.5"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
-                <span id="flag-count">10</span>
+        <div class="game-window">
+            <div class="status-bar">
+                <div class="counter" id="flag-count">010</div>
+                <div class="center-controls">
+                    <button class="control-btn" id="face-btn" onclick="initGame()" title="Reset Game">
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2"><circle cx="12" cy="12" r="10" fill="#ffff00"/><circle cx="9" cy="9" r="1" fill="#000"/><circle cx="15" cy="9" r="1" fill="#000"/><path d="M8 15s1.5 2 4 2 4-2 4-2" stroke="#000"/></svg>
+                    </button>
+                    <button class="control-btn" id="mode-btn" onclick="toggleFlagMode()" title="Toggle Dig/Flag Mode">
+                        <svg id="mode-icon" class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2"><path d="M6 3v18M6 3l12 4-12 4" fill="#ff0000" stroke="#000000"/></svg>
+                    </button>
+                    <select class="diff-select" id="diff-select" onchange="changeDifficulty(this.value)">
+                        <option value="easy">8x8</option>
+                        <option value="medium">10x10</option>
+                        <option value="hard">12x12</option>
+                    </select>
+                </div>
+                <div class="counter" id="timer">000</div>
             </div>
-            <button class="flag-toggle-btn" id="flag-btn" onclick="toggleFlagMode()">
-                Mode: <span id="flag-btn-text">Dig</span>
-            </button>
-        </div>
 
-        <div class="grid-container">
-            <div class="grid" id="grid"></div>
+            <div class="grid-frame">
+                <div class="grid" id="grid"></div>
+            </div>
         </div>
     </main>
 
     <div id="game-modal" class="modal-overlay">
         <div class="modal-card">
-            <h2 id="modal-title" style="font-size: 20px; margin: 0 0 10px;">Game Over</h2>
-            <p id="modal-msg" style="color: #8c7b7d; font-size: 14px; margin: 0 0 20px;">You hit a mine!</p>
+            <h2 id="modal-title" style="font-size: 16px; margin: 0 0 8px; color: #000;">Game Over</h2>
+            <p id="modal-msg" style="color: #4a3e3d; font-size: 12px; margin: 0 0 14px;">You hit a mine!</p>
             <button class="btn" onclick="closeModalAndReset()" style="width: 100%;">Play Again</button>
         </div>
     </div>
@@ -263,13 +250,14 @@
     <script src="../script.js"></script>
     <script>
         const PRESETS = {
-            easy: { rows: 8, cols: 8, mines: 10, reward: 20, size: '320px', fontSize: '16px' },
-            medium: { rows: 10, cols: 10, mines: 18, reward: 40, size: '360px', fontSize: '15px' },
-            hard: { rows: 12, cols: 12, mines: 28, reward: 70, size: '400px', fontSize: '14px' }
+            easy: { rows: 8, cols: 8, mines: 10, reward: 20 },
+            medium: { rows: 10, cols: 10, mines: 18, reward: 40 },
+            hard: { rows: 12, cols: 12, mines: 28, reward: 70 }
         };
 
-        const FLAG_SVG = `<svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="#e11d48" stroke-width="2.5"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>`;
-        const MINE_SVG = `<svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="#4a3e3d" stroke-width="2"><circle cx="12" cy="12" r="6" fill="#4a3e3d"/><line x1="12" y1="2" x2="12" y2="22"/><line x1="5" y1="5" x2="19" y2="19"/><line x1="5" y1="19" x2="19" y2="5"/></svg>`;
+        const FLAG_SVG = `<svg class="icon-svg" viewBox="0 0 24 24"><path d="M6 3v18M6 3l12 4-12 4" fill="#ff0000" stroke="#000000" stroke-width="1.5"/></svg>`;
+        const MINE_SVG = `<svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" fill="#000000"/><line x1="12" y1="3" x2="12" y2="21" stroke="#000" stroke-width="2"/><line x1="3" y1="12" x2="21" y2="12" stroke="#000" stroke-width="2"/><line x1="5.6" y1="5.6" x2="18.4" y2="18.4" stroke="#000" stroke-width="2"/><line x1="5.6" y1="18.4" x2="18.4" y2="5.6" stroke="#000" stroke-width="2"/><rect x="9" y="9" width="2" height="2" fill="#fff"/></svg>`;
+        const DIG_SVG = `<svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"><path d="M14 4l6 6-9 9-6 1 1-6 9-9z"/><line x1="5" y1="19" x2="11" y2="13"/></svg>`;
 
         let currentDiff = 'easy';
         let board = [];
@@ -278,60 +266,8 @@
         let gameOver = false;
         let revealedCount = 0;
         let firstClick = true;
-
-        const AudioFX = {
-            ctx: null,
-            init() {
-                if (!this.ctx) {
-                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                    if (AudioCtx) this.ctx = new AudioCtx();
-                }
-            },
-            play(type) {
-                this.init();
-                if (!this.ctx) return;
-                if (this.ctx.state === 'suspended') this.ctx.resume();
-
-                const now = this.ctx.currentTime;
-                const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
-                osc.connect(gain);
-                gain.connect(this.ctx.destination);
-
-                if (type === 'reveal') {
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(400, now);
-                    gain.gain.setValueAtTime(0.04, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
-                    osc.start(now);
-                    osc.stop(now + 0.03);
-                } else if (type === 'flag') {
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(600, now);
-                    gain.gain.setValueAtTime(0.05, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
-                    osc.start(now);
-                    osc.stop(now + 0.05);
-                } else if (type === 'explode') {
-                    osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(120, now);
-                    osc.frequency.exponentialRampToValueAtTime(40, now + 0.25);
-                    gain.gain.setValueAtTime(0.15, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
-                    osc.start(now);
-                    osc.stop(now + 0.25);
-                } else if (type === 'win') {
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(523.25, now);
-                    osc.frequency.setValueAtTime(659.25, now + 0.08);
-                    osc.frequency.setValueAtTime(783.99, now + 0.16);
-                    gain.gain.setValueAtTime(0.2, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
-                    osc.start(now);
-                    osc.stop(now + 0.35);
-                }
-            }
-        };
+        let timerInterval = null;
+        let seconds = 0;
 
         function goBack() {
             if (window.history.length > 1) {
@@ -341,33 +277,71 @@
             }
         }
 
-        function setDifficulty(diff) {
+        function changeDifficulty(diff) {
             currentDiff = diff;
-            document.querySelectorAll('.diff-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
             initGame();
         }
 
         function toggleFlagMode() {
             flagMode = !flagMode;
-            const btn = document.getElementById('flag-btn');
+            const btn = document.getElementById('mode-btn');
+            const icon = document.getElementById('mode-icon');
             btn.classList.toggle('active', flagMode);
-            document.getElementById('flag-btn-text').innerText = flagMode ? 'Flag' : 'Dig';
+            icon.outerHTML = flagMode ? FLAG_SVG : DIG_SVG;
+            if (flagMode) document.querySelector('#mode-btn svg').id = 'mode-icon';
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            seconds = 0;
+            updateTimerDisplay();
+            timerInterval = setInterval(() => {
+                seconds = Math.min(999, seconds + 1);
+                updateTimerDisplay();
+            }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+        }
+
+        function updateTimerDisplay() {
+            document.getElementById('timer').innerText = String(seconds).padStart(3, '0');
+        }
+
+        function updateFlagDisplay() {
+            const formatted = String(flagsLeft).padStart(3, flagsLeft < 0 ? '0' : '0');
+            document.getElementById('flag-count').innerText = flagsLeft < 0 ? flagsLeft : String(flagsLeft).padStart(3, '0');
+        }
+
+        function calculateCellSize(rows, cols) {
+            const maxW = window.innerWidth * 0.92;
+            const maxH = (window.innerHeight - 130) * 0.88;
+            const sizeByW = Math.floor(maxW / cols);
+            const sizeByH = Math.floor(maxH / rows);
+            return Math.max(16, Math.min(28, Math.min(sizeByW, sizeByH)));
         }
 
         function initGame() {
+            stopTimer();
+            seconds = 0;
+            updateTimerDisplay();
+
             const config = PRESETS[currentDiff];
             const gridEl = document.getElementById('grid');
             gridEl.innerHTML = '';
-            gridEl.style.gridTemplateColumns = `repeat(${config.cols}, 1fr)`;
-            gridEl.style.width = config.size;
+
+            const cellSize = calculateCellSize(config.rows, config.cols);
+
+            gridEl.style.gridTemplateColumns = `repeat(${config.cols}, ${cellSize}px)`;
+            gridEl.style.gridTemplateRows = `repeat(${config.rows}, ${cellSize}px)`;
 
             board = [];
             gameOver = false;
             firstClick = true;
             revealedCount = 0;
             flagsLeft = config.mines;
-            document.getElementById('flag-count').innerText = flagsLeft;
+            updateFlagDisplay();
 
             for (let r = 0; r < config.rows; r++) {
                 board[r] = [];
@@ -382,9 +356,11 @@
 
             for (let r = 0; r < config.rows; r++) {
                 for (let c = 0; c < config.cols; c++) {
-                    const cellEl = document.createElement('div');
+                    const cellEl = document.createElement('button');
                     cellEl.className = 'cell';
-                    cellEl.style.fontSize = config.fontSize;
+                    cellEl.style.width = `${cellSize}px`;
+                    cellEl.style.height = `${cellSize}px`;
+                    cellEl.style.fontSize = `${Math.floor(cellSize * 0.55)}px`;
                     board[r][c].element = cellEl;
 
                     cellEl.addEventListener('click', () => handleCellClick(r, c));
@@ -406,7 +382,6 @@
                 let r = Math.floor(Math.random() * config.rows);
                 let c = Math.floor(Math.random() * config.cols);
 
-                // Keep starting tile and immediate neighbors clear of mines
                 const isSafeZone = Math.abs(r - startRow) <= 1 && Math.abs(c - startCol) <= 1;
 
                 if (!board[r][c].isMine && !isSafeZone) {
@@ -446,6 +421,7 @@
             if (firstClick) {
                 firstClick = false;
                 generateMines(r, c);
+                startTimer();
             }
 
             if (cell.isMine) {
@@ -470,14 +446,12 @@
                 cell.isFlagged = false;
                 cell.element.innerHTML = '';
                 flagsLeft++;
-                AudioFX.play('flag');
-            } else if (flagsLeft > 0) {
+            } else {
                 cell.isFlagged = true;
                 cell.element.innerHTML = FLAG_SVG;
                 flagsLeft--;
-                AudioFX.play('flag');
             }
-            document.getElementById('flag-count').innerText = flagsLeft;
+            updateFlagDisplay();
         }
 
         function revealCell(r, c) {
@@ -488,7 +462,6 @@
             cell.isRevealed = true;
             cell.element.classList.add('revealed');
             revealedCount++;
-            AudioFX.play('reveal');
 
             if (cell.neighborMines > 0) {
                 cell.element.innerText = cell.neighborMines;
@@ -507,14 +480,18 @@
 
         function endGame(won) {
             gameOver = true;
+            stopTimer();
             const config = PRESETS[currentDiff];
 
             for (let r = 0; r < config.rows; r++) {
                 for (let c = 0; c < config.cols; c++) {
                     const cell = board[r][c];
                     if (cell.isMine) {
-                        cell.element.classList.add('revealed', 'mine');
-                        cell.element.innerHTML = MINE_SVG;
+                        cell.element.classList.add('revealed');
+                        if (!cell.isFlagged) {
+                            cell.element.classList.add('mine');
+                            cell.element.innerHTML = MINE_SVG;
+                        }
                     }
                 }
             }
@@ -524,17 +501,15 @@
             const msg = document.getElementById('modal-msg');
 
             if (won) {
-                AudioFX.play('win');
                 title.innerText = 'Victory!';
-                msg.innerText = `You cleared the board and earned ${config.reward} Coins!`;
+                msg.innerText = `Cleared in ${seconds}s! Earned ${config.reward} Coins!`;
                 if (typeof addCoins === 'function') addCoins(config.reward);
             } else {
-                AudioFX.play('explode');
                 title.innerText = 'Boom!';
                 msg.innerText = 'You stepped on a mine. Try again!';
             }
 
-            setTimeout(() => { modal.style.display = 'flex'; }, 600);
+            setTimeout(() => { modal.style.display = 'flex'; }, 400);
         }
 
         function closeModalAndReset() {
@@ -542,8 +517,27 @@
             initGame();
         }
 
+        window.addEventListener('resize', () => {
+            if (board.length > 0) {
+                const config = PRESETS[currentDiff];
+                const cellSize = calculateCellSize(config.rows, config.cols);
+                const gridEl = document.getElementById('grid');
+                gridEl.style.gridTemplateColumns = `repeat(${config.cols}, ${cellSize}px)`;
+                gridEl.style.gridTemplateRows = `repeat(${config.rows}, ${cellSize}px)`;
+                
+                for (let r = 0; r < config.rows; r++) {
+                    for (let c = 0; c < config.cols; c++) {
+                        if (board[r][c] && board[r][c].element) {
+                            board[r][c].element.style.width = `${cellSize}px`;
+                            board[r][c].element.style.height = `${cellSize}px`;
+                            board[r][c].element.style.fontSize = `${Math.floor(cellSize * 0.55)}px`;
+                        }
+                    }
+                }
+            }
+        });
+
         initGame();
     </script>
 </body>
-    </html>
-    
+</html>
