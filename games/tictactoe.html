@@ -8,8 +8,7 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             margin: 0;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
             background: #faf7f5;
             color: #4a3e3d;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -22,179 +21,168 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 16px;
+            padding: 18px 30px;
             background: #ffffff;
             border-bottom: 1px solid #eee8e5;
-            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        .nav-link { color: #7d6b6d; text-decoration: none; font-size: 13px; font-weight: 500; cursor: pointer; }
+        .nav-link { color: #7d6b6d; text-decoration: none; font-size: 14px; font-weight: 500; cursor: pointer; }
         .nav-link:hover { color: #4a3e3d; }
-        .coin-display { background: #f4ece9; border: 1px solid #e2d7d3; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; color: #635052; }
+        .coin-display { background: #f4ece9; border: 1px solid #e2d7d3; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; color: #635052; }
 
         main {
             flex: 1;
-            padding: 10px;
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 30px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
         }
 
-        .game-window {
-            background: #c0c0c0;
-            border: 3px solid;
-            border-color: #ffffff #808080 #808080 #ffffff;
-            padding: 8px;
+        .game-card-container {
+            background: #ffffff;
+            border: 1px solid #eee8e5;
+            border-radius: 12px;
+            padding: 24px;
+            width: 100%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            width: fit-content;
-            max-width: 98vw;
+            align-items: center;
+            gap: 20px;
         }
 
-        .status-bar {
-            background: #c0c0c0;
-            border: 2px solid;
-            border-color: #808080 #ffffff #ffffff #808080;
-            padding: 6px;
+        .controls-bar {
+            width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .turn-display {
-            font-family: "Courier New", Courier, monospace;
-            font-size: 14px;
-            font-weight: bold;
-            color: #000;
+        .status-badge {
+            background: #f4ece9;
+            color: #635052;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
         }
 
-        .custom-btn {
-            height: 32px;
-            padding: 0 8px;
-            background: #c0c0c0;
-            border: 2px solid;
-            border-color: #ffffff #808080 #808080 #ffffff;
-            font-size: 11px;
-            font-weight: bold;
+        .btn {
+            background: #ffffff;
+            border: 1px solid #eee8e5;
+            color: #4a3e3d;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
+            transition: all 0.2s;
         }
 
-        .custom-btn:active {
-            border-color: #808080 #ffffff #ffffff #808080;
-            background: #b5b5b5;
-        }
-
-        .grid-frame {
-            border: 3px solid;
-            border-color: #808080 #ffffff #ffffff #808080;
-            background: #808080;
-            padding: 2px;
+        .btn:hover {
+            border-color: #d1c4c0;
+            background: #faf7f5;
         }
 
         .grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(3, 1fr);
-            gap: 2px;
-            background: #808080;
-            width: 270px;
-            height: 270px;
+            gap: 12px;
+            width: 100%;
+            max-width: 320px;
+            aspect-ratio: 1 / 1;
         }
 
         .cell {
-            background: #c0c0c0;
-            border: 2px solid;
-            border-color: #ffffff #808080 #808080 #ffffff;
+            background: #faf7f5;
+            border: 1px solid #eee8e5;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 42px;
-            font-weight: 900;
-            font-family: Arial, sans-serif;
+            font-weight: 700;
             cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .cell.x-mark { color: #d32f2f; }
-        .cell.o-mark { color: #1976d2; }
+        .cell:hover {
+            border-color: #d1c4c0;
+            background: #f4ece9;
+        }
 
-        .dashboard-bar {
-            background: #c0c0c0;
-            border: 2px solid;
-            border-color: #808080 #ffffff #ffffff #808080;
-            padding: 6px;
+        .cell.x-mark { color: #c0564e; }
+        .cell.o-mark { color: #4a7c59; }
+
+        .stats-bar {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 4px;
+            gap: 12px;
+            width: 100%;
+            background: #faf7f5;
+            border: 1px solid #eee8e5;
+            border-radius: 8px;
+            padding: 12px;
             text-align: center;
         }
 
         .stat-item {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            font-size: 9px;
-            font-weight: bold;
-            color: #333;
+            gap: 4px;
         }
 
-        .stat-val {
-            font-family: "Courier New", Courier, monospace;
-            font-size: 13px;
-            color: #000;
-            margin-top: 1px;
-        }
+        .stat-label { font-size: 11px; color: #8c7b7d; font-weight: 600; text-transform: uppercase; }
+        .stat-value { font-size: 16px; color: #4a3e3d; font-weight: 600; }
 
-        /* Mode Selector Modal */
+        /* Modern Overlay Modal */
         .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.4);
+            background: rgba(74, 62, 61, 0.4);
+            backdrop-filter: blur(2px);
             z-index: 200;
             align-items: center;
             justify-content: center;
         }
 
         .modal-card {
-            background: #c0c0c0;
-            border: 3px solid;
-            border-color: #ffffff #808080 #808080 #ffffff;
-            padding: 12px;
-            width: 220px;
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 24px;
+            width: 90%;
+            max-width: 300px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 12px;
         }
 
-        .modal-title {
-            font-size: 12px;
-            font-weight: bold;
-            text-align: center;
-            border-bottom: 1px solid #808080;
-            padding-bottom: 4px;
-        }
+        .modal-card h3 { margin: 0; font-size: 18px; color: #4a3e3d; font-weight: 600; }
+        .modal-card p { margin: 0; font-size: 14px; color: #8c7b7d; }
 
-        .opt-btn {
-            background: #c0c0c0;
-            border: 2px solid;
-            border-color: #ffffff #808080 #808080 #ffffff;
-            padding: 8px;
-            font-size: 12px;
-            font-weight: bold;
+        .modal-btn {
+            background: #f4ece9;
+            border: 1px solid #e2d7d3;
+            color: #635052;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
             cursor: pointer;
-            text-align: center;
+            transition: background 0.2s;
         }
 
-        .opt-btn:active, .opt-btn.selected {
-            border-color: #808080 #ffffff #ffffff #808080;
-            background: #a0a0a0;
-        }
+        .modal-btn:hover { background: #e8dcd8; }
     </style>
 </head>
 <body>
@@ -205,41 +193,37 @@
     </header>
 
     <main>
-        <div class="game-window">
-            <div class="status-bar">
-                <div class="turn-display" id="status-text">X'S TURN</div>
-                <button class="custom-btn" onclick="openModeModal()">
-                    <span id="mode-label">VS AI (EASY)</span> ▼
-                </button>
-                <button class="custom-btn" onclick="resetGame()">RESET</button>
+        <div class="game-card-container">
+            <div class="controls-bar">
+                <span class="status-badge" id="status-text">X'S TURN</span>
+                <button class="btn" onclick="openModeModal()"><span id="mode-label">VS AI (EASY)</span> ▼</button>
+                <button class="btn" onclick="resetGame()">Reset</button>
             </div>
 
-            <div class="grid-frame">
-                <div class="grid" id="grid">
-                    <div class="cell" onclick="handleCellClick(0)"></div>
-                    <div class="cell" onclick="handleCellClick(1)"></div>
-                    <div class="cell" onclick="handleCellClick(2)"></div>
-                    <div class="cell" onclick="handleCellClick(3)"></div>
-                    <div class="cell" onclick="handleCellClick(4)"></div>
-                    <div class="cell" onclick="handleCellClick(5)"></div>
-                    <div class="cell" onclick="handleCellClick(6)"></div>
-                    <div class="cell" onclick="handleCellClick(7)"></div>
-                    <div class="cell" onclick="handleCellClick(8)"></div>
-                </div>
+            <div class="grid" id="grid">
+                <div class="cell" onclick="handleCellClick(0)"></div>
+                <div class="cell" onclick="handleCellClick(1)"></div>
+                <div class="cell" onclick="handleCellClick(2)"></div>
+                <div class="cell" onclick="handleCellClick(3)"></div>
+                <div class="cell" onclick="handleCellClick(4)"></div>
+                <div class="cell" onclick="handleCellClick(5)"></div>
+                <div class="cell" onclick="handleCellClick(6)"></div>
+                <div class="cell" onclick="handleCellClick(7)"></div>
+                <div class="cell" onclick="handleCellClick(8)"></div>
             </div>
 
-            <div class="dashboard-bar">
+            <div class="stats-bar">
                 <div class="stat-item">
-                    <span>X WINS</span>
-                    <span class="stat-val" id="x-wins">0</span>
+                    <span class="stat-label">X Wins</span>
+                    <span class="stat-value" id="x-wins">0</span>
                 </div>
                 <div class="stat-item">
-                    <span>DRAWS</span>
-                    <span class="stat-val" id="draws">0</span>
+                    <span class="stat-label">Draws</span>
+                    <span class="stat-value" id="draws">0</span>
                 </div>
                 <div class="stat-item">
-                    <span>O WINS</span>
-                    <span class="stat-val" id="o-wins">0</span>
+                    <span class="stat-label">O Wins</span>
+                    <span class="stat-value" id="o-wins">0</span>
                 </div>
             </div>
         </div>
@@ -247,26 +231,26 @@
 
     <div id="mode-modal" class="modal-overlay" onclick="closeModeModal()">
         <div class="modal-card" onclick="event.stopPropagation()">
-            <div class="modal-title">SELECT MODE</div>
-            <div class="opt-btn selected" id="opt-easy" onclick="setMode('easy')">VS AI (EASY)</div>
-            <div class="opt-btn" id="opt-hard" onclick="setMode('hard')">VS AI (HARD)</div>
-            <div class="opt-btn" id="opt-pvp" onclick="setMode('pvp')">2 PLAYER (LOCAL)</div>
+            <h3>Select Game Mode</h3>
+            <button class="modal-btn" onclick="setMode('easy')">VS AI (Easy)</button>
+            <button class="modal-btn" onclick="setMode('hard')">VS AI (Hard)</button>
+            <button class="modal-btn" onclick="setMode('pvp')">2 Player (Local)</button>
         </div>
     </div>
 
     <div id="result-modal" class="modal-overlay">
-        <div class="modal-card" style="text-align: center;">
-            <div class="modal-title" id="res-title">GAME OVER</div>
-            <p id="res-msg" style="font-size: 12px; margin: 8px 0;"></p>
-            <button class="opt-btn" onclick="closeResultModal()">PLAY AGAIN</button>
+        <div class="modal-card">
+            <h3 id="res-title">Game Over</h3>
+            <p id="res-msg">Match finished!</p>
+            <button class="modal-btn" onclick="closeResultModal()">Play Again</button>
         </div>
     </div>
-    <script src="../script.js"></script>
+        <script src="../script.js"></script>
     <script>
         let board = ["", "", "", "", "", "", "", "", ""];
         let currentPlayer = "X";
         let gameActive = true;
-        let gameMode = "easy"; // 'easy', 'hard', or 'pvp'
+        let gameMode = "easy";
         
         let xWins = 0;
         let oWins = 0;
@@ -293,10 +277,6 @@
             gameMode = mode;
             const labels = { easy: 'VS AI (EASY)', hard: 'VS AI (HARD)', pvp: '2 PLAYER' };
             document.getElementById('mode-label').innerText = labels[mode];
-            
-            document.querySelectorAll('#mode-modal .opt-btn').forEach(b => b.classList.remove('selected'));
-            document.getElementById(`opt-${mode}`).classList.add('selected');
-            
             closeModeModal();
             resetGame();
         }
@@ -307,7 +287,7 @@
             makeMove(index, currentPlayer);
 
             if (gameActive && gameMode !== 'pvp' && currentPlayer === 'O') {
-                setTimeout(aiMove, 300);
+                setTimeout(aiMove, 250);
             }
         }
 
@@ -355,26 +335,25 @@
             if (isDraw) {
                 drawCount++;
                 document.getElementById('draws').innerText = drawCount;
-                resTitle.innerText = "DRAW!";
-                resMsg.innerText = "It's a tie!";
+                resTitle.innerText = "Draw!";
+                resMsg.innerText = "It's a tie.";
             } else {
                 if (winner === 'X') {
                     xWins++;
                     document.getElementById('x-wins').innerText = xWins;
-                    resTitle.innerText = "VICTORY!";
-                    resMsg.innerText = "X won the match!";
+                    resTitle.innerText = "Victory!";
+                    resMsg.innerText = "X won the match.";
                     
-                    // Coin Reward for beating AI
                     if (gameMode !== 'pvp') {
                         const reward = gameMode === 'easy' ? 10 : 25;
-                        resMsg.innerText += ` Earned ${reward} Coins!`;
+                        resMsg.innerText += ` +${reward} Coins earned!`;
                         if (typeof addCoins === 'function') addCoins(reward);
                     }
                 } else {
                     oWins++;
                     document.getElementById('o-wins').innerText = oWins;
-                    resTitle.innerText = "DEFEAT!";
-                    resMsg.innerText = "O won the match!";
+                    resTitle.innerText = "Defeat!";
+                    resMsg.innerText = "O won the match.";
                 }
             }
 
@@ -400,7 +379,6 @@
             });
         }
 
-        // Minimax AI for Hard Mode
         function minimax(newBoard, player) {
             let availSpots = newBoard.map((val, idx) => val === "" ? idx : null).filter(val => val !== null);
 
