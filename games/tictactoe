@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tic-Tac-Toe</title>
+    <style>
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            background: #faf7f5;
+            color: #4a3e3d;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            user-select: none;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 16px;
+            background: #ffffff;
+            border-bottom: 1px solid #eee8e5;
+            flex-shrink: 0;
+        }
+
+        .nav-link { color: #7d6b6d; text-decoration: none; font-size: 13px; font-weight: 500; cursor: pointer; }
+        .nav-link:hover { color: #4a3e3d; }
+        .coin-display { background: #f4ece9; border: 1px solid #e2d7d3; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; color: #635052; }
+
+        main {
+            flex: 1;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .game-window {
+            background: #c0c0c0;
+            border: 3px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: fit-content;
+            max-width: 98vw;
+        }
+
+        .status-bar {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            padding: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .turn-display {
+            font-family: "Courier New", Courier, monospace;
+            font-size: 14px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .custom-btn {
+            height: 32px;
+            padding: 0 8px;
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .custom-btn:active {
+            border-color: #808080 #ffffff #ffffff #808080;
+            background: #b5b5b5;
+        }
+
+        .grid-frame {
+            border: 3px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            background: #808080;
+            padding: 2px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 2px;
+            background: #808080;
+            width: 270px;
+            height: 270px;
+        }
+
+        .cell {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            font-weight: 900;
+            font-family: Arial, sans-serif;
+            cursor: pointer;
+        }
+
+        .cell.x-mark { color: #d32f2f; }
+        .cell.o-mark { color: #1976d2; }
+
+        .dashboard-bar {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            padding: 6px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+            text-align: center;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 9px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .stat-val {
+            font-family: "Courier New", Courier, monospace;
+            font-size: 13px;
+            color: #000;
+            margin-top: 1px;
+        }
+
+        /* Mode Selector Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-card {
+            background: #c0c0c0;
+            border: 3px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            padding: 12px;
+            width: 220px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .modal-title {
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            border-bottom: 1px solid #808080;
+            padding-bottom: 4px;
+        }
+
+        .opt-btn {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            padding: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .opt-btn:active, .opt-btn.selected {
+            border-color: #808080 #ffffff #ffffff #808080;
+            background: #a0a0a0;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a onclick="goBack()" class="nav-link">&lt;- Back to Games</a>
+        <div class="coin-display"><span class="coin-count">0</span> Coins</div>
+    </header>
+
+    <main>
+        <div class="game-window">
+            <div class="status-bar">
+                <div class="turn-display" id="status-text">X'S TURN</div>
+                <button class="custom-btn" onclick="openModeModal()">
+                    <span id="mode-label">VS AI (EASY)</span> ▼
+                </button>
+                <button class="custom-btn" onclick="resetGame()">RESET</button>
+            </div>
+
+            <div class="grid-frame">
+                <div class="grid" id="grid">
+                    <div class="cell" onclick="handleCellClick(0)"></div>
+                    <div class="cell" onclick="handleCellClick(1)"></div>
+                    <div class="cell" onclick="handleCellClick(2)"></div>
+                    <div class="cell" onclick="handleCellClick(3)"></div>
+                    <div class="cell" onclick="handleCellClick(4)"></div>
+                    <div class="cell" onclick="handleCellClick(5)"></div>
+                    <div class="cell" onclick="handleCellClick(6)"></div>
+                    <div class="cell" onclick="handleCellClick(7)"></div>
+                    <div class="cell" onclick="handleCellClick(8)"></div>
+                </div>
+            </div>
+
+            <div class="dashboard-bar">
+                <div class="stat-item">
+                    <span>X WINS</span>
+                    <span class="stat-val" id="x-wins">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>DRAWS</span>
+                    <span class="stat-val" id="draws">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>O WINS</span>
+                    <span class="stat-val" id="o-wins">0</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="mode-modal" class="modal-overlay" onclick="closeModeModal()">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <div class="modal-title">SELECT MODE</div>
+            <div class="opt-btn selected" id="opt-easy" onclick="setMode('easy')">VS AI (EASY)</div>
+            <div class="opt-btn" id="opt-hard" onclick="setMode('hard')">VS AI (HARD)</div>
+            <div class="opt-btn" id="opt-pvp" onclick="setMode('pvp')">2 PLAYER (LOCAL)</div>
+        </div>
+    </div>
+
+    <div id="result-modal" class="modal-overlay">
+        <div class="modal-card" style="text-align: center;">
+            <div class="modal-title" id="res-title">GAME OVER</div>
+            <p id="res-msg" style="font-size: 12px; margin: 8px 0;"></p>
+            <button class="opt-btn" onclick="closeResultModal()">PLAY AGAIN</button>
+        </div>
+    </div>
+    <script src="../script.js"></script>
+    <script>
+        let board = ["", "", "", "", "", "", "", "", ""];
+        let currentPlayer = "X";
+        let gameActive = true;
+        let gameMode = "easy"; // 'easy', 'hard', or 'pvp'
+        
+        let xWins = 0;
+        let oWins = 0;
+        let drawCount = 0;
+
+        const winConditions = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],
+            [0, 4, 8], [2, 4, 6]
+        ];
+
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = '../index.html';
+            }
+        }
+
+        function openModeModal() { document.getElementById('mode-modal').style.display = 'flex'; }
+        function closeModeModal() { document.getElementById('mode-modal').style.display = 'none'; }
+
+        function setMode(mode) {
+            gameMode = mode;
+            const labels = { easy: 'VS AI (EASY)', hard: 'VS AI (HARD)', pvp: '2 PLAYER' };
+            document.getElementById('mode-label').innerText = labels[mode];
+            
+            document.querySelectorAll('#mode-modal .opt-btn').forEach(b => b.classList.remove('selected'));
+            document.getElementById(`opt-${mode}`).classList.add('selected');
+            
+            closeModeModal();
+            resetGame();
+        }
+
+        function handleCellClick(index) {
+            if (board[index] !== "" || !gameActive) return;
+
+            makeMove(index, currentPlayer);
+
+            if (gameActive && gameMode !== 'pvp' && currentPlayer === 'O') {
+                setTimeout(aiMove, 300);
+            }
+        }
+
+        function makeMove(index, player) {
+            board[index] = player;
+            const cell = document.querySelectorAll('.cell')[index];
+            cell.innerText = player;
+            cell.classList.add(player === 'X' ? 'x-mark' : 'o-mark');
+
+            if (checkWin(player)) {
+                endGame(false, player);
+            } else if (board.every(c => c !== "")) {
+                endGame(true, null);
+            } else {
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                document.getElementById('status-text').innerText = `${currentPlayer}'S TURN`;
+            }
+        }
+
+        function aiMove() {
+            if (!gameActive) return;
+
+            let move;
+            if (gameMode === 'easy') {
+                let emptyIndices = board.map((val, idx) => val === "" ? idx : null).filter(val => val !== null);
+                move = emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
+            } else {
+                move = minimax(board, 'O').index;
+            }
+
+            if (move !== undefined) {
+                makeMove(move, 'O');
+            }
+        }
+
+        function checkWin(player) {
+            return winConditions.some(cond => cond.every(idx => board[idx] === player));
+        }
+
+        function endGame(isDraw, winner) {
+            gameActive = false;
+            const resTitle = document.getElementById('res-title');
+            const resMsg = document.getElementById('res-msg');
+
+            if (isDraw) {
+                drawCount++;
+                document.getElementById('draws').innerText = drawCount;
+                resTitle.innerText = "DRAW!";
+                resMsg.innerText = "It's a tie!";
+            } else {
+                if (winner === 'X') {
+                    xWins++;
+                    document.getElementById('x-wins').innerText = xWins;
+                    resTitle.innerText = "VICTORY!";
+                    resMsg.innerText = "X won the match!";
+                    
+                    // Coin Reward for beating AI
+                    if (gameMode !== 'pvp') {
+                        const reward = gameMode === 'easy' ? 10 : 25;
+                        resMsg.innerText += ` Earned ${reward} Coins!`;
+                        if (typeof addCoins === 'function') addCoins(reward);
+                    }
+                } else {
+                    oWins++;
+                    document.getElementById('o-wins').innerText = oWins;
+                    resTitle.innerText = "DEFEAT!";
+                    resMsg.innerText = "O won the match!";
+                }
+            }
+
+            setTimeout(() => {
+                document.getElementById('result-modal').style.display = 'flex';
+            }, 300);
+        }
+
+        function closeResultModal() {
+            document.getElementById('result-modal').style.display = 'none';
+            resetGame();
+        }
+
+        function resetGame() {
+            board = ["", "", "", "", "", "", "", "", ""];
+            currentPlayer = "X";
+            gameActive = true;
+            document.getElementById('status-text').innerText = "X'S TURN";
+
+            document.querySelectorAll('.cell').forEach(cell => {
+                cell.innerText = "";
+                cell.classList.remove('x-mark', 'o-mark');
+            });
+        }
+
+        // Minimax AI for Hard Mode
+        function minimax(newBoard, player) {
+            let availSpots = newBoard.map((val, idx) => val === "" ? idx : null).filter(val => val !== null);
+
+            if (checkWinCond(newBoard, 'X')) return { score: -10 };
+            if (checkWinCond(newBoard, 'O')) return { score: 10 };
+            if (availSpots.length === 0) return { score: 0 };
+
+            let moves = [];
+            for (let i = 0; i < availSpots.length; i++) {
+                let move = {};
+                move.index = availSpots[i];
+                newBoard[availSpots[i]] = player;
+
+                if (player === 'O') {
+                    let result = minimax(newBoard, 'X');
+                    move.score = result.score;
+                } else {
+                    let result = minimax(newBoard, 'O');
+                    move.score = result.score;
+                }
+
+                newBoard[availSpots[i]] = "";
+                moves.push(move);
+            }
+
+            let bestMove;
+            if (player === 'O') {
+                let bestScore = -10000;
+                for (let i = 0; i < moves.length; i++) {
+                    if (moves[i].score > bestScore) {
+                        bestScore = moves[i].score;
+                        bestMove = i;
+                    }
+                }
+            } else {
+                let bestScore = 10000;
+                for (let i = 0; i < moves.length; i++) {
+                    if (moves[i].score < bestScore) {
+                        bestScore = moves[i].score;
+                        bestMove = i;
+                    }
+                }
+            }
+            return moves[bestMove];
+        }
+
+        function checkWinCond(boardState, player) {
+            return winConditions.some(cond => cond.every(idx => boardState[idx] === player));
+        }
+    </script>
+</body>
+</html>
