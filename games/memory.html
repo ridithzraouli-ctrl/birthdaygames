@@ -167,18 +167,13 @@
 
     <script src="../script.js"></script>
     <script>
-        // ========================================================
-        // ADD YOUR CUSTOM IMAGE PATHS HERE
-        // Replace the strings inside quotes with paths to your images
-        // (e.g., "../images/pic1.jpg" or "https://example.com/pic1.jpg")
-        // ========================================================
         const CARD_IMAGES = [
-            "pictures/IMG_20260908_033600.jpg", // Image 1
-            "pictures/IMG_20260908_033616.jpg", // Image 2
-            "pictures/IMG_20260908_033631.jpg", // Image 3
-            "pictures/IMG_20260908_033830.jpg", // Image 4
-            "pictures/IMG_20260908_033902.jpg", // Image 5
-            "pictures/IMG_20260908_033926.jpg"  // Image 6
+            "../pictures/IMG_20260908_033600.jpg",
+            "../pictures/IMG_20260908_033616.jpg",
+            "../pictures/IMG_20260908_033631.jpg",
+            "../pictures/IMG_20260908_033830.jpg",
+            "../pictures/IMG_20260908_033902.jpg",
+            "../pictures/IMG_20260908_033926.jpg"
         ];
 
         const AudioFX = {
@@ -248,17 +243,14 @@
             matchedPairs = 0;
             isBoardLocked = false;
 
-            // Create pairs
             const deck = [];
             CARD_IMAGES.forEach((imgSrc, index) => {
                 deck.push({ id: index, src: imgSrc });
                 deck.push({ id: index, src: imgSrc });
             });
 
-            // Shuffle deck
             cards = deck.sort(() => Math.random() - 0.5);
 
-            // Render cards
             cards.forEach((cardData, idx) => {
                 const cardEl = document.createElement('div');
                 cardEl.className = 'card';
@@ -273,7 +265,7 @@
                 cardFront.className = 'card-front';
 
                 const img = document.createElement('img');
-                img.src = cardData.src || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23eee8e5"/><text x="50%" y="50%" fill="%238c7b7d" font-size="12" text-anchor="middle" dy=".3em">Add Image</text></svg>';
+                img.src = cardData.src;
                 img.alt = `Card ${cardData.id + 1}`;
 
                 cardFront.appendChild(img);
