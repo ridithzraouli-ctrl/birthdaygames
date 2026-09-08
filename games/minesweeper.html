@@ -34,7 +34,7 @@
 
         main {
             flex: 1;
-            padding: 8px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -46,34 +46,37 @@
             background: #c0c0c0;
             border: 3px solid;
             border-color: #ffffff #808080 #808080 #ffffff;
-            padding: 6px;
+            padding: 8px;
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            max-width: 98vw;
-            max-height: calc(100vh - 65px);
+            gap: 8px;
+            width: 96vw;
+            max-width: 500px;
+            height: calc(100vh - 75px);
+            max-height: 680px;
         }
 
         .status-bar {
             background: #c0c0c0;
             border: 2px solid;
             border-color: #808080 #ffffff #ffffff #808080;
-            padding: 4px 8px;
+            padding: 6px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-shrink: 0;
         }
 
         .counter {
             background: #000000;
             color: #ff0000;
             font-family: "Courier New", Courier, monospace;
-            font-size: 20px;
+            font-size: 22px;
             font-weight: bold;
-            padding: 1px 5px;
+            padding: 2px 6px;
             border: 1px solid;
             border-color: #808080 #ffffff #ffffff #808080;
-            min-width: 44px;
+            min-width: 50px;
             text-align: right;
             line-height: 1;
         }
@@ -85,8 +88,8 @@
         }
 
         .control-btn {
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
             background: #c0c0c0;
             border: 2px solid;
             border-color: #ffffff #808080 #808080 #ffffff;
@@ -95,6 +98,8 @@
             align-items: center;
             justify-content: center;
             padding: 0;
+            font-size: 11px;
+            font-weight: bold;
         }
 
         .control-btn:active, .control-btn.active {
@@ -102,37 +107,45 @@
             background: #b5b5b5;
         }
 
-        .diff-select {
+        .custom-select-btn {
+            height: 32px;
+            padding: 0 8px;
             background: #c0c0c0;
             border: 2px solid;
-            border-color: #808080 #ffffff #ffffff #808080;
+            border-color: #ffffff #808080 #808080 #ffffff;
             font-size: 11px;
             font-weight: bold;
-            height: 30px;
-            padding: 0 2px;
             cursor: pointer;
-            outline: none;
-            color: #000000;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .custom-select-btn:active {
+            border-color: #808080 #ffffff #ffffff #808080;
         }
 
         .grid-frame {
             border: 3px solid;
             border-color: #808080 #ffffff #ffffff #808080;
             background: #808080;
+            flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 2px;
+            overflow: hidden;
         }
 
         .grid {
             display: grid;
             gap: 0;
             background: #808080;
+            width: 100%;
+            height: 100%;
         }
 
         .cell {
-            width: 24px;
-            height: 24px;
             background: #c0c0c0;
             border: 2px solid;
             border-color: #ffffff #808080 #808080 #ffffff;
@@ -141,11 +154,12 @@
             justify-content: center;
             font-weight: 900;
             font-family: Arial, sans-serif;
-            font-size: 13px;
             cursor: pointer;
             user-select: none;
             box-sizing: border-box;
             padding: 0;
+            width: 100%;
+            height: 100%;
         }
 
         .cell.revealed {
@@ -164,17 +178,90 @@
         .c-7 { color: #000000; }
         .c-8 { color: #808080; }
 
+        .dashboard-bar {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+            padding: 6px 10px;
+            display: flex;
+            justify-style: space-around;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 10px;
+            font-weight: bold;
+            color: #4a3e3d;
+        }
+
+        .stat-val {
+            font-family: "Courier New", Courier, monospace;
+            font-size: 14px;
+            color: #000000;
+            margin-top: 2px;
+        }
+
         .icon-svg {
             width: 16px;
             height: 16px;
             display: block;
         }
 
+        .diff-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 300;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .diff-card {
+            background: #c0c0c0;
+            border: 3px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            padding: 12px;
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .diff-title {
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 4px;
+            border-bottom: 1px solid #808080;
+            padding-bottom: 4px;
+        }
+
+        .diff-option {
+            background: #c0c0c0;
+            border: 2px solid;
+            border-color: #ffffff #808080 #808080 #ffffff;
+            padding: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .diff-option:active, .diff-option.selected {
+            border-color: #808080 #ffffff #ffffff #808080;
+            background: #a0a0a0;
+        }
+
         .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.3);
+            background: rgba(0,0,0,0.4);
             z-index: 200;
             align-items: center;
             justify-content: center;
@@ -224,11 +311,9 @@
                     <button class="control-btn" id="mode-btn" onclick="toggleFlagMode()" title="Toggle Dig/Flag Mode">
                         <svg id="mode-icon" class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2"><path d="M6 3v18M6 3l12 4-12 4" fill="#ff0000" stroke="#000000"/></svg>
                     </button>
-                    <select class="diff-select" id="diff-select" onchange="changeDifficulty(this.value)">
-                        <option value="easy">8x8</option>
-                        <option value="medium">10x10</option>
-                        <option value="hard">12x12</option>
-                    </select>
+                    <button class="custom-select-btn" onclick="openDiffModal()">
+                        <span id="diff-label">8x8</span> ▼
+                    </button>
                 </div>
                 <div class="counter" id="timer">000</div>
             </div>
@@ -236,8 +321,32 @@
             <div class="grid-frame">
                 <div class="grid" id="grid"></div>
             </div>
+
+            <div class="dashboard-bar">
+                <div class="stat-item">
+                    <span>BEST TIME</span>
+                    <span class="stat-val" id="best-time">--</span>
+                </div>
+                <div class="stat-item">
+                    <span>WINS</span>
+                    <span class="stat-val" id="win-count">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>CLEARED</span>
+                    <span class="stat-val" id="cleared-pct">0%</span>
+                </div>
+            </div>
         </div>
     </main>
+
+    <div id="diff-modal" class="diff-modal" onclick="closeDiffModal()">
+        <div class="diff-card" onclick="event.stopPropagation()">
+            <div class="diff-title">SELECT GRID SIZE</div>
+            <div class="diff-option selected" id="opt-easy" onclick="selectDifficulty('easy')">8 x 8 (10 Mines)</div>
+            <div class="diff-option" id="opt-medium" onclick="selectDifficulty('medium')">10 x 10 (18 Mines)</div>
+            <div class="diff-option" id="opt-hard" onclick="selectDifficulty('hard')">12 x 12 (28 Mines)</div>
+        </div>
+    </div>
 
     <div id="game-modal" class="modal-overlay">
         <div class="modal-card">
@@ -246,13 +355,12 @@
             <button class="btn" onclick="closeModalAndReset()" style="width: 100%;">Play Again</button>
         </div>
     </div>
-
-    <script src="../script.js"></script>
+        <script src="../script.js"></script>
     <script>
         const PRESETS = {
-            easy: { rows: 8, cols: 8, mines: 10, reward: 20 },
-            medium: { rows: 10, cols: 10, mines: 18, reward: 40 },
-            hard: { rows: 12, cols: 12, mines: 28, reward: 70 }
+            easy: { rows: 8, cols: 8, mines: 10, reward: 20, label: '8x8' },
+            medium: { rows: 10, cols: 10, mines: 18, reward: 40, label: '10x10' },
+            hard: { rows: 12, cols: 12, mines: 28, reward: 70, label: '12x12' }
         };
 
         const FLAG_SVG = `<svg class="icon-svg" viewBox="0 0 24 24"><path d="M6 3v18M6 3l12 4-12 4" fill="#ff0000" stroke="#000000" stroke-width="1.5"/></svg>`;
@@ -268,6 +376,7 @@
         let firstClick = true;
         let timerInterval = null;
         let seconds = 0;
+        let wins = parseInt(localStorage.getItem('ms_wins')) || 0;
 
         function goBack() {
             if (window.history.length > 1) {
@@ -277,8 +386,20 @@
             }
         }
 
-        function changeDifficulty(diff) {
+        function openDiffModal() {
+            document.getElementById('diff-modal').style.display = 'flex';
+        }
+
+        function closeDiffModal() {
+            document.getElementById('diff-modal').style.display = 'none';
+        }
+
+        function selectDifficulty(diff) {
             currentDiff = diff;
+            document.getElementById('diff-label').innerText = PRESETS[diff].label;
+            document.querySelectorAll('.diff-option').forEach(el => el.classList.remove('selected'));
+            document.getElementById(`opt-${diff}`).classList.add('selected');
+            closeDiffModal();
             initGame();
         }
 
@@ -310,16 +431,18 @@
         }
 
         function updateFlagDisplay() {
-            const formatted = String(flagsLeft).padStart(3, flagsLeft < 0 ? '0' : '0');
             document.getElementById('flag-count').innerText = flagsLeft < 0 ? flagsLeft : String(flagsLeft).padStart(3, '0');
         }
 
-        function calculateCellSize(rows, cols) {
-            const maxW = window.innerWidth * 0.92;
-            const maxH = (window.innerHeight - 130) * 0.88;
-            const sizeByW = Math.floor(maxW / cols);
-            const sizeByH = Math.floor(maxH / rows);
-            return Math.max(16, Math.min(28, Math.min(sizeByW, sizeByH)));
+        function updateStatsDisplay() {
+            const best = localStorage.getItem(`ms_best_${currentDiff}`);
+            document.getElementById('best-time').innerText = best ? `${best}s` : '--';
+            document.getElementById('win-count').innerText = wins;
+            
+            const config = PRESETS[currentDiff];
+            const totalSafe = (config.rows * config.cols) - config.mines;
+            const pct = Math.floor((revealedCount / totalSafe) * 100);
+            document.getElementById('cleared-pct').innerText = `${pct}%`;
         }
 
         function initGame() {
@@ -331,10 +454,8 @@
             const gridEl = document.getElementById('grid');
             gridEl.innerHTML = '';
 
-            const cellSize = calculateCellSize(config.rows, config.cols);
-
-            gridEl.style.gridTemplateColumns = `repeat(${config.cols}, ${cellSize}px)`;
-            gridEl.style.gridTemplateRows = `repeat(${config.rows}, ${cellSize}px)`;
+            gridEl.style.gridTemplateColumns = `repeat(${config.cols}, 1fr)`;
+            gridEl.style.gridTemplateRows = `repeat(${config.rows}, 1fr)`;
 
             board = [];
             gameOver = false;
@@ -342,6 +463,7 @@
             revealedCount = 0;
             flagsLeft = config.mines;
             updateFlagDisplay();
+            updateStatsDisplay();
 
             for (let r = 0; r < config.rows; r++) {
                 board[r] = [];
@@ -358,9 +480,6 @@
                 for (let c = 0; c < config.cols; c++) {
                     const cellEl = document.createElement('button');
                     cellEl.className = 'cell';
-                    cellEl.style.width = `${cellSize}px`;
-                    cellEl.style.height = `${cellSize}px`;
-                    cellEl.style.fontSize = `${Math.floor(cellSize * 0.55)}px`;
                     board[r][c].element = cellEl;
 
                     cellEl.addEventListener('click', () => handleCellClick(r, c));
@@ -372,6 +491,19 @@
                     gridEl.appendChild(cellEl);
                 }
             }
+            
+            adjustFontSizes();
+        }
+
+        function adjustFontSizes() {
+            const config = PRESETS[currentDiff];
+            const gridEl = document.getElementById('grid');
+            const cellHeight = gridEl.clientHeight / config.rows;
+            const fontSize = Math.floor(cellHeight * 0.5);
+
+            document.querySelectorAll('.cell').forEach(cell => {
+                cell.style.fontSize = `${fontSize}px`;
+            });
         }
 
         function generateMines(startRow, startCol) {
@@ -462,6 +594,7 @@
             cell.isRevealed = true;
             cell.element.classList.add('revealed');
             revealedCount++;
+            updateStatsDisplay();
 
             if (cell.neighborMines > 0) {
                 cell.element.innerText = cell.neighborMines;
@@ -501,6 +634,14 @@
             const msg = document.getElementById('modal-msg');
 
             if (won) {
+                wins++;
+                localStorage.setItem('ms_wins', wins);
+                
+                const best = localStorage.getItem(`ms_best_${currentDiff}`);
+                if (!best || seconds < parseInt(best)) {
+                    localStorage.setItem(`ms_best_${currentDiff}`, seconds);
+                }
+
                 title.innerText = 'Victory!';
                 msg.innerText = `Cleared in ${seconds}s! Earned ${config.reward} Coins!`;
                 if (typeof addCoins === 'function') addCoins(config.reward);
@@ -509,6 +650,7 @@
                 msg.innerText = 'You stepped on a mine. Try again!';
             }
 
+            updateStatsDisplay();
             setTimeout(() => { modal.style.display = 'flex'; }, 400);
         }
 
@@ -518,23 +660,7 @@
         }
 
         window.addEventListener('resize', () => {
-            if (board.length > 0) {
-                const config = PRESETS[currentDiff];
-                const cellSize = calculateCellSize(config.rows, config.cols);
-                const gridEl = document.getElementById('grid');
-                gridEl.style.gridTemplateColumns = `repeat(${config.cols}, ${cellSize}px)`;
-                gridEl.style.gridTemplateRows = `repeat(${config.rows}, ${cellSize}px)`;
-                
-                for (let r = 0; r < config.rows; r++) {
-                    for (let c = 0; c < config.cols; c++) {
-                        if (board[r][c] && board[r][c].element) {
-                            board[r][c].element.style.width = `${cellSize}px`;
-                            board[r][c].element.style.height = `${cellSize}px`;
-                            board[r][c].element.style.fontSize = `${Math.floor(cellSize * 0.55)}px`;
-                        }
-                    }
-                }
-            }
+            adjustFontSizes();
         });
 
         initGame();
