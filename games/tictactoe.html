@@ -65,19 +65,21 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .turn-badge {
             background: #f4ece9;
             color: #635052;
-            padding: 4px 12px;
+            padding: 6px 12px;
             border-radius: 4px;
             font-size: 12px;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .btn {
-            padding: 8px 16px;
+            padding: 8px 12px;
             border: 1px solid #d1c4c0;
             border-radius: 6px;
             background: #ffffff;
@@ -92,14 +94,16 @@
 
         .board {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
             gap: 8px;
-            width: 100%;
-            max-width: 300px;
-            aspect-ratio: 1 / 1;
+            width: 316px;
+            height: 316px;
         }
 
         .tile {
+            width: 100px;
+            height: 100px;
             border: 2px solid #e2d7d3;
             border-radius: 6px;
             background: #ffffff;
@@ -109,12 +113,11 @@
             font-size: 40px;
             font-weight: 700;
             cursor: pointer;
-            transition: transform 0.15s ease, background-color 0.2s ease, border-color 0.2s ease;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
         }
 
         .tile:hover {
             border-color: #8c7b7d;
-            transform: scale(1.02);
         }
 
         .tile.x-mark { color: #b85b56; }
@@ -178,7 +181,8 @@
             <div class="controls-row">
                 <span class="turn-badge" id="status-text">X'S TURN</span>
                 <button class="btn" onclick="openModeModal()"><span id="mode-label">VS AI (EASY)</span> ▼</button>
-                <button class="btn" onclick="resetGame()">Reset</button>
+                <button class="btn" onclick="resetGame()">Reset Board</button>
+                <button class="btn" onclick="resetStats()">Reset Stats</button>
             </div>
 
             <div class="board" id="board">
@@ -215,6 +219,7 @@
             <h2 style="font-size: 18px; margin: 0 0 16px; color: #4a3e3d;">Select Mode</h2>
             <div style="display: flex; flex-direction: column; gap: 8px;">
                 <button class="btn" onclick="setMode('easy')">VS AI (Easy)</button>
+                <button class="btn" onclick="setMode('medium')">VS AI (Medium)</button>
                 <button class="btn" onclick="setMode('hard')">VS AI (Hard)</button>
                 <button class="btn" onclick="setMode('pvp')">2 Player (Local)</button>
             </div>
@@ -306,10 +311,20 @@
 
         function setMode(mode) {
             gameMode = mode;
-            const labels = { easy: 'VS AI (EASY)', hard: 'VS AI (HARD)', pvp: '2 PLAYER' };
+            const labels = { easy: 'VS AI (EASY)', medium: 'VS AI (MEDIUM)', hard: 'VS AI (HARD)', pvp: '2 PLAYER' };
             document.getElementById('mode-label').innerText = labels[mode];
             closeModeModal();
             resetGame();
+            resetStats();
+        }
+
+        function resetStats() {
+            xWins = 0;
+            oWins = 0;
+            drawCount = 0;
+            document.getElementById('x-wins').innerText = '0';
+            document.getElementById('o-wins').innerText = '0';
+            document.getElementById('draws').innerText = '0';
         }
 
         function handleCellClick(index) {
@@ -339,15 +354,31 @@
             }
         }
 
+        function getRandomMove() {
+            let emptyIndices = board.map((val, idx) => val === "" ? idx : null).filter(val => val !== null);
+            return emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
+        }
+
         function aiMove() {
             if (!gameActive) return;
 
             let move;
             if (gameMode === 'easy') {
-                let emptyIndices = board.map((val, idx) => val === "" ? idx : null).filter(val => val !== null);
-                move = emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
-            } else {
-                move = minimax(board, 'O').index;
+                move = getRandomMove();
+            } else if (gameMode === 'medium') {
+                // 50% optimal move, 50% random move
+                if (Math.random() < 0.5) {
+                    move = minimax(board, 'O').index;
+                } else {
+                    move = getRandomMove();
+                }
+            } else if (gameMode === 'hard') {
+                // 85% optimal move, 15% random mistake chance
+                if (Math.random() < 0.85) {
+                    move = minimax(board, 'O').index;
+                } else {
+                    move = getRandomMove();
+                }
             }
 
             if (move !== undefined) {
@@ -379,7 +410,8 @@
                     desc.innerText = "X won the match.";
                     
                     if (gameMode !== 'pvp') {
-                        const reward = gameMode === 'easy' ? 10 : 25;
+                        const rewards = { easy: 10, medium: 18, hard: 25 };
+                        const reward = rewards[gameMode] || 10;
                         desc.innerText += ` Earned ${reward} Coins!`;
                         if (typeof addCoins === 'function') addCoins(reward);
                     }
@@ -465,5 +497,4 @@
         }
     </script>
 </body>
-    </html>
-    
+</html>
