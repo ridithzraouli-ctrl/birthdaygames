@@ -88,7 +88,7 @@
             transition: background 0.3s ease, color 0.3s ease;
         }
 
-        /* HEADER & NAVBAR */
+        /* HEADER & NAVBAR LAYOUT */
 
         header {
             display: flex;
@@ -101,7 +101,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            gap: 10px;
+            gap: 15px;
             flex-wrap: wrap;
         }
 
@@ -120,6 +120,13 @@
             line-height: 1.2;
         }
 
+        .header-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+        }
+
         .header-right {
             display: flex;
             align-items: center;
@@ -127,7 +134,7 @@
             flex-wrap: wrap;
         }
 
-        /* THEME SWATCHES (LEFT SIDE) */
+        /* THEME SWATCHES (MAIN PAGE ONLY) */
         .theme-selector {
             display: flex;
             align-items: center;
@@ -376,7 +383,11 @@
         @media (max-width: 600px) {
             header {
                 padding: 12px 14px;
-                justify-content: space-between;
+            }
+            .header-center {
+                order: 3;
+                width: 100%;
+                justify-content: flex-start;
             }
             main {
                 padding: 20px 12px;
@@ -399,8 +410,8 @@
     </div>
 
     <header>
+        <!-- LEFT: Palette & Brand -->
         <div class="header-left">
-            <!-- Theme Selector Left -->
             <div class="theme-selector" title="Pick Palette">
                 <div class="theme-dot dot-blue" onclick="setTheme('blue')"></div>
                 <div class="theme-dot dot-pink" onclick="setTheme('pink')"></div>
@@ -411,9 +422,14 @@
             <a href="index.html" class="brand">Arcade ♡</a>
         </div>
 
+        <!-- CENTER: Name -->
+        <div class="header-center">
+            <button class="user-btn" onclick="handleUserSwitch()">✧ <span id="user-display">Player</span></button>
+        </div>
+
+        <!-- RIGHT: Shop & Coins -->
         <div class="header-right">
             <a href="shop.html" class="user-btn">Shop</a>
-            <button class="user-btn" onclick="handleUserSwitch()">✧ <span id="user-display">Player</span></button>
             <div class="coin-display"><span class="coin-count">0</span> Coins</div>
         </div>
     </header>
@@ -500,10 +516,6 @@
         </div>
     </main>
 
-    <!-- FIREBASE LIBRARIES -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
     <script src="script.js"></script>
 
     <script>
@@ -524,32 +536,46 @@
             }
         }
 
-        // LEADERBOARD RENDER LOGIC
-        function updateLeaderboardUI() {
+        // AUTO-SYNC LEADERBOARD & USER STORAGE BRIDGE
+        function syncAndRenderLeaderboard() {
             const listEl = document.getElementById('leaderboard-list');
             if (!listEl) return;
 
-            let scores = [];
-
-            // 1. Read directly from localStorage user records
+            let usersMap = {};
             try {
                 const rawUsers = localStorage.getItem('arcade_users');
                 if (rawUsers) {
-                    const parsed = JSON.parse(rawUsers);
-                    scores = Object.keys(parsed).map(name => ({
-                        name: name,
-                        coins: typeof parsed[name] === 'object' ? (parsed[name].coins || 0) : Number(parsed[name] || 0)
-                    }));
+                    usersMap = JSON.parse(rawUsers);
                 }
             } catch(e) {
-                console.error("Error loading local leaderboard:", e);
+                console.error("Error reading arcade_users:", e);
             }
 
-            // 2. Sort high to low
+            // Ensure the active user is properly represented in the map
+            const currentUser = localStorage.getItem('arcade_current_user') || 'Player';
+            const currentCoins = Number(localStorage.getItem('arcade_coins') || 0);
+
+            if (!usersMap[currentUser]) {
+                usersMap[currentUser] = { coins: currentCoins };
+            } else if (typeof usersMap[currentUser] === 'object') {
+                usersMap[currentUser].coins = Math.max(usersMap[currentUser].coins || 0, currentCoins);
+            } else {
+                usersMap[currentUser] = { coins: Math.max(Number(usersMap[currentUser]) || 0, currentCoins) };
+            }
+
+            // Save back updated map
+            localStorage.setItem('arcade_users', JSON.stringify(usersMap));
+
+            // Convert to sortable array
+            const scores = Object.keys(usersMap).map(name => ({
+                name: name,
+                coins: typeof usersMap[name] === 'object' ? (usersMap[name].coins || 0) : Number(usersMap[name] || 0)
+            }));
+
             scores.sort((a, b) => b.coins - a.coins);
 
             if (scores.length === 0) {
-                listEl.innerHTML = '<li class="leaderboard-item"><span class="name">No profiles saved yet. Click your profile button to start!</span></li>';
+                listEl.innerHTML = '<li class="leaderboard-item"><span class="name">No profiles saved yet. Click your profile name above to start!</span></li>';
                 return;
             }
 
@@ -570,27 +596,29 @@
             if (typeof switchUser === 'function') {
                 switchUser();
             } else {
-                const name = prompt("Enter your name:");
-                if (name) {
-                    localStorage.setItem('arcade_current_user', name);
+                const name = prompt("Enter your profile name:");
+                if (name && name.trim() !== "") {
+                    localStorage.setItem('arcade_current_user', name.trim());
                 }
             }
             if (typeof updateCoinDisplays === 'function') updateCoinDisplays();
-            updateLeaderboardUI();
+            syncAndRenderLeaderboard();
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             loadSavedTheme();
             if (typeof updateCoinDisplays === 'function') updateCoinDisplays();
-            updateLeaderboardUI();
+            syncAndRenderLeaderboard();
         });
 
         window.addEventListener('pageshow', () => {
             loadSavedTheme();
             if (typeof updateCoinDisplays === 'function') updateCoinDisplays();
-            updateLeaderboardUI();
+            syncAndRenderLeaderboard();
         });
+
+        // Periodic check so leaderboard updates right away when returning from a game
+        setInterval(syncAndRenderLeaderboard, 1500);
     </script>
 </body>
-    </html>
-    
+</html>
