@@ -297,6 +297,7 @@
     <header>
         <a href="index.html" class="brand">Arcade ♡</a>
         <div class="header-right">
+            <a href="shop.html" class="user-btn">🛒 Shop</a>
             <button class="user-btn" onclick="switchUser()">✧ <span id="user-display">Player</span></button>
             <div class="coin-display"><span class="coin-count">0</span> Coins</div>
         </div>
@@ -390,9 +391,17 @@
             const listEl = document.getElementById('leaderboard-list');
             if (!listEl) return;
 
-            const scores = getAllScores();
+            let scores = {};
+            try {
+                scores = (typeof getAllScores === 'function') ? getAllScores() : {};
+            } catch (e) {
+                console.error("Error reading scores:", e);
+            }
+
+            // Filter out null, undefined, or missing profiles before rendering
             const sorted = Object.values(scores)
-                .sort((a, b) => b.coins - a.coins);
+                .filter(player => player && typeof player === 'object' && player.name)
+                .sort((a, b) => (b.coins || 0) - (a.coins || 0));
 
             if (sorted.length === 0) {
                 listEl.innerHTML = '<li class="leaderboard-item"><span class="name">No profiles saved yet.</span></li>';
@@ -405,22 +414,23 @@
                 item.className = 'leaderboard-item';
                 item.innerHTML = `
                     <span class="rank">#${index + 1}</span>
-                    <span class="name">${player.name}</span>
-                    <span class="score">${player.coins} Coins</span>
+                    <span class="name">${player.name || 'Anonymous'}</span>
+                    <span class="score">${player.coins || 0} Coins</span>
                 `;
                 listEl.appendChild(item);
             });
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            updateCoinDisplays();
+            if (typeof updateCoinDisplays === 'function') updateCoinDisplays();
             renderLeaderboard();
         });
 
         window.addEventListener('pageshow', () => {
-            updateCoinDisplays();
+            if (typeof updateCoinDisplays === 'function') updateCoinDisplays();
             renderLeaderboard();
         });
     </script>
 </body>
-</html>
+                </html>
+                
