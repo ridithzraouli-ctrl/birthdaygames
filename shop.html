@@ -19,10 +19,10 @@
             min-height: 100vh;
             overflow-x: hidden;
             background:
-                radial-gradient(circle at 12% 12%, #f3dce3 0, transparent 25%),
-                radial-gradient(circle at 88% 82%, #ead3dc 0, transparent 27%),
-                #faf5f2;
-            color: #60434c;
+                radial-gradient(circle at 12% 12%, #dce8f3 0, transparent 25%),
+                radial-gradient(circle at 88% 82%, #d3e2ea 0, transparent 27%),
+                #f2f7fa;
+            color: #3f5260;
             font-family: Georgia, "Times New Roman", serif;
         }
 
@@ -32,34 +32,37 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 18px 30px;
-            background: rgba(255, 255, 255, 0.7);
+            padding: 14px 20px;
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(8px);
-            border-bottom: 1px solid #ead3dc;
+            border-bottom: 1px solid #d3e2ea;
             position: sticky;
             top: 0;
             z-index: 100;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .nav-link { 
-            color: #8f5768; 
+            color: #57788f; 
             text-decoration: none; 
             font-size: 14px; 
             font-weight: normal; 
         }
 
         .nav-link:hover { 
-            color: #60434c; 
+            color: #3f5260; 
         }
 
         .coin-display { 
-            background: #f4ece9; 
-            border: 1px solid #e2d7d3; 
-            padding: 6px 14px; 
+            background: #e9f1f4; 
+            border: 1px solid #d3dfe2; 
+            padding: 6px 12px; 
             border-radius: 100px; 
-            font-size: 13px; 
+            font-size: 12px; 
             font-weight: bold; 
-            color: #8c5565; 
+            color: #55778c; 
+            white-space: nowrap;
         }
 
         /* MAIN LAYOUT */
@@ -67,14 +70,14 @@
         main { 
             max-width: 800px; 
             margin: 0 auto; 
-            padding: 40px 20px; 
+            padding: 30px 20px; 
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
         h1 { 
-            color: #7a4655; 
+            color: #46637a; 
             font-weight: normal; 
             font-size: 26px; 
             margin: 0 0 8px; 
@@ -82,7 +85,7 @@
         }
 
         p.subtitle { 
-            color: #9a6b78; 
+            color: #6b879a; 
             margin: 0 0 32px; 
             font-size: 15px; 
             text-align: center;
@@ -97,7 +100,7 @@
             gap: 11px;
             height: 22px;
             margin-bottom: 25px;
-            color: #b8798b;
+            color: #799eb8;
         }
 
         .ornament.bottom {
@@ -111,7 +114,7 @@
         .ornament i {
             width: 40px;
             height: 1px;
-            background: #d4adb8;
+            background: #adb8d4;
         }
 
         .decorations {
@@ -123,7 +126,7 @@
 
         .decorations span {
             position: absolute;
-            color: #c78b9c;
+            color: #8bb3c7;
             opacity: 0.55;
             animation: float 5s ease-in-out infinite;
         }
@@ -145,25 +148,25 @@
         }
 
         .shop-card {
-            background: #fffdfb;
-            border: 1px solid #ead9dd;
+            background: #fbfdff;
+            border: 1px solid #d9e3ea;
             border-radius: 8px;
             padding: 24px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            box-shadow: 0 4px 15px rgba(91, 52, 65, 0.05);
+            box-shadow: 0 4px 15px rgba(52, 75, 91, 0.05);
             transition: border-color 0.2s, transform 0.2s, background 0.2s;
         }
 
         .shop-card:hover {
-            background: #fff8fa;
-            border-color: #d4adb8;
+            background: #f8faff;
+            border-color: #adb8d4;
             transform: translateY(-2px);
         }
 
         .shop-card h3 { 
-            color: #8a5363; 
+            color: #53708a; 
             font-size: 18px; 
             font-weight: normal; 
             margin: 0 0 8px; 
@@ -171,34 +174,34 @@
 
         .shop-card p { 
             font-size: 14px; 
-            color: #83616a; 
+            color: #617583; 
             margin: 0 0 20px; 
             line-height: 1.5; 
         }
 
         .buy-btn {
-            background: #fffaf9;
-            border: 1px solid #bd8294;
+            background: #f9fcff;
+            border: 1px solid #82a8bd;
             padding: 8px 16px;
             border-radius: 100px;
-            color: #91596c;
+            color: #597d91;
             font-family: Georgia, "Times New Roman", serif;
             font-size: 13px;
             cursor: pointer;
-            box-shadow: 0 3px 10px rgba(91, 52, 65, 0.06);
+            box-shadow: 0 2px 6px rgba(52, 75, 91, 0.05);
             transition: 0.2s ease;
             width: 100%;
         }
 
         .buy-btn:hover:not(:disabled) { 
-            background: #f9e9ed; 
+            background: #e9f3f9; 
             transform: translateY(-1px); 
         }
 
         .buy-btn:disabled { 
-            background: #f4ece9;
-            border-color: #e2d7d3;
-            color: #a89498;
+            background: #e9f1f4;
+            border-color: #d3dfe2;
+            color: #8c9ea8;
             cursor: default; 
             box-shadow: none;
         }
@@ -207,11 +210,11 @@
             display: none;
             margin-top: 16px;
             padding: 12px;
-            background: #faf5f2;
+            background: #f2f7fa;
             border-radius: 6px;
-            border: 1px dashed #ead9dd;
+            border: 1px dashed #d9e3ea;
             font-size: 13px;
-            color: #60434c;
+            color: #3f5260;
             line-height: 1.4;
         }
 
@@ -221,8 +224,8 @@
         }
 
         @media (max-width: 600px) {
-            header { padding: 14px 16px; }
-            main { padding: 24px 12px; }
+            header { padding: 12px 14px; justify-content: center; }
+            main { padding: 20px 12px; }
             .shop-grid { grid-template-columns: 1fr; }
         }
     </style>
