@@ -149,14 +149,34 @@
                 <p>Vs AI or 2 Player.</p>
                 <span class="reward-badge">+10 - 25 Coins</span>
             </a>
-            
+
+            <a href="games/watersort.html" class="game-card">
+                <h3>Water Sort</h3>
+                <p>Sort identical colors into single bottles.</p>
+                <span class="reward-badge">+25 Coins</span>
+            </a>
         </div>
     </main>
 
     <script src="script.js"></script>
     <script>
         function getCoins() {
-            return parseInt(localStorage.getItem('arcade_coins')) || 0;
+            // Checks both key naming conventions for compatibility
+            const key1 = localStorage.getItem('arcade_coins');
+            const key2 = localStorage.getItem('coins');
+            return parseInt(key1 || key2 || 0);
+        }
+
+        function setCoins(amount) {
+            localStorage.setItem('arcade_coins', amount);
+            localStorage.setItem('coins', amount); // Syncs both keys
+        }
+
+        function addCoins(amount) {
+            const current = getCoins();
+            const updated = current + amount;
+            setCoins(updated);
+            updateCoinDisplay();
         }
 
         function updateCoinDisplay() {
@@ -166,6 +186,11 @@
                 el.innerText = coins;
             });
         }
+
+        // Live sync when coins update in another tab or page
+        window.addEventListener('storage', () => {
+            updateCoinDisplay();
+        });
 
         document.addEventListener('DOMContentLoaded', () => {
             updateCoinDisplay();
