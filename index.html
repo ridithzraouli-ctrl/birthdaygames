@@ -32,13 +32,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 18px 30px;
-            background: rgba(255, 255, 255, 0.7);
+            padding: 14px 20px;
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(8px);
             border-bottom: 1px solid #ead3dc;
             position: sticky;
             top: 0;
             z-index: 100;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .brand {
@@ -47,26 +49,29 @@
             color: #8f5768;
             text-decoration: none;
             letter-spacing: 0.5px;
+            line-height: 1.2;
         }
 
         .header-right {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .user-btn {
             background: #fffaf9;
             border: 1px solid #bd8294;
-            padding: 6px 14px;
+            padding: 6px 12px;
             border-radius: 100px;
             color: #91596c;
             font-family: Georgia, "Times New Roman", serif;
-            font-size: 13px;
+            font-size: 12px;
             text-decoration: none;
             cursor: pointer;
-            box-shadow: 0 3px 10px rgba(91, 52, 65, 0.06);
+            box-shadow: 0 2px 6px rgba(91, 52, 65, 0.05);
             transition: 0.2s ease;
+            white-space: nowrap;
         }
 
         .user-btn:hover {
@@ -77,11 +82,12 @@
         .coin-display {
             background: #f4ece9;
             border: 1px solid #e2d7d3;
-            padding: 6px 14px;
+            padding: 6px 12px;
             border-radius: 100px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
             color: #8c5565;
+            white-space: nowrap;
         }
 
         /* MAIN LAYOUT */
@@ -89,7 +95,7 @@
         main {
             max-width: 800px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 30px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -270,10 +276,15 @@
 
         @media (max-width: 600px) {
             header {
-                padding: 14px 16px;
+                padding: 12px 14px;
+                justify-content: center;
+            }
+            .header-right {
+                justify-content: center;
+                width: 100%;
             }
             main {
-                padding: 24px 12px;
+                padding: 20px 12px;
             }
             .games-grid {
                 grid-template-columns: 1fr;
@@ -297,7 +308,7 @@
     <header>
         <a href="index.html" class="brand">Arcade ♡</a>
         <div class="header-right">
-            <a href="shop.html" class="user-btn">🛒 Shop</a>
+            <a href="shop.html" class="user-btn">Shop</a>
             <button class="user-btn" onclick="switchUser()">✧ <span id="user-display">Player</span></button>
             <div class="coin-display"><span class="coin-count">0</span> Coins</div>
         </div>
@@ -398,7 +409,6 @@
                 console.error("Error reading scores:", e);
             }
 
-            // Filter out null, undefined, or missing profiles before rendering
             const sorted = Object.values(scores)
                 .filter(player => player && typeof player === 'object' && player.name)
                 .sort((a, b) => (b.coins || 0) - (a.coins || 0));
@@ -432,5 +442,4 @@
         });
     </script>
 </body>
-                </html>
-                
+</html>
