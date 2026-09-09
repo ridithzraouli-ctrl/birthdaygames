@@ -18,12 +18,10 @@
         body {
             min-height: 100vh;
             overflow-x: hidden;
-            background:
-                radial-gradient(circle at 12% 12%, #dce8f3 0, transparent 25%),
-                radial-gradient(circle at 88% 82%, #d3e2ea 0, transparent 27%),
-                #f2f7fa;
+            background: #f2f7fa;
             color: #3f5260;
             font-family: Georgia, "Times New Roman", serif;
+            transition: background-color 0.3s ease;
         }
 
         /* HEADER & NAVBAR */
@@ -59,7 +57,7 @@
             flex-wrap: wrap;
         }
 
-        .user-btn {
+        .user-btn, .color-picker-wrapper {
             background: #f9fcff;
             border: 1px solid #82a8bd;
             padding: 6px 12px;
@@ -72,11 +70,33 @@
             box-shadow: 0 2px 6px rgba(52, 75, 91, 0.05);
             transition: 0.2s ease;
             white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .user-btn:hover {
+        .user-btn:hover, .color-picker-wrapper:hover {
             background: #e9f3f9;
             transform: translateY(-1px);
+        }
+
+        .color-picker-input {
+            border: none;
+            width: 18px;
+            height: 18px;
+            padding: 0;
+            background: none;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .color-picker-input::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        .color-picker-input::-webkit-color-swatch {
+            border: 1px solid #82a8bd;
+            border-radius: 50%;
         }
 
         .coin-display {
@@ -176,7 +196,7 @@
         }
 
         .game-card {
-            background: #fbfdff;
+            background: rgba(251, 253, 255, 0.9);
             border: 1px solid #d9e3ea;
             border-radius: 8px;
             padding: 24px;
@@ -187,7 +207,7 @@
         }
 
         .game-card:hover {
-            background: #f8faff;
+            background: #ffffff;
             border-color: #adb8d4;
             transform: translateY(-2px);
         }
@@ -218,7 +238,7 @@
         /* LEADERBOARD CARD */
 
         .leaderboard-card {
-            background: #fbfdff;
+            background: rgba(251, 253, 255, 0.9);
             border: 1px solid #d9e3ea;
             border-radius: 8px;
             padding: 24px;
@@ -248,7 +268,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 10px 14px;
-            background: #f2f7fa;
+            background: rgba(242, 247, 250, 0.85);
             border: 1px solid #d9e3ea;
             border-radius: 6px;
             font-size: 14px;
@@ -277,11 +297,10 @@
         @media (max-width: 600px) {
             header {
                 padding: 12px 14px;
-                justify-content: center;
+                justify-content: space-between;
             }
             .header-right {
-                justify-content: center;
-                width: 100%;
+                justify-content: flex-end;
             }
             main {
                 padding: 20px 12px;
@@ -308,6 +327,12 @@
     <header>
         <a href="index.html" class="brand">Arcade ♡</a>
         <div class="header-right">
+            <!-- Background Color Picker -->
+            <label class="color-picker-wrapper" title="Change Background Color">
+                <span>🎨 Theme</span>
+                <input type="color" id="bg-color-picker" class="color-picker-input" value="#f2f7fa">
+            </label>
+
             <a href="shop.html" class="user-btn">Shop</a>
             <button class="user-btn" onclick="switchUser()">✧ <span id="user-display">Player</span></button>
             <div class="coin-display"><span class="coin-count">0</span> Coins</div>
@@ -383,7 +408,7 @@
         </div>
 
         <div class="leaderboard-card">
-            <h2>✦ Leaderboard ✦</h2>
+            <h2>✦ Global Leaderboard ✦</h2>
             <ul class="leaderboard-list" id="leaderboard-list"></ul>
         </div>
 
@@ -396,49 +421,85 @@
         </div>
     </main>
 
-    <script src="script.js"></script>
+    <!-- FIREBASE LIBRARIES -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
     <script>
-        function renderLeaderboard() {
+        // FIREBASE SETUP
+        const firebaseConfig = {
+          apiKey: "AIzaSyADjbuYXQzbRQU2PZZUKjcogDAixgyr_NQ",
+          authDomain: "my-arcade-app-1a2ae.firebaseapp.com",
+          databaseURL: "https://my-arcade-app-1a2ae-default-rtdb.firebaseio.com",
+          projectId: "my-arcade-app-1a2ae",
+          storageBucket: "my-arcade-app-1a2ae.firebasestorage.app",
+          messagingSenderId: "650926380080",
+          appId: "1:650926380080:web:ed2576989f47ee3e2b89f5"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+    </script>
+
+    <script src="script.js"></script>
+
+    <script>
+        // BACKGROUND COLOR LOGIC
+        const colorPicker = document.getElementById('bg-color-picker');
+
+        function applySavedBgColor() {
+            const savedColor = localStorage.getItem('arcade_bg_color');
+            if (savedColor) {
+                document.body.style.backgroundColor = savedColor;
+                if (colorPicker) colorPicker.value = savedColor;
+            }
+        }
+
+        if (colorPicker) {
+            colorPicker.addEventListener('input', (e) => {
+                const newColor = e.target.value;
+                document.body.style.backgroundColor = newColor;
+                localStorage.setItem('arcade_bg_color', newColor);
+            });
+        }
+
+        // GLOBAL LEADERBOARD LOGIC
+        function listenToGlobalLeaderboard() {
             const listEl = document.getElementById('leaderboard-list');
             if (!listEl) return;
 
-            let scores = {};
-            try {
-                scores = (typeof getAllScores === 'function') ? getAllScores() : {};
-            } catch (e) {
-                console.error("Error reading scores:", e);
-            }
+            database.ref('leaderboard').orderByChild('coins').limitToLast(10).on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (!data) {
+                    listEl.innerHTML = '<li class="leaderboard-item"><span class="name">No profiles saved yet.</span></li>';
+                    return;
+                }
 
-            const sorted = Object.values(scores)
-                .filter(player => player && typeof player === 'object' && player.name)
-                .sort((a, b) => (b.coins || 0) - (a.coins || 0));
+                const sorted = Object.values(data).sort((a, b) => b.coins - a.coins);
 
-            if (sorted.length === 0) {
-                listEl.innerHTML = '<li class="leaderboard-item"><span class="name">No profiles saved yet.</span></li>';
-                return;
-            }
-
-            listEl.innerHTML = '';
-            sorted.slice(0, 10).forEach((player, index) => {
-                const item = document.createElement('li');
-                item.className = 'leaderboard-item';
-                item.innerHTML = `
-                    <span class="rank">#${index + 1}</span>
-                    <span class="name">${player.name || 'Anonymous'}</span>
-                    <span class="score">${player.coins || 0} Coins</span>
-                `;
-                listEl.appendChild(item);
+                listEl.innerHTML = '';
+                sorted.forEach((player, index) => {
+                    const item = document.createElement('li');
+                    item.className = 'leaderboard-item';
+                    item.innerHTML = `
+                        <span class="rank">#${index + 1}</span>
+                        <span class="name">${player.name || 'Anonymous'}</span>
+                        <span class="score">${player.coins || 0} Coins</span>
+                    `;
+                    listEl.appendChild(item);
+                });
             });
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            applySavedBgColor();
             if (typeof updateCoinDisplays === 'function') updateCoinDisplays();
-            renderLeaderboard();
+            listenToGlobalLeaderboard();
         });
 
         window.addEventListener('pageshow', () => {
+            applySavedBgColor();
             if (typeof updateCoinDisplays === 'function') updateCoinDisplays();
-            renderLeaderboard();
         });
     </script>
 </body>
