@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Water Sort</title>
+    <style>
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #faf7f5;
+            color: #4a3e3d;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            user-select: none;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 24px;
+            background: #ffffff;
+            border-bottom: 1px solid #eee8e5;
+            position: relative;
+            z-index: 100;
+        }
+
+        .header-left, .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-link { color: #7d6b6d; text-decoration: none; font-size: 14px; font-weight: 500; cursor: pointer; }
+        .nav-link:hover { color: #4a3e3d; }
+        .coin-display { background: #f4ece9; border: 1px solid #e2d7d3; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; color: #635052; }
+
+        main {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        h1 { color: #4a3e3d; font-weight: 500; font-size: 24px; margin: 0 0 4px; }
+        p.subtitle { color: #8c7b7d; margin: 0 0 20px; font-size: 14px; text-align: center; }
+
+        .game-card {
+            background: #ffffff;
+            border: 1px solid #eee8e5;
+            border-radius: 8px;
+            padding: 24px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .controls-row {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .level-badge {
+            background: #f4ece9;
+            color: #635052;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: 1px solid #d1c4c0;
+            border-radius: 6px;
+            background: #ffffff;
+            color: #4a3e3d;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn:hover { background: #faf7f5; }
+
+        .bottles-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px 16px;
+            width: 100%;
+            padding: 10px 0;
+        }
+
+        .bottle {
+            width: 44px;
+            height: 140px;
+            border: 3px solid #d1c4c0;
+            border-top: none;
+            border-radius: 0 0 16px 16px;
+            display: flex;
+            flex-direction: column-reverse;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            background: rgba(255, 255, 255, 0.6);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .bottle::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -4px;
+            right: -4px;
+            height: 6px;
+            border: 3px solid #d1c4c0;
+            border-radius: 4px;
+            background: #ffffff;
+        }
+
+        .bottle.selected {
+            transform: translateY(-16px);
+            border-color: #a26778;
+        }
+
+        .bottle.selected::before {
+            border-color: #a26778;
+        }
+
+        .water-segment {
+            width: 100%;
+            height: 25%;
+            transition: height 0.3s ease, background-color 0.3s ease;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.3);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 24px;
+            max-width: 320px;
+            width: 90%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <a onclick="goBack()" class="nav-link">← Back to Games</a>
+        </div>
+        <div class="header-right">
+            <div class="coin-display"><span class="coin-count">0</span> Coins</div>
+        </div>
+    </header>
+
+    <main>
+        <h1>Water Sort</h1>
+        <p class="subtitle">Sort identical colors into single bottles.</p>
+
+        <div class="game-card">
+            <div class="controls-row">
+                <span class="level-badge" id="level-display">LEVEL 1</span>
+                <button class="btn" onclick="restartLevel()">Reset Bottle</button>
+            </div>
+
+            <div class="bottles-container" id="bottles-container"></div>
+        </div>
+    </main>
+
+    <div id="reward-modal" class="modal-overlay">
+        <div class="modal-card">
+            <h2 id="modal-title" style="font-size: 20px; margin: 0 0 10px;">Level Clear!</h2>
+            <p id="modal-desc" style="color: #8c7b7d; font-size: 14px; margin: 0 0 20px;">You organized all liquids and earned 25 Coins!</p>
+            <button class="btn" onclick="nextLevel()" style="width: 100%;">Next Level</button>
+        </div>
+    </div>
+
+    <script src="../script.js"></script>
+    <script>
+        const AudioFX = {
+            ctx: null,
+            init() {
+                if (!this.ctx) {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    if (AudioCtx) this.ctx = new AudioCtx();
+                }
+            },
+            play(type) {
+                this.init();
+                if (!this.ctx) return;
+                if (this.ctx.state === 'suspended') this.ctx.resume();
+
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+
+                if (type === 'select') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(350, now);
+                    gain.gain.setValueAtTime(0.05, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                    osc.start(now);
+                    osc.stop(now + 0.05);
+                } else if (type === 'pour') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(450, now);
+                    osc.frequency.exponentialRampToValueAtTime(600, now + 0.12);
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+                    osc.start(now);
+                    osc.stop(now + 0.12);
+                } else if (type === 'win') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, now);
+                    osc.frequency.setValueAtTime(659.25, now + 0.08);
+                    osc.frequency.setValueAtTime(783.99, now + 0.16);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+                    osc.start(now);
+                    osc.stop(now + 0.35);
+                }
+            }
+        };
+
+        const COLOR_PALETTE = [
+            '#b85b56', // Soft Red
+            '#5b8868', // Soft Green
+            '#5a7d9a', // Soft Blue
+            '#d4a359', // Gold/Yellow
+            '#8d6380', // Purple
+            '#c78351'  // Orange
+        ];
+
+        let currentLevel = 1;
+        let bottles = [];
+        let selectedBottleIdx = null;
+
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = '../index.html';
+            }
+        }
+
+        function initLevel() {
+            selectedBottleIdx = null;
+            document.getElementById('level-display').innerText = `LEVEL ${currentLevel}`;
+            
+            // Generate color sets based on level
+            const numColors = Math.min(3 + Math.floor(currentLevel / 2), 6);
+            let pool = [];
+            
+            for (let i = 0; i < numColors; i++) {
+                for (let j = 0; j < 4; j++) {
+                    pool.push(COLOR_PALETTE[i]);
+                }
+            }
+
+            // Shuffle color pool
+            pool.sort(() => Math.random() - 0.5);
+
+            // Create bottles (colors + 2 empty bottles)
+            bottles = [];
+            for (let i = 0; i < numColors; i++) {
+                bottles.push(pool.slice(i * 4, (i + 1) * 4));
+            }
+            bottles.push([]); // Empty 1
+            bottles.push([]); // Empty 2
+
+            renderBottles();
+        }
+
+        function renderBottles() {
+            const container = document.getElementById('bottles-container');
+            container.innerHTML = '';
+
+            bottles.forEach((bottle, idx) => {
+                const bDiv = document.createElement('div');
+                bDiv.className = `bottle ${selectedBottleIdx === idx ? 'selected' : ''}`;
+                bDiv.onclick = () => handleBottleClick(idx);
+
+                bottle.forEach(color => {
+                    const seg = document.createElement('div');
+                    seg.className = 'water-segment';
+                    seg.style.backgroundColor = color;
+                    bDiv.appendChild(seg);
+                });
+
+                container.appendChild(bDiv);
+            });
+        }
+
+        function handleBottleClick(idx) {
+            if (selectedBottleIdx === null) {
+                // Select bottle if not empty
+                if (bottles[idx].length > 0) {
+                    selectedBottleIdx = idx;
+                    AudioFX.play('select');
+                }
+            } else if (selectedBottleIdx === idx) {
+                // Deselect
+                selectedBottleIdx = null;
+                AudioFX.play('select');
+            } else {
+                // Attempt Pour
+                pourWater(selectedBottleIdx, idx);
+            }
+            renderBottles();
+        }
+
+        function pourWater(fromIdx, toIdx) {
+            const fromBottle = bottles[fromIdx];
+            const toBottle = bottles[toIdx];
+
+            if (fromBottle.length === 0) return;
+            if (toBottle.length >= 4) {
+                selectedBottleIdx = idx; // Switch selection if target is full
+                return;
+            }
+
+            const topColor = fromBottle[fromBottle.length - 1];
+
+            // Valid if destination is empty or matching color
+            if (toBottle.length === 0 || toBottle[toBottle.length - 1] === topColor) {
+                while (fromBottle.length > 0 && 
+                       fromBottle[fromBottle.length - 1] === topColor && 
+                       toBottle.length < 4) {
+                    toBottle.push(fromBottle.pop());
+                }
+                AudioFX.play('pour');
+                selectedBottleIdx = null;
+                checkWinCondition();
+            } else {
+                // Switch selection to new bottle
+                selectedBottleIdx = toIdx;
+                AudioFX.play('select');
+            }
+        }
+
+        function checkWinCondition() {
+            const isSolved = bottles.every(b => b.length === 0 || (b.length === 4 && b.every(color => color === b[0])));
+
+            if (isSolved) {
+                AudioFX.play('win');
+                if (typeof addCoins === 'function') addCoins(25);
+                setTimeout(() => {
+                    document.getElementById('reward-modal').style.display = 'flex';
+                }, 300);
+            }
+        }
+
+        function restartLevel() {
+            initLevel();
+        }
+
+        function nextLevel() {
+            document.getElementById('reward-modal').style.display = 'none';
+            currentLevel++;
+            initLevel();
+        }
+
+        // Start initial game
+        initLevel();
+    </script>
+</body>
+              </html>
+              
