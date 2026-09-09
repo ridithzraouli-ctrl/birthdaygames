@@ -5,148 +5,408 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop</title>
     <style>
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body {
-            margin: 0;
-            min-height: 100vh;
-            background: #faf7f5;
-            color: #4a3e3d;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
         }
+
+        html, body {
+            margin: 0;
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+            background:
+                radial-gradient(circle at 12% 12%, #f3dce3 0, transparent 25%),
+                radial-gradient(circle at 88% 82%, #ead3dc 0, transparent 27%),
+                #faf5f2;
+            color: #60434c;
+            font-family: Georgia, "Times New Roman", serif;
+        }
+
+        /* HEADER & NAVBAR */
 
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 18px 30px;
-            background: #ffffff;
-            border-bottom: 1px solid #eee8e5;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid #ead3dc;
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
-        .nav-link { color: #7d6b6d; text-decoration: none; font-size: 14px; font-weight: 500; }
-        .nav-link:hover { color: #4a3e3d; }
-        .coin-display { background: #f4ece9; border: 1px solid #e2d7d3; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; color: #635052; }
+        .nav-link { 
+            color: #8f5768; 
+            text-decoration: none; 
+            font-size: 14px; 
+            font-weight: normal; 
+        }
 
-        main { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
-        h1 { color: #4a3e3d; font-weight: 500; font-size: 24px; margin: 0 0 8px; }
-        p.subtitle { color: #8c7b7d; margin: 0 0 32px; font-size: 15px; }
+        .nav-link:hover { 
+            color: #60434c; 
+        }
+
+        .coin-display { 
+            background: #f4ece9; 
+            border: 1px solid #e2d7d3; 
+            padding: 6px 14px; 
+            border-radius: 100px; 
+            font-size: 13px; 
+            font-weight: bold; 
+            color: #8c5565; 
+        }
+
+        /* MAIN LAYOUT */
+
+        main { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 40px 20px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 { 
+            color: #7a4655; 
+            font-weight: normal; 
+            font-size: 26px; 
+            margin: 0 0 8px; 
+            text-align: center;
+        }
+
+        p.subtitle { 
+            color: #9a6b78; 
+            margin: 0 0 32px; 
+            font-size: 15px; 
+            text-align: center;
+        }
+
+        /* ORNAMENTS & DECORATIONS */
+
+        .ornament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 11px;
+            height: 22px;
+            margin-bottom: 25px;
+            color: #b8798b;
+        }
+
+        .ornament.bottom {
+            margin: 35px 0 0;
+        }
+
+        .ornament span {
+            font-size: 16px;
+        }
+
+        .ornament i {
+            width: 40px;
+            height: 1px;
+            background: #d4adb8;
+        }
+
+        .decorations {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .decorations span {
+            position: absolute;
+            color: #c78b9c;
+            opacity: 0.55;
+            animation: float 5s ease-in-out infinite;
+        }
+
+        .decorations span:nth-child(1) { top: 8%; left: 8%; font-size: 20px; }
+        .decorations span:nth-child(2) { top: 16%; right: 10%; font-size: 13px; }
+        .decorations span:nth-child(3) { top: 42%; left: 5%; font-size: 12px; }
+        .decorations span:nth-child(4) { top: 37%; right: 5%; font-size: 20px; }
+        .decorations span:nth-child(5) { bottom: 18%; left: 9%; font-size: 12px; }
+        .decorations span:nth-child(6) { bottom: 25%; right: 8%; font-size: 17px; }
+
+        /* SHOP GRID & CARDS */
 
         .shop-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 20px;
+            width: 100%;
         }
 
         .shop-card {
-            background: #ffffff;
-            border: 1px solid #eee8e5;
+            background: #fffdfb;
+            border: 1px solid #ead9dd;
             border-radius: 8px;
             padding: 24px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            box-shadow: 0 4px 15px rgba(91, 52, 65, 0.05);
+            transition: border-color 0.2s, transform 0.2s, background 0.2s;
         }
 
-        .shop-card h3 { color: #4a3e3d; font-size: 17px; font-weight: 600; margin: 0 0 6px; }
-        .shop-card p { font-size: 14px; color: #8c7b7d; margin: 0 0 20px; line-height: 1.4; }
+        .shop-card:hover {
+            background: #fff8fa;
+            border-color: #d4adb8;
+            transform: translateY(-2px);
+        }
+
+        .shop-card h3 { 
+            color: #8a5363; 
+            font-size: 18px; 
+            font-weight: normal; 
+            margin: 0 0 8px; 
+        }
+
+        .shop-card p { 
+            font-size: 14px; 
+            color: #83616a; 
+            margin: 0 0 20px; 
+            line-height: 1.5; 
+        }
 
         .buy-btn {
-            padding: 10px 18px;
-            border: 1px solid #d1c4c0;
-            border-radius: 6px;
-            background: #ffffff;
-            color: #4a3e3d;
+            background: #fffaf9;
+            border: 1px solid #bd8294;
+            padding: 8px 16px;
+            border-radius: 100px;
+            color: #91596c;
+            font-family: Georgia, "Times New Roman", serif;
             font-size: 13px;
-            font-weight: 500;
             cursor: pointer;
-            transition: background 0.2s;
+            box-shadow: 0 3px 10px rgba(91, 52, 65, 0.06);
+            transition: 0.2s ease;
             width: 100%;
         }
 
-        .buy-btn:hover { background: #faf7f5; }
-        .buy-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .buy-btn:hover:not(:disabled) { 
+            background: #f9e9ed; 
+            transform: translateY(-1px); 
+        }
+
+        .buy-btn:disabled { 
+            background: #f4ece9;
+            border-color: #e2d7d3;
+            color: #a89498;
+            cursor: default; 
+            box-shadow: none;
+        }
 
         .unlocked-content {
             display: none;
             margin-top: 16px;
             padding: 12px;
-            background: #faf7f5;
+            background: #faf5f2;
             border-radius: 6px;
-            border: 1px solid #eee8e5;
-            font-size: 14px;
-            color: #4a3e3d;
+            border: 1px dashed #ead9dd;
+            font-size: 13px;
+            color: #60434c;
+            line-height: 1.4;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0); }
+            50% { transform: translateY(-7px) rotate(7deg); }
+        }
+
+        @media (max-width: 600px) {
+            header { padding: 14px 16px; }
+            main { padding: 24px 12px; }
+            .shop-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
+    <div class="decorations">
+        <span>+</span>
+        <span>*</span>
+        <span>+</span>
+        <span>*</span>
+        <span>+</span>
+        <span>*</span>
+    </div>
+
     <header>
-        <a href="index.html" class="nav-link">← Games</a>
+        <a href="index.html" class="nav-link">&lt; Games</a>
         <div class="coin-display"><span class="coin-count">0</span> Coins</div>
     </header>
 
     <main>
-        <h1>Shop</h1>
-        <p class="subtitle">Exchange coins to unlock items.</p>
+        <div class="ornament">
+            <span>+</span>
+            <i></i>
+            <span>*</span>
+            <i></i>
+            <span>+</span>
+        </div>
+
+        <h1>Gift Shop</h1>
+        <p class="subtitle">Exchange your coins to unlock special gifts.</p>
 
         <div class="shop-grid">
             
-            <!-- ITEM 1 -->
-            <div class="shop-card" id="item-1">
+            <!-- GIFT 1 -->
+            <div class="shop-card" id="gift-1">
                 <div>
-                    <h3>Item 1 Title</h3>
-                    <p>Item 1 description goes here.</p>
+                    <h3>Gift 1</h3>
+                    <p>Description for gift 1 goes here.</p>
                 </div>
-                <button class="buy-btn" onclick="buyItem('item-1', 50)">Unlock (50 Coins)</button>
+                <button class="buy-btn" onclick="buyItem('gift-1', 50)">Unlock (50 Coins)</button>
                 <div class="unlocked-content">
-                    Add unlocked text, images, or content here.
+                    Unlocked content or reward for gift 1 goes here.
                 </div>
             </div>
 
-            <!-- ITEM 2 -->
-            <div class="shop-card" id="item-2">
+            <!-- GIFT 2 -->
+            <div class="shop-card" id="gift-2">
                 <div>
-                    <h3>Item 2 Title</h3>
-                    <p>Item 2 description goes here.</p>
+                    <h3>Gift 2</h3>
+                    <p>Description for gift 2 goes here.</p>
                 </div>
-                <button class="buy-btn" onclick="buyItem('item-2', 100)">Unlock (100 Coins)</button>
+                <button class="buy-btn" onclick="buyItem('gift-2', 100)">Unlock (100 Coins)</button>
                 <div class="unlocked-content">
-                    Add unlocked text, images, or content here.
+                    Unlocked content or reward for gift 2 goes here.
                 </div>
             </div>
 
-            <!-- ITEM 3 -->
-            <div class="shop-card" id="item-3">
+            <!-- GIFT 3 -->
+            <div class="shop-card" id="gift-3">
                 <div>
-                    <h3>Item 3 Title</h3>
-                    <p>Item 3 description goes here.</p>
+                    <h3>Gift 3</h3>
+                    <p>Description for gift 3 goes here.</p>
                 </div>
-                <button class="buy-btn" onclick="buyItem('item-3', 150)">Unlock (150 Coins)</button>
+                <button class="buy-btn" onclick="buyItem('gift-3', 150)">Unlock (150 Coins)</button>
                 <div class="unlocked-content">
-                    Add unlocked text, images, or content here.
+                    Unlocked content or reward for gift 3 goes here.
                 </div>
             </div>
 
+            <!-- GIFT 4 -->
+            <div class="shop-card" id="gift-4">
+                <div>
+                    <h3>Gift 4</h3>
+                    <p>Description for gift 4 goes here.</p>
+                </div>
+                <button class="buy-btn" onclick="buyItem('gift-4', 200)">Unlock (200 Coins)</button>
+                <div class="unlocked-content">
+                    Unlocked content or reward for gift 4 goes here.
+                </div>
+            </div>
+
+            <!-- GIFT 5 -->
+            <div class="shop-card" id="gift-5">
+                <div>
+                    <h3>Gift 5</h3>
+                    <p>Description for gift 5 goes here.</p>
+                </div>
+                <button class="buy-btn" onclick="buyItem('gift-5', 250)">Unlock (250 Coins)</button>
+                <div class="unlocked-content">
+                    Unlocked content or reward for gift 5 goes here.
+                </div>
+            </div>
+
+            <!-- GIFT 6 -->
+            <div class="shop-card" id="gift-6">
+                <div>
+                    <h3>Gift 6</h3>
+                    <p>Description for gift 6 goes here.</p>
+                </div>
+                <button class="buy-btn" onclick="buyItem('gift-6', 300)">Unlock (300 Coins)</button>
+                <div class="unlocked-content">
+                    Unlocked content or reward for gift 6 goes here.
+                </div>
+            </div>
+
+            <!-- GIFT 7 -->
+            <div class="shop-card" id="gift-7">
+                <div>
+                    <h3>Gift 7</h3>
+                    <p>Description for gift 7 goes here.</p>
+                </div>
+                <button class="buy-btn" onclick="buyItem('gift-7', 350)">Unlock (350 Coins)</button>
+                <div class="unlocked-content">
+                    Unlocked content or reward for gift 7 goes here.
+                </div>
+            </div>
+
+            <!-- GIFT 8 -->
+            <div class="shop-card" id="gift-8">
+                <div>
+                    <h3>Gift 8</h3>
+                    <p>Description for gift 8 goes here.</p>
+                </div>
+                <button class="buy-btn" onclick="buyItem('gift-8', 400)">Unlock (400 Coins)</button>
+                <div class="unlocked-content">
+                    Unlocked content or reward for gift 8 goes here.
+                </div>
+            </div>
+
+            <!-- GIFT 9 -->
+            <div class="shop-card" id="gift-9">
+                <div>
+                    <h3>Gift 9</h3>
+                    <p>Description for gift 9 goes here.</p>
+                </div>
+                <button class="buy-btn" onclick="buyItem('gift-9', 500)">Unlock (500 Coins)</button>
+                <div class="unlocked-content">
+                    Unlocked content or reward for gift 9 goes here.
+                </div>
+            </div>
+
+        </div>
+
+        <div class="ornament bottom">
+            <span>+</span>
+            <i></i>
+            <span>*</span>
+            <i></i>
+            <span>+</span>
         </div>
     </main>
 
     <script src="script.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            ['item-1', 'item-2', 'item-3'].forEach(itemId => {
+            document.querySelectorAll('.shop-card').forEach(card => {
+                const itemId = card.id;
                 if (localStorage.getItem(itemId + '_unlocked') === 'true') {
                     revealItem(itemId);
                 }
             });
+
+            if (typeof updateCoinDisplays === 'function') {
+                updateCoinDisplays();
+            }
         });
 
         function buyItem(itemId, cost) {
             if (localStorage.getItem(itemId + '_unlocked') === 'true') return;
 
-            if (spendCoins(cost)) {
+            let success = false;
+            if (typeof spendCoins === 'function') {
+                success = spendCoins(cost);
+            } else {
+                const currentCoins = parseInt(localStorage.getItem('arcade_coins') || '0', 10);
+                if (currentCoins >= cost) {
+                    localStorage.setItem('arcade_coins', (currentCoins - cost).toString());
+                    if (typeof updateCoinDisplays === 'function') updateCoinDisplays();
+                    success = true;
+                }
+            }
+
+            if (success) {
                 localStorage.setItem(itemId + '_unlocked', 'true');
                 revealItem(itemId);
             } else {
@@ -156,12 +416,18 @@
 
         function revealItem(itemId) {
             const card = document.getElementById(itemId);
+            if (!card) return;
+
             const btn = card.querySelector('.buy-btn');
             const content = card.querySelector('.unlocked-content');
 
-            btn.innerText = 'Unlocked';
-            btn.disabled = true;
-            content.style.display = 'block';
+            if (btn) {
+                btn.innerText = 'Unlocked';
+                btn.disabled = true;
+            }
+            if (content) {
+                content.style.display = 'block';
+            }
         }
     </script>
 </body>
