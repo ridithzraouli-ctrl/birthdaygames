@@ -27,16 +27,19 @@
         }
 
         .brand { font-weight: 600; font-size: 16px; color: #4a3e3d; text-decoration: none; }
-        .header-right { display: flex; align-items: center; gap: 20px; }
+        .header-right { display: flex; align-items: center; gap: 16px; }
         
-        .shop-link {
+        .user-btn {
+            background: #faf7f5;
+            border: 1px solid #e2d7d3;
+            padding: 6px 12px;
+            border-radius: 20px;
             color: #7d6b6d;
-            text-decoration: none;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
-            transition: color 0.2s;
+            cursor: pointer;
         }
-        .shop-link:hover { color: #4a3e3d; }
+        .user-btn:hover { color: #4a3e3d; border-color: #d1c4c0; }
 
         .coin-display {
             background: #f4ece9;
@@ -56,6 +59,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 20px;
+            margin-bottom: 32px;
         }
 
         .game-card {
@@ -66,16 +70,12 @@
             text-decoration: none;
             color: inherit;
             transition: border-color 0.2s, transform 0.2s;
-            cursor: pointer;
         }
 
-        .game-card:hover {
-            border-color: #d1c4c0;
-            transform: translateY(-2px);
-        }
-
+        .game-card:hover { border-color: #d1c4c0; transform: translateY(-2px); }
         .game-card h3 { color: #4a3e3d; font-weight: 600; margin: 0 0 8px; font-size: 17px; }
         .game-card p { font-size: 14px; color: #8c7b7d; margin: 0 0 16px; line-height: 1.4; }
+        
         .reward-badge {
             display: inline-block;
             background: #f4ece9;
@@ -85,6 +85,56 @@
             font-size: 12px;
             font-weight: 500;
         }
+
+        .leaderboard-card {
+            background: #ffffff;
+            border: 1px solid #eee8e5;
+            border-radius: 8px;
+            padding: 24px;
+        }
+
+        .leaderboard-card h2 {
+            font-size: 18px;
+            margin: 0 0 16px;
+            color: #4a3e3d;
+            font-weight: 600;
+        }
+
+        .leaderboard-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
+            background: #faf7f5;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .leaderboard-item .rank {
+            font-weight: 700;
+            color: #8c7b7d;
+            width: 30px;
+        }
+
+        .leaderboard-item .name {
+            flex: 1;
+            font-weight: 600;
+            color: #4a3e3d;
+        }
+
+        .leaderboard-item .score {
+            font-weight: 600;
+            color: #635052;
+        }
     </style>
 </head>
 <body>
@@ -92,14 +142,14 @@
     <header>
         <a href="index.html" class="brand">Arcade</a>
         <div class="header-right">
-            <a href="shop.html" class="shop-link">Shop -></a>
+            <button class="user-btn" onclick="switchUser()">👤 <span id="user-display">Player</span></button>
             <div class="coin-display"><span class="coin-count">0</span> Coins</div>
         </div>
     </header>
 
     <main>
         <h1>Games</h1>
-        <p class="subtitle">Play games to earn coins for the shop.</p>
+        <p class="subtitle">Play games to earn coins for your profile.</p>
 
         <div class="games-grid">
             <a href="games/sudoku.html" class="game-card">
@@ -156,44 +206,50 @@
                 <span class="reward-badge">+25 Coins</span>
             </a>
         </div>
+
+        <div class="leaderboard-card">
+            <h2>🏆 Local Leaderboard</h2>
+            <ul class="leaderboard-list" id="leaderboard-list"></ul>
+        </div>
     </main>
 
     <script src="script.js"></script>
     <script>
-        function getCoins() {
-            // Checks both key naming conventions for compatibility
-            const key1 = localStorage.getItem('arcade_coins');
-            const key2 = localStorage.getItem('coins');
-            return parseInt(key1 || key2 || 0);
-        }
+        function renderLeaderboard() {
+            const listEl = document.getElementById('leaderboard-list');
+            if (!listEl) return;
 
-        function setCoins(amount) {
-            localStorage.setItem('arcade_coins', amount);
-            localStorage.setItem('coins', amount); // Syncs both keys
-        }
+            const scores = getAllScores();
+            const sorted = Object.keys(scores)
+                .map(user => ({ name: user, coins: scores[user] }))
+                .sort((a, b) => b.coins - a.coins);
 
-        function addCoins(amount) {
-            const current = getCoins();
-            const updated = current + amount;
-            setCoins(updated);
-            updateCoinDisplay();
-        }
+            if (sorted.length === 0) {
+                listEl.innerHTML = '<li class="leaderboard-item"><span class="name">No profiles saved yet.</span></li>';
+                return;
+            }
 
-        function updateCoinDisplay() {
-            const coins = getCoins();
-            const coinElements = document.querySelectorAll('.coin-count');
-            coinElements.forEach(el => {
-                el.innerText = coins;
+            listEl.innerHTML = '';
+            sorted.slice(0, 10).forEach((player, index) => {
+                const item = document.createElement('li');
+                item.className = 'leaderboard-item';
+                item.innerHTML = `
+                    <span class="rank">#${index + 1}</span>
+                    <span class="name">${player.name}</span>
+                    <span class="score">${player.coins} Coins</span>
+                `;
+                listEl.appendChild(item);
             });
         }
 
-        // Live sync when coins update in another tab or page
-        window.addEventListener('storage', () => {
-            updateCoinDisplay();
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCoinDisplays();
+            renderLeaderboard();
         });
 
-        document.addEventListener('DOMContentLoaded', () => {
-            updateCoinDisplay();
+        window.addEventListener('pageshow', () => {
+            updateCoinDisplays();
+            renderLeaderboard();
         });
     </script>
 </body>
