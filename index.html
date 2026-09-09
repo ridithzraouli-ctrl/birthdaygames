@@ -5,6 +5,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arcade ♡</title>
     <style>
+        /* COLOR THEMES */
+        :root {
+            --bg-base: #f2f7fa;
+            --bg-grad-1: #dce8f3;
+            --bg-grad-2: #d3e2ea;
+            --text-main: #3f5260;
+            --text-heading: #46637a;
+            --accent-border: #82a8bd;
+            --accent-soft: #e9f3f9;
+            --accent-badge: #dfeaf8;
+            --ornament-color: #799eb8;
+        }
+
+        body[data-theme="pink"] {
+            --bg-base: #faf2f5;
+            --bg-grad-1: #f3dce5;
+            --bg-grad-2: #ead3dc;
+            --text-main: #603f4c;
+            --text-heading: #7a4659;
+            --accent-border: #bd8297;
+            --accent-soft: #f9e9f0;
+            --accent-badge: #f8dfe8;
+            --ornament-color: #b87992;
+        }
+
+        body[data-theme="green"] {
+            --bg-base: #f3f7f2;
+            --bg-grad-1: #dce8dc;
+            --bg-grad-2: #d3ead3;
+            --text-main: #3f6043;
+            --text-heading: #467a4c;
+            --accent-border: #82bd8b;
+            --accent-soft: #e9f9eb;
+            --accent-badge: #dff8e2;
+            --ornament-color: #79b882;
+        }
+
+        body[data-theme="lavender"] {
+            --bg-base: #f5f2fa;
+            --bg-grad-1: #e3dcf3;
+            --bg-grad-2: #dad3ea;
+            --text-main: #4a3f60;
+            --text-heading: #59467a;
+            --accent-border: #9882bd;
+            --accent-soft: #f0e9f9;
+            --accent-badge: #e9dff8;
+            --ornament-color: #9379b8;
+        }
+
+        body[data-theme="yellow"] {
+            --bg-base: #faf8f2;
+            --bg-grad-1: #f3edd2;
+            --bg-grad-2: #eae3c5;
+            --text-main: #60573f;
+            --text-heading: #7a6e46;
+            --accent-border: #bdb182;
+            --accent-soft: #f9f5e9;
+            --accent-badge: #f8f3df;
+            --ornament-color: #b8aa79;
+        }
+
         * {
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
@@ -18,10 +79,13 @@
         body {
             min-height: 100vh;
             overflow-x: hidden;
-            background: #f2f7fa;
-            color: #3f5260;
+            background:
+                radial-gradient(circle at 12% 12%, var(--bg-grad-1) 0, transparent 25%),
+                radial-gradient(circle at 88% 82%, var(--bg-grad-2) 0, transparent 27%),
+                var(--bg-base);
+            color: var(--text-main);
             font-family: Georgia, "Times New Roman", serif;
-            transition: background-color 0.3s ease;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
         /* HEADER & NAVBAR */
@@ -33,7 +97,7 @@
             padding: 14px 20px;
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(8px);
-            border-bottom: 1px solid #d3e2ea;
+            border-bottom: 1px solid var(--bg-grad-2);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -44,7 +108,7 @@
         .brand {
             font-weight: normal;
             font-size: 18px;
-            color: #57788f;
+            color: var(--text-heading);
             text-decoration: none;
             letter-spacing: 0.5px;
             line-height: 1.2;
@@ -57,56 +121,64 @@
             flex-wrap: wrap;
         }
 
-        .user-btn, .color-picker-wrapper {
+        /* THEME SWATCHES */
+        .theme-selector {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 4px 8px;
+            border-radius: 100px;
+            border: 1px solid var(--bg-grad-2);
+        }
+
+        .theme-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 1px solid rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .theme-dot:hover {
+            transform: scale(1.25);
+        }
+
+        .dot-blue { background: #d3e2ea; }
+        .dot-pink { background: #ead3dc; }
+        .dot-green { background: #d3ead3; }
+        .dot-lavender { background: #dad3ea; }
+        .dot-yellow { background: #eae3c5; }
+
+        .user-btn {
             background: #f9fcff;
-            border: 1px solid #82a8bd;
+            border: 1px solid var(--accent-border);
             padding: 6px 12px;
             border-radius: 100px;
-            color: #597d91;
+            color: var(--text-heading);
             font-family: Georgia, "Times New Roman", serif;
             font-size: 12px;
             text-decoration: none;
             cursor: pointer;
-            box-shadow: 0 2px 6px rgba(52, 75, 91, 0.05);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
             transition: 0.2s ease;
             white-space: nowrap;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
         }
 
-        .user-btn:hover, .color-picker-wrapper:hover {
-            background: #e9f3f9;
+        .user-btn:hover {
+            background: var(--accent-soft);
             transform: translateY(-1px);
         }
 
-        .color-picker-input {
-            border: none;
-            width: 18px;
-            height: 18px;
-            padding: 0;
-            background: none;
-            cursor: pointer;
-            border-radius: 50%;
-        }
-
-        .color-picker-input::-webkit-color-swatch-wrapper {
-            padding: 0;
-        }
-
-        .color-picker-input::-webkit-color-swatch {
-            border: 1px solid #82a8bd;
-            border-radius: 50%;
-        }
-
         .coin-display {
-            background: #e9f1f4;
-            border: 1px solid #d3dfe2;
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid var(--bg-grad-2);
             padding: 6px 12px;
             border-radius: 100px;
             font-size: 12px;
             font-weight: bold;
-            color: #55778c;
+            color: var(--text-heading);
             white-space: nowrap;
         }
 
@@ -122,7 +194,7 @@
         }
 
         h1 {
-            color: #46637a;
+            color: var(--text-heading);
             font-weight: normal;
             font-size: 26px;
             margin: 0 0 8px;
@@ -130,7 +202,8 @@
         }
 
         p.subtitle {
-            color: #6b879a;
+            color: var(--text-main);
+            opacity: 0.8;
             margin: 0 0 32px;
             font-size: 15px;
             text-align: center;
@@ -145,7 +218,7 @@
             gap: 11px;
             height: 22px;
             margin-bottom: 25px;
-            color: #799eb8;
+            color: var(--ornament-color);
         }
 
         .ornament.bottom {
@@ -159,7 +232,8 @@
         .ornament i {
             width: 40px;
             height: 1px;
-            background: #adb8d4;
+            background: var(--ornament-color);
+            opacity: 0.4;
         }
 
         .decorations {
@@ -171,8 +245,8 @@
 
         .decorations span {
             position: absolute;
-            color: #8bb3c7;
-            opacity: 0.55;
+            color: var(--ornament-color);
+            opacity: 0.45;
             animation: float 5s ease-in-out infinite;
         }
 
@@ -182,8 +256,6 @@
         .decorations span:nth-child(4) { top: 37%; right: 5%; font-size: 20px; }
         .decorations span:nth-child(5) { bottom: 18%; left: 9%; font-size: 12px; }
         .decorations span:nth-child(6) { bottom: 25%; right: 8%; font-size: 17px; }
-        .decorations span:nth-child(7) { bottom: 8%; left: 28%; font-size: 10px; }
-        .decorations span:nth-child(8) { top: 9%; right: 30%; font-size: 11px; }
 
         /* GAMES GRID & CARDS */
 
@@ -196,24 +268,24 @@
         }
 
         .game-card {
-            background: rgba(251, 253, 255, 0.9);
-            border: 1px solid #d9e3ea;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid var(--bg-grad-2);
             border-radius: 8px;
             padding: 24px;
             text-decoration: none;
             color: inherit;
-            box-shadow: 0 4px 15px rgba(52, 75, 91, 0.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
             transition: border-color 0.2s, transform 0.2s, background 0.2s;
         }
 
         .game-card:hover {
             background: #ffffff;
-            border-color: #adb8d4;
+            border-color: var(--accent-border);
             transform: translateY(-2px);
         }
 
         .game-card h3 {
-            color: #53708a;
+            color: var(--text-heading);
             font-weight: normal;
             margin: 0 0 8px;
             font-size: 18px;
@@ -221,15 +293,16 @@
 
         .game-card p {
             font-size: 14px;
-            color: #617583;
+            color: var(--text-main);
+            opacity: 0.9;
             margin: 0 0 16px;
             line-height: 1.5;
         }
 
         .reward-badge {
             display: inline-block;
-            background: #dfeaf8;
-            color: #55758c;
+            background: var(--accent-badge);
+            color: var(--text-heading);
             padding: 4px 10px;
             border-radius: 4px;
             font-size: 12px;
@@ -238,18 +311,18 @@
         /* LEADERBOARD CARD */
 
         .leaderboard-card {
-            background: rgba(251, 253, 255, 0.9);
-            border: 1px solid #d9e3ea;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid var(--bg-grad-2);
             border-radius: 8px;
             padding: 24px;
             width: 100%;
-            box-shadow: 0 4px 15px rgba(52, 75, 91, 0.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
         }
 
         .leaderboard-card h2 {
             font-size: 18px;
             margin: 0 0 16px;
-            color: #53708a;
+            color: var(--text-heading);
             font-weight: normal;
             text-align: center;
         }
@@ -268,25 +341,25 @@
             justify-content: space-between;
             align-items: center;
             padding: 10px 14px;
-            background: rgba(242, 247, 250, 0.85);
-            border: 1px solid #d9e3ea;
+            background: var(--bg-base);
+            border: 1px solid var(--bg-grad-2);
             border-radius: 6px;
             font-size: 14px;
         }
 
         .leaderboard-item .rank {
             font-weight: bold;
-            color: #799eb8;
+            color: var(--ornament-color);
             width: 30px;
         }
 
         .leaderboard-item .name {
             flex: 1;
-            color: #3f5260;
+            color: var(--text-main);
         }
 
         .leaderboard-item .score {
-            color: #55778c;
+            color: var(--text-heading);
         }
 
         @keyframes float {
@@ -320,18 +393,19 @@
         <span>✦</span>
         <span>✧</span>
         <span>♡</span>
-        <span>✦</span>
-        <span>✧</span>
     </div>
 
     <header>
         <a href="index.html" class="brand">Arcade ♡</a>
         <div class="header-right">
-            <!-- Background Color Picker -->
-            <label class="color-picker-wrapper" title="Change Background Color">
-                <span> Theme</span>
-                <input type="color" id="bg-color-picker" class="color-picker-input" value="#f2f7fa">
-            </label>
+            <!-- Theme Swatches -->
+            <div class="theme-selector" title="Pick Palette">
+                <div class="theme-dot dot-blue" onclick="setTheme('blue')"></div>
+                <div class="theme-dot dot-pink" onclick="setTheme('pink')"></div>
+                <div class="theme-dot dot-green" onclick="setTheme('green')"></div>
+                <div class="theme-dot dot-lavender" onclick="setTheme('lavender')"></div>
+                <div class="theme-dot dot-yellow" onclick="setTheme('yellow')"></div>
+            </div>
 
             <a href="shop.html" class="user-btn">Shop</a>
             <button class="user-btn" onclick="switchUser()">✧ <span id="user-display">Player</span></button>
@@ -390,7 +464,7 @@
 
             <a href="games/minesweeper.html" class="game-card">
                 <h3>Minesweeper</h3>
-                <p>Clear the board without detonating any hidden mines.</p>
+                <p>Clear the board without detonating hidden mines.</p>
                 <span class="reward-badge">+20 - 70 Coins</span>
             </a>
 
@@ -408,7 +482,7 @@
         </div>
 
         <div class="leaderboard-card">
-            <h2>✦ Global Leaderboard ✦</h2>
+            <h2>✦ Leaderboard ✦</h2>
             <ul class="leaderboard-list" id="leaderboard-list"></ul>
         </div>
 
@@ -425,80 +499,108 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
-    <script>
-        // FIREBASE SETUP
-        const firebaseConfig = {
-          apiKey: "AIzaSyADjbuYXQzbRQU2PZZUKjcogDAixgyr_NQ",
-          authDomain: "my-arcade-app-1a2ae.firebaseapp.com",
-          databaseURL: "https://my-arcade-app-1a2ae-default-rtdb.firebaseio.com",
-          projectId: "my-arcade-app-1a2ae",
-          storageBucket: "my-arcade-app-1a2ae.firebasestorage.app",
-          messagingSenderId: "650926380080",
-          appId: "1:650926380080:web:ed2576989f47ee3e2b89f5"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-    </script>
-
     <script src="script.js"></script>
 
     <script>
-        // BACKGROUND COLOR LOGIC
-        const colorPicker = document.getElementById('bg-color-picker');
+        // PRESET THEME SYSTEM
+        function setTheme(themeName) {
+            if (themeName === 'blue') {
+                document.body.removeAttribute('data-theme');
+            } else {
+                document.body.setAttribute('data-theme', themeName);
+            }
+            localStorage.setItem('arcade_theme', themeName);
+        }
 
-        function applySavedBgColor() {
-            const savedColor = localStorage.getItem('arcade_bg_color');
-            if (savedColor) {
-                document.body.style.backgroundColor = savedColor;
-                if (colorPicker) colorPicker.value = savedColor;
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem('arcade_theme');
+            if (savedTheme) {
+                setTheme(savedTheme);
             }
         }
 
-        if (colorPicker) {
-            colorPicker.addEventListener('input', (e) => {
-                const newColor = e.target.value;
-                document.body.style.backgroundColor = newColor;
-                localStorage.setItem('arcade_bg_color', newColor);
-            });
+        // FIREBASE INITIALIZATION & ROBUST LEADERBOARD
+        let database = null;
+        try {
+            const firebaseConfig = {
+              apiKey: "AIzaSyADjbuYXQzbRQU2PZZUKjcogDAixgyr_NQ",
+              authDomain: "my-arcade-app-1a2ae.firebaseapp.com",
+              databaseURL: "https://my-arcade-app-1a2ae-default-rtdb.firebaseio.com",
+              projectId: "my-arcade-app-1a2ae",
+              storageBucket: "my-arcade-app-1a2ae.firebasestorage.app",
+              messagingSenderId: "650926380080",
+              appId: "1:650926380080:web:ed2576989f47ee3e2b89f5"
+            };
+
+            if (typeof firebase !== 'undefined' && !firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+                database = firebase.database();
+            }
+        } catch(e) {
+            console.warn("Firebase failed to load, falling back to local scores:", e);
         }
 
-        // GLOBAL LEADERBOARD LOGIC
-        function listenToGlobalLeaderboard() {
+        function renderLeaderboardFromData(dataObj) {
             const listEl = document.getElementById('leaderboard-list');
             if (!listEl) return;
 
-            database.ref('leaderboard').orderByChild('coins').limitToLast(10).on('value', (snapshot) => {
-                const data = snapshot.val();
-                if (!data) {
-                    listEl.innerHTML = '<li class="leaderboard-item"><span class="name">No profiles saved yet.</span></li>';
-                    return;
-                }
+            const sorted = Object.values(dataObj || {})
+                .filter(player => player && typeof player === 'object' && player.name)
+                .sort((a, b) => (b.coins || 0) - (a.coins || 0));
 
-                const sorted = Object.values(data).sort((a, b) => b.coins - a.coins);
+            if (sorted.length === 0) {
+                listEl.innerHTML = '<li class="leaderboard-item"><span class="name">No scores logged yet.</span></li>';
+                return;
+            }
 
-                listEl.innerHTML = '';
-                sorted.forEach((player, index) => {
-                    const item = document.createElement('li');
-                    item.className = 'leaderboard-item';
-                    item.innerHTML = `
-                        <span class="rank">#${index + 1}</span>
-                        <span class="name">${player.name || 'Anonymous'}</span>
-                        <span class="score">${player.coins || 0} Coins</span>
-                    `;
-                    listEl.appendChild(item);
-                });
+            listEl.innerHTML = '';
+            sorted.slice(0, 10).forEach((player, index) => {
+                const item = document.createElement('li');
+                item.className = 'leaderboard-item';
+                item.innerHTML = `
+                    <span class="rank">#${index + 1}</span>
+                    <span class="name">${player.name || 'Anonymous'}</span>
+                    <span class="score">${player.coins || 0} Coins</span>
+                `;
+                listEl.appendChild(item);
             });
         }
 
+        function initLeaderboard() {
+            if (database) {
+                database.ref('leaderboard').orderByChild('coins').limitToLast(10).on('value', 
+                    (snapshot) => {
+                        const data = snapshot.val();
+                        renderLeaderboardFromData(data);
+                    },
+                    (error) => {
+                        console.warn("Firebase read error, switching to local scores:", error);
+                        renderLocalLeaderboard();
+                    }
+                );
+            } else {
+                renderLocalLeaderboard();
+            }
+        }
+
+        function renderLocalLeaderboard() {
+            let scores = {};
+            try {
+                scores = (typeof getAllScores === 'function') ? getAllScores() : {};
+            } catch (e) {
+                console.error("Error reading local scores:", e);
+            }
+            renderLeaderboardFromData(scores);
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
-            applySavedBgColor();
+            loadSavedTheme();
             if (typeof updateCoinDisplays === 'function') updateCoinDisplays();
-            listenToGlobalLeaderboard();
+            initLeaderboard();
         });
 
         window.addEventListener('pageshow', () => {
-            applySavedBgColor();
+            loadSavedTheme();
             if (typeof updateCoinDisplays === 'function') updateCoinDisplays();
         });
     </script>
