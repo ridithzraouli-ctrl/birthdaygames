@@ -105,6 +105,12 @@
             flex-wrap: wrap;
         }
 
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
         .brand {
             font-weight: normal;
             font-size: 18px;
@@ -121,7 +127,7 @@
             flex-wrap: wrap;
         }
 
-        /* THEME SWATCHES */
+        /* THEME SWATCHES (LEFT SIDE) */
         .theme-selector {
             display: flex;
             align-items: center;
@@ -372,9 +378,6 @@
                 padding: 12px 14px;
                 justify-content: space-between;
             }
-            .header-right {
-                justify-content: flex-end;
-            }
             main {
                 padding: 20px 12px;
             }
@@ -396,9 +399,8 @@
     </div>
 
     <header>
-        <a href="index.html" class="brand">Arcade ♡</a>
-        <div class="header-right">
-            <!-- Theme Swatches -->
+        <div class="header-left">
+            <!-- Theme Selector Left -->
             <div class="theme-selector" title="Pick Palette">
                 <div class="theme-dot dot-blue" onclick="setTheme('blue')"></div>
                 <div class="theme-dot dot-pink" onclick="setTheme('pink')"></div>
@@ -406,9 +408,12 @@
                 <div class="theme-dot dot-lavender" onclick="setTheme('lavender')"></div>
                 <div class="theme-dot dot-yellow" onclick="setTheme('yellow')"></div>
             </div>
+            <a href="index.html" class="brand">Arcade ♡</a>
+        </div>
 
+        <div class="header-right">
             <a href="shop.html" class="user-btn">Shop</a>
-            <button class="user-btn" onclick="switchUser()">✧ <span id="user-display">Player</span></button>
+            <button class="user-btn" onclick="handleUserSwitch()">✧ <span id="user-display">Player</span></button>
             <div class="coin-display"><span class="coin-count">0</span> Coins</div>
         </div>
     </header>
@@ -519,42 +524,37 @@
             }
         }
 
-        // FIREBASE INITIALIZATION & ROBUST LEADERBOARD
-        let database = null;
-        try {
-            const firebaseConfig = {
-              apiKey: "AIzaSyADjbuYXQzbRQU2PZZUKjcogDAixgyr_NQ",
-              authDomain: "my-arcade-app-1a2ae.firebaseapp.com",
-              databaseURL: "https://my-arcade-app-1a2ae-default-rtdb.firebaseio.com",
-              projectId: "my-arcade-app-1a2ae",
-              storageBucket: "my-arcade-app-1a2ae.firebasestorage.app",
-              messagingSenderId: "650926380080",
-              appId: "1:650926380080:web:ed2576989f47ee3e2b89f5"
-            };
-
-            if (typeof firebase !== 'undefined' && !firebase.apps.length) {
-                firebase.initializeApp(firebaseConfig);
-                database = firebase.database();
-            }
-        } catch(e) {
-            console.warn("Firebase failed to load, falling back to local scores:", e);
-        }
-
-        function renderLeaderboardFromData(dataObj) {
+        // LEADERBOARD RENDER LOGIC
+        function updateLeaderboardUI() {
             const listEl = document.getElementById('leaderboard-list');
             if (!listEl) return;
 
-            const sorted = Object.values(dataObj || {})
-                .filter(player => player && typeof player === 'object' && player.name)
-                .sort((a, b) => (b.coins || 0) - (a.coins || 0));
+            let scores = [];
 
-            if (sorted.length === 0) {
-                listEl.innerHTML = '<li class="leaderboard-item"><span class="name">No scores logged yet.</span></li>';
+            // 1. Read directly from localStorage user records
+            try {
+                const rawUsers = localStorage.getItem('arcade_users');
+                if (rawUsers) {
+                    const parsed = JSON.parse(rawUsers);
+                    scores = Object.keys(parsed).map(name => ({
+                        name: name,
+                        coins: typeof parsed[name] === 'object' ? (parsed[name].coins || 0) : Number(parsed[name] || 0)
+                    }));
+                }
+            } catch(e) {
+                console.error("Error loading local leaderboard:", e);
+            }
+
+            // 2. Sort high to low
+            scores.sort((a, b) => b.coins - a.coins);
+
+            if (scores.length === 0) {
+                listEl.innerHTML = '<li class="leaderboard-item"><span class="name">No profiles saved yet. Click your profile button to start!</span></li>';
                 return;
             }
 
             listEl.innerHTML = '';
-            sorted.slice(0, 10).forEach((player, index) => {
+            scores.slice(0, 10).forEach((player, index) => {
                 const item = document.createElement('li');
                 item.className = 'leaderboard-item';
                 item.innerHTML = `
@@ -566,43 +566,31 @@
             });
         }
 
-        function initLeaderboard() {
-            if (database) {
-                database.ref('leaderboard').orderByChild('coins').limitToLast(10).on('value', 
-                    (snapshot) => {
-                        const data = snapshot.val();
-                        renderLeaderboardFromData(data);
-                    },
-                    (error) => {
-                        console.warn("Firebase read error, switching to local scores:", error);
-                        renderLocalLeaderboard();
-                    }
-                );
+        function handleUserSwitch() {
+            if (typeof switchUser === 'function') {
+                switchUser();
             } else {
-                renderLocalLeaderboard();
+                const name = prompt("Enter your name:");
+                if (name) {
+                    localStorage.setItem('arcade_current_user', name);
+                }
             }
-        }
-
-        function renderLocalLeaderboard() {
-            let scores = {};
-            try {
-                scores = (typeof getAllScores === 'function') ? getAllScores() : {};
-            } catch (e) {
-                console.error("Error reading local scores:", e);
-            }
-            renderLeaderboardFromData(scores);
+            if (typeof updateCoinDisplays === 'function') updateCoinDisplays();
+            updateLeaderboardUI();
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             loadSavedTheme();
             if (typeof updateCoinDisplays === 'function') updateCoinDisplays();
-            initLeaderboard();
+            updateLeaderboardUI();
         });
 
         window.addEventListener('pageshow', () => {
             loadSavedTheme();
             if (typeof updateCoinDisplays === 'function') updateCoinDisplays();
+            updateLeaderboardUI();
         });
     </script>
 </body>
-</html>
+    </html>
+    
