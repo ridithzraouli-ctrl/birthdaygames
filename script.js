@@ -1,104 +1,596 @@
-function getUserId() {
-    let id = localStorage.getItem('bdayUserId');
-    if (!id) {
-        id = 'user_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
-        localStorage.setItem('bdayUserId', id);
-    }
-    return id;
-}
-
-function getActiveUser() {
-    let user = localStorage.getItem('bdayActiveUser');
-    if (!user) {
-        user = prompt("Enter a username to save your coins:", "Player 1");
-        if (!user || user.trim() === "") user = "Player 1";
-        user = user.trim();
-        localStorage.setItem('bdayActiveUser', user);
-    }
-    return user;
-}
-
-function getAllScores() {
-    return JSON.parse(localStorage.getItem('bdayLeaderboardData') || '{}');
-}
-
-function getCoins() {
-    const id = getUserId();
-    const scores = getAllScores();
-    if (!scores[id]) {
-        const legacyCoins = parseInt(localStorage.getItem('bdayCoins')) || 0;
-        scores[id] = { name: getActiveUser(), coins: legacyCoins };
-        localStorage.setItem('bdayLeaderboardData', JSON.stringify(scores));
-    }
-    return scores[id].coins;
-}
-
-function addCoins(amount) {
-    const id = getUserId();
-    const scores = getAllScores();
-    
-    if (!scores[id]) {
-        scores[id] = { name: getActiveUser(), coins: 0 };
-    }
-    
-    scores[id].coins += amount;
-    scores[id].name = getActiveUser();
-    
-    localStorage.setItem('bdayLeaderboardData', JSON.stringify(scores));
-    localStorage.setItem('bdayCoins', scores[id].coins);
-    
-    updateCoinDisplays();
-    if (typeof renderLeaderboard === 'function') renderLeaderboard();
-}
-
-function spendCoins(amount) {
-    const id = getUserId();
-    const scores = getAllScores();
-    const current = getCoins();
-    
-    if (current >= amount) {
-        scores[id].coins -= amount;
-        localStorage.setItem('bdayLeaderboardData', JSON.stringify(scores));
-        localStorage.setItem('bdayCoins', scores[id].coins);
-        
-        updateCoinDisplays();
-        if (typeof renderLeaderboard === 'function') renderLeaderboard();
-        return true;
-    }
-    return false;
-}
-
-function switchUser() {
-    const id = getUserId();
-    const current = getActiveUser();
-    const newUser = prompt("Enter your new username:", current);
-    
-    if (newUser && newUser.trim() !== "") {
-        const cleanedName = newUser.trim();
-        const scores = getAllScores();
-        
-        localStorage.setItem('bdayActiveUser', cleanedName);
-        
-        if (scores[id]) {
-            scores[id].name = cleanedName;
-        } else {
-            scores[id] = { name: cleanedName, coins: getCoins() };
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcade ♡</title>
+    <style>
+        /* COLOR THEMES */
+        :root {
+            --bg-base: #f2f7fa;
+            --bg-grad-1: #dce8f3;
+            --bg-grad-2: #d3e2ea;
+            --text-main: #3f5260;
+            --text-heading: #46637a;
+            --accent-border: #82a8bd;
+            --accent-soft: #e9f3f9;
+            --accent-badge: #dfeaf8;
+            --ornament-color: #799eb8;
         }
-        
-        localStorage.setItem('bdayLeaderboardData', JSON.stringify(scores));
-        
-        updateCoinDisplays();
-        if (typeof renderLeaderboard === 'function') renderLeaderboard();
-    }
-}
 
-function updateCoinDisplays() {
-    const coins = getCoins();
-    const user = getActiveUser();
-    
-    document.querySelectorAll('.coin-count').forEach(el => el.innerText = coins);
-    document.querySelectorAll('#user-display').forEach(el => el.innerText = user);
-}
+        body[data-theme="pink"] {
+            --bg-base: #faf2f5;
+            --bg-grad-1: #f3dce5;
+            --bg-grad-2: #ead3dc;
+            --text-main: #603f4c;
+            --text-heading: #7a4659;
+            --accent-border: #bd8297;
+            --accent-soft: #f9e9f0;
+            --accent-badge: #f8dfe8;
+            --ornament-color: #b87992;
+        }
 
-document.addEventListener('DOMContentLoaded', updateCoinDisplays);
-window.addEventListener('pageshow', updateCoinDisplays);
+        body[data-theme="green"] {
+            --bg-base: #f3f7f2;
+            --bg-grad-1: #dce8dc;
+            --bg-grad-2: #d3ead3;
+            --text-main: #3f6043;
+            --text-heading: #467a4c;
+            --accent-border: #82bd8b;
+            --accent-soft: #e9f9eb;
+            --accent-badge: #dff8e2;
+            --ornament-color: #79b882;
+        }
+
+        body[data-theme="lavender"] {
+            --bg-base: #f5f2fa;
+            --bg-grad-1: #e3dcf3;
+            --bg-grad-2: #dad3ea;
+            --text-main: #4a3f60;
+            --text-heading: #59467a;
+            --accent-border: #9882bd;
+            --accent-soft: #f0e9f9;
+            --accent-badge: #e9dff8;
+            --ornament-color: #9379b8;
+        }
+
+        body[data-theme="yellow"] {
+            --bg-base: #faf8f2;
+            --bg-grad-1: #f3edd2;
+            --bg-grad-2: #eae3c5;
+            --text-main: #60573f;
+            --text-heading: #7a6e46;
+            --accent-border: #bdb182;
+            --accent-soft: #f9f5e9;
+            --accent-badge: #f8f3df;
+            --ornament-color: #b8aa79;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            margin: 0;
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+            background:
+                radial-gradient(circle at 12% 12%, var(--bg-grad-1) 0, transparent 25%),
+                radial-gradient(circle at 88% 82%, var(--bg-grad-2) 0, transparent 27%),
+                var(--bg-base);
+            color: var(--text-main);
+            font-family: Georgia, "Times New Roman", serif;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* HEADER & NAVBAR */
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 20px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--bg-grad-2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand {
+            font-weight: normal;
+            font-size: 18px;
+            color: var(--text-heading);
+            text-decoration: none;
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        /* THEME SWATCHES (LEFT SIDE) */
+        .theme-selector {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 4px 8px;
+            border-radius: 100px;
+            border: 1px solid var(--bg-grad-2);
+        }
+
+        .theme-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 1px solid rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .theme-dot:hover {
+            transform: scale(1.25);
+        }
+
+        .dot-blue { background: #d3e2ea; }
+        .dot-pink { background: #ead3dc; }
+        .dot-green { background: #d3ead3; }
+        .dot-lavender { background: #dad3ea; }
+        .dot-yellow { background: #eae3c5; }
+
+        .user-btn {
+            background: #f9fcff;
+            border: 1px solid var(--accent-border);
+            padding: 6px 12px;
+            border-radius: 100px;
+            color: var(--text-heading);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 12px;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            transition: 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .user-btn:hover {
+            background: var(--accent-soft);
+            transform: translateY(-1px);
+        }
+
+        .coin-display {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid var(--bg-grad-2);
+            padding: 6px 12px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--text-heading);
+            white-space: nowrap;
+        }
+
+        /* MAIN LAYOUT */
+
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: var(--text-heading);
+            font-weight: normal;
+            font-size: 26px;
+            margin: 0 0 8px;
+            text-align: center;
+        }
+
+        p.subtitle {
+            color: var(--text-main);
+            opacity: 0.8;
+            margin: 0 0 32px;
+            font-size: 15px;
+            text-align: center;
+        }
+
+        /* ORNAMENTS & DECORATIONS */
+
+        .ornament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 11px;
+            height: 22px;
+            margin-bottom: 25px;
+            color: var(--ornament-color);
+        }
+
+        .ornament.bottom {
+            margin: 35px 0 0;
+        }
+
+        .ornament span {
+            font-size: 16px;
+        }
+
+        .ornament i {
+            width: 40px;
+            height: 1px;
+            background: var(--ornament-color);
+            opacity: 0.4;
+        }
+
+        .decorations {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .decorations span {
+            position: absolute;
+            color: var(--ornament-color);
+            opacity: 0.45;
+            animation: float 5s ease-in-out infinite;
+        }
+
+        .decorations span:nth-child(1) { top: 8%; left: 8%; font-size: 20px; }
+        .decorations span:nth-child(2) { top: 16%; right: 10%; font-size: 13px; }
+        .decorations span:nth-child(3) { top: 42%; left: 5%; font-size: 12px; }
+        .decorations span:nth-child(4) { top: 37%; right: 5%; font-size: 20px; }
+        .decorations span:nth-child(5) { bottom: 18%; left: 9%; font-size: 12px; }
+        .decorations span:nth-child(6) { bottom: 25%; right: 8%; font-size: 17px; }
+
+        /* GAMES GRID & CARDS */
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 36px;
+        }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid var(--bg-grad-2);
+            border-radius: 8px;
+            padding: 24px;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            transition: border-color 0.2s, transform 0.2s, background 0.2s;
+        }
+
+        .game-card:hover {
+            background: #ffffff;
+            border-color: var(--accent-border);
+            transform: translateY(-2px);
+        }
+
+        .game-card h3 {
+            color: var(--text-heading);
+            font-weight: normal;
+            margin: 0 0 8px;
+            font-size: 18px;
+        }
+
+        .game-card p {
+            font-size: 14px;
+            color: var(--text-main);
+            opacity: 0.9;
+            margin: 0 0 16px;
+            line-height: 1.5;
+        }
+
+        .reward-badge {
+            display: inline-block;
+            background: var(--accent-badge);
+            color: var(--text-heading);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        /* LEADERBOARD CARD */
+
+        .leaderboard-card {
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid var(--bg-grad-2);
+            border-radius: 8px;
+            padding: 24px;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        }
+
+        .leaderboard-card h2 {
+            font-size: 18px;
+            margin: 0 0 16px;
+            color: var(--text-heading);
+            font-weight: normal;
+            text-align: center;
+        }
+
+        .leaderboard-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
+            background: var(--bg-base);
+            border: 1px solid var(--bg-grad-2);
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .leaderboard-item .rank {
+            font-weight: bold;
+            color: var(--ornament-color);
+            width: 30px;
+        }
+
+        .leaderboard-item .name {
+            flex: 1;
+            color: var(--text-main);
+        }
+
+        .leaderboard-item .score {
+            color: var(--text-heading);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0); }
+            50% { transform: translateY(-7px) rotate(7deg); }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 12px 14px;
+                justify-content: space-between;
+            }
+            main {
+                padding: 20px 12px;
+            }
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="decorations">
+        <span>✦</span>
+        <span>✧</span>
+        <span>♡</span>
+        <span>✦</span>
+        <span>✧</span>
+        <span>♡</span>
+    </div>
+
+    <header>
+        <div class="header-left">
+            <!-- Theme Selector Left -->
+            <div class="theme-selector" title="Pick Palette">
+                <div class="theme-dot dot-blue" onclick="setTheme('blue')"></div>
+                <div class="theme-dot dot-pink" onclick="setTheme('pink')"></div>
+                <div class="theme-dot dot-green" onclick="setTheme('green')"></div>
+                <div class="theme-dot dot-lavender" onclick="setTheme('lavender')"></div>
+                <div class="theme-dot dot-yellow" onclick="setTheme('yellow')"></div>
+            </div>
+            <a href="index.html" class="brand">Arcade ♡</a>
+        </div>
+
+        <div class="header-right">
+            <a href="shop.html" class="user-btn">Shop</a>
+            <button class="user-btn" onclick="handleUserSwitch()">✧ <span id="user-display">Player</span></button>
+            <div class="coin-display"><span class="coin-count">0</span> Coins</div>
+        </div>
+    </header>
+
+    <main>
+        <div class="ornament">
+            <span>✦</span>
+            <i></i>
+            <span>♡</span>
+            <i></i>
+            <span>✦</span>
+        </div>
+
+        <h1>Games</h1>
+        <p class="subtitle">Play games to earn coins for your profile.</p>
+
+        <div class="games-grid">
+            <a href="games/sudoku.html" class="game-card">
+                <h3>Sudoku</h3>
+                <p>Classic numbers puzzle.</p>
+                <span class="reward-badge">+50 Coins</span>
+            </a>
+            
+            <a href="games/crossword.html" class="game-card">
+                <h3>Crossword</h3>
+                <p>Solve the grid clues.</p>
+                <span class="reward-badge">+50 Coins</span>
+            </a>
+
+            <a href="games/chess.html" class="game-card">
+                <h3>Chess</h3>
+                <p>Play against the computer.</p>
+                <span class="reward-badge">+50 Coins</span>
+            </a>
+
+            <a href="games/hangman.html" class="game-card">
+                <h3>Hangman</h3>
+                <p>Guess the word before attempts run out.</p>
+                <span class="reward-badge">+20 Coins</span>
+            </a>
+            
+            <a href="games/wordle.html" class="game-card">
+                <h3>Wordle</h3>
+                <p>Guess the 5-letter word in 6 tries.</p>
+                <span class="reward-badge">+30 Coins</span>
+            </a>
+
+            <a href="games/memory.html" class="game-card">
+                <h3>Memory Match</h3>
+                <p>Flip cards and match the pictures.</p>
+                <span class="reward-badge">+40 Coins</span>
+            </a>
+
+            <a href="games/minesweeper.html" class="game-card">
+                <h3>Minesweeper</h3>
+                <p>Clear the board without detonating hidden mines.</p>
+                <span class="reward-badge">+20 - 70 Coins</span>
+            </a>
+
+            <a href="games/tictactoe.html" class="game-card">
+                <h3>Tic-Tac-Toe</h3>
+                <p>Vs AI or 2 Player.</p>
+                <span class="reward-badge">+10 - 25 Coins</span>
+            </a>
+
+            <a href="games/watersort.html" class="game-card">
+                <h3>Water Sort</h3>
+                <p>Sort identical colors into single bottles.</p>
+                <span class="reward-badge">+25 Coins</span>
+            </a>
+        </div>
+
+        <div class="leaderboard-card">
+            <h2>✦ Leaderboard ✦</h2>
+            <ul class="leaderboard-list" id="leaderboard-list"></ul>
+        </div>
+
+        <div class="ornament bottom">
+            <span>✧</span>
+            <i></i>
+            <span>♡</span>
+            <i></i>
+            <span>✧</span>
+        </div>
+    </main>
+
+    <!-- FIREBASE LIBRARIES -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+    <script src="script.js"></script>
+
+    <script>
+        // PRESET THEME SYSTEM
+        function setTheme(themeName) {
+            if (themeName === 'blue') {
+                document.body.removeAttribute('data-theme');
+            } else {
+                document.body.setAttribute('data-theme', themeName);
+            }
+            localStorage.setItem('arcade_theme', themeName);
+        }
+
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem('arcade_theme');
+            if (savedTheme) {
+                setTheme(savedTheme);
+            }
+        }
+
+        // LEADERBOARD RENDER LOGIC
+        function updateLeaderboardUI() {
+            const listEl = document.getElementById('leaderboard-list');
+            if (!listEl) return;
+
+            let scores = [];
+
+            // 1. Read directly from localStorage user records
+            try {
+                const rawUsers = localStorage.getItem('arcade_users');
+                if (rawUsers) {
+                    const parsed = JSON.parse(rawUsers);
+                    scores = Object.keys(parsed).map(name => ({
+                        name: name,
+                        coins: typeof parsed[name] === 'object' ? (parsed[name].coins || 0) : Number(parsed[name] || 0)
+                    }));
+                }
+            } catch(e) {
+                console.error("Error loading local leaderboard:", e);
+            }
+
+            // 2. Sort high to low
+            scores.sort((a, b) => b.coins - a.coins);
+
+            if (scores.length === 0) {
+                listEl.innerHTML = '<li class="leaderboard-item"><span class="name">No profiles saved yet. Click your profile button to start!</span></li>';
+                return;
+            }
+
+            listEl.innerHTML = '';
+            scores.slice(0, 10).forEach((player, index) => {
+                const item = document.createElement('li');
+                item.className = 'leaderboard-item';
+                item.innerHTML = `
+                    <span class="rank">#${index + 1}</span>
+                    <span class="name">${player.name || 'Anonymous'}</span>
+                    <span class="score">${player.coins || 0} Coins</span>
+                `;
+                listEl.appendChild(item);
+            });
+        }
+
+        function handleUserSwitch() {
+            if (typeof switchUser === 'function') {
+                switchUser();
+            } else {
+                const name = prompt("Enter your name:");
+                if (name) {
+                    localStorage.setItem('arcade_current_user', name);
+                }
+            }
+            if (typeof updateCoinDisplays === 'function') updateCoinDisplays();
+            updateLeaderboardUI();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSavedTheme();
+            if (typeof updateCoinDisplays === 'function') updateCoinDisplays();
+            updateLeaderboardUI();
+        });
+
+        window.addEventListener('pageshow', () => {
+            loadSavedTheme();
+            if (typeof updateCoinDisplays === 'function') updateCoinDisplays();
+            updateLeaderboardUI();
+        });
+    </script>
+</body>
+</html>
+                
