@@ -4,10 +4,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop</title>
+
     <style>
-        * { 
-            box-sizing: border-box; 
-            -webkit-tap-highlight-color: transparent; 
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --bg-main: #f2f7fa;
+            --bg-card: #fbfdff;
+            --bg-soft: #e9f1f4;
+            --text-main: #3f5260;
+            --text-heading: #46637a;
+            --text-secondary: #6b879a;
+            --accent: #57788f;
+            --accent-light: #82a8bd;
+            --border: #d3e2ea;
+            --border-light: #d9e3ea;
+            --ornament: #799eb8;
+            --decoration: #8bb3c7;
+            --shadow: rgba(52, 75, 91, 0.05);
+        }
+
+        body[data-theme="pink"] {
+            --bg-main: #faf3f7;
+            --bg-card: #fffafd;
+            --bg-soft: #f4e8ef;
+            --text-main: #604652;
+            --text-heading: #7a5265;
+            --text-secondary: #9a7183;
+            --accent: #9a647d;
+            --accent-light: #c38fa6;
+            --border: #ead5df;
+            --border-light: #eadce3;
+            --ornament: #b67f97;
+            --decoration: #c996ac;
+            --shadow: rgba(91, 52, 72, 0.05);
+        }
+
+        body[data-theme="green"] {
+            --bg-main: #f2f8f3;
+            --bg-card: #fbfffc;
+            --bg-soft: #e5f0e7;
+            --text-main: #405647;
+            --text-heading: #4f725b;
+            --text-secondary: #718d79;
+            --accent: #668871;
+            --accent-light: #91ad98;
+            --border: #d2e1d5;
+            --border-light: #dbe7dd;
+            --ornament: #7fa187;
+            --decoration: #8eaf96;
+            --shadow: rgba(52, 91, 61, 0.05);
+        }
+
+        body[data-theme="lavender"] {
+            --bg-main: #f6f3fa;
+            --bg-card: #fdfbff;
+            --bg-soft: #ebe6f3;
+            --text-main: #51495e;
+            --text-heading: #68577d;
+            --text-secondary: #817394;
+            --accent: #806c9a;
+            --accent-light: #a999bd;
+            --border: #ded7e8;
+            --border-light: #e4deec;
+            --ornament: #9683ad;
+            --decoration: #a796bb;
+            --shadow: rgba(67, 52, 91, 0.05);
+        }
+
+        body[data-theme="yellow"] {
+            --bg-main: #faf8ef;
+            --bg-card: #fffef9;
+            --bg-soft: #f3eed8;
+            --text-main: #5e5842;
+            --text-heading: #776d4c;
+            --text-secondary: #8d825b;
+            --accent: #91804e;
+            --accent-light: #b7a66e;
+            --border: #e6dfc5;
+            --border-light: #ebe5d0;
+            --ornament: #a49361;
+            --decoration: #ad9c67;
+            --shadow: rgba(91, 82, 52, 0.05);
         }
 
         html, body {
@@ -19,78 +100,72 @@
             min-height: 100vh;
             overflow-x: hidden;
             background:
-                radial-gradient(circle at 12% 12%, #dce8f3 0, transparent 25%),
-                radial-gradient(circle at 88% 82%, #d3e2ea 0, transparent 27%),
-                #f2f7fa;
-            color: #3f5260;
+                radial-gradient(circle at 12% 12%, var(--bg-soft) 0, transparent 25%),
+                radial-gradient(circle at 88% 82%, var(--bg-soft) 0, transparent 27%),
+                var(--bg-main);
+            color: var(--text-main);
             font-family: Georgia, "Times New Roman", serif;
         }
-
-        /* HEADER & NAVBAR */
 
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 100%;
             padding: 14px 20px;
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(8px);
-            border-bottom: 1px solid #d3e2ea;
+            border-bottom: 1px solid var(--border);
             position: sticky;
             top: 0;
             z-index: 100;
-            width: 100%;
         }
 
-        .nav-link { 
-            color: #57788f; 
-            text-decoration: none; 
-            font-size: 14px; 
-            font-weight: normal; 
+        .nav-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: normal;
         }
 
-        .nav-link:hover { 
-            color: #3f5260; 
+        .nav-link:hover {
+            color: var(--text-main);
         }
 
-        .coin-display { 
-            background: #e9f1f4; 
-            border: 1px solid #d3dfe2; 
-            padding: 6px 12px; 
-            border-radius: 100px; 
-            font-size: 12px; 
-            font-weight: bold; 
-            color: #55778c; 
+        .coin-display {
+            background: var(--bg-soft);
+            border: 1px solid var(--border);
+            padding: 6px 12px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--accent);
             white-space: nowrap;
         }
 
-        /* MAIN LAYOUT */
-
-        main { 
-            max-width: 800px; 
-            margin: 0 auto; 
-            padding: 30px 20px; 
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        h1 { 
-            color: #46637a; 
-            font-weight: normal; 
-            font-size: 26px; 
-            margin: 0 0 8px; 
+        h1 {
+            color: var(--text-heading);
+            font-weight: normal;
+            font-size: 26px;
+            margin: 0 0 8px;
             text-align: center;
         }
 
-        p.subtitle { 
-            color: #6b879a; 
-            margin: 0 0 32px; 
-            font-size: 15px; 
+        p.subtitle {
+            color: var(--text-secondary);
+            margin: 0 0 32px;
+            font-size: 15px;
             text-align: center;
         }
-
-        /* ORNAMENTS & DECORATIONS */
 
         .ornament {
             display: flex;
@@ -99,7 +174,7 @@
             gap: 11px;
             height: 22px;
             margin-bottom: 25px;
-            color: #799eb8;
+            color: var(--ornament);
         }
 
         .ornament.bottom {
@@ -113,7 +188,7 @@
         .ornament i {
             width: 40px;
             height: 1px;
-            background: #adb8d4;
+            background: var(--accent-light);
         }
 
         .decorations {
@@ -125,19 +200,46 @@
 
         .decorations span {
             position: absolute;
-            color: #8bb3c7;
+            color: var(--decoration);
             opacity: 0.55;
             animation: float 5s ease-in-out infinite;
         }
 
-        .decorations span:nth-child(1) { top: 8%; left: 8%; font-size: 20px; }
-        .decorations span:nth-child(2) { top: 16%; right: 10%; font-size: 13px; }
-        .decorations span:nth-child(3) { top: 42%; left: 5%; font-size: 12px; }
-        .decorations span:nth-child(4) { top: 37%; right: 5%; font-size: 20px; }
-        .decorations span:nth-child(5) { bottom: 18%; left: 9%; font-size: 12px; }
-        .decorations span:nth-child(6) { bottom: 25%; right: 8%; font-size: 17px; }
+        .decorations span:nth-child(1) {
+            top: 8%;
+            left: 8%;
+            font-size: 20px;
+        }
 
-        /* SHOP GRID & CARDS */
+        .decorations span:nth-child(2) {
+            top: 16%;
+            right: 10%;
+            font-size: 13px;
+        }
+
+        .decorations span:nth-child(3) {
+            top: 42%;
+            left: 5%;
+            font-size: 12px;
+        }
+
+        .decorations span:nth-child(4) {
+            top: 37%;
+            right: 5%;
+            font-size: 20px;
+        }
+
+        .decorations span:nth-child(5) {
+            bottom: 18%;
+            left: 9%;
+            font-size: 12px;
+        }
+
+        .decorations span:nth-child(6) {
+            bottom: 25%;
+            right: 8%;
+            font-size: 17px;
+        }
 
         .shop-grid {
             display: grid;
@@ -147,61 +249,61 @@
         }
 
         .shop-card {
-            background: #fbfdff;
-            border: 1px solid #d9e3ea;
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
             border-radius: 8px;
             padding: 24px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            box-shadow: 0 4px 15px rgba(52, 75, 91, 0.05);
+            box-shadow: 0 4px 15px var(--shadow);
             transition: border-color 0.2s, transform 0.2s, background 0.2s;
         }
 
         .shop-card:hover {
-            background: #f8faff;
-            border-color: #adb8d4;
+            background: var(--bg-card);
+            border-color: var(--accent-light);
             transform: translateY(-2px);
         }
 
-        .shop-card h3 { 
-            color: #53708a; 
-            font-size: 18px; 
-            font-weight: normal; 
-            margin: 0 0 8px; 
+        .shop-card h3 {
+            color: var(--text-heading);
+            font-size: 18px;
+            font-weight: normal;
+            margin: 0 0 8px;
         }
 
-        .shop-card p { 
-            font-size: 14px; 
-            color: #617583; 
-            margin: 0 0 20px; 
-            line-height: 1.5; 
+        .shop-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin: 0 0 20px;
+            line-height: 1.5;
         }
 
         .buy-btn {
-            background: #f9fcff;
-            border: 1px solid #82a8bd;
+            background: var(--bg-card);
+            border: 1px solid var(--accent-light);
             padding: 8px 16px;
             border-radius: 100px;
-            color: #597d91;
+            color: var(--accent);
             font-family: Georgia, "Times New Roman", serif;
             font-size: 13px;
             cursor: pointer;
-            box-shadow: 0 2px 6px rgba(52, 75, 91, 0.05);
+            box-shadow: 0 2px 6px var(--shadow);
             transition: 0.2s ease;
             width: 100%;
         }
 
-        .buy-btn:hover:not(:disabled) { 
-            background: #e9f3f9; 
-            transform: translateY(-1px); 
+        .buy-btn:hover:not(:disabled) {
+            background: var(--bg-soft);
+            transform: translateY(-1px);
         }
 
-        .buy-btn:disabled { 
-            background: #e9f1f4;
-            border-color: #d3dfe2;
-            color: #8c9ea8;
-            cursor: default; 
+        .buy-btn:disabled {
+            background: var(--bg-soft);
+            border-color: var(--border);
+            color: var(--text-secondary);
+            cursor: default;
             box-shadow: none;
         }
 
@@ -209,32 +311,40 @@
             display: none;
             margin-top: 16px;
             padding: 12px;
-            background: #f2f7fa;
+            background: var(--bg-main);
             border-radius: 6px;
-            border: 1px dashed #d9e3ea;
+            border: 1px dashed var(--border-light);
             font-size: 13px;
-            color: #3f5260;
+            color: var(--text-main);
             line-height: 1.4;
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0); }
-            50% { transform: translateY(-7px) rotate(7deg); }
+            0%, 100% {
+                transform: translateY(0) rotate(0);
+            }
+
+            50% {
+                transform: translateY(-7px) rotate(7deg);
+            }
         }
 
         @media (max-width: 600px) {
-            header { 
-                padding: 12px 16px; 
+            header {
+                padding: 12px 16px;
             }
-            main { 
-                padding: 20px 12px; 
+
+            main {
+                padding: 20px 12px;
             }
-            .shop-grid { 
-                grid-template-columns: 1fr; 
+
+            .shop-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
+
 <body>
 
     <div class="decorations">
@@ -248,7 +358,10 @@
 
     <header>
         <a href="index.html" class="nav-link">&lt; Games</a>
-        <div class="coin-display"><span class="coin-count">0</span> Coins</div>
+
+        <div class="coin-display">
+            <span class="coin-count">0</span> Coins
+        </div>
     </header>
 
     <main>
@@ -264,8 +377,7 @@
         <p class="subtitle">Exchange your coins to unlock special gifts.</p>
 
         <div class="shop-grid">
-            
-            <!-- GIFT 1 -->
+
             <div class="shop-card" id="gift-1">
                 <div>
                     <h3>Gift 1</h3>
@@ -277,7 +389,6 @@
                 </div>
             </div>
 
-            <!-- GIFT 2 -->
             <div class="shop-card" id="gift-2">
                 <div>
                     <h3>Gift 2</h3>
@@ -289,7 +400,6 @@
                 </div>
             </div>
 
-            <!-- GIFT 3 -->
             <div class="shop-card" id="gift-3">
                 <div>
                     <h3>Gift 3</h3>
@@ -301,7 +411,6 @@
                 </div>
             </div>
 
-            <!-- GIFT 4 -->
             <div class="shop-card" id="gift-4">
                 <div>
                     <h3>Gift 4</h3>
@@ -313,7 +422,6 @@
                 </div>
             </div>
 
-            <!-- GIFT 5 -->
             <div class="shop-card" id="gift-5">
                 <div>
                     <h3>Gift 5</h3>
@@ -325,7 +433,6 @@
                 </div>
             </div>
 
-            <!-- GIFT 6 -->
             <div class="shop-card" id="gift-6">
                 <div>
                     <h3>Gift 6</h3>
@@ -337,7 +444,6 @@
                 </div>
             </div>
 
-            <!-- GIFT 7 -->
             <div class="shop-card" id="gift-7">
                 <div>
                     <h3>Gift 7</h3>
@@ -349,7 +455,6 @@
                 </div>
             </div>
 
-            <!-- GIFT 8 -->
             <div class="shop-card" id="gift-8">
                 <div>
                     <h3>Gift 8</h3>
@@ -361,7 +466,6 @@
                 </div>
             </div>
 
-            <!-- GIFT 9 -->
             <div class="shop-card" id="gift-9">
                 <div>
                     <h3>Gift 9</h3>
@@ -384,38 +488,66 @@
         </div>
     </main>
 
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <script src="script.js"></script>
+
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.shop-card').forEach(card => {
+        function setTheme(themeName) {
+            if (themeName === "blue") {
+                document.body.removeAttribute("data-theme");
+            } else {
+                document.body.setAttribute("data-theme", themeName);
+            }
+
+            localStorage.setItem("arcade_theme", themeName);
+        }
+
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem("arcade_theme");
+
+            if (savedTheme) {
+                setTheme(savedTheme);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            loadSavedTheme();
+
+            document.querySelectorAll(".shop-card").forEach(function(card) {
                 const itemId = card.id;
-                if (localStorage.getItem(itemId + '_unlocked') === 'true') {
+
+                if (localStorage.getItem(itemId + "_unlocked") === "true") {
                     revealItem(itemId);
                 }
             });
 
-            if (typeof updateCoinDisplays === 'function') {
+            if (typeof updateCoinDisplays === "function") {
+                updateCoinDisplays();
+            }
+        });
+
+        window.addEventListener("pageshow", function() {
+            loadSavedTheme();
+
+            if (typeof updateCoinDisplays === "function") {
                 updateCoinDisplays();
             }
         });
 
         function buyItem(itemId, cost) {
-            if (localStorage.getItem(itemId + '_unlocked') === 'true') return;
+            if (localStorage.getItem(itemId + "_unlocked") === "true") {
+                return;
+            }
 
             let success = false;
-            if (typeof spendCoins === 'function') {
+
+            if (typeof spendCoins === "function") {
                 success = spendCoins(cost);
-            } else {
-                const currentCoins = parseInt(localStorage.getItem('arcade_coins') || '0', 10);
-                if (currentCoins >= cost) {
-                    localStorage.setItem('arcade_coins', (currentCoins - cost).toString());
-                    if (typeof updateCoinDisplays === 'function') updateCoinDisplays();
-                    success = true;
-                }
             }
 
             if (success) {
-                localStorage.setItem(itemId + '_unlocked', 'true');
+                localStorage.setItem(itemId + "_unlocked", "true");
                 revealItem(itemId);
             } else {
                 alert("Not enough coins.");
@@ -424,19 +556,24 @@
 
         function revealItem(itemId) {
             const card = document.getElementById(itemId);
-            if (!card) return;
 
-            const btn = card.querySelector('.buy-btn');
-            const content = card.querySelector('.unlocked-content');
+            if (!card) {
+                return;
+            }
+
+            const btn = card.querySelector(".buy-btn");
+            const content = card.querySelector(".unlocked-content");
 
             if (btn) {
-                btn.innerText = 'Unlocked';
+                btn.innerText = "Unlocked";
                 btn.disabled = true;
             }
+
             if (content) {
-                content.style.display = 'block';
+                content.style.display = "block";
             }
         }
     </script>
+
 </body>
 </html>
