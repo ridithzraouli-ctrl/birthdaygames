@@ -93,6 +93,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 100%;
             padding: 14px 20px;
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(8px);
@@ -100,14 +101,14 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            gap: 10px;
-            flex-wrap: wrap;
+            gap: 20px;
         }
 
         .header-left {
             display: flex;
             align-items: center;
             gap: 14px;
+            flex: 1;
         }
 
         .brand {
@@ -122,8 +123,9 @@
         .header-right {
             display: flex;
             align-items: center;
+            justify-content: flex-end;
             gap: 8px;
-            flex-wrap: wrap;
+            flex: 1;
         }
 
         .theme-selector {
@@ -425,7 +427,16 @@
         @media (max-width: 600px) {
             header {
                 padding: 12px 14px;
-                justify-content: space-between;
+                gap: 10px;
+            }
+
+            .header-left,
+            .header-right {
+                flex: 1;
+            }
+
+            .header-right {
+                justify-content: flex-end;
             }
 
             main {
@@ -554,9 +565,7 @@
                 <span class="reward-badge">+25 Coins</span>
             </a>
 
-        </div>
-
-        <div class="leaderboard-card">
+        </div>        <div class="leaderboard-card">
 
             <h2>✦ Leaderboard ✦</h2>
 
@@ -578,85 +587,38 @@
 
     </main>
 
-    <!-- FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script src="script.js"></script>
 
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyADjbuYXQzbRQU2PZZUKjcogDAixgyr_NQ",
-            authDomain: "my-arcade-app-1a2ae.firebaseapp.com",
-            projectId: "my-arcade-app-1a2ae",
-            storageBucket: "my-arcade-app-1a2ae.firebasestorage.app",
-            messagingSenderId: "650926380080",
-            appId: "1:650926380080:web:ed2576989f47ee3e2b89f5"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-
-        const database = firebase.database();
-        const leaderboardRef = database.ref("leaderboard");
-
-        function setTheme(themeName) {
-            if (themeName === "blue") {
-                document.body.removeAttribute("data-theme");
-            } else {
-                document.body.setAttribute("data-theme", themeName);
-            }
-
-            localStorage.setItem("arcade_theme", themeName);
-        }
-
-        function loadSavedTheme() {
-            const savedTheme = localStorage.getItem("arcade_theme");
-
-            if (savedTheme) {
-                setTheme(savedTheme);
+        function handleUserSwitch() {
+            if (typeof switchUser === "function") {
+                switchUser();
             }
         }
 
-        function getCurrentUser() {
-            return localStorage.getItem("arcade_current_user") || "Player";
-        }
-
-        function getCurrentCoins() {
-            return Number(localStorage.getItem("arcade_coins") || 0);
-        }
-
-        function cleanFirebaseKey(name) {
-            return name
-                .replace(/[.#$[\]/]/g, "_")
-                .trim();
-        }
-
-        function saveCurrentPlayerToFirebase() {
-            const username = getCurrentUser();
-            const coins = getCurrentCoins();
-
-            if (!username || username === "Player") {
-                return;
-            }
-
-            const firebaseKey = cleanFirebaseKey(username);
-
-            leaderboardRef.child(firebaseKey).update({
-                name: username,
-                coins: coins
-            }).catch(function(error) {
-                console.error("Firebase leaderboard error:", error);
-            });
-        }
-
-        function renderLeaderboard(snapshot) {
+        function updateLeaderboardUI() {
             const listEl = document.getElementById("leaderboard-list");
 
-            if (!listEl) {
+            if (!listEl || typeof getAllScores !== "function") {
                 return;
             }
 
-            const data = snapshot.val();
+            const scores = getAllScores();
 
-            if (!data) {
+            const players = Object.keys(scores).map(function(id) {
+                return {
+                    name: scores[id].name || "Anonymous",
+                    coins: Number(scores[id].coins) || 0
+                };
+            });
+
+            players.sort(function(a, b) {
+                return b.coins - a.coins;
+            });
+
+            if (players.length === 0) {
                 listEl.innerHTML = `
                     <li class="leaderboard-item leaderboard-message">
                         No players yet.
@@ -665,21 +627,9 @@
                 return;
             }
 
-            const scores = Object.keys(data).map(function(key) {
-                return {
-                    name: data[key].name || "Anonymous",
-                    coins: Number(data[key].coins || 0)
-                };
-            });
-
-            scores.sort(function(a, b) {
-                return b.coins - a.coins;
-            });
-
             listEl.innerHTML = "";
 
-            scores.slice(0, 10).forEach(function(player, index) {
-
+            players.slice(0, 10).forEach(function(player, index) {
                 const item = document.createElement("li");
                 item.className = "leaderboard-item";
 
@@ -703,23 +653,36 @@
             });
         }
 
-        function startLeaderboard() {
-            leaderboardRef.on("value", function(snapshot) {
-                renderLeaderboard(snapshot);
-            }, function(error) {
+        function setTheme(themeName) {
+            if (themeName === "blue") {
+                document.body.removeAttribute("data-theme");
+            } else {
+                document.body.setAttribute("data-theme", themeName);
+            }
 
-                console.error("Could not load Firebase leaderboard:", error);
-
-                const listEl = document.getElementById("leaderboard-list");
-
-                if (listEl) {
-                    listEl.innerHTML = `
-                        <li class="leaderboard-item leaderboard-message">
-                            Unable to load leaderboard.
-                        </li>
-                    `;
-                }
-            });
+            localStorage.setItem("arcade_theme", themeName);
         }
 
-        function handleUserSwit
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem("arcade_theme");
+
+            if (savedTheme) {
+                setTheme(savedTheme);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            loadSavedTheme();
+            updateCoinDisplays();
+            updateLeaderboardUI();
+        });
+
+        window.addEventListener("pageshow", function() {
+            loadSavedTheme();
+            updateCoinDisplays();
+            updateLeaderboardUI();
+        });
+    </script>
+
+</body>
+</html>
