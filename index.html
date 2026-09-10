@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arcade ♡</title>
+
     <style>
-        /* COLOR THEMES */
         :root {
             --bg-base: #f2f7fa;
             --bg-grad-1: #dce8f3;
@@ -71,7 +71,8 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        html, body {
+        html,
+        body {
             margin: 0;
             min-height: 100%;
         }
@@ -88,8 +89,6 @@
             transition: background 0.3s ease, color 0.3s ease;
         }
 
-        /* HEADER & NAVBAR LAYOUT */
-
         header {
             display: flex;
             justify-content: space-between;
@@ -101,7 +100,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            gap: 15px;
+            gap: 10px;
             flex-wrap: wrap;
         }
 
@@ -120,13 +119,6 @@
             line-height: 1.2;
         }
 
-        .header-center {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex: 1;
-        }
-
         .header-right {
             display: flex;
             align-items: center;
@@ -134,7 +126,6 @@
             flex-wrap: wrap;
         }
 
-        /* THEME SWATCHES (MAIN PAGE ONLY) */
         .theme-selector {
             display: flex;
             align-items: center;
@@ -158,11 +149,25 @@
             transform: scale(1.25);
         }
 
-        .dot-blue { background: #d3e2ea; }
-        .dot-pink { background: #ead3dc; }
-        .dot-green { background: #d3ead3; }
-        .dot-lavender { background: #dad3ea; }
-        .dot-yellow { background: #eae3c5; }
+        .dot-blue {
+            background: #d3e2ea;
+        }
+
+        .dot-pink {
+            background: #ead3dc;
+        }
+
+        .dot-green {
+            background: #d3ead3;
+        }
+
+        .dot-lavender {
+            background: #dad3ea;
+        }
+
+        .dot-yellow {
+            background: #eae3c5;
+        }
 
         .user-btn {
             background: #f9fcff;
@@ -195,8 +200,6 @@
             white-space: nowrap;
         }
 
-        /* MAIN LAYOUT */
-
         main {
             max-width: 800px;
             margin: 0 auto;
@@ -221,8 +224,6 @@
             font-size: 15px;
             text-align: center;
         }
-
-        /* ORNAMENTS & DECORATIONS */
 
         .ornament {
             display: flex;
@@ -263,14 +264,41 @@
             animation: float 5s ease-in-out infinite;
         }
 
-        .decorations span:nth-child(1) { top: 8%; left: 8%; font-size: 20px; }
-        .decorations span:nth-child(2) { top: 16%; right: 10%; font-size: 13px; }
-        .decorations span:nth-child(3) { top: 42%; left: 5%; font-size: 12px; }
-        .decorations span:nth-child(4) { top: 37%; right: 5%; font-size: 20px; }
-        .decorations span:nth-child(5) { bottom: 18%; left: 9%; font-size: 12px; }
-        .decorations span:nth-child(6) { bottom: 25%; right: 8%; font-size: 17px; }
+        .decorations span:nth-child(1) {
+            top: 8%;
+            left: 8%;
+            font-size: 20px;
+        }
 
-        /* GAMES GRID & CARDS */
+        .decorations span:nth-child(2) {
+            top: 16%;
+            right: 10%;
+            font-size: 13px;
+        }
+
+        .decorations span:nth-child(3) {
+            top: 42%;
+            left: 5%;
+            font-size: 12px;
+        }
+
+        .decorations span:nth-child(4) {
+            top: 37%;
+            right: 5%;
+            font-size: 20px;
+        }
+
+        .decorations span:nth-child(5) {
+            bottom: 18%;
+            left: 9%;
+            font-size: 12px;
+        }
+
+        .decorations span:nth-child(6) {
+            bottom: 25%;
+            right: 8%;
+            font-size: 17px;
+        }
 
         .games-grid {
             display: grid;
@@ -321,8 +349,6 @@
             font-size: 12px;
         }
 
-        /* LEADERBOARD CARD */
-
         .leaderboard-card {
             background: rgba(255, 255, 255, 0.85);
             border: 1px solid var(--bg-grad-2);
@@ -369,35 +395,50 @@
         .leaderboard-item .name {
             flex: 1;
             color: var(--text-main);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .leaderboard-item .score {
             color: var(--text-heading);
+            margin-left: 10px;
+            white-space: nowrap;
+        }
+
+        .leaderboard-message {
+            justify-content: center;
+            color: var(--text-main);
+            opacity: 0.75;
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0); }
-            50% { transform: translateY(-7px) rotate(7deg); }
+            0%, 100% {
+                transform: translateY(0) rotate(0);
+            }
+
+            50% {
+                transform: translateY(-7px) rotate(7deg);
+            }
         }
 
         @media (max-width: 600px) {
             header {
                 padding: 12px 14px;
+                justify-content: space-between;
             }
-            .header-center {
-                order: 3;
-                width: 100%;
-                justify-content: flex-start;
-            }
+
             main {
                 padding: 20px 12px;
             }
+
             .games-grid {
                 grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
+
 <body>
 
     <div class="decorations">
@@ -410,8 +451,9 @@
     </div>
 
     <header>
-        <!-- LEFT: Palette & Brand -->
+
         <div class="header-left">
+
             <div class="theme-selector" title="Pick Palette">
                 <div class="theme-dot dot-blue" onclick="setTheme('blue')"></div>
                 <div class="theme-dot dot-pink" onclick="setTheme('pink')"></div>
@@ -419,22 +461,29 @@
                 <div class="theme-dot dot-lavender" onclick="setTheme('lavender')"></div>
                 <div class="theme-dot dot-yellow" onclick="setTheme('yellow')"></div>
             </div>
+
             <a href="index.html" class="brand">Arcade ♡</a>
+
         </div>
 
-        <!-- CENTER: Name -->
-        <div class="header-center">
-            <button class="user-btn" onclick="handleUserSwitch()">✧ <span id="user-display">Player</span></button>
-        </div>
-
-        <!-- RIGHT: Shop & Coins -->
         <div class="header-right">
+
             <a href="shop.html" class="user-btn">Shop</a>
-            <div class="coin-display"><span class="coin-count">0</span> Coins</div>
+
+            <button class="user-btn" onclick="handleUserSwitch()">
+                ✧ <span id="user-display">Player</span>
+            </button>
+
+            <div class="coin-display">
+                <span class="coin-count">0</span> Coins
+            </div>
+
         </div>
+
     </header>
 
     <main>
+
         <div class="ornament">
             <span>✦</span>
             <i></i>
@@ -444,15 +493,19 @@
         </div>
 
         <h1>Games</h1>
-        <p class="subtitle">Play games to earn coins for your profile.</p>
+
+        <p class="subtitle">
+            Play games to earn coins for your profile.
+        </p>
 
         <div class="games-grid">
+
             <a href="games/sudoku.html" class="game-card">
                 <h3>Sudoku</h3>
                 <p>Classic numbers puzzle.</p>
                 <span class="reward-badge">+50 Coins</span>
             </a>
-            
+
             <a href="games/crossword.html" class="game-card">
                 <h3>Crossword</h3>
                 <p>Solve the grid clues.</p>
@@ -470,7 +523,7 @@
                 <p>Guess the word before attempts run out.</p>
                 <span class="reward-badge">+20 Coins</span>
             </a>
-            
+
             <a href="games/wordle.html" class="game-card">
                 <h3>Wordle</h3>
                 <p>Guess the 5-letter word in 6 tries.</p>
@@ -500,11 +553,19 @@
                 <p>Sort identical colors into single bottles.</p>
                 <span class="reward-badge">+25 Coins</span>
             </a>
+
         </div>
 
         <div class="leaderboard-card">
+
             <h2>✦ Leaderboard ✦</h2>
-            <ul class="leaderboard-list" id="leaderboard-list"></ul>
+
+            <ul class="leaderboard-list" id="leaderboard-list">
+                <li class="leaderboard-item leaderboard-message">
+                    Loading leaderboard...
+                </li>
+            </ul>
+
         </div>
 
         <div class="ornament bottom">
@@ -514,111 +575,151 @@
             <i></i>
             <span>✧</span>
         </div>
+
     </main>
 
-    <script src="script.js"></script>
+    <!-- FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
     <script>
-        // PRESET THEME SYSTEM
+        const firebaseConfig = {
+            apiKey: "AIzaSyADjbuYXQzbRQU2PZZUKjcogDAixgyr_NQ",
+            authDomain: "my-arcade-app-1a2ae.firebaseapp.com",
+            projectId: "my-arcade-app-1a2ae",
+            storageBucket: "my-arcade-app-1a2ae.firebasestorage.app",
+            messagingSenderId: "650926380080",
+            appId: "1:650926380080:web:ed2576989f47ee3e2b89f5"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        const database = firebase.database();
+        const leaderboardRef = database.ref("leaderboard");
+
         function setTheme(themeName) {
-            if (themeName === 'blue') {
-                document.body.removeAttribute('data-theme');
+            if (themeName === "blue") {
+                document.body.removeAttribute("data-theme");
             } else {
-                document.body.setAttribute('data-theme', themeName);
+                document.body.setAttribute("data-theme", themeName);
             }
-            localStorage.setItem('arcade_theme', themeName);
+
+            localStorage.setItem("arcade_theme", themeName);
         }
 
         function loadSavedTheme() {
-            const savedTheme = localStorage.getItem('arcade_theme');
+            const savedTheme = localStorage.getItem("arcade_theme");
+
             if (savedTheme) {
                 setTheme(savedTheme);
             }
         }
 
-        // AUTO-SYNC LEADERBOARD & USER STORAGE BRIDGE
-        function syncAndRenderLeaderboard() {
-            const listEl = document.getElementById('leaderboard-list');
-            if (!listEl) return;
+        function getCurrentUser() {
+            return localStorage.getItem("arcade_current_user") || "Player";
+        }
 
-            let usersMap = {};
-            try {
-                const rawUsers = localStorage.getItem('arcade_users');
-                if (rawUsers) {
-                    usersMap = JSON.parse(rawUsers);
-                }
-            } catch(e) {
-                console.error("Error reading arcade_users:", e);
-            }
+        function getCurrentCoins() {
+            return Number(localStorage.getItem("arcade_coins") || 0);
+        }
 
-            // Ensure the active user is properly represented in the map
-            const currentUser = localStorage.getItem('arcade_current_user') || 'Player';
-            const currentCoins = Number(localStorage.getItem('arcade_coins') || 0);
+        function cleanFirebaseKey(name) {
+            return name
+                .replace(/[.#$[\]/]/g, "_")
+                .trim();
+        }
 
-            if (!usersMap[currentUser]) {
-                usersMap[currentUser] = { coins: currentCoins };
-            } else if (typeof usersMap[currentUser] === 'object') {
-                usersMap[currentUser].coins = Math.max(usersMap[currentUser].coins || 0, currentCoins);
-            } else {
-                usersMap[currentUser] = { coins: Math.max(Number(usersMap[currentUser]) || 0, currentCoins) };
-            }
+        function saveCurrentPlayerToFirebase() {
+            const username = getCurrentUser();
+            const coins = getCurrentCoins();
 
-            // Save back updated map
-            localStorage.setItem('arcade_users', JSON.stringify(usersMap));
-
-            // Convert to sortable array
-            const scores = Object.keys(usersMap).map(name => ({
-                name: name,
-                coins: typeof usersMap[name] === 'object' ? (usersMap[name].coins || 0) : Number(usersMap[name] || 0)
-            }));
-
-            scores.sort((a, b) => b.coins - a.coins);
-
-            if (scores.length === 0) {
-                listEl.innerHTML = '<li class="leaderboard-item"><span class="name">No profiles saved yet. Click your profile name above to start!</span></li>';
+            if (!username || username === "Player") {
                 return;
             }
 
-            listEl.innerHTML = '';
-            scores.slice(0, 10).forEach((player, index) => {
-                const item = document.createElement('li');
-                item.className = 'leaderboard-item';
-                item.innerHTML = `
-                    <span class="rank">#${index + 1}</span>
-                    <span class="name">${player.name || 'Anonymous'}</span>
-                    <span class="score">${player.coins || 0} Coins</span>
+            const firebaseKey = cleanFirebaseKey(username);
+
+            leaderboardRef.child(firebaseKey).update({
+                name: username,
+                coins: coins
+            }).catch(function(error) {
+                console.error("Firebase leaderboard error:", error);
+            });
+        }
+
+        function renderLeaderboard(snapshot) {
+            const listEl = document.getElementById("leaderboard-list");
+
+            if (!listEl) {
+                return;
+            }
+
+            const data = snapshot.val();
+
+            if (!data) {
+                listEl.innerHTML = `
+                    <li class="leaderboard-item leaderboard-message">
+                        No players yet.
+                    </li>
                 `;
+                return;
+            }
+
+            const scores = Object.keys(data).map(function(key) {
+                return {
+                    name: data[key].name || "Anonymous",
+                    coins: Number(data[key].coins || 0)
+                };
+            });
+
+            scores.sort(function(a, b) {
+                return b.coins - a.coins;
+            });
+
+            listEl.innerHTML = "";
+
+            scores.slice(0, 10).forEach(function(player, index) {
+
+                const item = document.createElement("li");
+                item.className = "leaderboard-item";
+
+                const rank = document.createElement("span");
+                rank.className = "rank";
+                rank.textContent = "#" + (index + 1);
+
+                const name = document.createElement("span");
+                name.className = "name";
+                name.textContent = player.name;
+
+                const score = document.createElement("span");
+                score.className = "score";
+                score.textContent = player.coins + " Coins";
+
+                item.appendChild(rank);
+                item.appendChild(name);
+                item.appendChild(score);
+
                 listEl.appendChild(item);
             });
         }
 
-        function handleUserSwitch() {
-            if (typeof switchUser === 'function') {
-                switchUser();
-            } else {
-                const name = prompt("Enter your profile name:");
-                if (name && name.trim() !== "") {
-                    localStorage.setItem('arcade_current_user', name.trim());
+        function startLeaderboard() {
+            leaderboardRef.on("value", function(snapshot) {
+                renderLeaderboard(snapshot);
+            }, function(error) {
+
+                console.error("Could not load Firebase leaderboard:", error);
+
+                const listEl = document.getElementById("leaderboard-list");
+
+                if (listEl) {
+                    listEl.innerHTML = `
+                        <li class="leaderboard-item leaderboard-message">
+                            Unable to load leaderboard.
+                        </li>
+                    `;
                 }
-            }
-            if (typeof updateCoinDisplays === 'function') updateCoinDisplays();
-            syncAndRenderLeaderboard();
+            });
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            loadSavedTheme();
-            if (typeof updateCoinDisplays === 'function') updateCoinDisplays();
-            syncAndRenderLeaderboard();
-        });
-
-        window.addEventListener('pageshow', () => {
-            loadSavedTheme();
-            if (typeof updateCoinDisplays === 'function') updateCoinDisplays();
-            syncAndRenderLeaderboard();
-        });
-
-        // Periodic check so leaderboard updates right away when returning from a game
-        setInterval(syncAndRenderLeaderboard, 1500);
-    </script>
-</body>
-</html>
+        function handleUserSwit
