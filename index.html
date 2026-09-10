@@ -68,17 +68,24 @@
 
         * {
             box-sizing: border-box;
+            min-width: 0;
             -webkit-tap-highlight-color: transparent;
         }
 
-        html,
-        body {
+        html {
+            width: 100%;
+            max-width: 100%;
             margin: 0;
-            min-height: 100%;
+            padding: 0;
+            overflow-x: hidden;
         }
 
         body {
+            width: 100%;
+            max-width: 100%;
             min-height: 100vh;
+            margin: 0;
+            padding: 0;
             overflow-x: hidden;
             background:
                 radial-gradient(circle at 12% 12%, var(--bg-grad-1) 0, transparent 25%),
@@ -91,9 +98,11 @@
 
         header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
             width: 100%;
+            max-width: 100%;
+            min-width: 0;
             padding: 14px 20px;
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(8px);
@@ -101,17 +110,24 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            gap: 20px;
+            gap: 12px;
         }
 
         .header-left {
             display: flex;
             align-items: center;
             gap: 14px;
-            flex: 1;
+            min-width: 0;
+            flex: 1 1 0;
         }
 
         .brand {
+            display: block;
+            min-width: 0;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
             font-weight: normal;
             font-size: 18px;
             color: var(--text-heading);
@@ -125,12 +141,15 @@
             align-items: center;
             justify-content: flex-end;
             gap: 8px;
-            flex: 1;
+            min-width: 0;
+            flex: 1 1 0;
         }
 
         .theme-selector {
             display: flex;
             align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
             gap: 5px;
             background: rgba(255, 255, 255, 0.6);
             padding: 4px 8px;
@@ -141,8 +160,9 @@
         .theme-dot {
             width: 16px;
             height: 16px;
+            flex: 0 0 16px;
             border-radius: 50%;
-            border: 1px solid rgba(0,0,0,0.15);
+            border: 1px solid rgba(0, 0, 0, 0.15);
             cursor: pointer;
             transition: transform 0.2s ease;
         }
@@ -151,27 +171,20 @@
             transform: scale(1.25);
         }
 
-        .dot-blue {
-            background: #d3e2ea;
-        }
-
-        .dot-pink {
-            background: #ead3dc;
-        }
-
-        .dot-green {
-            background: #d3ead3;
-        }
-
-        .dot-lavender {
-            background: #dad3ea;
-        }
-
-        .dot-yellow {
-            background: #eae3c5;
-        }
+        .dot-blue { background: #d3e2ea; }
+        .dot-pink { background: #ead3dc; }
+        .dot-green { background: #d3ead3; }
+        .dot-lavender { background: #dad3ea; }
+        .dot-yellow { background: #eae3c5; }
 
         .user-btn {
+            display: block;
+            max-width: 180px;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex-shrink: 1;
             background: #f9fcff;
             border: 1px solid var(--accent-border);
             padding: 6px 12px;
@@ -181,9 +194,8 @@
             font-size: 12px;
             text-decoration: none;
             cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
             transition: 0.2s ease;
-            white-space: nowrap;
         }
 
         .user-btn:hover {
@@ -192,6 +204,7 @@
         }
 
         .coin-display {
+            flex-shrink: 0;
             background: rgba(255, 255, 255, 0.7);
             border: 1px solid var(--bg-grad-2);
             padding: 6px 12px;
@@ -203,6 +216,7 @@
         }
 
         main {
+            width: 100%;
             max-width: 800px;
             margin: 0 auto;
             padding: 30px 20px;
@@ -212,6 +226,7 @@
         }
 
         h1 {
+            width: 100%;
             color: var(--text-heading);
             font-weight: normal;
             font-size: 26px;
@@ -220,6 +235,7 @@
         }
 
         p.subtitle {
+            width: 100%;
             color: var(--text-main);
             opacity: 0.8;
             margin: 0 0 32px;
@@ -231,6 +247,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            max-width: 100%;
             gap: 11px;
             height: 22px;
             margin-bottom: 25px;
@@ -242,11 +259,14 @@
         }
 
         .ornament span {
+            flex-shrink: 0;
             font-size: 16px;
         }
 
         .ornament i {
             width: 40px;
+            max-width: 40px;
+            flex: 0 1 40px;
             height: 1px;
             background: var(--ornament-color);
             opacity: 0.4;
@@ -255,8 +275,12 @@
         .decorations {
             position: fixed;
             inset: 0;
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
             z-index: -1;
             pointer-events: none;
+            overflow: hidden;
         }
 
         .decorations span {
@@ -304,13 +328,19 @@
 
         .games-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 20px;
             width: 100%;
+            max-width: 100%;
             margin-bottom: 36px;
         }
 
         .game-card {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            overflow: hidden;
             background: rgba(255, 255, 255, 0.85);
             border: 1px solid var(--bg-grad-2);
             border-radius: 8px;
@@ -332,6 +362,7 @@
             font-weight: normal;
             margin: 0 0 8px;
             font-size: 18px;
+            overflow-wrap: anywhere;
         }
 
         .game-card p {
@@ -340,23 +371,29 @@
             opacity: 0.9;
             margin: 0 0 16px;
             line-height: 1.5;
+            overflow-wrap: anywhere;
         }
 
         .reward-badge {
             display: inline-block;
+            max-width: 100%;
             background: var(--accent-badge);
             color: var(--text-heading);
             padding: 4px 10px;
             border-radius: 4px;
             font-size: 12px;
+            overflow-wrap: anywhere;
         }
 
         .leaderboard-card {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            overflow: hidden;
             background: rgba(255, 255, 255, 0.85);
             border: 1px solid var(--bg-grad-2);
             border-radius: 8px;
             padding: 24px;
-            width: 100%;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
         }
 
@@ -370,6 +407,8 @@
 
         .leaderboard-list {
             list-style: none;
+            width: 100%;
+            max-width: 100%;
             padding: 0;
             margin: 0;
             display: flex;
@@ -379,6 +418,10 @@
 
         .leaderboard-item {
             display: flex;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            overflow: hidden;
             justify-content: space-between;
             align-items: center;
             padding: 10px 14px;
@@ -389,22 +432,24 @@
         }
 
         .leaderboard-item .rank {
+            flex: 0 0 30px;
             font-weight: bold;
             color: var(--ornament-color);
-            width: 30px;
         }
 
         .leaderboard-item .name {
-            flex: 1;
-            color: var(--text-main);
+            flex: 1 1 auto;
+            min-width: 0;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            color: var(--text-main);
         }
 
         .leaderboard-item .score {
-            color: var(--text-heading);
+            flex: 0 0 auto;
             margin-left: 10px;
+            color: var(--text-heading);
             white-space: nowrap;
         }
 
@@ -426,25 +471,111 @@
 
         @media (max-width: 600px) {
             header {
-                padding: 12px 14px;
-                gap: 10px;
+                padding: 10px 12px;
+                gap: 8px;
             }
 
-            .header-left,
-            .header-right {
-                flex: 1;
+            .header-left {
+                gap: 8px;
             }
 
             .header-right {
-                justify-content: flex-end;
+                gap: 5px;
+            }
+
+            .theme-selector {
+                gap: 4px;
+                padding: 4px 6px;
+            }
+
+            .theme-dot {
+                width: 14px;
+                height: 14px;
+                flex-basis: 14px;
+            }
+
+            .brand {
+                font-size: 16px;
+            }
+
+            .user-btn {
+                max-width: 110px;
+                padding: 6px 9px;
+                font-size: 11px;
+            }
+
+            .coin-display {
+                padding: 6px 8px;
+                font-size: 11px;
             }
 
             main {
+                width: 100%;
+                max-width: 100%;
                 padding: 20px 12px;
             }
 
             .games-grid {
                 grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .game-card {
+                padding: 20px;
+            }
+
+            .leaderboard-card {
+                padding: 18px 14px;
+            }
+
+            .leaderboard-item {
+                padding: 9px 10px;
+            }
+        }
+
+        @media (max-width: 430px) {
+            header {
+                padding: 9px 8px;
+                gap: 5px;
+            }
+
+            .header-left {
+                gap: 5px;
+            }
+
+            .header-right {
+                gap: 4px;
+            }
+
+            .theme-selector {
+                gap: 3px;
+                padding: 3px 5px;
+            }
+
+            .theme-dot {
+                width: 12px;
+                height: 12px;
+                flex-basis: 12px;
+            }
+
+            .brand {
+                display: none;
+            }
+
+            .user-btn {
+                max-width: 90px;
+                padding: 6px 7px;
+                font-size: 10px;
+            }
+
+            .coin-display {
+                padding: 6px 7px;
+                font-size: 10px;
+            }
+
+            main {
+                padding-left: 10px;
+                padding-right: 10px;
             }
         }
     </style>
@@ -563,9 +694,9 @@
                 <h3>Water Sort</h3>
                 <p>Sort identical colors into single bottles.</p>
                 <span class="reward-badge">+25 Coins</span>
-            </a>
+                </a>        </div>
 
-        </div>        <div class="leaderboard-card">
+        <div class="leaderboard-card">
 
             <h2>✦ Leaderboard ✦</h2>
 
@@ -608,9 +739,13 @@
             const scores = getAllScores();
 
             const players = Object.keys(scores).map(function(id) {
+                const player = scores[id] || {};
+
                 return {
-                    name: scores[id].name || "Anonymous",
-                    coins: Number(scores[id].coins) || 0
+                    name: player.name && String(player.name).trim()
+                        ? String(player.name)
+                        : "Player",
+                    coins: Number(player.coins) || 0
                 };
             });
 
@@ -619,11 +754,13 @@
             });
 
             if (players.length === 0) {
-                listEl.innerHTML = `
-                    <li class="leaderboard-item leaderboard-message">
-                        No players yet.
-                    </li>
-                `;
+                listEl.innerHTML = "";
+
+                const emptyItem = document.createElement("li");
+                emptyItem.className = "leaderboard-item leaderboard-message";
+                emptyItem.textContent = "No players yet.";
+
+                listEl.appendChild(emptyItem);
                 return;
             }
 
