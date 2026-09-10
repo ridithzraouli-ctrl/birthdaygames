@@ -15,18 +15,18 @@ const database = firebase.database();
 const playersRef = database.ref("players");
 
 function getUserId() {
-    let id = localStorage.getItem('bdayUserId');
+    let id = localStorage.getItem("bdayUserId");
 
     if (!id) {
-        id = 'user_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
-        localStorage.setItem('bdayUserId', id);
+        id = "user_" + Date.now() + "_" + Math.random().toString(36).substring(2, 7);
+        localStorage.setItem("bdayUserId", id);
     }
 
     return id;
 }
 
 function getActiveUser() {
-    let user = localStorage.getItem('bdayActiveUser');
+    let user = localStorage.getItem("bdayActiveUser");
 
     if (!user) {
         user = prompt("Enter a username to save your coins:", "Player 1");
@@ -36,23 +36,23 @@ function getActiveUser() {
         }
 
         user = user.trim();
-        localStorage.setItem('bdayActiveUser', user);
+        localStorage.setItem("bdayActiveUser", user);
     }
 
     return user;
 }
 
 function getAllScores() {
-    return JSON.parse(localStorage.getItem('bdayLeaderboardData') || '{}');
+    return JSON.parse(localStorage.getItem("bdayLeaderboardData") || "{}");
 }
 
 function saveLocalScores(scores) {
-    localStorage.setItem('bdayLeaderboardData', JSON.stringify(scores));
+    localStorage.setItem("bdayLeaderboardData", JSON.stringify(scores));
 }
 
 function getPlayerKey(username) {
     return encodeURIComponent(username.trim().toLowerCase())
-        .replace(/\./g, '%2E');
+        .replace(/\./g, "%2E");
 }
 
 function getCoins() {
@@ -60,7 +60,7 @@ function getCoins() {
     const scores = getAllScores();
 
     if (!scores[id]) {
-        const legacyCoins = parseInt(localStorage.getItem('bdayCoins')) || 0;
+        const legacyCoins = parseInt(localStorage.getItem("bdayCoins")) || 0;
 
         scores[id] = {
             name: getActiveUser(),
@@ -86,11 +86,11 @@ function saveCurrentPlayer() {
     };
 
     saveLocalScores(scores);
-    localStorage.setItem('bdayCoins', coins);
+    localStorage.setItem("bdayCoins", coins);
 
     const playerKey = getPlayerKey(username);
 
-    playersRef.child(playerKey).set({
+    return playersRef.child(playerKey).set({
         id: id,
         name: username,
         coins: coins
@@ -107,24 +107,25 @@ function addCoins(amount) {
     }
 
     const id = getUserId();
+    const username = getActiveUser();
     const scores = getAllScores();
 
     if (!scores[id]) {
         scores[id] = {
-            name: getActiveUser(),
+            name: username,
             coins: 0
         };
     }
 
     scores[id].coins = (Number(scores[id].coins) || 0) + amount;
-    scores[id].name = getActiveUser();
+    scores[id].name = username;
 
     saveLocalScores(scores);
-    localStorage.setItem('bdayCoins', scores[id].coins);
+    localStorage.setItem("bdayCoins", scores[id].coins);
 
     updateCoinDisplays();
 
-    if (typeof renderLeaderboard === 'function') {
+    if (typeof renderLeaderboard === "function") {
         renderLeaderboard();
     }
 
@@ -139,6 +140,7 @@ function spendCoins(amount) {
     }
 
     const id = getUserId();
+    const username = getActiveUser();
     const scores = getAllScores();
     const current = getCoins();
 
@@ -146,15 +148,22 @@ function spendCoins(amount) {
         return false;
     }
 
+    if (!scores[id]) {
+        scores[id] = {
+            name: username,
+            coins: current
+        };
+    }
+
     scores[id].coins = current - amount;
-    scores[id].name = getActiveUser();
+    scores[id].name = username;
 
     saveLocalScores(scores);
-    localStorage.setItem('bdayCoins', scores[id].coins);
+    localStorage.setItem("bdayCoins", scores[id].coins);
 
     updateCoinDisplays();
 
-    if (typeof renderLeaderboard === 'function') {
+    if (typeof renderLeaderboard === "function") {
         renderLeaderboard();
     }
 
@@ -163,7 +172,7 @@ function spendCoins(amount) {
     return true;
 }
 
-function switchUser() {
+async function switchUser() {
     const current = getActiveUser();
 
     const newUser = prompt(
@@ -176,80 +185,99 @@ function switchUser() {
     }
 
     const cleanedName = newUser.trim();
-
-    localStorage.setItem('bdayActiveUser', cleanedName);
-
     const newPlayerKey = getPlayerKey(cleanedName);
+    const id = getUserId();
+    const scores = getAllScores();
 
-    playersRef.child(newPlayerKey).once('value')
-        .then(function(snapshot) {
-            const firebasePlayer = snapshot.val();
+    try {
+        const snapshot = await playersRef.child(newPlayerKey).once("value");
+        const firebasePlayer = snapshot.val();
 
-            if (firebasePlayer) {
-                const id = getUserId();
-                const scores = getAllScores();
+        localStorage.setItem("bdayActiveUser", cleanedName);
 
-                scores[id] = {
-                    name: cleanedName,
-                    coins: Number(firebasePlayer.coins) || 0
-                };
+        if (firebasePlayer) {
+            scores[id] = {
+                name: firebasePlayer.name || cleanedName,
+                coins: Number(firebasePlayer.coins) || 0
+            };
 
-                saveLocalScores(scores);
-                localStorage.setItem(
-                    'bdayCoins',
-                    Number(firebasePlayer.coins) || 0
-                );
-            } else {
-                const id = getUserId();
-                const scores = getAllScores();
+            localStorage.setItem(
+                "bdayCoins",
+                Number(firebasePlayer.coins) || 0
+            );
+        } else {
+            const currentCoins = scores[id]
+                ? Number(scores[id].coins) || 0
+                : 0;
 
-                if (!scores[id]) {
-                    scores[id] = {
-                        name: cleanedName,
-                        coins: 0
-                    };
-                } else {
-                    scores[id].name = cleanedName;
-                }
+            scores[id] = {
+                name: cleanedName,
+                coins: currentCoins
+            };
 
-                saveLocalScores(scores);
-                saveCurrentPlayer();
-            }
+            localStorage.setItem("bdayCoins", currentCoins);
 
-            updateCoinDisplays();
+            await playersRef.child(newPlayerKey).set({
+                id: id,
+                name: cleanedName,
+                coins: currentCoins
+            });
+        }
 
-            if (typeof renderLeaderboard === 'function') {
-                renderLeaderboard();
-            }
-        })
-        .catch(function(error) {
-            console.error("Firebase user load error:", error);
+        saveLocalScores(scores);
+        updateCoinDisplays();
 
-            updateCoinDisplays();
+        if (typeof renderLeaderboard === "function") {
+            renderLeaderboard();
+        }
 
-            if (typeof renderLeaderboard === 'function') {
-                renderLeaderboard();
-            }
-        });
+        if (typeof updateLeaderboardUI === "function") {
+            updateLeaderboardUI();
+        }
+
+    } catch (error) {
+        console.error("Firebase user switch error:", error);
+
+        localStorage.setItem("bdayActiveUser", cleanedName);
+
+        const currentCoins = scores[id]
+            ? Number(scores[id].coins) || 0
+            : 0;
+
+        scores[id] = {
+            name: cleanedName,
+            coins: currentCoins
+        };
+
+        saveLocalScores(scores);
+        updateCoinDisplays();
+
+        if (typeof renderLeaderboard === "function") {
+            renderLeaderboard();
+        }
+
+        if (typeof updateLeaderboardUI === "function") {
+            updateLeaderboardUI();
+        }
+    }
 }
 
 function updateCoinDisplays() {
     const coins = getCoins();
     const user = getActiveUser();
 
-    document.querySelectorAll('.coin-count').forEach(function(el) {
+    document.querySelectorAll(".coin-count").forEach(function(el) {
         el.innerText = coins;
     });
 
-    document.querySelectorAll('#user-display').forEach(function(el) {
+    document.querySelectorAll("#user-display").forEach(function(el) {
         el.innerText = user;
     });
 }
 
 function loadFirebaseLeaderboard() {
-    playersRef.on('value', function(snapshot) {
+    playersRef.on("value", function(snapshot) {
         const data = snapshot.val() || {};
-
         const scores = {};
 
         Object.keys(data).forEach(function(key) {
@@ -259,21 +287,47 @@ function loadFirebaseLeaderboard() {
                 return;
             }
 
+            let playerName = player.name;
+
+            if (!playerName || !String(playerName).trim()) {
+                try {
+                    playerName = decodeURIComponent(key);
+                } catch (error) {
+                    playerName = key;
+                }
+            }
+
+            if (!playerName || !String(playerName).trim()) {
+                playerName = "Player";
+            }
+
             const id = player.id || key;
 
             scores[id] = {
-                name: player.name || "Anonymous",
+                name: String(playerName),
                 coins: Number(player.coins) || 0
             };
         });
 
+        const currentId = getUserId();
+        const currentName = getActiveUser();
+
+        if (!scores[currentId]) {
+            const currentCoins = Number(localStorage.getItem("bdayCoins")) || 0;
+
+            scores[currentId] = {
+                name: currentName,
+                coins: currentCoins
+            };
+        }
+
         saveLocalScores(scores);
 
-        if (typeof renderLeaderboard === 'function') {
+        if (typeof renderLeaderboard === "function") {
             renderLeaderboard();
         }
 
-        if (typeof updateLeaderboardUI === 'function') {
+        if (typeof updateLeaderboardUI === "function") {
             updateLeaderboardUI();
         }
     }, function(error) {
@@ -285,7 +339,7 @@ function loadCurrentPlayerFromFirebase() {
     const username = getActiveUser();
     const playerKey = getPlayerKey(username);
 
-    playersRef.child(playerKey).once('value')
+    playersRef.child(playerKey).once("value")
         .then(function(snapshot) {
             const player = snapshot.val();
 
@@ -297,22 +351,24 @@ function loadCurrentPlayerFromFirebase() {
             const id = getUserId();
             const scores = getAllScores();
             const coins = Number(player.coins) || 0;
+            const name = player.name || username;
 
             scores[id] = {
-                name: player.name || username,
+                name: name,
                 coins: coins
             };
 
             saveLocalScores(scores);
-            localStorage.setItem('bdayCoins', coins);
+            localStorage.setItem("bdayCoins", coins);
+            localStorage.setItem("bdayActiveUser", name);
 
             updateCoinDisplays();
 
-            if (typeof renderLeaderboard === 'function') {
+            if (typeof renderLeaderboard === "function") {
                 renderLeaderboard();
             }
 
-            if (typeof updateLeaderboardUI === 'function') {
+            if (typeof updateLeaderboardUI === "function") {
                 updateLeaderboardUI();
             }
         })
@@ -321,12 +377,12 @@ function loadCurrentPlayerFromFirebase() {
         });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener("DOMContentLoaded", function() {
     updateCoinDisplays();
     loadCurrentPlayerFromFirebase();
     loadFirebaseLeaderboard();
 });
 
-window.addEventListener('pageshow', function() {
+window.addEventListener("pageshow", function() {
     updateCoinDisplays();
 });
