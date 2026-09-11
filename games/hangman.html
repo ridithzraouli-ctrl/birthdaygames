@@ -4,36 +4,161 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hangman</title>
+
     <style>
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        :root {
+            --bg-base: #f2f7fa;
+            --bg-grad-1: #dce8f3;
+            --bg-grad-2: #d3e2ea;
+            --text-main: #3f5260;
+            --text-heading: #46637a;
+            --accent-border: #82a8bd;
+            --accent-soft: #e9f3f9;
+            --accent-badge: #dfe8f8;
+            --ornament-color: #799eb8;
+            --card-bg: rgba(255, 255, 255, 0.88);
+            --header-bg: rgba(255, 255, 255, 0.88);
+        }
+
+        body[data-theme="pink"] {
+            --bg-base: #faf2f5;
+            --bg-grad-1: #f3dce5;
+            --bg-grad-2: #ead3dc;
+            --text-main: #603f4c;
+            --text-heading: #7a4659;
+            --accent-border: #bd8297;
+            --accent-soft: #f9e9f0;
+            --accent-badge: #f8dfe8;
+            --ornament-color: #b87992;
+            --card-bg: rgba(255, 255, 255, 0.88);
+            --header-bg: rgba(255, 255, 255, 0.88);
+        }
+
+        body[data-theme="green"] {
+            --bg-base: #f3f7f2;
+            --bg-grad-1: #dce8dc;
+            --bg-grad-2: #d3ead3;
+            --text-main: #3f6043;
+            --text-heading: #467a4c;
+            --accent-border: #82bd8b;
+            --accent-soft: #e9f9eb;
+            --accent-badge: #dff8e2;
+            --ornament-color: #79b882;
+            --card-bg: rgba(255, 255, 255, 0.88);
+            --header-bg: rgba(255, 255, 255, 0.88);
+        }
+
+        body[data-theme="lavender"] {
+            --bg-base: #f5f2fa;
+            --bg-grad-1: #e3dcf3;
+            --bg-grad-2: #dad3ea;
+            --text-main: #4a3f60;
+            --text-heading: #59467a;
+            --accent-border: #9882bd;
+            --accent-soft: #f0e9f9;
+            --accent-badge: #e9dff8;
+            --ornament-color: #9379b8;
+            --card-bg: rgba(255, 255, 255, 0.88);
+            --header-bg: rgba(255, 255, 255, 0.88);
+        }
+
+        body[data-theme="yellow"] {
+            --bg-base: #faf8f2;
+            --bg-grad-1: #f3edd2;
+            --bg-grad-2: #eae3c5;
+            --text-main: #60573f;
+            --text-heading: #7a6e46;
+            --accent-border: #bdb182;
+            --accent-soft: #f9f5e9;
+            --accent-badge: #f8f3df;
+            --ornament-color: #b8aa79;
+            --card-bg: rgba(255, 255, 255, 0.88);
+            --header-bg: rgba(255, 255, 255, 0.88);
+        }
+
+        * {
+            box-sizing: border-box;
+            min-width: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
         body {
-            margin: 0;
+            width: 100%;
+            max-width: 100%;
             min-height: 100vh;
-            background: #faf7f5;
-            color: #4a3e3d;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+            background:
+                radial-gradient(circle at 10% 12%, var(--bg-grad-1) 0, transparent 28%),
+                radial-gradient(circle at 90% 85%, var(--bg-grad-2) 0, transparent 30%),
+                var(--bg-base);
+            color: var(--text-main);
+            font-family: Georgia, "Times New Roman", serif;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
         header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 14px 24px;
-            background: #ffffff;
-            border-bottom: 1px solid #eee8e5;
-            position: relative;
+            justify-content: space-between;
+            width: 100%;
+            min-height: 70px;
+            padding: 15px 22px;
+            background: var(--header-bg);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--bg-grad-2);
+            position: sticky;
+            top: 0;
             z-index: 100;
+            gap: 16px;
         }
 
-        .header-left, .header-right {
+        .header-left,
+        .header-right {
             display: flex;
             align-items: center;
+            min-width: 0;
+        }
+
+        .header-left {
             gap: 12px;
         }
 
-        .nav-link { color: #7d6b6d; text-decoration: none; font-size: 14px; font-weight: 500; cursor: pointer; }
-        .nav-link:hover { color: #4a3e3d; }
-        .coin-display { background: #f4ece9; border: 1px solid #e2d7d3; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; color: #635052; }
+        .header-right {
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .nav-link {
+            color: var(--text-heading);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: normal;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: opacity 0.2s ease;
+        }
+
+        .nav-link:hover {
+            opacity: 0.7;
+        }
+
+        .coin-display {
+            background: var(--accent-soft);
+            border: 1px solid var(--accent-border);
+            padding: 9px 15px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: bold;
+            color: var(--text-heading);
+            white-space: nowrap;
+        }
 
         .category-dropdown {
             position: relative;
@@ -41,97 +166,152 @@
         }
 
         .cat-btn {
-            padding: 6px 12px;
-            border: 1px solid #d1c4c0;
-            border-radius: 6px;
-            background: #ffffff;
-            color: #4a3e3d;
+            padding: 9px 13px;
+            border: 1px solid var(--accent-border);
+            border-radius: 100px;
+            background: var(--card-bg);
+            color: var(--text-heading);
+            font-family: Georgia, "Times New Roman", serif;
             font-size: 13px;
-            font-weight: 500;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 7px;
+            white-space: nowrap;
+            transition: 0.2s ease;
         }
 
-        .cat-btn:hover { background: #faf7f5; }
+        .cat-btn:hover {
+            background: var(--accent-soft);
+            transform: translateY(-1px);
+        }
 
         .cat-menu {
             display: none;
             position: absolute;
             right: 0;
-            top: calc(100% + 4px);
-            background: #ffffff;
-            border: 1px solid #d1c4c0;
-            border-radius: 6px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            top: calc(100% + 7px);
+            background: var(--card-bg);
+            border: 1px solid var(--accent-border);
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
             z-index: 200;
-            min-width: 130px;
+            min-width: 150px;
             overflow: hidden;
+            padding: 4px;
         }
 
-        .cat-menu.show { display: block; }
+        .cat-menu.show {
+            display: block;
+        }
 
         .cat-option {
-            padding: 8px 12px;
+            padding: 9px 11px;
+            border-radius: 7px;
             font-size: 13px;
-            color: #4a3e3d;
+            color: var(--text-main);
             cursor: pointer;
-            transition: background 0.15s;
+            transition: background 0.15s ease;
         }
 
-        .cat-option:hover { background: #f4ece9; }
-        .cat-option.active { font-weight: 600; color: #635052; background: #faf7f5; }
+        .cat-option:hover {
+            background: var(--accent-soft);
+        }
+
+        .cat-option.active {
+            font-weight: bold;
+            color: var(--text-heading);
+            background: var(--accent-badge);
+        }
 
         main {
-            padding: 20px;
+            width: 100%;
+            max-width: 560px;
+            margin: 0 auto;
+            padding: 28px 18px 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            max-width: 500px;
-            margin: 0 auto;
         }
 
-        h1 { color: #4a3e3d; font-weight: 500; font-size: 24px; margin: 0 0 8px; }
-        p.subtitle { color: #8c7b7d; margin: 0 0 20px; font-size: 14px; text-align: center; }
-
-        .hangman-box {
-            width: 200px;
-            height: 180px;
-            background: #ffffff;
-            border: 1px solid #e2d7d3;
-            border-radius: 8px;
-            margin-bottom: 24px;
+        .ornament {
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            gap: 10px;
+            height: 22px;
+            margin-bottom: 15px;
+            color: var(--ornament-color);
         }
 
-        svg line, svg circle {
-            stroke: #4a3e3d;
+        .ornament span {
+            font-size: 16px;
+        }
+
+        .ornament i {
+            width: 38px;
+            height: 1px;
+            background: var(--ornament-color);
+            opacity: 0.45;
+        }
+
+        h1 {
+            color: var(--text-heading);
+            font-weight: normal;
+            font-size: 28px;
+            margin: 0 0 7px;
+            text-align: center;
+        }
+
+        p.subtitle {
+            color: var(--text-main);
+            opacity: 0.78;
+            margin: 0 0 24px;
+            font-size: 14px;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .hangman-box {
+            width: 220px;
+            height: 190px;
+            background: var(--card-bg);
+            border: 1px solid var(--bg-grad-2);
+            border-radius: 12px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.045);
+        }
+
+        svg line,
+        svg circle {
+            stroke: var(--text-heading);
             stroke-width: 3;
             stroke-linecap: round;
+            fill: none;
         }
 
         .word-display {
             display: flex;
-            gap: 10px;
-            margin-bottom: 28px;
+            gap: 8px;
+            margin-bottom: 27px;
             flex-wrap: wrap;
             justify-content: center;
+            max-width: 100%;
         }
 
         .letter-tile {
-            width: 36px;
-            height: 44px;
-            border-bottom: 3px solid #8c7b7d;
+            width: 38px;
+            height: 46px;
+            border-bottom: 3px solid var(--accent-border);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 22px;
-            font-weight: 700;
-            color: #4a3e3d;
+            font-weight: bold;
+            color: var(--text-heading);
             text-transform: uppercase;
         }
 
@@ -141,327 +321,1131 @@
             gap: 6px;
             justify-content: center;
             width: 100%;
-            margin-bottom: 20px;
+            max-width: 480px;
+            margin-bottom: 22px;
         }
 
         .key-btn {
-            width: 36px;
+            width: 37px;
             height: 42px;
-            border: 1px solid #d1c4c0;
-            border-radius: 6px;
-            background: #ffffff;
-            color: #4a3e3d;
+            border: 1px solid var(--accent-border);
+            border-radius: 8px;
+            background: var(--card-bg);
+            color: var(--text-heading);
+            font-family: Georgia, "Times New Roman", serif;
             font-size: 15px;
-            font-weight: 600;
+            font-weight: bold;
             cursor: pointer;
             text-transform: uppercase;
-            transition: all 0.15s;
+            transition: all 0.15s ease;
         }
 
-        .key-btn:hover:not(:disabled) { background: #f4ece9; transform: translateY(-1px); }
+        .key-btn:hover:not(:disabled) {
+            background: var(--accent-soft);
+            transform: translateY(-2px);
+        }
+
+        .key-btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
         .key-btn:disabled {
-            background: #eee8e5;
-            color: #b8acab;
-            border-color: #e2d7d3;
+            background: var(--bg-grad-2);
+            color: var(--text-main);
+            opacity: 0.45;
+            border-color: var(--bg-grad-2);
             cursor: not-allowed;
-            transform: none;
         }
 
-        .controls { display: flex; gap: 12px; }
+        .controls {
+            display: flex;
+            gap: 10px;
+        }
 
         .btn {
             padding: 10px 20px;
-            border: 1px solid #d1c4c0;
-            border-radius: 6px;
-            background: #ffffff;
-            color: #4a3e3d;
+            border: 1px solid var(--accent-border);
+            border-radius: 100px;
+            background: var(--card-bg);
+            color: var(--text-heading);
+            font-family: Georgia, "Times New Roman", serif;
             font-size: 13px;
-            font-weight: 500;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: 0.2s ease;
         }
 
-        .btn:hover { background: #faf7f5; }
+        .btn:hover {
+            background: var(--accent-soft);
+            transform: translateY(-1px);
+        }
 
         .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.3);
+            padding: 20px;
+            background: rgba(30, 25, 25, 0.3);
+            backdrop-filter: blur(3px);
             z-index: 200;
             align-items: center;
             justify-content: center;
         }
 
         .modal-card {
-            background: #ffffff;
-            border-radius: 8px;
-            padding: 24px;
-            max-width: 320px;
-            width: 90%;
+            background: var(--card-bg);
+            border: 1px solid var(--bg-grad-2);
+            border-radius: 14px;
+            padding: 28px 24px;
+            max-width: 340px;
+            width: 100%;
             text-align: center;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .modal-card h2 {
+            color: var(--text-heading);
+            font-size: 21px;
+            font-weight: normal;
+            margin: 0 0 10px;
+        }
+
+        .modal-card p {
+            color: var(--text-main);
+            opacity: 0.8;
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 0 0 20px;
+        }
+
+        .decorations {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .decorations span {
+            position: absolute;
+            color: var(--ornament-color);
+            opacity: 0.35;
+            animation: float 5s ease-in-out infinite;
+        }
+
+        .decorations span:nth-child(1) {
+            top: 13%;
+            left: 7%;
+            font-size: 20px;
+        }
+
+        .decorations span:nth-child(2) {
+            top: 28%;
+            right: 8%;
+            font-size: 13px;
+            animation-delay: 1s;
+        }
+
+        .decorations span:nth-child(3) {
+            top: 55%;
+            left: 5%;
+            font-size: 14px;
+            animation-delay: 2s;
+        }
+
+        .decorations span:nth-child(4) {
+            top: 68%;
+            right: 6%;
+            font-size: 21px;
+            animation-delay: 1.5s;
+        }
+
+        .decorations span:nth-child(5) {
+            bottom: 12%;
+            left: 12%;
+            font-size: 12px;
+            animation-delay: 0.5s;
+        }
+
+        .decorations span:nth-child(6) {
+            bottom: 20%;
+            right: 13%;
+            font-size: 16px;
+            animation-delay: 2.5s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0);
+            }
+
+            50% {
+                transform: translateY(-7px) rotate(7deg);
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                min-height: 66px;
+                padding: 12px 11px;
+                gap: 8px;
+            }
+
+            .header-left {
+                gap: 8px;
+            }
+
+            .header-right {
+                gap: 5px;
+            }
+
+            .nav-link {
+                font-size: 13px;
+            }
+
+            .cat-btn {
+                padding: 8px 10px;
+                font-size: 11px;
+            }
+
+            .coin-display {
+                padding: 8px 10px;
+                font-size: 11px;
+            }
+
+            main {
+                padding: 24px 12px 35px;
+            }
+
+            .hangman-box {
+                width: 205px;
+                height: 180px;
+            }
+
+            .letter-tile {
+                width: 34px;
+                height: 43px;
+                font-size: 20px;
+            }
+
+            .key-btn {
+                width: 35px;
+                height: 40px;
+            }
+        }
+
+        @media (max-width: 430px) {
+            header {
+                padding: 10px 7px;
+            }
+
+            .nav-link {
+                font-size: 12px;
+            }
+
+            .cat-btn {
+                max-width: 125px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .coin-display {
+                padding: 7px 8px;
+                font-size: 10px;
+            }
+
+            .hangman-box {
+                width: 195px;
+                height: 175px;
+            }
+
+            .key-btn {
+                width: 32px;
+                height: 39px;
+                font-size: 14px;
+            }
+
+            .letter-tile {
+                width: 31px;
+                height: 40px;
+                font-size: 19px;
+            }
         }
     </style>
 </head>
+
 <body>
+
+    <div class="decorations">
+        <span>✦</span>
+        <span>✧</span>
+        <span>♡</span>
+        <span>✦</span>
+        <span>✧</span>
+        <span>♡</span>
+    </div>
 
     <header>
         <div class="header-left">
             <a onclick="goBack()" class="nav-link">← Back to Games</a>
         </div>
+
         <div class="header-right">
+
             <div class="category-dropdown">
                 <button class="cat-btn" onclick="toggleCatMenu()">
                     Category: <span id="current-cat-label">Animals</span> ▾
                 </button>
+
                 <div class="cat-menu" id="cat-menu">
-                    <div class="cat-option active" onclick="setCategory('animals')">Animals</div>
-                    <div class="cat-option" onclick="setCategory('countries')">Countries</div>
-                    <div class="cat-option" onclick="setCategory('tech')">Tech</div>
+
+                    <div class="cat-option active" onclick="setCategory('animals')">
+                        Animals
+                    </div>
+
+                    <div class="cat-option" onclick="setCategory('countries')">
+                        Countries
+                    </div>
+
+                    <div class="cat-option" onclick="setCategory('tech')">
+                        Tech
+                    </div>
+
+                    <div class="cat-option" onclick="setCategory('food')">
+                        Food
+                    </div>
+
+                    <div class="cat-option" onclick="setCategory('nature')">
+                        Nature
+                    </div>
+
+                    <div class="cat-option" onclick="setCategory('space')">
+                        Space
+                    </div>
+
+                    <div class="cat-option" onclick="setCategory('fantasy')">
+                        Fantasy
+                    </div>
+
                 </div>
             </div>
-            <div class="coin-display"><span class="coin-count">0</span> Coins</div>
+
+            <div class="coin-display">
+                <span class="coin-count">0</span> Coins
+            </div>
+
         </div>
     </header>
 
     <main>
+
+        <div class="ornament">
+            <span>✦</span>
+            <i></i>
+            <span>♡</span>
+            <i></i>
+            <span>✦</span>
+        </div>
+
         <h1>Hangman</h1>
-        <p class="subtitle" id="status">Guess the hidden word before running out of attempts!</p>
+
+        <p class="subtitle" id="status">
+            Guess the hidden word before running out of attempts!
+        </p>
 
         <div class="hangman-box">
-            <svg width="140" height="150" viewBox="0 0 140 150">
+
+            <svg width="150" height="160" viewBox="0 0 140 150">
+
                 <line x1="10" y1="140" x2="70" y2="140" />
                 <line x1="40" y1="140" x2="40" y2="10" />
                 <line x1="40" y1="10" x2="90" y2="10" />
                 <line x1="90" y1="10" x2="90" y2="28" />
 
-                <circle id="part-0" class="figure-part" cx="90" cy="40" r="12" style="display:none;" />
-                <line id="part-1" class="figure-part" x1="90" y1="52" x2="90" y2="90" style="display:none;" />
-                <line id="part-2" class="figure-part" x1="90" y1="62" x2="70" y2="78" style="display:none;" />
-                <line id="part-3" class="figure-part" x1="90" y1="62" x2="110" y2="78" style="display:none;" />
-                <line id="part-4" class="figure-part" x1="90" y1="90" x2="70" y2="115" style="display:none;" />
-                <line id="part-5" class="figure-part" x1="90" y1="90" x2="110" y2="115" style="display:none;" />
+                <circle
+                    id="part-0"
+                    class="figure-part"
+                    cx="90"
+                    cy="40"
+                    r="12"
+                    style="display:none;"
+                />
+
+                <line
+                    id="part-1"
+                    class="figure-part"
+                    x1="90"
+                    y1="52"
+                    x2="90"
+                    y2="90"
+                    style="display:none;"
+                />
+
+                <line
+                    id="part-2"
+                    class="figure-part"
+                    x1="90"
+                    y1="62"
+                    x2="70"
+                    y2="78"
+                    style="display:none;"
+                />
+
+                <line
+                    id="part-3"
+                    class="figure-part"
+                    x1="90"
+                    y1="62"
+                    x2="110"
+                    y2="78"
+                    style="display:none;"
+                />
+
+                <line
+                    id="part-4"
+                    class="figure-part"
+                    x1="90"
+                    y1="90"
+                    x2="70"
+                    y2="115"
+                    style="display:none;"
+                />
+
+                <line
+                    id="part-5"
+                    class="figure-part"
+                    x1="90"
+                    y1="90"
+                    x2="110"
+                    y2="115"
+                    style="display:none;"
+                />
+
             </svg>
+
         </div>
 
         <div class="word-display" id="word-display"></div>
+
         <div class="keyboard" id="keyboard"></div>
 
         <div class="controls">
             <button class="btn" onclick="resetGame()">New Word</button>
         </div>
-    </main>
 
-    <div id="reward-modal" class="modal-overlay">
-        <div class="modal-card">
-            <h2 id="modal-title" style="font-size: 20px; margin: 0 0 10px;">Victory!</h2>
-            <p id="modal-desc" style="color: #8c7b7d; font-size: 14px; margin: 0 0 20px;">You guessed the word and earned 20 Coins.</p>
-            <button class="btn" onclick="closeModalAndReset()" style="width: 100%;">Play Again</button>
+        <div class="ornament" style="margin-top: 30px; margin-bottom: 0;">
+            <span>✧</span>
+            <i></i>
+            <span>♡</span>
+            <i></i>
+            <span>✧</span>
         </div>
+
+    </main>    <div id="reward-modal" class="modal-overlay">
+
+        <div class="modal-card">
+
+            <h2 id="modal-title">Victory!</h2>
+
+            <p id="modal-desc">
+                You guessed the word and earned 20 Coins.
+            </p>
+
+            <button
+                class="btn"
+                onclick="closeModalAndReset()"
+                style="width: 100%;"
+            >
+                Play Again
+            </button>
+
+        </div>
+
     </div>
 
-    <!-- Points 1 level up to script.js at root -->
     <script src="../script.js"></script>
+
     <script>
+
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem("arcade_theme");
+
+            if (
+                savedTheme === "pink" ||
+                savedTheme === "green" ||
+                savedTheme === "lavender" ||
+                savedTheme === "yellow"
+            ) {
+                document.body.setAttribute("data-theme", savedTheme);
+            } else {
+                document.body.removeAttribute("data-theme");
+            }
+        }
+
+        loadSavedTheme();
+
         const AudioFX = {
+
             ctx: null,
+
             init() {
                 if (!this.ctx) {
-                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                    if (AudioCtx) this.ctx = new AudioCtx();
+                    const AudioCtx =
+                        window.AudioContext ||
+                        window.webkitAudioContext;
+
+                    if (AudioCtx) {
+                        this.ctx = new AudioCtx();
+                    }
                 }
             },
+
             play(type) {
+
                 this.init();
+
                 if (!this.ctx) return;
-                
-                if (this.ctx.state === 'suspended') {
+
+                if (this.ctx.state === "suspended") {
                     this.ctx.resume();
                 }
 
                 const now = this.ctx.currentTime;
+
                 const osc = this.ctx.createOscillator();
                 const gain = this.ctx.createGain();
+
                 osc.connect(gain);
                 gain.connect(this.ctx.destination);
 
-                if (type === 'correct') {
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(523.25, now);
-                    osc.frequency.setValueAtTime(659.25, now + 0.08);
-                    gain.gain.setValueAtTime(0.2, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                if (type === "correct") {
+
+                    osc.type = "sine";
+
+                    osc.frequency.setValueAtTime(
+                        523.25,
+                        now
+                    );
+
+                    osc.frequency.setValueAtTime(
+                        659.25,
+                        now + 0.08
+                    );
+
+                    gain.gain.setValueAtTime(
+                        0.2,
+                        now
+                    );
+
+                    gain.gain.exponentialRampToValueAtTime(
+                        0.001,
+                        now + 0.2
+                    );
+
                     osc.start(now);
                     osc.stop(now + 0.2);
-                } else if (type === 'wrong') {
-                    osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(180, now);
-                    osc.frequency.exponentialRampToValueAtTime(110, now + 0.15);
-                    gain.gain.setValueAtTime(0.2, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+
+                } else if (type === "wrong") {
+
+                    osc.type = "sawtooth";
+
+                    osc.frequency.setValueAtTime(
+                        180,
+                        now
+                    );
+
+                    osc.frequency.exponentialRampToValueAtTime(
+                        110,
+                        now + 0.15
+                    );
+
+                    gain.gain.setValueAtTime(
+                        0.2,
+                        now
+                    );
+
+                    gain.gain.exponentialRampToValueAtTime(
+                        0.001,
+                        now + 0.15
+                    );
+
                     osc.start(now);
                     osc.stop(now + 0.15);
-                } else if (type === 'win') {
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(523.25, now);
-                    osc.frequency.setValueAtTime(659.25, now + 0.08);
-                    osc.frequency.setValueAtTime(783.99, now + 0.16);
-                    gain.gain.setValueAtTime(0.25, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+
+                } else if (type === "win") {
+
+                    osc.type = "sine";
+
+                    osc.frequency.setValueAtTime(
+                        523.25,
+                        now
+                    );
+
+                    osc.frequency.setValueAtTime(
+                        659.25,
+                        now + 0.08
+                    );
+
+                    osc.frequency.setValueAtTime(
+                        783.99,
+                        now + 0.16
+                    );
+
+                    gain.gain.setValueAtTime(
+                        0.25,
+                        now
+                    );
+
+                    gain.gain.exponentialRampToValueAtTime(
+                        0.001,
+                        now + 0.35
+                    );
+
                     osc.start(now);
                     osc.stop(now + 0.35);
-                } else if (type === 'lose') {
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(300, now);
-                    osc.frequency.exponentialRampToValueAtTime(120, now + 0.4);
-                    gain.gain.setValueAtTime(0.3, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+
+                } else if (type === "lose") {
+
+                    osc.type = "triangle";
+
+                    osc.frequency.setValueAtTime(
+                        300,
+                        now
+                    );
+
+                    osc.frequency.exponentialRampToValueAtTime(
+                        120,
+                        now + 0.4
+                    );
+
+                    gain.gain.setValueAtTime(
+                        0.3,
+                        now
+                    );
+
+                    gain.gain.exponentialRampToValueAtTime(
+                        0.001,
+                        now + 0.4
+                    );
+
                     osc.start(now);
                     osc.stop(now + 0.4);
                 }
             }
         };
 
+
         const words = {
-            animals: ['ELEPHANT', 'GIRAFFE', 'DOLPHIN', 'PENGUIN', 'LEOPARD', 'KANGAROO', 'CHEETAH'],
-            countries: ['CANADA', 'BRAZIL', 'GERMANY', 'JAPAN', 'AUSTRALIA', 'EGYPT', 'MEXICO'],
-            tech: ['COMPUTER', 'SOFTWARE', 'KEYBOARD', 'INTERNET', 'DATABASE', 'ALGORITHM', 'NETWORK']
+
+            animals: [
+                "ELEPHANT",
+                "GIRAFFE",
+                "DOLPHIN",
+                "PENGUIN",
+                "LEOPARD",
+                "KANGAROO",
+                "CHEETAH",
+                "BUTTERFLY",
+                "OCTOPUS",
+                "HAMSTER",
+                "RABBIT",
+                "FOX",
+                "TIGER",
+                "KOALA",
+                "PARROT",
+                "JELLYFISH",
+                "CROCODILE",
+                "HEDGEHOG"
+            ],
+
+            countries: [
+                "CANADA",
+                "BRAZIL",
+                "GERMANY",
+                "JAPAN",
+                "AUSTRALIA",
+                "EGYPT",
+                "MEXICO",
+                "MOROCCO",
+                "SPAIN",
+                "ITALY",
+                "FRANCE",
+                "PORTUGAL",
+                "TURKEY",
+                "BOSNIA",
+                "NORWAY",
+                "ICELAND",
+                "ARGENTINA",
+                "GREECE"
+            ],
+
+            tech: [
+                "COMPUTER",
+                "SOFTWARE",
+                "KEYBOARD",
+                "INTERNET",
+                "DATABASE",
+                "ALGORITHM",
+                "NETWORK",
+                "WEBSITE",
+                "BROWSER",
+                "JAVASCRIPT",
+                "FIREWALL",
+                "PROCESSOR",
+                "PASSWORD",
+                "SERVER",
+                "PROGRAMMING",
+                "PIXEL",
+                "ANDROID",
+                "DOWNLOAD"
+            ],
+
+            food: [
+                "STRAWBERRY",
+                "PANCAKE",
+                "CHOCOLATE",
+                "SPAGHETTI",
+                "CUPCAKE",
+                "POPCORN",
+                "WATERMELON",
+                "SANDWICH",
+                "POTATO",
+                "CHEESECAKE",
+                "CROISSANT",
+                "WAFFLE",
+                "COOKIE",
+                "PIZZA",
+                "NOODLES",
+                "MACARONI",
+                "TANGERINE",
+                "PISTACHIO"
+            ],
+
+            nature: [
+                "SUNFLOWER",
+                "MOUNTAIN",
+                "RAINBOW",
+                "FOREST",
+                "WATERFALL",
+                "THUNDER",
+                "LIGHTNING",
+                "OCEAN",
+                "DESERT",
+                "VOLCANO",
+                "MEADOW",
+                "SUNSET",
+                "MOONLIGHT",
+                "CLOUD",
+                "RIVER",
+                "ISLAND",
+                "WILDFLOWER",
+                "BUTTERCUP"
+            ],
+
+            space: [
+                "PLANET",
+                "GALAXY",
+                "ASTEROID",
+                "COMET",
+                "SATELLITE",
+                "ASTRONAUT",
+                "NEBULA",
+                "METEOR",
+                "JUPITER",
+                "SATURN",
+                "MERCURY",
+                "VENUS",
+                "MOON",
+                "STARLIGHT",
+                "ROCKET",
+                "UNIVERSE",
+                "ORBIT",
+                "TELESCOPE"
+            ],
+
+            fantasy: [
+                "DRAGON",
+                "UNICORN",
+                "MERMAID",
+                "FAIRY",
+                "WIZARD",
+                "PRINCESS",
+                "CASTLE",
+                "MAGIC",
+                "PHOENIX",
+                "ELF",
+                "SPELLBOOK",
+                "FAIRYTALE",
+                "KNIGHT",
+                "WEREWOLF",
+                "VAMPIRE",
+                "CRYSTAL",
+                "ENCHANTED",
+                "KINGDOM"
+            ]
+
         };
 
-        let currentCategory = 'animals';
-        let currentWord = '';
+
+        let currentCategory = "animals";
+        let currentWord = "";
         let guessedLetters = new Set();
         let wrongGuesses = 0;
+
         const maxWrong = 6;
 
+
         function goBack() {
+
             if (window.history.length > 1) {
                 window.history.back();
             } else {
-                // Points 1 level up to index.html at root
-                window.location.href = '../index.html';
+                window.location.href = "../index.html";
             }
+
         }
+
 
         function toggleCatMenu() {
-            document.getElementById('cat-menu').classList.toggle('show');
+
+            document
+                .getElementById("cat-menu")
+                .classList
+                .toggle("show");
+
         }
 
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.category-dropdown')) {
-                document.getElementById('cat-menu').classList.remove('show');
+
+        document.addEventListener("click", function(e) {
+
+            if (!e.target.closest(".category-dropdown")) {
+
+                document
+                    .getElementById("cat-menu")
+                    .classList
+                    .remove("show");
+
             }
+
         });
+
 
         function setCategory(cat) {
+
             currentCategory = cat;
-            const labelMap = { animals: 'Animals', countries: 'Countries', tech: 'Tech' };
-            document.getElementById('current-cat-label').innerText = labelMap[cat];
-            document.querySelectorAll('.cat-option').forEach(opt => {
-                opt.classList.toggle('active', opt.innerText.toLowerCase() === cat);
-            });
-            document.getElementById('cat-menu').classList.remove('show');
+
+            const labelMap = {
+
+                animals: "Animals",
+                countries: "Countries",
+                tech: "Tech",
+                food: "Food",
+                nature: "Nature",
+                space: "Space",
+                fantasy: "Fantasy"
+
+            };
+
+            document
+                .getElementById("current-cat-label")
+                .innerText = labelMap[cat];
+
+
+            document
+                .querySelectorAll(".cat-option")
+                .forEach(function(option) {
+
+                    option.classList.toggle(
+                        "active",
+                        option.innerText.toLowerCase() === cat
+                    );
+
+                });
+
+
+            document
+                .getElementById("cat-menu")
+                .classList
+                .remove("show");
+
+
             resetGame();
+
         }
+
 
         function buildKeyboard() {
-            const kbEl = document.getElementById('keyboard');
-            kbEl.innerHTML = '';
+
+            const kbEl =
+                document.getElementById("keyboard");
+
+            kbEl.innerHTML = "";
+
+
             for (let i = 65; i <= 90; i++) {
-                const char = String.fromCharCode(i);
-                const btn = document.createElement('button');
-                btn.className = 'key-btn';
+
+                const char =
+                    String.fromCharCode(i);
+
+                const btn =
+                    document.createElement("button");
+
+                btn.className = "key-btn";
+
                 btn.innerText = char;
+
                 btn.id = `key-${char}`;
-                btn.addEventListener('click', () => handleGuess(char));
+
+                btn.addEventListener(
+                    "click",
+                    function() {
+                        handleGuess(char);
+                    }
+                );
+
                 kbEl.appendChild(btn);
+
             }
+
         }
+
 
         function handleGuess(letter) {
-            if (guessedLetters.has(letter) || wrongGuesses >= maxWrong) return;
+
+            if (
+                guessedLetters.has(letter) ||
+                wrongGuesses >= maxWrong
+            ) {
+                return;
+            }
+
 
             guessedLetters.add(letter);
-            const btn = document.getElementById(`key-${letter}`);
-            if (btn) btn.disabled = true;
+
+
+            const btn =
+                document.getElementById(`key-${letter}`);
+
+            if (btn) {
+                btn.disabled = true;
+            }
+
 
             if (currentWord.includes(letter)) {
-                AudioFX.play('correct');
+
+                AudioFX.play("correct");
+
                 renderWord();
+
                 checkWin();
+
             } else {
-                AudioFX.play('wrong');
+
+                AudioFX.play("wrong");
+
                 wrongGuesses++;
+
                 updateHangman();
+
                 checkLoss();
+
             }
+
         }
+
 
         function renderWord() {
-            const displayEl = document.getElementById('word-display');
-            displayEl.innerHTML = '';
-            for (let char of currentWord) {
-                const tile = document.createElement('div');
-                tile.className = 'letter-tile';
-                tile.innerText = guessedLetters.has(char) ? char : '';
+
+            const displayEl =
+                document.getElementById("word-display");
+
+            displayEl.innerHTML = "";
+
+
+            for (const char of currentWord) {
+
+                const tile =
+                    document.createElement("div");
+
+                tile.className = "letter-tile";
+
+                tile.innerText =
+                    guessedLetters.has(char)
+                        ? char
+                        : "";
+
                 displayEl.appendChild(tile);
+
             }
+
         }
+
 
         function updateHangman() {
+
             for (let i = 0; i < maxWrong; i++) {
-                const part = document.getElementById(`part-${i}`);
+
+                const part =
+                    document.getElementById(`part-${i}`);
+
                 if (part) {
-                    part.style.display = i < wrongGuesses ? 'block' : 'none';
+
+                    part.style.display =
+                        i < wrongGuesses
+                            ? "block"
+                            : "none";
+
                 }
+
             }
+
         }
+
 
         function checkWin() {
-            const isWon = [...currentWord].every(char => guessedLetters.has(char));
+
+            const isWon =
+                [...currentWord].every(
+                    char => guessedLetters.has(char)
+                );
+
+
             if (isWon) {
-                AudioFX.play('win');
-                if (typeof addCoins === 'function') addCoins(20);
-                document.getElementById('modal-title').innerText = 'Victory!';
-                document.getElementById('modal-desc').innerText = `You correctly guessed "${currentWord}" and earned 20 Coins!`;
-                document.getElementById('reward-modal').style.display = 'flex';
+
+                AudioFX.play("win");
+
+
+                if (typeof addCoins === "function") {
+                    addCoins(20);
+                }
+
+
+                document
+                    .getElementById("modal-title")
+                    .innerText = "Victory!";
+
+
+                document
+                    .getElementById("modal-desc")
+                    .innerText =
+                    `You correctly guessed "${currentWord}" and earned 20 Coins!`;
+
+
+                document
+                    .getElementById("reward-modal")
+                    .style.display = "flex";
+
             }
+
         }
+
 
         function checkLoss() {
+
             if (wrongGuesses >= maxWrong) {
-                AudioFX.play('lose');
-                document.getElementById('modal-title').innerText = 'Game Over';
-                document.getElementById('modal-desc').innerText = `Out of attempts! The word was "${currentWord}".`;
-                document.getElementById('reward-modal').style.display = 'flex';
+
+                AudioFX.play("lose");
+
+
+                document
+                    .getElementById("modal-title")
+                    .innerText = "Game Over";
+
+
+                document
+                    .getElementById("modal-desc")
+                    .innerText =
+                    `Out of attempts! The word was "${currentWord}".`;
+
+
+                document
+                    .getElementById("reward-modal")
+                    .style.display = "flex";
+
             }
+
         }
+
 
         function resetGame() {
-            const wordList = words[currentCategory];
-            currentWord = wordList[Math.floor(Math.random() * wordList.length)];
+
+            const wordList =
+                words[currentCategory];
+
+
+            currentWord =
+                wordList[
+                    Math.floor(
+                        Math.random() * wordList.length
+                    )
+                ];
+
+
             guessedLetters.clear();
+
             wrongGuesses = 0;
 
+
             updateHangman();
+
             renderWord();
+
             buildKeyboard();
+
         }
+
 
         function closeModalAndReset() {
-            document.getElementById('reward-modal').style.display = 'none';
+
+            document
+                .getElementById("reward-modal")
+                .style.display = "none";
+
+
             resetGame();
+
         }
 
-        document.addEventListener('keydown', (e) => {
-            const char = e.key.toUpperCase();
-            if (char.length === 1 && char >= 'A' && char <= 'Z') {
-                handleGuess(char);
-            }
-        });
 
-        resetGame();
+        document.addEventListener(
+            "keydown",
+            function(e) {
+
+                const char =
+                    e.key.toUpperCase();
+
+
+                if (
+                    char.length === 1 &&
+                    char >= "A" &&
+                    char <= "Z"
+                ) {
+
+                    handleGuess(char);
+
+                }
+
+            }
+        );
+
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
+
+                loadSavedTheme();
+
+                if (typeof updateCoinDisplays === "function") {
+                    updateCoinDisplays();
+                }
+
+                resetGame();
+
+            }
+        );
+
     </script>
+
 </body>
-        </html>
-        
+    </html>
