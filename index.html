@@ -103,20 +103,20 @@
             width: 100%;
             max-width: 100%;
             min-width: 0;
-            padding: 14px 20px;
+            padding: 17px 24px;
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(8px);
             border-bottom: 1px solid var(--bg-grad-2);
             position: sticky;
             top: 0;
             z-index: 100;
-            gap: 12px;
+            gap: 18px;
         }
 
         .header-left {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 18px;
             min-width: 0;
             flex: 1 1 0;
         }
@@ -129,7 +129,7 @@
             text-overflow: ellipsis;
             white-space: nowrap;
             font-weight: normal;
-            font-size: 18px;
+            font-size: 21px;
             color: var(--text-heading);
             text-decoration: none;
             letter-spacing: 0.5px;
@@ -140,7 +140,7 @@
             display: flex;
             align-items: center;
             justify-content: flex-end;
-            gap: 8px;
+            gap: 10px;
             min-width: 0;
             flex: 1 1 0;
         }
@@ -150,17 +150,17 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            gap: 5px;
+            gap: 7px;
             background: rgba(255, 255, 255, 0.6);
-            padding: 4px 8px;
+            padding: 6px 10px;
             border-radius: 100px;
             border: 1px solid var(--bg-grad-2);
         }
 
         .theme-dot {
-            width: 16px;
-            height: 16px;
-            flex: 0 0 16px;
+            width: 20px;
+            height: 20px;
+            flex: 0 0 20px;
             border-radius: 50%;
             border: 1px solid rgba(0, 0, 0, 0.15);
             cursor: pointer;
@@ -171,34 +171,44 @@
             transform: scale(1.25);
         }
 
-        .dot-blue { background: #d3e2ea; }
-        .dot-pink { background: #ead3dc; }
-        .dot-green { background: #d3ead3; }
-        .dot-lavender { background: #dad3ea; }
-        .dot-yellow { background: #eae3c5; }
+        .dot-blue {
+            background: #d3e2ea;
+        }
 
-        .user-btn {
+        .dot-pink {
+            background: #ead3dc;
+        }
+
+        .dot-green {
+            background: #d3ead3;
+        }
+
+        .dot-lavender {
+            background: #dad3ea;
+        }
+
+        .dot-yellow {
+            background: #eae3c5;
+        }
+
+        .shop-btn {
             display: block;
-            max-width: 180px;
-            min-width: 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            flex-shrink: 1;
+            flex-shrink: 0;
             background: #f9fcff;
             border: 1px solid var(--accent-border);
-            padding: 6px 12px;
+            padding: 9px 16px;
             border-radius: 100px;
             color: var(--text-heading);
             font-family: Georgia, "Times New Roman", serif;
-            font-size: 12px;
+            font-size: 13px;
             text-decoration: none;
             cursor: pointer;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
             transition: 0.2s ease;
+            white-space: nowrap;
         }
 
-        .user-btn:hover {
+        .shop-btn:hover {
             background: var(--accent-soft);
             transform: translateY(-1px);
         }
@@ -207,9 +217,9 @@
             flex-shrink: 0;
             background: rgba(255, 255, 255, 0.7);
             border: 1px solid var(--bg-grad-2);
-            padding: 6px 12px;
+            padding: 9px 16px;
             border-radius: 100px;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: bold;
             color: var(--text-heading);
             white-space: nowrap;
@@ -385,80 +395,6 @@
             overflow-wrap: anywhere;
         }
 
-        .leaderboard-card {
-            width: 100%;
-            max-width: 100%;
-            min-width: 0;
-            overflow: hidden;
-            background: rgba(255, 255, 255, 0.85);
-            border: 1px solid var(--bg-grad-2);
-            border-radius: 8px;
-            padding: 24px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-        }
-
-        .leaderboard-card h2 {
-            font-size: 18px;
-            margin: 0 0 16px;
-            color: var(--text-heading);
-            font-weight: normal;
-            text-align: center;
-        }
-
-        .leaderboard-list {
-            list-style: none;
-            width: 100%;
-            max-width: 100%;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .leaderboard-item {
-            display: flex;
-            width: 100%;
-            max-width: 100%;
-            min-width: 0;
-            overflow: hidden;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 14px;
-            background: var(--bg-base);
-            border: 1px solid var(--bg-grad-2);
-            border-radius: 6px;
-            font-size: 14px;
-        }
-
-        .leaderboard-item .rank {
-            flex: 0 0 30px;
-            font-weight: bold;
-            color: var(--ornament-color);
-        }
-
-        .leaderboard-item .name {
-            flex: 1 1 auto;
-            min-width: 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            color: var(--text-main);
-        }
-
-        .leaderboard-item .score {
-            flex: 0 0 auto;
-            margin-left: 10px;
-            color: var(--text-heading);
-            white-space: nowrap;
-        }
-
-        .leaderboard-message {
-            justify-content: center;
-            color: var(--text-main);
-            opacity: 0.75;
-        }
-
         @keyframes float {
             0%, 100% {
                 transform: translateY(0) rotate(0);
@@ -471,42 +407,41 @@
 
         @media (max-width: 600px) {
             header {
-                padding: 10px 12px;
-                gap: 8px;
+                padding: 13px 12px;
+                gap: 10px;
             }
 
             .header-left {
-                gap: 8px;
+                gap: 9px;
             }
 
             .header-right {
-                gap: 5px;
+                gap: 6px;
             }
 
             .theme-selector {
-                gap: 4px;
-                padding: 4px 6px;
+                gap: 5px;
+                padding: 5px 7px;
             }
 
             .theme-dot {
-                width: 14px;
-                height: 14px;
-                flex-basis: 14px;
+                width: 17px;
+                height: 17px;
+                flex-basis: 17px;
             }
 
             .brand {
-                font-size: 16px;
+                font-size: 18px;
             }
 
-            .user-btn {
-                max-width: 110px;
-                padding: 6px 9px;
-                font-size: 11px;
+            .shop-btn {
+                padding: 8px 11px;
+                font-size: 12px;
             }
 
             .coin-display {
-                padding: 6px 8px;
-                font-size: 11px;
+                padding: 8px 10px;
+                font-size: 12px;
             }
 
             main {
@@ -523,20 +458,12 @@
             .game-card {
                 padding: 20px;
             }
-
-            .leaderboard-card {
-                padding: 18px 14px;
-            }
-
-            .leaderboard-item {
-                padding: 9px 10px;
-            }
         }
 
         @media (max-width: 430px) {
             header {
-                padding: 9px 8px;
-                gap: 5px;
+                padding: 11px 8px;
+                gap: 6px;
             }
 
             .header-left {
@@ -549,27 +476,26 @@
 
             .theme-selector {
                 gap: 3px;
-                padding: 3px 5px;
+                padding: 4px 5px;
             }
 
             .theme-dot {
-                width: 12px;
-                height: 12px;
-                flex-basis: 12px;
+                width: 14px;
+                height: 14px;
+                flex-basis: 14px;
             }
 
             .brand {
-                display: none;
+                font-size: 16px;
             }
 
-            .user-btn {
-                max-width: 90px;
-                padding: 6px 7px;
+            .shop-btn {
+                padding: 7px 9px;
                 font-size: 10px;
             }
 
             .coin-display {
-                padding: 6px 7px;
+                padding: 7px 8px;
                 font-size: 10px;
             }
 
@@ -610,11 +536,7 @@
 
         <div class="header-right">
 
-            <a href="shop.html" class="user-btn">Shop</a>
-
-            <button class="user-btn" onclick="handleUserSwitch()">
-                ✧ <span id="user-display">Player</span>
-            </button>
+            <a href="shop.html" class="shop-btn">Shop</a>
 
             <div class="coin-display">
                 <span class="coin-count">0</span> Coins
@@ -696,18 +618,6 @@
                 <span class="reward-badge">+25 Coins</span>
                 </a>        </div>
 
-        <div class="leaderboard-card">
-
-            <h2>✦ Leaderboard ✦</h2>
-
-            <ul class="leaderboard-list" id="leaderboard-list">
-                <li class="leaderboard-item leaderboard-message">
-                    Loading leaderboard...
-                </li>
-            </ul>
-
-        </div>
-
         <div class="ornament bottom">
             <span>✧</span>
             <i></i>
@@ -718,78 +628,9 @@
 
     </main>
 
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <script src="script.js"></script>
 
     <script>
-        function handleUserSwitch() {
-            if (typeof switchUser === "function") {
-                switchUser();
-            }
-        }
-
-        function updateLeaderboardUI() {
-            const listEl = document.getElementById("leaderboard-list");
-
-            if (!listEl || typeof getAllScores !== "function") {
-                return;
-            }
-
-            const scores = getAllScores();
-
-            const players = Object.keys(scores).map(function(id) {
-                const player = scores[id] || {};
-
-                return {
-                    name: player.name && String(player.name).trim()
-                        ? String(player.name)
-                        : "Player",
-                    coins: Number(player.coins) || 0
-                };
-            });
-
-            players.sort(function(a, b) {
-                return b.coins - a.coins;
-            });
-
-            if (players.length === 0) {
-                listEl.innerHTML = "";
-
-                const emptyItem = document.createElement("li");
-                emptyItem.className = "leaderboard-item leaderboard-message";
-                emptyItem.textContent = "No players yet.";
-
-                listEl.appendChild(emptyItem);
-                return;
-            }
-
-            listEl.innerHTML = "";
-
-            players.slice(0, 10).forEach(function(player, index) {
-                const item = document.createElement("li");
-                item.className = "leaderboard-item";
-
-                const rank = document.createElement("span");
-                rank.className = "rank";
-                rank.textContent = "#" + (index + 1);
-
-                const name = document.createElement("span");
-                name.className = "name";
-                name.textContent = player.name;
-
-                const score = document.createElement("span");
-                score.className = "score";
-                score.textContent = player.coins + " Coins";
-
-                item.appendChild(rank);
-                item.appendChild(name);
-                item.appendChild(score);
-
-                listEl.appendChild(item);
-            });
-        }
-
         function setTheme(themeName) {
             if (themeName === "blue") {
                 document.body.removeAttribute("data-theme");
@@ -811,13 +652,11 @@
         document.addEventListener("DOMContentLoaded", function() {
             loadSavedTheme();
             updateCoinDisplays();
-            updateLeaderboardUI();
         });
 
         window.addEventListener("pageshow", function() {
             loadSavedTheme();
             updateCoinDisplays();
-            updateLeaderboardUI();
         });
     </script>
 
