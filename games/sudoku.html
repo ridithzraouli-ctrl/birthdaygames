@@ -133,78 +133,45 @@
             animation:float 5s ease-in-out infinite;
         }
 
-        .decorations span:nth-child(1) {
-            top:8%;
-            left:8%;
-            font-size:20px;
-        }
-
-        .decorations span:nth-child(2) {
-            top:16%;
-            right:10%;
-            font-size:13px;
-        }
-
-        .decorations span:nth-child(3) {
-            top:42%;
-            left:5%;
-            font-size:12px;
-        }
-
-        .decorations span:nth-child(4) {
-            top:37%;
-            right:5%;
-            font-size:20px;
-        }
-
-        .decorations span:nth-child(5) {
-            bottom:18%;
-            left:9%;
-            font-size:12px;
-        }
-
-        .decorations span:nth-child(6) {
-            bottom:25%;
-            right:8%;
-            font-size:17px;
-        }
+        .decorations span:nth-child(1) { top:8%; left:8%; font-size:20px; }
+        .decorations span:nth-child(2) { top:16%; right:10%; font-size:13px; }
+        .decorations span:nth-child(3) { top:42%; left:5%; font-size:12px; }
+        .decorations span:nth-child(4) { top:37%; right:5%; font-size:20px; }
+        .decorations span:nth-child(5) { bottom:18%; left:9%; font-size:12px; }
+        .decorations span:nth-child(6) { bottom:25%; right:8%; font-size:17px; }
 
         header {
             display:flex;
             align-items:center;
             justify-content:space-between;
             width:100%;
-            padding:17px 24px;
-            background:rgba(255,255,255,.85);
-            backdrop-filter:blur(8px);
-            border-bottom:1px solid var(--bg-grad-2);
+            padding:18px 30px;
+            background:#ffffff;
+            border-bottom:1px solid var(--accent-border);
             position:sticky;
             top:0;
             z-index:100;
-            gap:18px;
         }
 
-        .header-left,
-        .header-right {
-            display:flex;
-            align-items:center;
+        .nav-link {
+            color: var(--ornament-color);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .nav-link:hover {
+            color: var(--text-main);
         }
 
-        .header-left {
-            gap:18px;
-            min-width:0;
-        }
-
-        .header-right {
-            gap:10px;
-        }
-
-        .brand {
-            color:var(--text-heading);
-            text-decoration:none;
-            font-size:21px;
-            white-space:nowrap;
-            letter-spacing:.5px;
+        .coin-display {
+            background: var(--accent-soft);
+            border: 1px solid var(--accent-border);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-heading);
         }
 
         .theme-selector {
@@ -215,7 +182,6 @@
             background:rgba(255,255,255,.6);
             border:1px solid var(--bg-grad-2);
             border-radius:100px;
-            flex-shrink:0;
         }
 
         .theme-dot {
@@ -228,61 +194,12 @@
             transition:transform .2s ease;
         }
 
-        .theme-dot:hover {
-            transform:scale(1.25);
-        }
-
-        .dot-blue {
-            background:#d3e2ea;
-        }
-
-        .dot-pink {
-            background:#ead3dc;
-        }
-
-        .dot-green {
-            background:#d3ead3;
-        }
-
-        .dot-lavender {
-            background:#dad3ea;
-        }
-
-        .dot-yellow {
-            background:#eae3c5;
-        }
-
-        .shop-btn {
-            display:block;
-            flex-shrink:0;
-            background:#f9fcff;
-            border:1px solid var(--accent-border);
-            padding:9px 16px;
-            border-radius:100px;
-            color:var(--text-heading);
-            font-family:Georgia,"Times New Roman",serif;
-            font-size:13px;
-            text-decoration:none;
-            white-space:nowrap;
-            transition:.2s ease;
-        }
-
-        .shop-btn:hover {
-            background:var(--accent-soft);
-            transform:translateY(-1px);
-        }
-
-        .coin-display {
-            flex-shrink:0;
-            background:rgba(255,255,255,.7);
-            border:1px solid var(--bg-grad-2);
-            padding:9px 16px;
-            border-radius:100px;
-            font-size:13px;
-            font-weight:bold;
-            color:var(--text-heading);
-            white-space:nowrap;
-        }
+        .theme-dot:hover { transform:scale(1.25); }
+        .dot-blue { background:#d3e2ea; }
+        .dot-pink { background:#ead3dc; }
+        .dot-green { background:#d3ead3; }
+        .dot-lavender { background:#dad3ea; }
+        .dot-yellow { background:#eae3c5; }
 
         main {
             width:100%;
@@ -312,21 +229,9 @@
             color:var(--ornament-color);
         }
 
-        .ornament.bottom {
-            margin:30px 0 0;
-        }
-
-        .ornament span {
-            flex-shrink:0;
-            font-size:16px;
-        }
-
-        .ornament i {
-            width:40px;
-            height:1px;
-            background:var(--ornament-color);
-            opacity:.4;
-        }
+        .ornament.bottom { margin:30px 0 0; }
+        .ornament span { flex-shrink:0; font-size:16px; }
+        .ornament i { width:40px; height:1px; background:var(--ornament-color); opacity:.4; }
 
         .board-wrap {
             width:100%;
@@ -363,83 +268,21 @@
             user-select:none;
             border-right:1px solid var(--bg-grad-2);
             border-bottom:1px solid var(--bg-grad-2);
-            transition:
-                background .18s ease,
-                opacity .18s ease;
+            transition: background-color 2.2s ease, transform .18s ease;
         }
 
-        .cell:nth-child(9n) {
-            border-right:none;
-        }
-
-        .cell:nth-child(n+73) {
-            border-bottom:none;
-        }
-
-        .cell:nth-child(3n) {
-            border-right:1.8px solid var(--accent-border);
-        }
-
-        .cell:nth-child(9n) {
-            border-right:none;
-        }
-
+        .cell:nth-child(9n) { border-right:none; }
+        .cell:nth-child(n+73) { border-bottom:none; }
+        .cell:nth-child(3n) { border-right:1.8px solid var(--accent-border); }
         .cell:nth-child(n+19):nth-child(-n+27),
-        .cell:nth-child(n+46):nth-child(-n+54) {
-            border-bottom:1.8px solid var(--accent-border);
-        }
+        .cell:nth-child(n+46):nth-child(-n+54) { border-bottom:1.8px solid var(--accent-border); }
 
-        .cell.given {
-            font-weight:bold;
-            color:var(--text-heading);
-            cursor:default;
-        }
-
-        .cell.selected {
-            background:var(--cell-selected);
-        }
-
-        .cell.same-number {
-            background:var(--accent-soft);
-        }
-
-        .cell.selected.same-number {
-            background:var(--cell-selected);
-        }
-
-        .cell.correct {
-            background:var(--cell-correct);
-        }
-
-        .cell.wrong {
-            background:var(--cell-error);
-        }
-
-        .cell.fade-feedback {
-            animation:feedbackFade 2.2s ease forwards;
-        }
-
-        @keyframes feedbackFade {
-            0% {
-                opacity:1;
-            }
-
-            20% {
-                opacity:.85;
-            }
-
-            45% {
-                opacity:.65;
-            }
-
-            70% {
-                opacity:.38;
-            }
-
-            100% {
-                opacity:0;
-            }
-        }
+        .cell.given { font-weight:bold; color:var(--text-heading); cursor:default; }
+        .cell.selected { background:var(--cell-selected); }
+        .cell.same-number { background:var(--accent-soft); }
+        .cell.selected.same-number { background:var(--cell-selected); }
+        .cell.correct { background:var(--cell-correct); }
+        .cell.wrong { background:var(--cell-error); }
 
         .keyboard {
             width:100%;
@@ -463,19 +306,9 @@
             transition:transform .12s ease,background .12s ease;
         }
 
-        .number-btn:hover {
-            background:var(--accent-soft);
-        }
-
-        .number-btn:active {
-            transform:scale(.95);
-        }
-
-        .delete-btn {
-            grid-column:1 / -1;
-            height:46px;
-            font-size:18px;
-        }
+        .number-btn:hover { background:var(--accent-soft); }
+        .number-btn:active { transform:scale(.95); }
+        .delete-btn { grid-column:1 / -1; height:46px; font-size:18px; }
 
         .actions {
             display:flex;
@@ -497,10 +330,7 @@
             transition:.2s ease;
         }
 
-        .action-btn:hover {
-            background:var(--accent-soft);
-            transform:translateY(-1px);
-        }
+        .action-btn:hover { background:var(--accent-soft); transform:translateY(-1px); }
 
         .message {
             min-height:20px;
@@ -522,9 +352,7 @@
             z-index:500;
         }
 
-        .modal.show {
-            display:flex;
-        }
+        .modal.show { display:flex; }
 
         .modal-box {
             width:min(360px,100%);
@@ -536,13 +364,7 @@
             box-shadow:0 15px 45px rgba(0,0,0,.12);
         }
 
-        .modal-box h2 {
-            margin:0 0 18px;
-            color:var(--text-heading);
-            font-weight:normal;
-            font-size:23px;
-        }
-
+        .modal-box h2 { margin:0 0 18px; color:var(--text-heading); font-weight:normal; font-size:23px; }
         .modal-box button {
             border:1px solid var(--accent-border);
             background:var(--accent-soft);
@@ -554,161 +376,34 @@
         }
 
         @keyframes float {
-            0%,100% {
-                transform:translateY(0) rotate(0);
-            }
-
-            50% {
-                transform:translateY(-7px) rotate(7deg);
-            }
-        }
-
-        @media (max-width:600px) {
-            header {
-                padding:13px 12px;
-                gap:10px;
-            }
-
-            .header-left {
-                gap:9px;
-            }
-
-            .header-right {
-                gap:6px;
-            }
-
-            .theme-selector {
-                gap:5px;
-                padding:5px 7px;
-            }
-
-            .theme-dot {
-                width:17px;
-                height:17px;
-                flex-basis:17px;
-            }
-
-            .brand {
-                font-size:18px;
-            }
-
-            .shop-btn {
-                padding:8px 11px;
-                font-size:12px;
-            }
-
-            .coin-display {
-                padding:8px 10px;
-                font-size:12px;
-            }
-
-            main {
-                padding:22px 12px 35px;
-            }
-        }
-
-        @media (max-width:430px) {
-            header {
-                padding:11px 8px;
-                gap:6px;
-            }
-
-            .header-left {
-                gap:5px;
-            }
-
-            .header-right {
-                gap:4px;
-            }
-
-            .theme-selector {
-                gap:3px;
-                padding:4px 5px;
-            }
-
-            .theme-dot {
-                width:14px;
-                height:14px;
-                flex-basis:14px;
-            }
-
-            .brand {
-                font-size:16px;
-            }
-
-            .shop-btn {
-                padding:7px 9px;
-                font-size:10px;
-            }
-
-            .coin-display {
-                padding:7px 8px;
-                font-size:10px;
-            }
-
-            main {
-                padding-left:10px;
-                padding-right:10px;
-            }
-
-            .board-wrap {
-                padding:6px;
-            }
-
-            .keyboard {
-                gap:7px;
-                margin-top:14px;
-            }
-
-            .number-btn {
-                height:49px;
-            }
-
-            .action-btn {
-                padding:9px 14px;
-            }
+            0%,100% { transform:translateY(0) rotate(0); }
+            50% { transform:translateY(-7px) rotate(7deg); }
         }
     </style>
-</head><body>
+</head>
+<body>
 
     <div class="decorations">
-        <span>✦</span>
-        <span>✧</span>
-        <span>♡</span>
-        <span>✦</span>
-        <span>✧</span>
-        <span>♡</span>
+        <span>✦</span><span>✧</span><span>♡</span><span>✦</span><span>✧</span><span>♡</span>
     </div>
 
     <header>
-        <div class="header-left">
-            <div class="theme-selector">
-                <div class="theme-dot dot-blue" onclick="setTheme('blue')"></div>
-                <div class="theme-dot dot-pink" onclick="setTheme('pink')"></div>
-                <div class="theme-dot dot-green" onclick="setTheme('green')"></div>
-                <div class="theme-dot dot-lavender" onclick="setTheme('lavender')"></div>
-                <div class="theme-dot dot-yellow" onclick="setTheme('yellow')"></div>
-            </div>
-
-            <a href="../index.html" class="brand">Arcade ♡</a>
+        <a onclick="goBack()" class="nav-link">← Games</a>
+        
+        <div class="theme-selector">
+            <div class="theme-dot dot-blue" onclick="setTheme('blue')"></div>
+            <div class="theme-dot dot-pink" onclick="setTheme('pink')"></div>
+            <div class="theme-dot dot-green" onclick="setTheme('green')"></div>
+            <div class="theme-dot dot-lavender" onclick="setTheme('lavender')"></div>
+            <div class="theme-dot dot-yellow" onclick="setTheme('yellow')"></div>
         </div>
 
-        <div class="header-right">
-            <a href="../shop.html" class="shop-btn">Shop</a>
-            <div class="coin-display">
-                <span class="coin-count">0</span> Coins
-            </div>
-        </div>
+        <div class="coin-display"><span class="coin-count">0</span> Coins</div>
     </header>
 
     <main>
-
         <div class="ornament">
-            <span>✦</span>
-            <i></i>
-            <span>♡</span>
-            <i></i>
-            <span>✦</span>
+            <span>✦</span><i></i><span>♡</span><i></i><span>✦</span>
         </div>
 
         <h1>Sudoku</h1>
@@ -738,13 +433,8 @@
         <div class="message" id="message"></div>
 
         <div class="ornament bottom">
-            <span>✧</span>
-            <i></i>
-            <span>♡</span>
-            <i></i>
-            <span>✧</span>
+            <span>✧</span><i></i><span>♡</span><i></i><span>✧</span>
         </div>
-
     </main>
 
     <div class="modal" id="win-modal">
@@ -753,9 +443,7 @@
             <button onclick="closeModal()">New Game</button>
         </div>
     </div>
-
-    <script src="../script.js"></script>
-
+        <script src="../script.js"></script>
     <script>
         let solution = [];
         let puzzle = [];
@@ -771,15 +459,21 @@
             } else {
                 document.body.setAttribute("data-theme", themeName);
             }
-
             localStorage.setItem("arcade_theme", themeName);
         }
 
         function loadSavedTheme() {
             const savedTheme = localStorage.getItem("arcade_theme");
-
             if (savedTheme) {
                 setTheme(savedTheme);
+            }
+        }
+
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = '../index.html';
             }
         }
 
@@ -788,7 +482,6 @@
                 const j = Math.floor(Math.random() * (i + 1));
                 [array[i], array[j]] = [array[j], array[i]];
             }
-
             return array;
         }
 
@@ -797,18 +490,13 @@
                 if (grid[row][x] === num) return false;
                 if (grid[x][col] === num) return false;
             }
-
             const startRow = row - row % 3;
             const startCol = col - col % 3;
-
             for (let r = 0; r < 3; r++) {
                 for (let c = 0; c < 3; c++) {
-                    if (grid[startRow + r][startCol + c] === num) {
-                        return false;
-                    }
+                    if (grid[startRow + r][startCol + c] === num) return false;
                 }
             }
-
             return true;
         }
 
@@ -817,51 +505,34 @@
                 for (let col = 0; col < 9; col++) {
                     if (grid[row][col] === 0) {
                         const numbers = shuffle([1,2,3,4,5,6,7,8,9]);
-
                         for (const num of numbers) {
                             if (isSafe(grid, row, col, num)) {
                                 grid[row][col] = num;
-
-                                if (fillGrid(grid)) {
-                                    return true;
-                                }
-
+                                if (fillGrid(grid)) return true;
                                 grid[row][col] = 0;
                             }
                         }
-
                         return false;
                     }
                 }
             }
-
             return true;
         }
 
         function generateSudoku() {
-            solution = Array.from(
-                {length:9},
-                () => Array(9).fill(0)
-            );
-
+            solution = Array.from({length:9}, () => Array(9).fill(0));
             fillGrid(solution);
-
             puzzle = solution.map(row => [...row]);
-
             let removed = 0;
-
             while (removed < 40) {
                 const row = Math.floor(Math.random() * 9);
                 const col = Math.floor(Math.random() * 9);
-
                 if (puzzle[row][col] !== 0) {
                     puzzle[row][col] = 0;
                     removed++;
                 }
             }
-
             board = puzzle.map(row => [...row]);
-
             solved = false;
             selectedRow = -1;
             selectedCol = -1;
@@ -872,18 +543,15 @@
             }
 
             document.getElementById("message").textContent = "";
-
             renderBoard();
         }
 
         function renderBoard() {
             const container = document.getElementById("sudoku-board");
-
             container.innerHTML = "";
 
             for (let row = 0; row < 9; row++) {
                 for (let col = 0; col < 9; col++) {
-
                     const cell = document.createElement("div");
                     const value = board[row][col];
 
@@ -892,23 +560,12 @@
                     if (puzzle[row][col] !== 0) {
                         cell.classList.add("given");
                     }
-
-                    if (
-                        row === selectedRow &&
-                        col === selectedCol
-                    ) {
+                    if (row === selectedRow && col === selectedCol) {
                         cell.classList.add("selected");
                     }
-
-                    if (
-                        selectedRow !== -1 &&
-                        selectedCol !== -1 &&
-                        value !== 0 &&
-                        value === board[selectedRow][selectedCol]
-                    ) {
+                    if (selectedRow !== -1 && selectedCol !== -1 && value !== 0 && value === board[selectedRow][selectedCol]) {
                         cell.classList.add("same-number");
                     }
-
                     if (value !== 0) {
                         cell.textContent = value;
                     }
@@ -923,132 +580,71 @@
         }
 
         function selectCell(row, col) {
-            if (puzzle[row][col] !== 0) {
-                return;
-            }
-
+            if (puzzle[row][col] !== 0) return;
             selectedRow = row;
             selectedCol = col;
-
             renderBoard();
         }
 
         function inputNumber(number) {
-            if (
-                solved ||
-                selectedRow === -1 ||
-                selectedCol === -1
-            ) {
-                return;
-            }
-
-            if (puzzle[selectedRow][selectedCol] !== 0) {
-                return;
-            }
-
+            if (solved || selectedRow === -1 || selectedCol === -1) return;
+            if (puzzle[selectedRow][selectedCol] !== 0) return;
             board[selectedRow][selectedCol] = number;
-
             renderBoard();
         }
 
         function deleteNumber() {
-            if (
-                solved ||
-                selectedRow === -1 ||
-                selectedCol === -1
-            ) {
-                return;
-            }
-
-            if (puzzle[selectedRow][selectedCol] !== 0) {
-                return;
-            }
-
+            if (solved || selectedRow === -1 || selectedCol === -1) return;
+            if (puzzle[selectedRow][selectedCol] !== 0) return;
             board[selectedRow][selectedCol] = 0;
-
             renderBoard();
         }
 
         function checkBoard() {
-            if (solved) {
-                return;
-            }
+            if (solved) return;
 
             let complete = true;
             let incorrect = false;
 
             for (let row = 0; row < 9; row++) {
                 for (let col = 0; col < 9; col++) {
-
                     const value = board[row][col];
-
-                    if (value === 0) {
-                        complete = false;
-                    }
-
-                    if (
-                        value !== 0 &&
-                        value !== solution[row][col]
-                    ) {
-                        incorrect = true;
-                    }
+                    if (value === 0) complete = false;
+                    if (value !== 0 && value !== solution[row][col]) incorrect = true;
                 }
             }
 
             renderBoard();
 
             const cells = document.querySelectorAll(".cell");
-
             for (let row = 0; row < 9; row++) {
                 for (let col = 0; col < 9; col++) {
-
                     const index = row * 9 + col;
                     const cell = cells[index];
 
-                    if (
-                        puzzle[row][col] === 0 &&
-                        board[row][col] !== 0
-                    ) {
-                        if (
-                            board[row][col] ===
-                            solution[row][col]
-                        ) {
+                    if (puzzle[row][col] === 0 && board[row][col] !== 0) {
+                        if (board[row][col] === solution[row][col]) {
                             cell.classList.add("correct");
                         } else {
                             cell.classList.add("wrong");
                         }
-
-                        cell.classList.add("fade-feedback");
                     }
                 }
             }
 
             feedbackTimer = setTimeout(function() {
-
-                const currentCells =
-                    document.querySelectorAll(".cell");
-
+                const currentCells = document.querySelectorAll(".cell");
                 currentCells.forEach(function(cell) {
                     cell.classList.remove("correct");
                     cell.classList.remove("wrong");
-                    cell.classList.remove("fade-feedback");
                 });
-
                 feedbackTimer = null;
-
             }, 2300);
 
             if (complete && !incorrect) {
                 solved = true;
-
-                if (typeof addCoins === "function") {
-                    addCoins(50);
-                }
-
-                document
-                    .getElementById("win-modal")
-                    .classList.add("show");
-
+                if (typeof addCoins === "function") addCoins(50);
+                document.getElementById("win-modal").classList.add("show");
                 return;
             }
 
@@ -1060,29 +656,18 @@
         }
 
         function closeModal() {
-            document
-                .getElementById("win-modal")
-                .classList.remove("show");
-
+            document.getElementById("win-modal").classList.remove("show");
             newGame();
         }
 
         function moveSelection(rowDirection, colDirection) {
-            if (
-                selectedRow === -1 ||
-                selectedCol === -1
-            ) {
-                return;
-            }
-
+            if (selectedRow === -1 || selectedCol === -1) return;
             let row = selectedRow;
             let col = selectedCol;
 
             for (let i = 0; i < 81; i++) {
-
                 row += rowDirection;
                 col += colDirection;
-
                 if (row < 0) row = 8;
                 if (row > 8) row = 0;
                 if (col < 0) col = 8;
@@ -1096,61 +681,30 @@
         }
 
         document.addEventListener("keydown", function(event) {
-
-            if (
-                event.key >= "1" &&
-                event.key <= "9"
-            ) {
+            if (event.key >= "1" && event.key <= "9") {
                 inputNumber(Number(event.key));
                 return;
             }
-
-            if (
-                event.key === "Backspace" ||
-                event.key === "Delete"
-            ) {
+            if (event.key === "Backspace" || event.key === "Delete") {
                 deleteNumber();
                 return;
             }
-
-            if (event.key === "ArrowUp") {
-                event.preventDefault();
-                moveSelection(-1, 0);
-            }
-
-            if (event.key === "ArrowDown") {
-                event.preventDefault();
-                moveSelection(1, 0);
-            }
-
-            if (event.key === "ArrowLeft") {
-                event.preventDefault();
-                moveSelection(0, -1);
-            }
-
-            if (event.key === "ArrowRight") {
-                event.preventDefault();
-                moveSelection(0, 1);
-            }
+            if (event.key === "ArrowUp") { event.preventDefault(); moveSelection(-1, 0); }
+            if (event.key === "ArrowDown") { event.preventDefault(); moveSelection(1, 0); }
+            if (event.key === "ArrowLeft") { event.preventDefault(); moveSelection(0, -1); }
+            if (event.key === "ArrowRight") { event.preventDefault(); moveSelection(0, 1); }
         });
 
         document.addEventListener("DOMContentLoaded", function() {
             loadSavedTheme();
             generateSudoku();
-
-            if (typeof updateCoinDisplays === "function") {
-                updateCoinDisplays();
-            }
+            if (typeof updateCoinDisplays === "function") updateCoinDisplays();
         });
 
         window.addEventListener("pageshow", function() {
             loadSavedTheme();
-
-            if (typeof updateCoinDisplays === "function") {
-                updateCoinDisplays();
-            }
+            if (typeof updateCoinDisplays === "function") updateCoinDisplays();
         });
     </script>
-
 </body>
 </html>
