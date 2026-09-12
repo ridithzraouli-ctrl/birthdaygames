@@ -5,47 +5,207 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wordle</title>
     <style>
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        :root {
+            --bg-base: #f2f7fa;
+            --bg-grad-1: #dce8f3;
+            --bg-grad-2: #d3e2ea;
+            --text-main: #3f5260;
+            --text-heading: #46637a;
+            --accent-border: #82a8bd;
+            --accent-soft: #e9f3f9;
+            --accent-badge: #dfe8f8;
+            --ornament-color: #799eb8;
+            --card-bg: rgba(255, 255, 255, 0.88);
+            --header-bg: rgba(255, 255, 255, 0.88);
+        }
+
+        body[data-theme="pink"] {
+            --bg-base: #faf2f5;
+            --bg-grad-1: #f3dce5;
+            --bg-grad-2: #ead3dc;
+            --text-main: #603f4c;
+            --text-heading: #7a4659;
+            --accent-border: #bd8297;
+            --accent-soft: #f9e9f0;
+            --accent-badge: #f8dfe8;
+            --ornament-color: #b87992;
+            --card-bg: rgba(255, 255, 255, 0.88);
+            --header-bg: rgba(255, 255, 255, 0.88);
+        }
+
+        body[data-theme="green"] {
+            --bg-base: #f3f7f2;
+            --bg-grad-1: #dce8dc;
+            --bg-grad-2: #d3ead3;
+            --text-main: #3f6043;
+            --text-heading: #467a4c;
+            --accent-border: #82bd8b;
+            --accent-soft: #e9f9eb;
+            --accent-badge: #dff8e2;
+            --ornament-color: #79b882;
+            --card-bg: rgba(255, 255, 255, 0.88);
+            --header-bg: rgba(255, 255, 255, 0.88);
+        }
+
+        body[data-theme="lavender"] {
+            --bg-base: #f5f2fa;
+            --bg-grad-1: #e3dcf3;
+            --bg-grad-2: #dad3ea;
+            --text-main: #4a3f60;
+            --text-heading: #59467a;
+            --accent-border: #9882bd;
+            --accent-soft: #f0e9f9;
+            --accent-badge: #e9dff8;
+            --ornament-color: #9379b8;
+            --card-bg: rgba(255, 255, 255, 0.88);
+            --header-bg: rgba(255, 255, 255, 0.88);
+        }
+
+        body[data-theme="yellow"] {
+            --bg-base: #faf8f2;
+            --bg-grad-1: #f3edd2;
+            --bg-grad-2: #eae3c5;
+            --text-main: #60573f;
+            --text-heading: #7a6e46;
+            --accent-border: #bdb182;
+            --accent-soft: #f9f5e9;
+            --accent-badge: #f8f3df;
+            --ornament-color: #b8aa79;
+            --card-bg: rgba(255, 255, 255, 0.88);
+            --header-bg: rgba(255, 255, 255, 0.88);
+        }
+
+        * {
+            box-sizing: border-box;
+            min-width: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
         body {
-            margin: 0;
+            width: 100%;
+            max-width: 100%;
             min-height: 100vh;
-            background: #faf7f5;
-            color: #4a3e3d;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+            background:
+                radial-gradient(circle at 10% 12%, var(--bg-grad-1) 0, transparent 28%),
+                radial-gradient(circle at 90% 85%, var(--bg-grad-2) 0, transparent 30%),
+                var(--bg-base);
+            color: var(--text-main);
+            font-family: Georgia, "Times New Roman", serif;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
         header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 14px 24px;
-            background: #ffffff;
-            border-bottom: 1px solid #eee8e5;
-            position: relative;
+            justify-content: space-between;
+            width: 100%;
+            min-height: 70px;
+            padding: 15px 22px;
+            background: var(--header-bg);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--bg-grad-2);
+            position: sticky;
+            top: 0;
             z-index: 100;
+            gap: 16px;
         }
 
-        .header-left, .header-right {
+        .header-left,
+        .header-right {
             display: flex;
             align-items: center;
+            min-width: 0;
+        }
+
+        .header-left {
             gap: 12px;
         }
 
-        .nav-link { color: #7d6b6d; text-decoration: none; font-size: 14px; font-weight: 500; cursor: pointer; }
-        .nav-link:hover { color: #4a3e3d; }
-        .coin-display { background: #f4ece9; border: 1px solid #e2d7d3; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; color: #635052; }
+        .header-right {
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .nav-link {
+            color: var(--text-heading);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: normal;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: opacity 0.2s ease;
+        }
+
+        .nav-link:hover {
+            opacity: 0.7;
+        }
+
+        .coin-display {
+            background: var(--accent-soft);
+            border: 1px solid var(--accent-border);
+            padding: 9px 15px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: bold;
+            color: var(--text-heading);
+            white-space: nowrap;
+        }
 
         main {
-            padding: 20px;
+            width: 100%;
+            max-width: 560px;
+            margin: 0 auto;
+            padding: 28px 18px 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            max-width: 500px;
-            margin: 0 auto;
         }
 
-        h1 { color: #4a3e3d; font-weight: 500; font-size: 24px; margin: 0 0 4px; }
-        p.subtitle { color: #8c7b7d; margin: 0 0 20px; font-size: 14px; text-align: center; }
+        .ornament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            height: 22px;
+            margin-bottom: 15px;
+            color: var(--ornament-color);
+        }
+
+        .ornament span {
+            font-size: 16px;
+        }
+
+        .ornament i {
+            width: 38px;
+            height: 1px;
+            background: var(--ornament-color);
+            opacity: 0.45;
+        }
+
+        h1 {
+            color: var(--text-heading);
+            font-weight: normal;
+            font-size: 28px;
+            margin: 0 0 7px;
+            text-align: center;
+        }
+
+        p.subtitle {
+            color: var(--text-main);
+            opacity: 0.78;
+            margin: 0 0 24px;
+            font-size: 14px;
+            text-align: center;
+            line-height: 1.5;
+        }
 
         .board {
             display: grid;
@@ -63,22 +223,23 @@
         .tile {
             width: 50px;
             height: 50px;
-            border: 2px solid #e2d7d3;
-            border-radius: 6px;
-            background: #ffffff;
+            border: 2px solid var(--accent-border);
+            border-radius: 8px;
+            background: var(--card-bg);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 22px;
-            font-weight: 700;
-            color: #4a3e3d;
+            font-weight: bold;
+            color: var(--text-heading);
             text-transform: uppercase;
             user-select: none;
             transition: transform 0.15s ease, background-color 0.2s ease, border-color 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
         }
 
         .tile[data-state="active"] {
-            border-color: #8c7b7d;
+            border-color: var(--text-heading);
             transform: scale(1.05);
         }
 
@@ -95,9 +256,10 @@
         }
 
         .tile[data-state="absent"] {
-            background-color: #b8acab;
-            border-color: #b8acab;
-            color: #ffffff;
+            background-color: var(--bg-grad-2);
+            border-color: var(--bg-grad-2);
+            color: var(--text-main);
+            opacity: 0.7;
         }
 
         .keyboard {
@@ -111,68 +273,150 @@
         .kb-row {
             display: flex;
             justify-content: center;
-            gap: 4px;
+            gap: 5px;
         }
 
         .key-btn {
-            height: 48px;
-            border: 1px solid #d1c4c0;
-            border-radius: 6px;
-            background: #ffffff;
-            color: #4a3e3d;
+            height: 46px;
+            border: 1px solid var(--accent-border);
+            border-radius: 8px;
+            background: var(--card-bg);
+            color: var(--text-heading);
+            font-family: Georgia, "Times New Roman", serif;
             font-size: 13px;
-            font-weight: 600;
+            font-weight: bold;
             cursor: pointer;
             text-transform: uppercase;
             flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background 0.15s;
+            transition: all 0.15s ease;
             user-select: none;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+
+        .key-btn:hover:not(:disabled) {
+            background: var(--accent-soft);
+            transform: translateY(-1px);
         }
 
         .key-btn.wide { flex: 1.5; font-size: 11px; }
 
         .key-btn[data-state="correct"] { background: #88b04b; color: #fff; border-color: #88b04b; }
         .key-btn[data-state="present"] { background: #f0c961; color: #fff; border-color: #f0c961; }
-        .key-btn[data-state="absent"] { background: #eee8e5; color: #b8acab; border-color: #e2d7d3; }
+        .key-btn[data-state="absent"] { background: var(--bg-grad-2); color: var(--text-main); opacity: 0.5; border-color: var(--bg-grad-2); }
 
         .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.3);
+            padding: 20px;
+            background: rgba(30, 25, 25, 0.3);
+            backdrop-filter: blur(3px);
             z-index: 200;
             align-items: center;
             justify-content: center;
         }
 
         .modal-card {
-            background: #ffffff;
-            border-radius: 8px;
-            padding: 24px;
-            max-width: 320px;
-            width: 90%;
+            background: var(--card-bg);
+            border: 1px solid var(--bg-grad-2);
+            border-radius: 14px;
+            padding: 28px 24px;
+            max-width: 340px;
+            width: 100%;
             text-align: center;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .modal-card h2 {
+            color: var(--text-heading);
+            font-size: 21px;
+            font-weight: normal;
+            margin: 0 0 10px;
+        }
+
+        .modal-card p {
+            color: var(--text-main);
+            opacity: 0.8;
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 0 0 20px;
         }
 
         .btn {
             padding: 10px 20px;
-            border: 1px solid #d1c4c0;
-            border-radius: 6px;
-            background: #ffffff;
-            color: #4a3e3d;
+            border: 1px solid var(--accent-border);
+            border-radius: 100px;
+            background: var(--card-bg);
+            color: var(--text-heading);
+            font-family: Georgia, "Times New Roman", serif;
             font-size: 13px;
-            font-weight: 500;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: 0.2s ease;
         }
 
-        .btn:hover { background: #faf7f5; }
+        .btn:hover {
+            background: var(--accent-soft);
+            transform: translateY(-1px);
+        }
+
+        .decorations {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .decorations span {
+            position: absolute;
+            color: var(--ornament-color);
+            opacity: 0.35;
+            animation: float 5s ease-in-out infinite;
+        }
+
+        .decorations span:nth-child(1) { top: 13%; left: 7%; font-size: 20px; }
+        .decorations span:nth-child(2) { top: 28%; right: 8%; font-size: 13px; animation-delay: 1s; }
+        .decorations span:nth-child(3) { top: 55%; left: 5%; font-size: 14px; animation-delay: 2s; }
+        .decorations span:nth-child(4) { top: 68%; right: 6%; font-size: 21px; animation-delay: 1.5s; }
+        .decorations span:nth-child(5) { bottom: 12%; left: 12%; font-size: 12px; animation-delay: 0.5s; }
+        .decorations span:nth-child(6) { bottom: 20%; right: 13%; font-size: 16px; animation-delay: 2.5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0); }
+            50% { transform: translateY(-7px) rotate(7deg); }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                min-height: 66px;
+                padding: 12px 11px;
+            }
+            main {
+                padding: 24px 12px 35px;
+            }
+            .tile {
+                width: 44px;
+                height: 44px;
+                font-size: 20px;
+            }
+        }
     </style>
 </head>
 <body>
+
+    <div class="decorations">
+        <span>✦</span>
+        <span>✧</span>
+        <span>♡</span>
+        <span>✦</span>
+        <span>✧</span>
+        <span>♡</span>
+    </div>
 
     <header>
         <div class="header-left">
@@ -184,23 +428,49 @@
     </header>
 
     <main>
+        <div class="ornament">
+            <span>✦</span>
+            <i></i>
+            <span>♡</span>
+            <i></i>
+            <span>✦</span>
+        </div>
+
         <h1>Wordle</h1>
         <p class="subtitle">Guess the 5-letter word in 6 tries.</p>
 
         <div class="board" id="board"></div>
         <div class="keyboard" id="keyboard"></div>
+
+        <div class="ornament" style="margin-top: 25px; margin-bottom: 0;">
+            <span>✧</span>
+            <i></i>
+            <span>♡</span>
+            <i></i>
+            <span>✧</span>
+        </div>
     </main>
 
     <div id="reward-modal" class="modal-overlay">
         <div class="modal-card">
-            <h2 id="modal-title" style="font-size: 20px; margin: 0 0 10px;">Victory!</h2>
-            <p id="modal-desc" style="color: #8c7b7d; font-size: 14px; margin: 0 0 20px;">You guessed the word and earned 30 Coins.</p>
+            <h2 id="modal-title">Victory!</h2>
+            <p id="modal-desc">You guessed the word and earned 30 Coins.</p>
             <button class="btn" onclick="closeModalAndReset()" style="width: 100%;">Play Again</button>
         </div>
     </div>
 
     <script src="../script.js"></script>
     <script>
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem("arcade_theme");
+            if (savedTheme === "pink" || savedTheme === "green" || savedTheme === "lavender" || savedTheme === "yellow") {
+                document.body.setAttribute("data-theme", savedTheme);
+            } else {
+                document.body.removeAttribute("data-theme");
+            }
+        }
+        loadSavedTheme();
+
         const AudioFX = {
             ctx: null,
             init() {
@@ -248,7 +518,13 @@
             }
         };
 
-        const WORD_LIST = ['PLANT', 'CRANE', 'GHOST', 'FLAME', 'SHARK', 'TRAIN', 'SMART', 'CLOUD', 'BREAD', 'LIGHT', 'HOUSE', 'CROWN', 'STORM', 'BEACH', 'TIGER'];
+        const WORD_LIST = [
+            'APPLE', 'BEACH', 'CHAIR', 'DANCE', 'EARTH', 'FLUTE', 'GRAPE', 'HEART', 'IMAGE', 'JUICE',
+            'KNIFE', 'LEMON', 'MUSIC', 'NIGHT', 'OCEAN', 'PIANO', 'QUEEN', 'RIVER', 'SMILE', 'TRAIN',
+            'UNITY', 'VOICE', 'WATER', 'YOUTH', 'ZEBRA', 'PLANT', 'CRANE', 'GHOST', 'FLAME', 'SHARK',
+            'SMART', 'CLOUD', 'BREAD', 'LIGHT', 'HOUSE', 'CROWN', 'STORM', 'TIGER', 'BRICK', 'CANDY',
+            'DREAM', 'FROST', 'GLORY', 'HONEY', 'IVORY', 'JOKER', 'KOWTOW', 'LUNAR', 'MAPLE', 'NOBLE'
+        ];
         
         let targetWord = '';
         let currentRow = 0;
@@ -344,7 +620,6 @@
             const result = Array(5).fill('absent');
             const used = Array(5).fill(false);
 
-            // Exact matches
             for (let i = 0; i < 5; i++) {
                 if (guess[i] === targetArr[i]) {
                     result[i] = 'correct';
@@ -352,7 +627,6 @@
                 }
             }
 
-            // Present matches
             for (let i = 0; i < 5; i++) {
                 if (result[i] !== 'correct') {
                     for (let j = 0; j < 5; j++) {
@@ -365,7 +639,6 @@
                 }
             }
 
-            // Apply tile colors & update keyboard
             for (let i = 0; i < 5; i++) {
                 const tile = document.getElementById(`tile-${currentRow}-${i}`);
                 const letter = guess[i];
@@ -429,8 +702,13 @@
             handleKeyPress(key);
         });
 
-        resetGame();
+        document.addEventListener("DOMContentLoaded", function() {
+            loadSavedTheme();
+            if (typeof updateCoinDisplays === "function") {
+                updateCoinDisplays();
+            }
+            resetGame();
+        });
     </script>
 </body>
-  </html>
-  
+</html>
