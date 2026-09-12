@@ -16,11 +16,15 @@
             --accent-soft:#e9f3f9;
             --accent-badge:#dfe8f8;
             --ornament-color:#799eb8;
-            --cell-bg:rgba(255,255,255,.88);
-            --cell-selected:#dcecf5;
+
+            --cell-bg:#f8fbfd;
+            --cell-dark:#e7f0f5;
+            --cell-selected:#d5e9f3;
             --cell-number:#46637a;
             --cell-error:#f2d7dd;
             --cell-correct:#dceede;
+
+            --pixel-shadow:#b8ccd7;
         }
 
         body[data-theme="pink"] {
@@ -33,11 +37,15 @@
             --accent-soft:#f9e9f0;
             --accent-badge:#f8dfe8;
             --ornament-color:#b87992;
-            --cell-bg:rgba(255,255,255,.88);
-            --cell-selected:#f4dce6;
+
+            --cell-bg:#fff9fb;
+            --cell-dark:#f5e4ea;
+            --cell-selected:#f3d5e1;
             --cell-number:#7a4659;
             --cell-error:#f2d1da;
             --cell-correct:#dceedd;
+
+            --pixel-shadow:#d8b8c4;
         }
 
         body[data-theme="green"] {
@@ -50,11 +58,15 @@
             --accent-soft:#e9f9eb;
             --accent-badge:#dff8e2;
             --ornament-color:#79b882;
-            --cell-bg:rgba(255,255,255,.88);
-            --cell-selected:#dcefdc;
+
+            --cell-bg:#f8fcf8;
+            --cell-dark:#e4f0e4;
+            --cell-selected:#d4ead5;
             --cell-number:#467a4c;
             --cell-error:#f2d1d1;
-            --cell-correct:#dcefdc;
+            --cell-correct:#d5ecd8;
+
+            --pixel-shadow:#b7d0ba;
         }
 
         body[data-theme="lavender"] {
@@ -67,11 +79,15 @@
             --accent-soft:#f0e9f9;
             --accent-badge:#e9dff8;
             --ornament-color:#9379b8;
-            --cell-bg:rgba(255,255,255,.88);
-            --cell-selected:#e8def5;
+
+            --cell-bg:#fbf9ff;
+            --cell-dark:#eee8f7;
+            --cell-selected:#e6d9f3;
             --cell-number:#59467a;
             --cell-error:#f0d5df;
             --cell-correct:#dcefdc;
+
+            --pixel-shadow:#c4b8d6;
         }
 
         body[data-theme="yellow"] {
@@ -84,11 +100,15 @@
             --accent-soft:#f9f5e9;
             --accent-badge:#f8f3df;
             --ornament-color:#b8aa79;
-            --cell-bg:rgba(255,255,255,.88);
-            --cell-selected:#f2ebd0;
+
+            --cell-bg:#fffdf7;
+            --cell-dark:#f3eedb;
+            --cell-selected:#eee4c6;
             --cell-number:#7a6e46;
             --cell-error:#f0d7d7;
             --cell-correct:#dfedd8;
+
+            --pixel-shadow:#d1c7a5;
         }
 
         * {
@@ -107,14 +127,31 @@
 
         body {
             min-height:100vh;
+
             background:
-                radial-gradient(circle at 12% 12%,var(--bg-grad-1) 0,transparent 25%),
-                radial-gradient(circle at 88% 82%,var(--bg-grad-2) 0,transparent 27%),
+                radial-gradient(
+                    circle at 12% 12%,
+                    var(--bg-grad-1) 0,
+                    transparent 25%
+                ),
+                radial-gradient(
+                    circle at 88% 82%,
+                    var(--bg-grad-2) 0,
+                    transparent 27%
+                ),
                 var(--bg-base);
+
             color:var(--text-main);
             font-family:Georgia,"Times New Roman",serif;
-            transition:background .3s ease,color .3s ease;
+
+            transition:
+                background .3s ease,
+                color .3s ease;
         }
+
+        /* =========================
+           BACKGROUND DECORATIONS
+           ========================= */
 
         .decorations {
             position:fixed;
@@ -133,12 +170,45 @@
             animation:float 5s ease-in-out infinite;
         }
 
-        .decorations span:nth-child(1) { top:8%; left:8%; font-size:20px; }
-        .decorations span:nth-child(2) { top:16%; right:10%; font-size:13px; }
-        .decorations span:nth-child(3) { top:42%; left:5%; font-size:12px; }
-        .decorations span:nth-child(4) { top:37%; right:5%; font-size:20px; }
-        .decorations span:nth-child(5) { bottom:18%; left:9%; font-size:12px; }
-        .decorations span:nth-child(6) { bottom:25%; right:8%; font-size:17px; }
+        .decorations span:nth-child(1) {
+            top:8%;
+            left:8%;
+            font-size:20px;
+        }
+
+        .decorations span:nth-child(2) {
+            top:16%;
+            right:10%;
+            font-size:13px;
+        }
+
+        .decorations span:nth-child(3) {
+            top:42%;
+            left:5%;
+            font-size:12px;
+        }
+
+        .decorations span:nth-child(4) {
+            top:37%;
+            right:5%;
+            font-size:20px;
+        }
+
+        .decorations span:nth-child(5) {
+            bottom:18%;
+            left:9%;
+            font-size:12px;
+        }
+
+        .decorations span:nth-child(6) {
+            bottom:25%;
+            right:8%;
+            font-size:17px;
+        }
+
+        /* =========================
+           HEADER
+           ========================= */
 
         header {
             display:flex;
@@ -146,32 +216,35 @@
             justify-content:space-between;
             width:100%;
             padding:18px 30px;
+
             background:#ffffff;
             border-bottom:1px solid var(--accent-border);
+
             position:sticky;
             top:0;
             z-index:100;
         }
 
         .nav-link {
-            color: var(--ornament-color);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
+            color:var(--ornament-color);
+            text-decoration:none;
+            font-size:14px;
+            font-weight:500;
+            cursor:pointer;
         }
+
         .nav-link:hover {
-            color: var(--text-main);
+            color:var(--text-main);
         }
 
         .coin-display {
-            background: var(--accent-soft);
-            border: 1px solid var(--accent-border);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-heading);
+            background:var(--accent-soft);
+            border:1px solid var(--accent-border);
+            padding:6px 14px;
+            border-radius:20px;
+            font-size:13px;
+            font-weight:600;
+            color:var(--text-heading);
         }
 
         .theme-selector {
@@ -179,6 +252,7 @@
             align-items:center;
             gap:7px;
             padding:6px 10px;
+
             background:rgba(255,255,255,.6);
             border:1px solid var(--bg-grad-2);
             border-radius:100px;
@@ -194,18 +268,41 @@
             transition:transform .2s ease;
         }
 
-        .theme-dot:hover { transform:scale(1.25); }
-        .dot-blue { background:#d3e2ea; }
-        .dot-pink { background:#ead3dc; }
-        .dot-green { background:#d3ead3; }
-        .dot-lavender { background:#dad3ea; }
-        .dot-yellow { background:#eae3c5; }
+        .theme-dot:hover {
+            transform:scale(1.25);
+        }
+
+        .dot-blue {
+            background:#d3e2ea;
+        }
+
+        .dot-pink {
+            background:#ead3dc;
+        }
+
+        .dot-green {
+            background:#d3ead3;
+        }
+
+        .dot-lavender {
+            background:#dad3ea;
+        }
+
+        .dot-yellow {
+            background:#eae3c5;
+        }
+
+        /* =========================
+           MAIN
+           ========================= */
 
         main {
             width:100%;
             max-width:520px;
             margin:0 auto;
+
             padding:30px 18px 45px;
+
             display:flex;
             flex-direction:column;
             align-items:center;
@@ -213,6 +310,7 @@
 
         h1 {
             margin:0 0 22px;
+
             color:var(--text-heading);
             font-size:28px;
             font-weight:normal;
@@ -223,97 +321,318 @@
             display:flex;
             align-items:center;
             justify-content:center;
+
             gap:11px;
             height:22px;
             margin-bottom:24px;
+
             color:var(--ornament-color);
         }
 
-        .ornament.bottom { margin:30px 0 0; }
-        .ornament span { flex-shrink:0; font-size:16px; }
-        .ornament i { width:40px; height:1px; background:var(--ornament-color); opacity:.4; }
+        .ornament.bottom {
+            margin:30px 0 0;
+        }
+
+        .ornament span {
+            flex-shrink:0;
+            font-size:16px;
+        }
+
+        .ornament i {
+            width:40px;
+            height:1px;
+            background:var(--ornament-color);
+            opacity:.4;
+        }
+
+        /* =========================
+           PIXEL SUDOKU BOARD
+           ========================= */
 
         .board-wrap {
             width:100%;
-            padding:8px;
-            background:rgba(255,255,255,.55);
+
+            padding:10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,.72),
+                    rgba(255,255,255,.42)
+                );
+
             border:1px solid var(--bg-grad-2);
-            border-radius:13px;
-            box-shadow:0 5px 20px rgba(0,0,0,.045);
+
+            /*
+             * Less rounded than the website elements on purpose.
+             * Makes the actual game feel pixel/game-like.
+             */
+            border-radius:8px;
+
+            box-shadow:
+                0 6px 18px rgba(0,0,0,.045),
+                0 3px 0 var(--pixel-shadow);
+
+            /*
+             * Keeps the board square while letting it fill
+             * the available vertical space.
+             */
+            max-width:490px;
         }
 
         #sudoku-board {
             width:100%;
             aspect-ratio:1;
+
             display:grid;
+
             grid-template-columns:repeat(9,1fr);
             grid-template-rows:repeat(9,1fr);
+
             overflow:hidden;
-            border:2px solid var(--accent-border);
-            border-radius:7px;
+
+            /*
+             * Pixel-game border.
+             */
+            border:3px solid var(--accent-border);
+            border-radius:3px;
+
             background:var(--cell-bg);
+
+            box-shadow:
+                inset 0 0 0 1px var(--pixel-shadow);
+
+            /*
+             * Keeps everything visually sharp.
+             */
+            image-rendering:pixelated;
         }
 
         .cell {
             position:relative;
+
             display:flex;
             align-items:center;
             justify-content:center;
+
             min-width:0;
             min-height:0;
-            background:var(--cell-bg);
+
+            background:
+                repeating-linear-gradient(
+                    0deg,
+                    var(--cell-bg) 0px,
+                    var(--cell-bg) 5px,
+                    var(--cell-dark) 5px,
+                    var(--cell-dark) 6px
+                );
+
             color:var(--cell-number);
-            font-size:clamp(18px,5vw,25px);
+
+            /*
+             * Slightly chunkier than the original.
+             */
+            font-size:clamp(19px,5.3vw,27px);
+
+            font-family:
+                "Courier New",
+                monospace;
+
+            font-weight:bold;
+
             cursor:pointer;
             user-select:none;
+
             border-right:1px solid var(--bg-grad-2);
             border-bottom:1px solid var(--bg-grad-2);
-            transition: background-color 2.2s ease, transform .18s ease;
+
+            transition:
+                background-color .15s ease,
+                transform .08s ease;
+
+            image-rendering:pixelated;
         }
 
-        .cell:nth-child(9n) { border-right:none; }
-        .cell:nth-child(n+73) { border-bottom:none; }
-        .cell:nth-child(3n) { border-right:1.8px solid var(--accent-border); }
-        .cell:nth-child(n+19):nth-child(-n+27),
-        .cell:nth-child(n+46):nth-child(-n+54) { border-bottom:1.8px solid var(--accent-border); }
+        .cell:hover:not(.given) {
+            background:var(--accent-soft);
+        }
 
-        .cell.given { font-weight:bold; color:var(--text-heading); cursor:default; }
-        .cell.selected { background:var(--cell-selected); }
-        .cell.same-number { background:var(--accent-soft); }
-        .cell.selected.same-number { background:var(--cell-selected); }
-        .cell.correct { background:var(--cell-correct); }
-        .cell.wrong { background:var(--cell-error); }
+        .cell:active:not(.given) {
+            transform:scale(.96);
+        }
+
+        /* Normal grid edges */
+
+        .cell:nth-child(9n) {
+            border-right:none;
+        }
+
+        .cell:nth-child(n+73) {
+            border-bottom:none;
+        }
+
+        /* Strong 3×3 pixel boundaries */
+
+        .cell:nth-child(3n) {
+            border-right:3px solid var(--accent-border);
+        }
+
+        .cell:nth-child(n+19):nth-child(-n+27),
+        .cell:nth-child(n+46):nth-child(-n+54) {
+            border-bottom:3px solid var(--accent-border);
+        }
+
+        /* =========================
+           CELL STATES
+           ========================= */
+
+        .cell.given {
+            font-weight:bold;
+            color:var(--text-heading);
+
+            background:
+                repeating-linear-gradient(
+                    0deg,
+                    var(--cell-dark) 0px,
+                    var(--cell-dark) 5px,
+                    var(--cell-bg) 5px,
+                    var(--cell-bg) 6px
+                );
+
+            cursor:default;
+        }
+
+        .cell.selected {
+            background:var(--cell-selected);
+
+            box-shadow:
+                inset 0 0 0 3px var(--accent-border);
+        }
+
+        .cell.same-number {
+            background:var(--accent-soft);
+        }
+
+        .cell.selected.same-number {
+            background:var(--cell-selected);
+        }
+
+        .cell.correct {
+            background:var(--cell-correct);
+
+            animation:
+                pixelCorrect .18s steps(2);
+        }
+
+        .cell.wrong {
+            background:var(--cell-error);
+
+            animation:
+                pixelWrong .18s steps(2);
+        }
+
+        @keyframes pixelCorrect {
+            0% {
+                transform:scale(1);
+            }
+
+            50% {
+                transform:scale(.92);
+            }
+
+            100% {
+                transform:scale(1);
+            }
+        }
+
+        @keyframes pixelWrong {
+            0% {
+                transform:translateX(0);
+            }
+
+            25% {
+                transform:translateX(-2px);
+            }
+
+            50% {
+                transform:translateX(2px);
+            }
+
+            75% {
+                transform:translateX(-1px);
+            }
+
+            100% {
+                transform:translateX(0);
+            }
+        }
+
+        /* =========================
+           NUMBER KEYBOARD
+           ========================= */
 
         .keyboard {
             width:100%;
             max-width:390px;
+
             margin-top:18px;
+
             display:grid;
             grid-template-columns:repeat(3,1fr);
+
             gap:9px;
         }
 
         .number-btn {
             height:52px;
+
             border:1px solid var(--accent-border);
-            border-radius:12px;
+            border-radius:8px;
+
             background:rgba(255,255,255,.82);
             color:var(--text-heading);
-            font-family:Georgia,"Times New Roman",serif;
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
             font-size:20px;
+
             cursor:pointer;
-            box-shadow:0 2px 7px rgba(0,0,0,.035);
-            transition:transform .12s ease,background .12s ease;
+
+            box-shadow:
+                0 2px 0 var(--pixel-shadow);
+
+            transition:
+                transform .12s ease,
+                background .12s ease;
         }
 
-        .number-btn:hover { background:var(--accent-soft); }
-        .number-btn:active { transform:scale(.95); }
-        .delete-btn { grid-column:1 / -1; height:46px; font-size:18px; }
+        .number-btn:hover {
+            background:var(--accent-soft);
+        }
+
+        .number-btn:active {
+            transform:translateY(2px);
+            box-shadow:none;
+        }
+
+        .delete-btn {
+            grid-column:1 / -1;
+            height:46px;
+            font-size:18px;
+        }
+
+        /* =========================
+           ACTION BUTTONS
+           ========================= */
 
         .actions {
             display:flex;
             justify-content:center;
             gap:10px;
+
             margin-top:16px;
             width:100%;
         }
@@ -322,389 +641,1174 @@
             border:1px solid var(--accent-border);
             background:rgba(255,255,255,.8);
             color:var(--text-heading);
-            font-family:Georgia,"Times New Roman",serif;
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
             font-size:13px;
+
             padding:10px 17px;
             border-radius:100px;
+
             cursor:pointer;
+
             transition:.2s ease;
         }
 
-        .action-btn:hover { background:var(--accent-soft); transform:translateY(-1px); }
+        .action-btn:hover {
+            background:var(--accent-soft);
+            transform:translateY(-1px);
+        }
 
         .message {
             min-height:20px;
+
             margin-top:13px;
+
             color:var(--text-heading);
+
             font-size:14px;
             text-align:center;
         }
 
+        /* =========================
+           MODAL
+           ========================= */
+
         .modal {
             position:fixed;
             inset:0;
+
             display:none;
             align-items:center;
             justify-content:center;
+
             padding:20px;
+
             background:rgba(45,55,65,.28);
+
             backdrop-filter:blur(5px);
+
             z-index:500;
         }
 
-        .modal.show { display:flex; }
+        .modal.show {
+            display:flex;
+        }
 
         .modal-box {
             width:min(360px,100%);
+
             padding:28px 24px;
+
             background:rgba(255,255,255,.96);
+
             border:1px solid var(--accent-border);
             border-radius:15px;
+
             text-align:center;
-            box-shadow:0 15px 45px rgba(0,0,0,.12);
+
+            box-shadow:
+                0 15px 45px rgba(0,0,0,.12);
         }
 
-        .modal-box h2 { margin:0 0 18px; color:var(--text-heading); font-weight:normal; font-size:23px; }
+        .modal-box h2 {
+            margin:0 0 18px;
+
+            color:var(--text-heading);
+
+            font-weight:normal;
+            font-size:23px;
+        }
+
         .modal-box button {
             border:1px solid var(--accent-border);
+
             background:var(--accent-soft);
             color:var(--text-heading);
-            font-family:Georgia,"Times New Roman",serif;
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
             padding:10px 20px;
+
             border-radius:100px;
+
             cursor:pointer;
         }
 
+        /* =========================
+           FLOATING DECORATIONS
+           ========================= */
+
         @keyframes float {
-            0%,100% { transform:translateY(0) rotate(0); }
-            50% { transform:translateY(-7px) rotate(7deg); }
+            0%,100% {
+                transform:translateY(0) rotate(0);
+            }
+
+            50% {
+                transform:translateY(-7px) rotate(7deg);
+            }
+        }
+
+        /* =========================
+           MOBILE
+           ========================= */
+
+        @media (max-width:600px) {
+
+            header {
+                padding:15px 14px;
+            }
+
+            main {
+                padding:
+                    26px
+                    12px
+                    40px;
+            }
+
+            .board-wrap {
+                padding:8px;
+            }
+
+            #sudoku-board {
+                border-width:3px;
+            }
+
+            .cell {
+                font-size:
+                    clamp(
+                        17px,
+                        5.8vw,
+                        24px
+                    );
+            }
+
+            .cell:nth-child(3n) {
+                border-right-width:2px;
+            }
+
+            .cell:nth-child(n+19):nth-child(-n+27),
+            .cell:nth-child(n+46):nth-child(-n+54) {
+                border-bottom-width:2px;
+            }
+
+            .keyboard {
+                gap:7px;
+            }
+
+            .number-btn {
+                height:50px;
+            }
+        }
+
+        @media (max-width:430px) {
+
+            header {
+                padding:12px 8px;
+            }
+
+            .nav-link {
+                font-size:12px;
+            }
+
+            .coin-display {
+                padding:6px 9px;
+                font-size:11px;
+            }
+
+            .theme-selector {
+                gap:4px;
+                padding:5px 6px;
+            }
+
+            .theme-dot {
+                width:17px;
+                height:17px;
+                flex-basis:17px;
+            }
+
+            main {
+                padding:
+                    23px
+                    8px
+                    35px;
+            }
+
+            .board-wrap {
+                padding:7px;
+            }
+
+            .cell {
+                font-size:
+                    clamp(
+                        16px,
+                        6vw,
+                        22px
+                    );
+            }
+
+            .keyboard {
+                gap:6px;
+            }
+
+            .number-btn {
+                height:48px;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <div class="decorations">
-        <span>✦</span><span>✧</span><span>♡</span><span>✦</span><span>✧</span><span>♡</span>
+        <span>✦</span>
+        <span>✧</span>
+        <span>♡</span>
+        <span>✦</span>
+        <span>✧</span>
+        <span>♡</span>
     </div>
 
     <header>
-        <a onclick="goBack()" class="nav-link">← Games</a>
-        
+
+        <a onclick="goBack()" class="nav-link">
+            ← Games
+        </a>
+
         <div class="theme-selector">
-            <div class="theme-dot dot-blue" onclick="setTheme('blue')"></div>
-            <div class="theme-dot dot-pink" onclick="setTheme('pink')"></div>
-            <div class="theme-dot dot-green" onclick="setTheme('green')"></div>
-            <div class="theme-dot dot-lavender" onclick="setTheme('lavender')"></div>
-            <div class="theme-dot dot-yellow" onclick="setTheme('yellow')"></div>
-        </div>
 
-        <div class="coin-display"><span class="coin-count">0</span> Coins</div>
-    </header>
+            <div
+                class="theme-dot dot-blue"
+                onclick="setTheme('blue')"
+            ></div>
 
-    <main>
-        <div class="ornament">
-            <span>✦</span><i></i><span>♡</span><i></i><span>✦</span>
-        </div>
+            <div
+                class="theme-dot dot-pink"
+                onclick="setTheme('pink')"
+                <script>
 
-        <h1>Sudoku</h1>
-
-        <div class="board-wrap">
-            <div id="sudoku-board"></div>
-        </div>
-
-        <div class="keyboard">
-            <button class="number-btn" onclick="inputNumber(1)">1</button>
-            <button class="number-btn" onclick="inputNumber(2)">2</button>
-            <button class="number-btn" onclick="inputNumber(3)">3</button>
-            <button class="number-btn" onclick="inputNumber(4)">4</button>
-            <button class="number-btn" onclick="inputNumber(5)">5</button>
-            <button class="number-btn" onclick="inputNumber(6)">6</button>
-            <button class="number-btn" onclick="inputNumber(7)">7</button>
-            <button class="number-btn" onclick="inputNumber(8)">8</button>
-            <button class="number-btn" onclick="inputNumber(9)">9</button>
-            <button class="number-btn delete-btn" onclick="deleteNumber()">⌫</button>
-        </div>
-
-        <div class="actions">
-            <button class="action-btn" onclick="checkBoard()">Check</button>
-            <button class="action-btn" onclick="newGame()">New Game</button>
-        </div>
-
-        <div class="message" id="message"></div>
-
-        <div class="ornament bottom">
-            <span>✧</span><i></i><span>♡</span><i></i><span>✧</span>
-        </div>
-    </main>
-
-    <div class="modal" id="win-modal">
-        <div class="modal-box">
-            <h2>✦ You solved it ♡</h2>
-            <button onclick="closeModal()">New Game</button>
-        </div>
-    </div>
-        <script src="../script.js"></script>
-    <script>
         let solution = [];
         let puzzle = [];
         let board = [];
+
         let selectedRow = -1;
         let selectedCol = -1;
+
         let solved = false;
         let feedbackTimer = null;
 
+
+        /* =========================
+           THEME
+           ========================= */
+
         function setTheme(themeName) {
+
             if (themeName === "blue") {
-                document.body.removeAttribute("data-theme");
+
+                document.body.removeAttribute(
+                    "data-theme"
+                );
+
             } else {
-                document.body.setAttribute("data-theme", themeName);
+
+                document.body.setAttribute(
+                    "data-theme",
+                    themeName
+                );
+
             }
-            localStorage.setItem("arcade_theme", themeName);
+
+            localStorage.setItem(
+                "arcade_theme",
+                themeName
+            );
         }
+
 
         function loadSavedTheme() {
-            const savedTheme = localStorage.getItem("arcade_theme");
+
+            const savedTheme =
+                localStorage.getItem(
+                    "arcade_theme"
+                );
+
             if (savedTheme) {
+
                 setTheme(savedTheme);
+
             }
         }
+
+
+        /* =========================
+           NAVIGATION
+           ========================= */
 
         function goBack() {
+
             if (window.history.length > 1) {
+
                 window.history.back();
+
             } else {
-                window.location.href = '../index.html';
+
+                window.location.href =
+                    "../index.html";
+
             }
         }
 
+
+        /* =========================
+           SUDOKU GENERATION
+           ========================= */
+
         function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
+
+            for (
+                let i = array.length - 1;
+                i > 0;
+                i--
+            ) {
+
+                const j =
+                    Math.floor(
+                        Math.random() * (i + 1)
+                    );
+
+                [
+                    array[i],
+                    array[j]
+                ] = [
+                    array[j],
+                    array[i]
+                ];
             }
+
             return array;
         }
 
-        function isSafe(grid, row, col, num) {
-            for (let x = 0; x < 9; x++) {
-                if (grid[row][x] === num) return false;
-                if (grid[x][col] === num) return false;
-            }
-            const startRow = row - row % 3;
-            const startCol = col - col % 3;
-            for (let r = 0; r < 3; r++) {
-                for (let c = 0; c < 3; c++) {
-                    if (grid[startRow + r][startCol + c] === num) return false;
+
+        function isSafe(
+            grid,
+            row,
+            col,
+            num
+        ) {
+
+            for (
+                let x = 0;
+                x < 9;
+                x++
+            ) {
+
+                if (
+                    grid[row][x] === num
+                ) {
+                    return false;
+                }
+
+                if (
+                    grid[x][col] === num
+                ) {
+                    return false;
                 }
             }
+
+
+            const startRow =
+                row - row % 3;
+
+            const startCol =
+                col - col % 3;
+
+
+            for (
+                let r = 0;
+                r < 3;
+                r++
+            ) {
+
+                for (
+                    let c = 0;
+                    c < 3;
+                    c++
+                ) {
+
+                    if (
+                        grid[
+                            startRow + r
+                        ][
+                            startCol + c
+                        ] === num
+                    ) {
+
+                        return false;
+
+                    }
+                }
+            }
+
             return true;
         }
 
+
         function fillGrid(grid) {
-            for (let row = 0; row < 9; row++) {
-                for (let col = 0; col < 9; col++) {
-                    if (grid[row][col] === 0) {
-                        const numbers = shuffle([1,2,3,4,5,6,7,8,9]);
-                        for (const num of numbers) {
-                            if (isSafe(grid, row, col, num)) {
-                                grid[row][col] = num;
-                                if (fillGrid(grid)) return true;
-                                grid[row][col] = 0;
+
+            for (
+                let row = 0;
+                row < 9;
+                row++
+            ) {
+
+                for (
+                    let col = 0;
+                    col < 9;
+                    col++
+                ) {
+
+                    if (
+                        grid[row][col] === 0
+                    ) {
+
+                        const numbers =
+                            shuffle([
+                                1,2,3,
+                                4,5,6,
+                                7,8,9
+                            ]);
+
+
+                        for (
+                            const num of numbers
+                        ) {
+
+                            if (
+                                isSafe(
+                                    grid,
+                                    row,
+                                    col,
+                                    num
+                                )
+                            ) {
+
+                                grid[row][col] =
+                                    num;
+
+
+                                if (
+                                    fillGrid(grid)
+                                ) {
+
+                                    return true;
+
+                                }
+
+
+                                grid[row][col] =
+                                    0;
+
                             }
                         }
+
                         return false;
                     }
                 }
             }
+
             return true;
         }
 
+
         function generateSudoku() {
-            solution = Array.from({length:9}, () => Array(9).fill(0));
+
+            solution =
+                Array.from(
+                    { length:9 },
+                    () => Array(9).fill(0)
+                );
+
+
             fillGrid(solution);
-            puzzle = solution.map(row => [...row]);
+
+
+            puzzle =
+                solution.map(
+                    row => [...row]
+                );
+
+
             let removed = 0;
+
+
             while (removed < 40) {
-                const row = Math.floor(Math.random() * 9);
-                const col = Math.floor(Math.random() * 9);
-                if (puzzle[row][col] !== 0) {
+
+                const row =
+                    Math.floor(
+                        Math.random() * 9
+                    );
+
+                const col =
+                    Math.floor(
+                        Math.random() * 9
+                    );
+
+
+                if (
+                    puzzle[row][col] !== 0
+                ) {
+
                     puzzle[row][col] = 0;
+
                     removed++;
+
                 }
             }
-            board = puzzle.map(row => [...row]);
+
+
+            board =
+                puzzle.map(
+                    row => [...row]
+                );
+
+
             solved = false;
+
             selectedRow = -1;
             selectedCol = -1;
 
+
             if (feedbackTimer) {
-                clearTimeout(feedbackTimer);
+
+                clearTimeout(
+                    feedbackTimer
+                );
+
                 feedbackTimer = null;
             }
 
-            document.getElementById("message").textContent = "";
+
+            document
+                .getElementById("message")
+                .textContent = "";
+
+
             renderBoard();
         }
 
+
+        /* =========================
+           BOARD RENDERING
+           ========================= */
+
         function renderBoard() {
-            const container = document.getElementById("sudoku-board");
+
+            const container =
+                document.getElementById(
+                    "sudoku-board"
+                );
+
+
             container.innerHTML = "";
 
-            for (let row = 0; row < 9; row++) {
-                for (let col = 0; col < 9; col++) {
-                    const cell = document.createElement("div");
-                    const value = board[row][col];
 
-                    cell.className = "cell";
+            for (
+                let row = 0;
+                row < 9;
+                row++
+            ) {
 
-                    if (puzzle[row][col] !== 0) {
-                        cell.classList.add("given");
+                for (
+                    let col = 0;
+                    col < 9;
+                    col++
+                ) {
+
+                    const cell =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    const value =
+                        board[row][col];
+
+
+                    cell.className =
+                        "cell";
+
+
+                    if (
+                        puzzle[row][col] !== 0
+                    ) {
+
+                        cell.classList.add(
+                            "given"
+                        );
                     }
-                    if (row === selectedRow && col === selectedCol) {
-                        cell.classList.add("selected");
+
+
+                    if (
+                        row === selectedRow &&
+                        col === selectedCol
+                    ) {
+
+                        cell.classList.add(
+                            "selected"
+                        );
                     }
-                    if (selectedRow !== -1 && selectedCol !== -1 && value !== 0 && value === board[selectedRow][selectedCol]) {
-                        cell.classList.add("same-number");
+
+
+                    if (
+                        selectedRow !== -1 &&
+                        selectedCol !== -1 &&
+                        value !== 0 &&
+                        value ===
+                            board[
+                                selectedRow
+                            ][
+                                selectedCol
+                            ]
+                    ) {
+
+                        cell.classList.add(
+                            "same-number"
+                        );
                     }
+
+
                     if (value !== 0) {
-                        cell.textContent = value;
+
+                        cell.textContent =
+                            value;
                     }
 
-                    cell.addEventListener("click", function() {
-                        selectCell(row, col);
-                    });
 
-                    container.appendChild(cell);
+                    cell.addEventListener(
+                        "click",
+                        function() {
+
+                            selectCell(
+                                row,
+                                col
+                            );
+
+                        }
+                    );
+
+
+                    container.appendChild(
+                        cell
+                    );
                 }
             }
         }
 
-        function selectCell(row, col) {
-            if (puzzle[row][col] !== 0) return;
+
+        /* =========================
+           CELL SELECTION
+           ========================= */
+
+        function selectCell(
+            row,
+            col
+        ) {
+
+            if (
+                puzzle[row][col] !== 0
+            ) {
+
+                return;
+            }
+
+
             selectedRow = row;
             selectedCol = col;
+
+
             renderBoard();
         }
+
+
+        /* =========================
+           NUMBER INPUT
+           ========================= */
 
         function inputNumber(number) {
-            if (solved || selectedRow === -1 || selectedCol === -1) return;
-            if (puzzle[selectedRow][selectedCol] !== 0) return;
-            board[selectedRow][selectedCol] = number;
+
+            if (
+                solved ||
+                selectedRow === -1 ||
+                selectedCol === -1
+            ) {
+
+                return;
+            }
+
+
+            if (
+                puzzle[
+                    selectedRow
+                ][
+                    selectedCol
+                ] !== 0
+            ) {
+
+                return;
+            }
+
+
+            board[
+                selectedRow
+            ][
+                selectedCol
+            ] = number;
+
+
             renderBoard();
         }
+
 
         function deleteNumber() {
-            if (solved || selectedRow === -1 || selectedCol === -1) return;
-            if (puzzle[selectedRow][selectedCol] !== 0) return;
-            board[selectedRow][selectedCol] = 0;
+
+            if (
+                solved ||
+                selectedRow === -1 ||
+                selectedCol === -1
+            ) {
+
+                return;
+            }
+
+
+            if (
+                puzzle[
+                    selectedRow
+                ][
+                    selectedCol
+                ] !== 0
+            ) {
+
+                return;
+            }
+
+
+            board[
+                selectedRow
+            ][
+                selectedCol
+            ] = 0;
+
+
             renderBoard();
         }
 
+
+        /* =========================
+           CHECK BOARD
+           ========================= */
+
         function checkBoard() {
-            if (solved) return;
+
+            if (solved) {
+                return;
+            }
+
 
             let complete = true;
             let incorrect = false;
 
-            for (let row = 0; row < 9; row++) {
-                for (let col = 0; col < 9; col++) {
-                    const value = board[row][col];
-                    if (value === 0) complete = false;
-                    if (value !== 0 && value !== solution[row][col]) incorrect = true;
+
+            for (
+                let row = 0;
+                row < 9;
+                row++
+            ) {
+
+                for (
+                    let col = 0;
+                    col < 9;
+                    col++
+                ) {
+
+                    const value =
+                        board[row][col];
+
+
+                    if (value === 0) {
+
+                        complete = false;
+
+                    }
+
+
+                    if (
+                        value !== 0 &&
+                        value !==
+                            solution[row][col]
+                    ) {
+
+                        incorrect = true;
+
+                    }
                 }
             }
 
+
             renderBoard();
 
-            const cells = document.querySelectorAll(".cell");
-            for (let row = 0; row < 9; row++) {
-                for (let col = 0; col < 9; col++) {
-                    const index = row * 9 + col;
-                    const cell = cells[index];
 
-                    if (puzzle[row][col] === 0 && board[row][col] !== 0) {
-                        if (board[row][col] === solution[row][col]) {
-                            cell.classList.add("correct");
+            const cells =
+                document.querySelectorAll(
+                    ".cell"
+                );
+
+
+            for (
+                let row = 0;
+                row < 9;
+                row++
+            ) {
+
+                for (
+                    let col = 0;
+                    col < 9;
+                    col++
+                ) {
+
+                    const index =
+                        row * 9 + col;
+
+
+                    const cell =
+                        cells[index];
+
+
+                    if (
+                        puzzle[row][col] === 0 &&
+                        board[row][col] !== 0
+                    ) {
+
+                        if (
+                            board[row][col] ===
+                            solution[row][col]
+                        ) {
+
+                            cell.classList.add(
+                                "correct"
+                            );
+
                         } else {
-                            cell.classList.add("wrong");
+
+                            cell.classList.add(
+                                "wrong"
+                            );
                         }
                     }
                 }
             }
 
-            feedbackTimer = setTimeout(function() {
-                const currentCells = document.querySelectorAll(".cell");
-                currentCells.forEach(function(cell) {
-                    cell.classList.remove("correct");
-                    cell.classList.remove("wrong");
-                });
-                feedbackTimer = null;
-            }, 2300);
 
-            if (complete && !incorrect) {
+            feedbackTimer =
+                setTimeout(
+                    function() {
+
+                        const currentCells =
+                            document.querySelectorAll(
+                                ".cell"
+                            );
+
+
+                        currentCells.forEach(
+                            function(cell) {
+
+                                cell.classList.remove(
+                                    "correct"
+                                );
+
+                                cell.classList.remove(
+                                    "wrong"
+                                );
+
+                            }
+                        );
+
+
+                        feedbackTimer = null;
+
+                    },
+                    2300
+                );
+
+
+            if (
+                complete &&
+                !incorrect
+            ) {
+
                 solved = true;
-                if (typeof addCoins === "function") addCoins(50);
-                document.getElementById("win-modal").classList.add("show");
+
+
+                if (
+                    typeof addCoins ===
+                    "function"
+                ) {
+
+                    addCoins(50);
+
+                }
+
+
+                document
+                    .getElementById(
+                        "win-modal"
+                    )
+                    .classList.add(
+                        "show"
+                    );
+
+
                 return;
             }
 
-            document.getElementById("message").textContent = "";
+
+            document
+                .getElementById(
+                    "message"
+                )
+                .textContent = "";
         }
+
+
+        /* =========================
+           NEW GAME
+           ========================= */
 
         function newGame() {
+
             generateSudoku();
+
         }
 
+
         function closeModal() {
-            document.getElementById("win-modal").classList.remove("show");
+
+            document
+                .getElementById(
+                    "win-modal"
+                )
+                .classList.remove(
+                    "show"
+                );
+
+
             newGame();
         }
 
-        function moveSelection(rowDirection, colDirection) {
-            if (selectedRow === -1 || selectedCol === -1) return;
+
+        /* =========================
+           KEYBOARD / ARROW CONTROLS
+           ========================= */
+
+        function moveSelection(
+            rowDirection,
+            colDirection
+        ) {
+
+            if (
+                selectedRow === -1 ||
+                selectedCol === -1
+            ) {
+
+                return;
+            }
+
+
             let row = selectedRow;
             let col = selectedCol;
 
-            for (let i = 0; i < 81; i++) {
+
+            for (
+                let i = 0;
+                i < 81;
+                i++
+            ) {
+
                 row += rowDirection;
                 col += colDirection;
-                if (row < 0) row = 8;
-                if (row > 8) row = 0;
-                if (col < 0) col = 8;
-                if (col > 8) col = 0;
 
-                if (puzzle[row][col] === 0) {
-                    selectCell(row, col);
+
+                if (row < 0) {
+                    row = 8;
+                }
+
+                if (row > 8) {
+                    row = 0;
+                }
+
+                if (col < 0) {
+                    col = 8;
+                }
+
+                if (col > 8) {
+                    col = 0;
+                }
+
+
+                if (
+                    puzzle[row][col] === 0
+                ) {
+
+                    selectCell(
+                        row,
+                        col
+                    );
+
                     return;
                 }
             }
         }
 
-        document.addEventListener("keydown", function(event) {
-            if (event.key >= "1" && event.key <= "9") {
-                inputNumber(Number(event.key));
-                return;
-            }
-            if (event.key === "Backspace" || event.key === "Delete") {
-                deleteNumber();
-                return;
-            }
-            if (event.key === "ArrowUp") { event.preventDefault(); moveSelection(-1, 0); }
-            if (event.key === "ArrowDown") { event.preventDefault(); moveSelection(1, 0); }
-            if (event.key === "ArrowLeft") { event.preventDefault(); moveSelection(0, -1); }
-            if (event.key === "ArrowRight") { event.preventDefault(); moveSelection(0, 1); }
-        });
 
-        document.addEventListener("DOMContentLoaded", function() {
-            loadSavedTheme();
-            generateSudoku();
-            if (typeof updateCoinDisplays === "function") updateCoinDisplays();
-        });
+        document.addEventListener(
+            "keydown",
+            function(event) {
 
-        window.addEventListener("pageshow", function() {
-            loadSavedTheme();
-            if (typeof updateCoinDisplays === "function") updateCoinDisplays();
-        });
+                if (
+                    event.key >= "1" &&
+                    event.key <= "9"
+                ) {
+
+                    inputNumber(
+                        Number(event.key)
+                    );
+
+                    return;
+                }
+
+
+                if (
+                    event.key ===
+                        "Backspace" ||
+                    event.key ===
+                        "Delete"
+                ) {
+
+                    deleteNumber();
+
+                    return;
+                }
+
+
+                if (
+                    event.key ===
+                    "ArrowUp"
+                ) {
+
+                    event.preventDefault();
+
+                    moveSelection(
+                        -1,
+                        0
+                    );
+                }
+
+
+                if (
+                    event.key ===
+                    "ArrowDown"
+                ) {
+
+                    event.preventDefault();
+
+                    moveSelection(
+                        1,
+                        0
+                    );
+                }
+
+
+                if (
+                    event.key ===
+                    "ArrowLeft"
+                ) {
+
+                    event.preventDefault();
+
+                    moveSelection(
+                        0,
+                        -1
+                    );
+                }
+
+
+                if (
+                    event.key ===
+                    "ArrowRight"
+                ) {
+
+                    event.preventDefault();
+
+                    moveSelection(
+                        0,
+                        1
+                    );
+                }
+            }
+        );
+
+
+        /* =========================
+           STARTUP
+           ========================= */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
+
+                loadSavedTheme();
+
+                generateSudoku();
+
+
+                if (
+                    typeof updateCoinDisplays ===
+                    "function"
+                ) {
+
+                    updateCoinDisplays();
+
+                }
+            }
+        );
+
+
+        window.addEventListener(
+            "pageshow",
+            function() {
+
+                loadSavedTheme();
+
+
+                if (
+                    typeof updateCoinDisplays ===
+                    "function"
+                ) {
+
+                    updateCoinDisplays();
+
+                }
+            }
+        );
+
     </script>
+
 </body>
-</html>
+                    </html>
