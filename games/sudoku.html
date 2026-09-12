@@ -2,16 +2,84 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sudoku</title>
     <style>
+        :root {
+            --bg-base: #faf7f5;
+            --text-main: #4a3e3d;
+            --text-heading: #4a3e3d;
+            --accent-border: #d1c4c0;
+            --accent-soft: #f4ece9;
+            --grid-line: #8c7b7d;
+            --cell-bg: #ffffff;
+            --given-bg: #faf7f5;
+            --given-color: #8c7b7d;
+            --correct-bg: #e2efe0;
+            --wrong-bg: #f9e2e2;
+        }
+
+        body[data-theme="pink"] {
+            --bg-base: #faf2f5;
+            --text-main: #603f4c;
+            --text-heading: #7a4659;
+            --accent-border: #bd8297;
+            --accent-soft: #f9e9f0;
+            --grid-line: #b87992;
+            --given-bg: #faf2f5;
+            --given-color: #b87992;
+            --correct-bg: #e2f8e5;
+            --wrong-bg: #f8e2e2;
+        }
+
+        body[data-theme="green"] {
+            --bg-base: #f3f7f2;
+            --text-main: #3f6043;
+            --text-heading: #467a4c;
+            --accent-border: #82bd8b;
+            --accent-soft: #e9f9eb;
+            --grid-line: #79b882;
+            --given-bg: #f3f7f2;
+            --given-color: #79b882;
+            --correct-bg: #e2f8e5;
+            --wrong-bg: #f8e2e2;
+        }
+
+        body[data-theme="lavender"] {
+            --bg-base: #f5f2fa;
+            --text-main: #4a3f60;
+            --text-heading: #59467a;
+            --accent-border: #9882bd;
+            --accent-soft: #f0e9f9;
+            --grid-line: #9379b8;
+            --given-bg: #f5f2fa;
+            --given-color: #9379b8;
+            --correct-bg: #e5e2f8;
+            --wrong-bg: #f8e2e2;
+        }
+
+        body[data-theme="yellow"] {
+            --bg-base: #faf8f2;
+            --text-main: #60573f;
+            --text-heading: #7a6e46;
+            --accent-border: #bdb182;
+            --accent-soft: #f9f5e9;
+            --grid-line: #b8aa79;
+            --given-bg: #faf8f2;
+            --given-color: #b8aa79;
+            --correct-bg: #eef8e2;
+            --wrong-bg: #f8e2e2;
+        }
+
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
         body {
             margin: 0;
             min-height: 100vh;
-            background: #faf7f5;
-            color: #4a3e3d;
+            background: var(--bg-base);
+            color: var(--text-main);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
         header {
@@ -20,49 +88,61 @@
             align-items: center;
             padding: 18px 30px;
             background: #ffffff;
-            border-bottom: 1px solid #eee8e5;
+            border-bottom: 1px solid var(--accent-border);
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
-        .nav-link { color: #7d6b6d; text-decoration: none; font-size: 14px; font-weight: 500; }
-        .nav-link:hover { color: #4a3e3d; }
-        .coin-display { background: #f4ece9; border: 1px solid #e2d7d3; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; color: #635052; }
+        .nav-link { color: var(--given-color); text-decoration: none; font-size: 14px; font-weight: 500; cursor: pointer; }
+        .nav-link:hover { color: var(--text-main); }
+        
+        .coin-display { 
+            background: var(--accent-soft); 
+            border: 1px solid var(--accent-border); 
+            padding: 6px 14px; 
+            border-radius: 20px; 
+            font-size: 13px; 
+            font-weight: 600; 
+            color: var(--text-heading); 
+        }
 
         main {
-            padding: 40px 20px;
+            padding: 30px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        h1 { color: #4a3e3d; font-weight: 500; font-size: 24px; margin: 0 0 24px; }
+        h1 { color: var(--text-heading); font-weight: 500; font-size: 24px; margin: 0 0 20px; }
 
         #sudoku-board {
             display: grid;
             grid-template-columns: repeat(9, 1fr);
             width: 100%;
-            max-width: 360px;
+            max-width: 380px;
             aspect-ratio: 1;
-            background: #8c7b7d;
-            border: 2px solid #8c7b7d;
-            border-radius: 6px;
+            background: var(--grid-line);
+            border: 3px solid var(--grid-line);
+            border-radius: 8px;
             overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
         .sudoku-cell {
-            background: #ffffff;
-            border: 1px solid #eee8e5;
+            background: var(--cell-bg);
+            border: 1px solid #e0d5d1;
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
         }
 
-        .sudoku-cell:nth-child(3n) { border-right: 2px solid #8c7b7d; }
-        .sudoku-cell:nth-child(9n) { border-right: none; }
+        /* Thick borders for 3x3 subgrids */
+        .sudoku-cell:nth-child(3n) { border-right: 2px solid var(--grid-line); }
+        .sudoku-cell:nth-child(9n) { border-right: 1px solid #e0d5d1; }
         .sudoku-cell:nth-child(n+19):nth-child(-n+27),
-        .sudoku-cell:nth-child(n+46):nth-child(-n+54) { border-bottom: 2px solid #8c7b7d; }
+        .sudoku-cell:nth-child(n+46):nth-child(-n+54) { border-bottom: 2px solid var(--grid-line); }
 
         .sudoku-cell input {
             width: 100%;
@@ -71,37 +151,38 @@
             outline: 0;
             background: transparent;
             text-align: center;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 600;
-            color: #4a3e3d;
+            color: var(--text-main);
         }
 
-        .sudoku-cell input:focus { background: #f4ece9; }
-        .sudoku-cell.given input { color: #8c7b7d; background: #faf7f5; font-weight: 500; }
-        .sudoku-cell.correct { background: #e2efe0 !important; }
-        .sudoku-cell.wrong { background: #f9e2e2 !important; }
+        .sudoku-cell input:focus { background: var(--accent-soft); }
+        .sudoku-cell.given input { color: var(--given-color); background: var(--given-bg); font-weight: 500; }
+        .sudoku-cell.correct { background: var(--correct-bg) !important; }
+        .sudoku-cell.wrong { background: var(--wrong-bg) !important; }
 
-        .controls { display: flex; gap: 12px; margin-top: 24px; }
+        .controls { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; justify-content: center; }
 
         .btn {
-            padding: 10px 20px;
-            border: 1px solid #d1c4c0;
+            padding: 10px 22px;
+            border: 1px solid var(--accent-border);
             border-radius: 6px;
             background: #ffffff;
-            color: #4a3e3d;
+            color: var(--text-heading);
             font-size: 13px;
             font-weight: 500;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
         }
 
-        .btn:hover { background: #faf7f5; }
+        .btn:hover { background: var(--accent-soft); transform: translateY(-1px); }
 
         .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
             background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(3px);
             z-index: 200;
             align-items: center;
             justify-content: center;
@@ -109,18 +190,19 @@
 
         .modal-card {
             background: #ffffff;
-            border-radius: 8px;
+            border-radius: 10px;
             padding: 30px;
             max-width: 320px;
             width: 90%;
             text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
     </style>
 </head>
 <body>
 
     <header>
-        <a href="../index.html" class="nav-link">← Games</a>
+        <a onclick="goBack()" class="nav-link">← Games</a>
         <div class="coin-display"><span class="coin-count">0</span> Coins</div>
     </header>
 
@@ -137,14 +219,33 @@
 
     <div id="reward-modal" class="modal-overlay">
         <div class="modal-card">
-            <h2 style="font-size: 20px; margin: 0 0 10px;">Complete</h2>
-            <p style="color: #8c7b7d; font-size: 14px; margin: 0 0 20px;">You earned 50 Coins.</p>
+            <h2 style="font-size: 20px; color: var(--text-heading); margin: 0 0 10px;">Complete!</h2>
+            <p style="color: var(--text-main); font-size: 14px; opacity: 0.8; margin: 0 0 20px;">You solved the puzzle and earned 50 Coins.</p>
             <button class="btn" onclick="closeModalAndReset()" style="width: 100%;">Next Puzzle</button>
         </div>
     </div>
 
     <script src="../script.js"></script>
     <script>
+        // Theme Loader Integration matching your Wordle structure
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem("arcade_theme");
+            if (["pink", "green", "lavender", "yellow"].includes(savedTheme)) {
+                document.body.setAttribute("data-theme", savedTheme);
+            } else {
+                document.body.removeAttribute("data-theme");
+            }
+        }
+        loadSavedTheme();
+
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = '../index.html';
+            }
+        }
+
         let solution = [];
         let boardState = [];
 
@@ -182,7 +283,7 @@
             solution = board.map(row => [...row]);
 
             let puzzle = board.map(row => [...row]);
-            let removed = 35;
+            let removed = 35; // Difficulty level (35 missing numbers)
             while (removed > 0) {
                 let r = Math.floor(Math.random() * 9);
                 let c = Math.floor(Math.random() * 9);
@@ -206,6 +307,7 @@
 
                     const input = document.createElement('input');
                     input.type = 'text';
+                    input.inputMode = 'numeric';
                     input.maxLength = 1;
                     input.dataset.row = r;
                     input.dataset.col = c;
@@ -217,7 +319,22 @@
                     } else {
                         input.addEventListener('input', (e) => {
                             e.target.value = e.target.value.replace(/[^1-9]/g, '');
-                            cell.parentElement.classList.remove('correct', 'wrong');
+                            cell.classList.remove('correct', 'wrong');
+                        });
+                        
+                        // Arrow key navigation support for ease of use
+                        input.addEventListener('keydown', (e) => {
+                            let targetRow = r;
+                            let targetCol = c;
+                            if (e.key === 'ArrowUp') targetRow = Math.max(0, r - 1);
+                            if (e.key === 'ArrowDown') targetRow = Math.min(8, r + 1);
+                            if (e.key === 'ArrowLeft') targetCol = Math.max(0, c - 1);
+                            if (e.key === 'ArrowRight') targetCol = Math.min(8, c + 1);
+                            
+                            if (targetRow !== r || targetCol !== c) {
+                                const nextInput = document.querySelector(`input[data-row="${targetRow}"][data-col="${targetCol}"]`);
+                                if (nextInput) nextInput.focus();
+                            }
                         });
                     }
 
@@ -257,7 +374,7 @@
             });
 
             if (isCompleteAndCorrect) {
-                addCoins(50);
+                if (typeof addCoins === 'function') addCoins(50);
                 document.getElementById('reward-modal').style.display = 'flex';
             }
         }
@@ -267,7 +384,13 @@
             generateNewGame();
         }
 
-        generateNewGame();
+        document.addEventListener("DOMContentLoaded", function() {
+            loadSavedTheme();
+            if (typeof updateCoinDisplays === "function") {
+                updateCoinDisplays();
+            }
+            generateNewGame();
+        });
     </script>
 </body>
 </html>
