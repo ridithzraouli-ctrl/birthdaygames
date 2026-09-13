@@ -399,7 +399,7 @@
             align-items: center;
             justify-content: center;
             color: var(--ornament-color);
-            font-size: 29px;
+            font-size: 20px;
             animation: victoryFloat 2s ease-in-out infinite;
         }
 
@@ -598,7 +598,7 @@
                 <span>✧</span>
             </div>
 
-            <div class="victory-symbol" id="modal-symbol">♥ ✨</div>
+            <div class="victory-symbol" id="modal-symbol">♡ ✨</div>
 
             <h2 id="modal-title">Victory!</h2>
             <p id="modal-desc">You guessed the word and earned 30 Coins.</p>
@@ -838,7 +838,7 @@
             card.classList.remove("game-over");
             title.innerText = "Victory!";
             desc.innerText = message;
-            symbol.innerText = "♥ ✨";
+            symbol.innerText = "♡ ✨";
             amount.innerText = "+30 Coins";
             modal.style.display = "flex";
         }
@@ -854,7 +854,7 @@
             card.classList.add("game-over");
             title.innerText = "Game Over";
             desc.innerText = message;
-            symbol.innerText = "💔";
+            symbol.innerText = "♡ ̷";
             amount.innerText = "Better luck next time";
             modal.style.display = "flex";
         }
