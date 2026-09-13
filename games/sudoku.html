@@ -17,14 +17,12 @@
             --accent-badge:#dfe8f8;
             --ornament-color:#799eb8;
 
-            --cell-bg:#f8fbfd;
+            --cell-bg:#fafdff;
             --cell-dark:#e7f0f5;
             --cell-selected:#d5e9f3;
             --cell-number:#46637a;
             --cell-error:#f2d7dd;
             --cell-correct:#dceede;
-
-            --pixel-shadow:#b8ccd7;
         }
 
         body[data-theme="pink"] {
@@ -38,14 +36,12 @@
             --accent-badge:#f8dfe8;
             --ornament-color:#b87992;
 
-            --cell-bg:#fff9fb;
+            --cell-bg:#fffafd;
             --cell-dark:#f5e4ea;
             --cell-selected:#f3d5e1;
             --cell-number:#7a4659;
             --cell-error:#f2d1da;
             --cell-correct:#dceedd;
-
-            --pixel-shadow:#d8b8c4;
         }
 
         body[data-theme="green"] {
@@ -59,14 +55,12 @@
             --accent-badge:#dff8e2;
             --ornament-color:#79b882;
 
-            --cell-bg:#f8fcf8;
-            --cell-dark:#e4f0e4;
-            --cell-selected:#d4ead5;
+            --cell-bg:#fbfffb;
+            --cell-dark:#e4f1e4;
+            --cell-selected:#d4ead4;
             --cell-number:#467a4c;
             --cell-error:#f2d1d1;
-            --cell-correct:#d5ecd8;
-
-            --pixel-shadow:#b7d0ba;
+            --cell-correct:#dcefdc;
         }
 
         body[data-theme="lavender"] {
@@ -80,14 +74,12 @@
             --accent-badge:#e9dff8;
             --ornament-color:#9379b8;
 
-            --cell-bg:#fbf9ff;
-            --cell-dark:#eee8f7;
-            --cell-selected:#e6d9f3;
+            --cell-bg:#fdfbff;
+            --cell-dark:#ece5f5;
+            --cell-selected:#e7daf4;
             --cell-number:#59467a;
             --cell-error:#f0d5df;
             --cell-correct:#dcefdc;
-
-            --pixel-shadow:#c4b8d6;
         }
 
         body[data-theme="yellow"] {
@@ -101,14 +93,12 @@
             --accent-badge:#f8f3df;
             --ornament-color:#b8aa79;
 
-            --cell-bg:#fffdf7;
-            --cell-dark:#f3eedb;
-            --cell-selected:#eee4c6;
+            --cell-bg:#fffef9;
+            --cell-dark:#f1ecd9;
+            --cell-selected:#eee5c7;
             --cell-number:#7a6e46;
             --cell-error:#f0d7d7;
             --cell-correct:#dfedd8;
-
-            --pixel-shadow:#d1c7a5;
         }
 
         * {
@@ -127,31 +117,14 @@
 
         body {
             min-height:100vh;
-
             background:
-                radial-gradient(
-                    circle at 12% 12%,
-                    var(--bg-grad-1) 0,
-                    transparent 25%
-                ),
-                radial-gradient(
-                    circle at 88% 82%,
-                    var(--bg-grad-2) 0,
-                    transparent 27%
-                ),
+                radial-gradient(circle at 12% 12%,var(--bg-grad-1) 0,transparent 25%),
+                radial-gradient(circle at 88% 82%,var(--bg-grad-2) 0,transparent 27%),
                 var(--bg-base);
-
             color:var(--text-main);
             font-family:Georgia,"Times New Roman",serif;
-
-            transition:
-                background .3s ease,
-                color .3s ease;
+            transition:background .3s ease,color .3s ease;
         }
-
-        /* =========================
-           BACKGROUND DECORATIONS
-           ========================= */
 
         .decorations {
             position:fixed;
@@ -206,20 +179,14 @@
             font-size:17px;
         }
 
-        /* =========================
-           HEADER
-           ========================= */
-
         header {
             display:flex;
             align-items:center;
             justify-content:space-between;
             width:100%;
             padding:18px 30px;
-
             background:#ffffff;
             border-bottom:1px solid var(--accent-border);
-
             position:sticky;
             top:0;
             z-index:100;
@@ -252,7 +219,6 @@
             align-items:center;
             gap:7px;
             padding:6px 10px;
-
             background:rgba(255,255,255,.6);
             border:1px solid var(--bg-grad-2);
             border-radius:100px;
@@ -272,37 +238,17 @@
             transform:scale(1.25);
         }
 
-        .dot-blue {
-            background:#d3e2ea;
-        }
-
-        .dot-pink {
-            background:#ead3dc;
-        }
-
-        .dot-green {
-            background:#d3ead3;
-        }
-
-        .dot-lavender {
-            background:#dad3ea;
-        }
-
-        .dot-yellow {
-            background:#eae3c5;
-        }
-
-        /* =========================
-           MAIN
-           ========================= */
+        .dot-blue { background:#d3e2ea; }
+        .dot-pink { background:#ead3dc; }
+        .dot-green { background:#d3ead3; }
+        .dot-lavender { background:#dad3ea; }
+        .dot-yellow { background:#eae3c5; }
 
         main {
             width:100%;
             max-width:520px;
             margin:0 auto;
-
             padding:30px 18px 45px;
-
             display:flex;
             flex-direction:column;
             align-items:center;
@@ -310,7 +256,6 @@
 
         h1 {
             margin:0 0 22px;
-
             color:var(--text-heading);
             font-size:28px;
             font-weight:normal;
@@ -321,11 +266,9 @@
             display:flex;
             align-items:center;
             justify-content:center;
-
             gap:11px;
             height:22px;
             margin-bottom:24px;
-
             color:var(--ornament-color);
         }
 
@@ -345,100 +288,58 @@
             opacity:.4;
         }
 
-        /* =========================
-           PIXEL SUDOKU BOARD
-           ========================= */
+        /*
+         * SUDOKU GAME AREA
+         */
 
         .board-wrap {
             width:100%;
-
-            padding:10px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(255,255,255,.72),
-                    rgba(255,255,255,.42)
-                );
-
-            border:1px solid var(--bg-grad-2);
-
-            /*
-             * Less rounded than the website elements on purpose.
-             * Makes the actual game feel pixel/game-like.
-             */
-            border-radius:8px;
-
+            padding:9px;
+            background:rgba(255,255,255,.52);
+            border:1px solid var(--accent-border);
+            border-radius:5px;
             box-shadow:
-                0 6px 18px rgba(0,0,0,.045),
-                0 3px 0 var(--pixel-shadow);
-
-            /*
-             * Keeps the board square while letting it fill
-             * the available vertical space.
-             */
-            max-width:490px;
+                4px 4px 0 rgba(0,0,0,.035),
+                0 8px 22px rgba(0,0,0,.045);
         }
 
         #sudoku-board {
             width:100%;
             aspect-ratio:1;
-
             display:grid;
-
             grid-template-columns:repeat(9,1fr);
             grid-template-rows:repeat(9,1fr);
-
             overflow:hidden;
-
-            /*
-             * Pixel-game border.
-             */
             border:3px solid var(--accent-border);
-            border-radius:3px;
-
+            border-radius:2px;
             background:var(--cell-bg);
-
-            box-shadow:
-                inset 0 0 0 1px var(--pixel-shadow);
-
-            /*
-             * Keeps everything visually sharp.
-             */
-            image-rendering:pixelated;
         }
 
         .cell {
             position:relative;
-
             display:flex;
             align-items:center;
             justify-content:center;
-
             min-width:0;
             min-height:0;
 
             background:
-                repeating-linear-gradient(
-                    0deg,
-                    var(--cell-bg) 0px,
-                    var(--cell-bg) 5px,
-                    var(--cell-dark) 5px,
-                    var(--cell-dark) 6px
-                );
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,.22) 25%,
+                    transparent 25%
+                ) 0 0 / 4px 4px,
+                var(--cell-bg);
 
             color:var(--cell-number);
 
-            /*
-             * Slightly chunkier than the original.
-             */
-            font-size:clamp(19px,5.3vw,27px);
-
             font-family:
                 "Courier New",
+                Courier,
                 monospace;
 
-            font-weight:bold;
+            font-size:clamp(18px,5vw,25px);
+            font-weight:500;
 
             cursor:pointer;
             user-select:none;
@@ -447,21 +348,9 @@
             border-bottom:1px solid var(--bg-grad-2);
 
             transition:
-                background-color .15s ease,
+                background-color .12s ease,
                 transform .08s ease;
-
-            image-rendering:pixelated;
         }
-
-        .cell:hover:not(.given) {
-            background:var(--accent-soft);
-        }
-
-        .cell:active:not(.given) {
-            transform:scale(.96);
-        }
-
-        /* Normal grid edges */
 
         .cell:nth-child(9n) {
             border-right:none;
@@ -471,42 +360,40 @@
             border-bottom:none;
         }
 
-        /* Strong 3×3 pixel boundaries */
+        /*
+         * Thick 3 × 3 Sudoku boundaries
+         */
 
         .cell:nth-child(3n) {
-            border-right:3px solid var(--accent-border);
+            border-right:2px solid var(--accent-border);
+        }
+
+        .cell:nth-child(9n) {
+            border-right:none;
         }
 
         .cell:nth-child(n+19):nth-child(-n+27),
         .cell:nth-child(n+46):nth-child(-n+54) {
-            border-bottom:3px solid var(--accent-border);
+            border-bottom:2px solid var(--accent-border);
         }
-
-        /* =========================
-           CELL STATES
-           ========================= */
 
         .cell.given {
             font-weight:bold;
             color:var(--text-heading);
-
-            background:
-                repeating-linear-gradient(
-                    0deg,
-                    var(--cell-dark) 0px,
-                    var(--cell-dark) 5px,
-                    var(--cell-bg) 5px,
-                    var(--cell-bg) 6px
-                );
-
             cursor:default;
         }
 
         .cell.selected {
-            background:var(--cell-selected);
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,.18) 25%,
+                    transparent 25%
+                ) 0 0 / 4px 4px,
+                var(--cell-selected);
 
             box-shadow:
-                inset 0 0 0 3px var(--accent-border);
+                inset 0 0 0 2px var(--accent-border);
         }
 
         .cell.same-number {
@@ -519,77 +406,39 @@
 
         .cell.correct {
             background:var(--cell-correct);
-
-            animation:
-                pixelCorrect .18s steps(2);
+            animation:cellPop .18s ease;
         }
 
         .cell.wrong {
             background:var(--cell-error);
-
-            animation:
-                pixelWrong .18s steps(2);
+            animation:cellShake .22s ease;
         }
 
-        @keyframes pixelCorrect {
-            0% {
-                transform:scale(1);
-            }
-
-            50% {
-                transform:scale(.92);
-            }
-
-            100% {
-                transform:scale(1);
-            }
-        }
-
-        @keyframes pixelWrong {
-            0% {
-                transform:translateX(0);
-            }
-
-            25% {
-                transform:translateX(-2px);
-            }
-
-            50% {
-                transform:translateX(2px);
-            }
-
-            75% {
-                transform:translateX(-1px);
-            }
-
-            100% {
-                transform:translateX(0);
-            }
-        }
-
-        /* =========================
-           NUMBER KEYBOARD
-           ========================= */
+        /*
+         * NUMBER PAD
+         */
 
         .keyboard {
             width:100%;
             max-width:390px;
-
             margin-top:18px;
-
             display:grid;
             grid-template-columns:repeat(3,1fr);
-
-            gap:9px;
+            gap:8px;
         }
 
         .number-btn {
             height:52px;
-
             border:1px solid var(--accent-border);
-            border-radius:8px;
+            border-radius:4px;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,.45) 25%,
+                    transparent 25%
+                ) 0 0 / 6px 6px,
+                rgba(255,255,255,.82);
 
-            background:rgba(255,255,255,.82);
             color:var(--text-heading);
 
             font-family:
@@ -598,15 +447,15 @@
                 serif;
 
             font-size:20px;
-
             cursor:pointer;
 
             box-shadow:
-                0 2px 0 var(--pixel-shadow);
+                3px 3px 0 rgba(0,0,0,.035);
 
             transition:
-                transform .12s ease,
-                background .12s ease;
+                transform .1s ease,
+                background .1s ease,
+                box-shadow .1s ease;
         }
 
         .number-btn:hover {
@@ -614,8 +463,8 @@
         }
 
         .number-btn:active {
-            transform:translateY(2px);
-            box-shadow:none;
+            transform:translate(2px,2px);
+            box-shadow:1px 1px 0 rgba(0,0,0,.035);
         }
 
         .delete-btn {
@@ -624,15 +473,14 @@
             font-size:18px;
         }
 
-        /* =========================
-           ACTION BUTTONS
-           ========================= */
+        /*
+         * ACTIONS
+         */
 
         .actions {
             display:flex;
             justify-content:center;
             gap:10px;
-
             margin-top:16px;
             width:100%;
         }
@@ -648,13 +496,16 @@
                 serif;
 
             font-size:13px;
-
             padding:10px 17px;
-            border-radius:100px;
+            border-radius:4px;
 
             cursor:pointer;
 
-            transition:.2s ease;
+            box-shadow:
+                2px 2px 0 rgba(0,0,0,.035);
+
+            transition:
+                .15s ease;
         }
 
         .action-btn:hover {
@@ -662,35 +513,31 @@
             transform:translateY(-1px);
         }
 
+        .action-btn:active {
+            transform:translate(1px,1px);
+        }
+
         .message {
             min-height:20px;
-
             margin-top:13px;
-
             color:var(--text-heading);
-
             font-size:14px;
             text-align:center;
         }
 
-        /* =========================
-           MODAL
-           ========================= */
+        /*
+         * WIN MODAL
+         */
 
         .modal {
             position:fixed;
             inset:0;
-
             display:none;
             align-items:center;
             justify-content:center;
-
             padding:20px;
-
             background:rgba(45,55,65,.28);
-
             backdrop-filter:blur(5px);
-
             z-index:500;
         }
 
@@ -700,32 +547,28 @@
 
         .modal-box {
             width:min(360px,100%);
-
             padding:28px 24px;
 
             background:rgba(255,255,255,.96);
-
             border:1px solid var(--accent-border);
-            border-radius:15px;
+            border-radius:6px;
 
             text-align:center;
 
             box-shadow:
+                5px 5px 0 rgba(0,0,0,.045),
                 0 15px 45px rgba(0,0,0,.12);
         }
 
         .modal-box h2 {
             margin:0 0 18px;
-
             color:var(--text-heading);
-
             font-weight:normal;
             font-size:23px;
         }
 
         .modal-box button {
             border:1px solid var(--accent-border);
-
             background:var(--accent-soft);
             color:var(--text-heading);
 
@@ -735,15 +578,9 @@
                 serif;
 
             padding:10px 20px;
-
-            border-radius:100px;
-
+            border-radius:4px;
             cursor:pointer;
         }
-
-        /* =========================
-           FLOATING DECORATIONS
-           ========================= */
 
         @keyframes float {
             0%,100% {
@@ -755,47 +592,42 @@
             }
         }
 
-        /* =========================
-           MOBILE
-           ========================= */
+        @keyframes cellPop {
+            0% {
+                transform:scale(.88);
+            }
 
-        @media (max-width:600px) {
+            100% {
+                transform:scale(1);
+            }
+        }
 
+        @keyframes cellShake {
+            0%,100% {
+                transform:translateX(0);
+            }
+
+            25% {
+                transform:translateX(-3px);
+            }
+
+            75% {
+                transform:translateX(3px);
+            }
+        }
+
+        @media (max-width:520px) {
             header {
-                padding:15px 14px;
+                padding:18px 16px;
             }
 
             main {
-                padding:
-                    26px
-                    12px
-                    40px;
+                padding-left:12px;
+                padding-right:12px;
             }
 
             .board-wrap {
-                padding:8px;
-            }
-
-            #sudoku-board {
-                border-width:3px;
-            }
-
-            .cell {
-                font-size:
-                    clamp(
-                        17px,
-                        5.8vw,
-                        24px
-                    );
-            }
-
-            .cell:nth-child(3n) {
-                border-right-width:2px;
-            }
-
-            .cell:nth-child(n+19):nth-child(-n+27),
-            .cell:nth-child(n+46):nth-child(-n+54) {
-                border-bottom-width:2px;
+                padding:7px;
             }
 
             .keyboard {
@@ -803,62 +635,7 @@
             }
 
             .number-btn {
-                height:50px;
-            }
-        }
-
-        @media (max-width:430px) {
-
-            header {
-                padding:12px 8px;
-            }
-
-            .nav-link {
-                font-size:12px;
-            }
-
-            .coin-display {
-                padding:6px 9px;
-                font-size:11px;
-            }
-
-            .theme-selector {
-                gap:4px;
-                padding:5px 6px;
-            }
-
-            .theme-dot {
-                width:17px;
-                height:17px;
-                flex-basis:17px;
-            }
-
-            main {
-                padding:
-                    23px
-                    8px
-                    35px;
-            }
-
-            .board-wrap {
-                padding:7px;
-            }
-
-            .cell {
-                font-size:
-                    clamp(
-                        16px,
-                        6vw,
-                        22px
-                    );
-            }
-
-            .keyboard {
-                gap:6px;
-            }
-
-            .number-btn {
-                height:48px;
+                height:49px;
             }
         }
     </style>
@@ -882,17 +659,92 @@
         </a>
 
         <div class="theme-selector">
+            <div class="theme-dot dot-blue" onclick="setTheme('blue')"></div>
+            <div class="theme-dot dot-pink" onclick="setTheme('pink')"></div>
+            <div class="theme-dot dot-green" onclick="setTheme('green')"></div>
+            <div class="theme-dot dot-lavender" onclick="setTheme('lavender')"></div>
+            <div class="theme-dot dot-yellow" onclick="setTheme('yellow')"></div>
+        </div>
 
-            <div
-                class="theme-dot dot-blue"
-                onclick="setTheme('blue')"
-            ></div>
+        <div class="coin-display">
+            <span class="coin-count">0</span> Coins
+        </div>
 
-            <div
-                class="theme-dot dot-pink"
-                onclick="setTheme('pink')"
-                <script>
+    </header>
 
+    <main>
+
+        <div class="ornament">
+            <span>✦</span>
+            <i></i>
+            <span>♡</span>
+            <i></i>
+            <span>✦</span>
+        </div>
+
+        <h1>Sudoku</h1>
+
+        <div class="board-wrap">
+            <div id="sudoku-board"></div>
+        </div>
+
+        <div class="keyboard">
+
+            <button class="number-btn" onclick="inputNumber(1)">1</button>
+            <button class="number-btn" onclick="inputNumber(2)">2</button>
+            <button class="number-btn" onclick="inputNumber(3)">3</button>
+
+            <button class="number-btn" onclick="inputNumber(4)">4</button>
+            <button class="number-btn" onclick="inputNumber(5)">5</button>
+            <button class="number-btn" onclick="inputNumber(6)">6</button>
+
+            <button class="number-btn" onclick="inputNumber(7)">7</button>
+            <button class="number-btn" onclick="inputNumber(8)">8</button>
+            <button class="number-btn" onclick="inputNumber(9)">9</button>
+
+            <button class="number-btn delete-btn" onclick="deleteNumber()">
+                ⌫
+            </button>
+
+        </div>
+
+        <div class="actions">
+            <button class="action-btn" onclick="checkBoard()">
+                Check
+            </button>
+
+            <button class="action-btn" onclick="newGame()">
+                New Game
+            </button>
+        </div>
+
+        <div class="message" id="message"></div>
+
+        <div class="ornament bottom">
+            <span>✧</span>
+            <i></i>
+            <span>♡</span>
+            <i></i>
+            <span>✧</span>
+        </div>
+
+    </main>
+
+    <div class="modal" id="win-modal">
+
+        <div class="modal-box">
+
+            <h2>✦ You solved it ♡</h2>
+
+            <button onclick="closeModal()">
+                New Game
+            </button>
+
+        </div>
+
+    </div>    <script src="../script.js"></script>
+
+    <script>
         let solution = [];
         let puzzle = [];
         let board = [];
@@ -904,71 +756,51 @@
         let feedbackTimer = null;
 
 
-        /* =========================
-           THEME
-           ========================= */
-
         function setTheme(themeName) {
 
             if (themeName === "blue") {
-
-                document.body.removeAttribute(
-                    "data-theme"
-                );
-
+                document.body.removeAttribute("data-theme");
             } else {
-
-                document.body.setAttribute(
-                    "data-theme",
-                    themeName
-                );
-
+                document.body.setAttribute("data-theme", themeName);
             }
 
-            localStorage.setItem(
-                "arcade_theme",
-                themeName
-            );
+            localStorage.setItem("arcade_theme", themeName);
         }
 
 
         function loadSavedTheme() {
 
             const savedTheme =
-                localStorage.getItem(
-                    "arcade_theme"
-                );
+                localStorage.getItem("arcade_theme");
 
-            if (savedTheme) {
-
-                setTheme(savedTheme);
-
+            if (
+                savedTheme === "blue" ||
+                savedTheme === "pink" ||
+                savedTheme === "green" ||
+                savedTheme === "lavender" ||
+                savedTheme === "yellow"
+            ) {
+                if (savedTheme === "blue") {
+                    document.body.removeAttribute("data-theme");
+                } else {
+                    document.body.setAttribute(
+                        "data-theme",
+                        savedTheme
+                    );
+                }
             }
         }
 
-
-        /* =========================
-           NAVIGATION
-           ========================= */
 
         function goBack() {
 
             if (window.history.length > 1) {
-
                 window.history.back();
-
             } else {
-
-                window.location.href =
-                    "../index.html";
-
+                window.location.href = "../index.html";
             }
         }
 
-
-        /* =========================
-           SUDOKU GENERATION
-           ========================= */
 
         function shuffle(array) {
 
@@ -979,9 +811,7 @@
             ) {
 
                 const j =
-                    Math.floor(
-                        Math.random() * (i + 1)
-                    );
+                    Math.floor(Math.random() * (i + 1));
 
                 [
                     array[i],
@@ -996,28 +826,15 @@
         }
 
 
-        function isSafe(
-            grid,
-            row,
-            col,
-            num
-        ) {
+        function isSafe(grid, row, col, num) {
 
-            for (
-                let x = 0;
-                x < 9;
-                x++
-            ) {
+            for (let x = 0; x < 9; x++) {
 
-                if (
-                    grid[row][x] === num
-                ) {
+                if (grid[row][x] === num) {
                     return false;
                 }
 
-                if (
-                    grid[x][col] === num
-                ) {
+                if (grid[x][col] === num) {
                     return false;
                 }
             }
@@ -1030,28 +847,15 @@
                 col - col % 3;
 
 
-            for (
-                let r = 0;
-                r < 3;
-                r++
-            ) {
+            for (let r = 0; r < 3; r++) {
 
-                for (
-                    let c = 0;
-                    c < 3;
-                    c++
-                ) {
+                for (let c = 0; c < 3; c++) {
 
                     if (
-                        grid[
-                            startRow + r
-                        ][
-                            startCol + c
-                        ] === num
+                        grid[startRow + r][startCol + c]
+                        === num
                     ) {
-
                         return false;
-
                     }
                 }
             }
@@ -1062,21 +866,11 @@
 
         function fillGrid(grid) {
 
-            for (
-                let row = 0;
-                row < 9;
-                row++
-            ) {
+            for (let row = 0; row < 9; row++) {
 
-                for (
-                    let col = 0;
-                    col < 9;
-                    col++
-                ) {
+                for (let col = 0; col < 9; col++) {
 
-                    if (
-                        grid[row][col] === 0
-                    ) {
+                    if (grid[row][col] === 0) {
 
                         const numbers =
                             shuffle([
@@ -1086,9 +880,7 @@
                             ]);
 
 
-                        for (
-                            const num of numbers
-                        ) {
+                        for (const num of numbers) {
 
                             if (
                                 isSafe(
@@ -1099,22 +891,17 @@
                                 )
                             ) {
 
-                                grid[row][col] =
-                                    num;
+                                grid[row][col] = num;
 
 
                                 if (
                                     fillGrid(grid)
                                 ) {
-
                                     return true;
-
                                 }
 
 
-                                grid[row][col] =
-                                    0;
-
+                                grid[row][col] = 0;
                             }
                         }
 
@@ -1161,14 +948,10 @@
                     );
 
 
-                if (
-                    puzzle[row][col] !== 0
-                ) {
+                if (puzzle[row][col] !== 0) {
 
                     puzzle[row][col] = 0;
-
                     removed++;
-
                 }
             }
 
@@ -1187,26 +970,20 @@
 
             if (feedbackTimer) {
 
-                clearTimeout(
-                    feedbackTimer
-                );
+                clearTimeout(feedbackTimer);
 
                 feedbackTimer = null;
             }
 
 
-            document
-                .getElementById("message")
-                .textContent = "";
+            document.getElementById(
+                "message"
+            ).textContent = "";
 
 
             renderBoard();
         }
 
-
-        /* =========================
-           BOARD RENDERING
-           ========================= */
 
         function renderBoard() {
 
@@ -1219,39 +996,25 @@
             container.innerHTML = "";
 
 
-            for (
-                let row = 0;
-                row < 9;
-                row++
-            ) {
+            for (let row = 0; row < 9; row++) {
 
-                for (
-                    let col = 0;
-                    col < 9;
-                    col++
-                ) {
+                for (let col = 0; col < 9; col++) {
 
                     const cell =
-                        document.createElement(
-                            "div"
-                        );
+                        document.createElement("div");
 
 
                     const value =
                         board[row][col];
 
 
-                    cell.className =
-                        "cell";
+                    cell.className = "cell";
 
 
                     if (
                         puzzle[row][col] !== 0
                     ) {
-
-                        cell.classList.add(
-                            "given"
-                        );
+                        cell.classList.add("given");
                     }
 
 
@@ -1259,10 +1022,7 @@
                         row === selectedRow &&
                         col === selectedCol
                     ) {
-
-                        cell.classList.add(
-                            "selected"
-                        );
+                        cell.classList.add("selected");
                     }
 
 
@@ -1271,13 +1031,8 @@
                         selectedCol !== -1 &&
                         value !== 0 &&
                         value ===
-                            board[
-                                selectedRow
-                            ][
-                                selectedCol
-                            ]
+                        board[selectedRow][selectedCol]
                     ) {
-
                         cell.classList.add(
                             "same-number"
                         );
@@ -1285,46 +1040,29 @@
 
 
                     if (value !== 0) {
-
-                        cell.textContent =
-                            value;
+                        cell.textContent = value;
                     }
 
 
                     cell.addEventListener(
                         "click",
                         function() {
-
-                            selectCell(
-                                row,
-                                col
-                            );
-
+                            selectCell(row, col);
                         }
                     );
 
 
-                    container.appendChild(
-                        cell
-                    );
+                    container.appendChild(cell);
                 }
             }
         }
 
 
-        /* =========================
-           CELL SELECTION
-           ========================= */
-
-        function selectCell(
-            row,
-            col
-        ) {
+        function selectCell(row, col) {
 
             if (
                 puzzle[row][col] !== 0
             ) {
-
                 return;
             }
 
@@ -1337,10 +1075,6 @@
         }
 
 
-        /* =========================
-           NUMBER INPUT
-           ========================= */
-
         function inputNumber(number) {
 
             if (
@@ -1348,28 +1082,20 @@
                 selectedRow === -1 ||
                 selectedCol === -1
             ) {
-
                 return;
             }
 
 
             if (
-                puzzle[
-                    selectedRow
-                ][
-                    selectedCol
-                ] !== 0
+                puzzle[selectedRow][selectedCol]
+                !== 0
             ) {
-
                 return;
             }
 
 
-            board[
-                selectedRow
-            ][
-                selectedCol
-            ] = number;
+            board[selectedRow][selectedCol] =
+                number;
 
 
             renderBoard();
@@ -1383,37 +1109,25 @@
                 selectedRow === -1 ||
                 selectedCol === -1
             ) {
-
                 return;
             }
 
 
             if (
-                puzzle[
-                    selectedRow
-                ][
-                    selectedCol
-                ] !== 0
+                puzzle[selectedRow][selectedCol]
+                !== 0
             ) {
-
                 return;
             }
 
 
-            board[
-                selectedRow
-            ][
-                selectedCol
-            ] = 0;
+            board[selectedRow][selectedCol] =
+                0;
 
 
             renderBoard();
         }
 
-
-        /* =========================
-           CHECK BOARD
-           ========================= */
 
         function checkBoard() {
 
@@ -1426,37 +1140,24 @@
             let incorrect = false;
 
 
-            for (
-                let row = 0;
-                row < 9;
-                row++
-            ) {
+            for (let row = 0; row < 9; row++) {
 
-                for (
-                    let col = 0;
-                    col < 9;
-                    col++
-                ) {
+                for (let col = 0; col < 9; col++) {
 
                     const value =
                         board[row][col];
 
 
                     if (value === 0) {
-
                         complete = false;
-
                     }
 
 
                     if (
                         value !== 0 &&
-                        value !==
-                            solution[row][col]
+                        value !== solution[row][col]
                     ) {
-
                         incorrect = true;
-
                     }
                 }
             }
@@ -1471,17 +1172,9 @@
                 );
 
 
-            for (
-                let row = 0;
-                row < 9;
-                row++
-            ) {
+            for (let row = 0; row < 9; row++) {
 
-                for (
-                    let col = 0;
-                    col < 9;
-                    col++
-                ) {
+                for (let col = 0; col < 9; col++) {
 
                     const index =
                         row * 9 + col;
@@ -1497,8 +1190,8 @@
                     ) {
 
                         if (
-                            board[row][col] ===
-                            solution[row][col]
+                            board[row][col]
+                            === solution[row][col]
                         ) {
 
                             cell.classList.add(
@@ -1516,36 +1209,38 @@
             }
 
 
+            if (feedbackTimer) {
+
+                clearTimeout(feedbackTimer);
+            }
+
+
             feedbackTimer =
-                setTimeout(
-                    function() {
+                setTimeout(function() {
 
-                        const currentCells =
-                            document.querySelectorAll(
-                                ".cell"
-                            );
-
-
-                        currentCells.forEach(
-                            function(cell) {
-
-                                cell.classList.remove(
-                                    "correct"
-                                );
-
-                                cell.classList.remove(
-                                    "wrong"
-                                );
-
-                            }
+                    const currentCells =
+                        document.querySelectorAll(
+                            ".cell"
                         );
 
 
-                        feedbackTimer = null;
+                    currentCells.forEach(
+                        function(cell) {
 
-                    },
-                    2300
-                );
+                            cell.classList.remove(
+                                "correct"
+                            );
+
+                            cell.classList.remove(
+                                "wrong"
+                            );
+                        }
+                    );
+
+
+                    feedbackTimer = null;
+
+                }, 2300);
 
 
             if (
@@ -1557,65 +1252,43 @@
 
 
                 if (
-                    typeof addCoins ===
-                    "function"
+                    typeof addCoins === "function"
                 ) {
-
                     addCoins(50);
-
                 }
 
 
                 document
-                    .getElementById(
-                        "win-modal"
-                    )
-                    .classList.add(
-                        "show"
-                    );
+                    .getElementById("win-modal")
+                    .classList.add("show");
 
 
                 return;
             }
 
 
-            document
-                .getElementById(
-                    "message"
-                )
-                .textContent = "";
+            document.getElementById(
+                "message"
+            ).textContent = "";
         }
 
-
-        /* =========================
-           NEW GAME
-           ========================= */
 
         function newGame() {
 
             generateSudoku();
-
         }
 
 
         function closeModal() {
 
             document
-                .getElementById(
-                    "win-modal"
-                )
-                .classList.remove(
-                    "show"
-                );
+                .getElementById("win-modal")
+                .classList.remove("show");
 
 
             newGame();
         }
 
-
-        /* =========================
-           KEYBOARD / ARROW CONTROLS
-           ========================= */
 
         function moveSelection(
             rowDirection,
@@ -1626,7 +1299,6 @@
                 selectedRow === -1 ||
                 selectedCol === -1
             ) {
-
                 return;
             }
 
@@ -1635,11 +1307,7 @@
             let col = selectedCol;
 
 
-            for (
-                let i = 0;
-                i < 81;
-                i++
-            ) {
+            for (let i = 0; i < 81; i++) {
 
                 row += rowDirection;
                 col += colDirection;
@@ -1666,10 +1334,7 @@
                     puzzle[row][col] === 0
                 ) {
 
-                    selectCell(
-                        row,
-                        col
-                    );
+                    selectCell(row, col);
 
                     return;
                 }
@@ -1695,10 +1360,8 @@
 
 
                 if (
-                    event.key ===
-                        "Backspace" ||
-                    event.key ===
-                        "Delete"
+                    event.key === "Backspace" ||
+                    event.key === "Delete"
                 ) {
 
                     deleteNumber();
@@ -1707,67 +1370,39 @@
                 }
 
 
-                if (
-                    event.key ===
-                    "ArrowUp"
-                ) {
+                if (event.key === "ArrowUp") {
 
                     event.preventDefault();
 
-                    moveSelection(
-                        -1,
-                        0
-                    );
+                    moveSelection(-1, 0);
                 }
 
 
-                if (
-                    event.key ===
-                    "ArrowDown"
-                ) {
+                if (event.key === "ArrowDown") {
 
                     event.preventDefault();
 
-                    moveSelection(
-                        1,
-                        0
-                    );
+                    moveSelection(1, 0);
                 }
 
 
-                if (
-                    event.key ===
-                    "ArrowLeft"
-                ) {
+                if (event.key === "ArrowLeft") {
 
                     event.preventDefault();
 
-                    moveSelection(
-                        0,
-                        -1
-                    );
+                    moveSelection(0, -1);
                 }
 
 
-                if (
-                    event.key ===
-                    "ArrowRight"
-                ) {
+                if (event.key === "ArrowRight") {
 
                     event.preventDefault();
 
-                    moveSelection(
-                        0,
-                        1
-                    );
+                    moveSelection(0, 1);
                 }
             }
         );
 
-
-        /* =========================
-           STARTUP
-           ========================= */
 
         document.addEventListener(
             "DOMContentLoaded",
@@ -1782,9 +1417,7 @@
                     typeof updateCoinDisplays ===
                     "function"
                 ) {
-
                     updateCoinDisplays();
-
                 }
             }
         );
@@ -1801,14 +1434,11 @@
                     typeof updateCoinDisplays ===
                     "function"
                 ) {
-
                     updateCoinDisplays();
-
                 }
             }
         );
-
     </script>
 
 </body>
-                    </html>
+</html>
