@@ -583,11 +583,9 @@
             </div>
 
             <div class="victory-symbol" id="modal-symbol">
-                <!-- Heart with two drawn stars (SVG) -->
-                <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
+                <!-- Clean normal heart SVG (no sparkles) -->
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                    <path d="M4 3l1.5 3L8 7.5 5.5 9 4 12l-1.5-3L0 7.5 2.5 6z" transform="translate(14, -1) scale(0.6)"/>
-                    <path d="M4 3l1.5 3L8 7.5 5.5 9 4 12l-1.5-3L0 7.5 2.5 6z" transform="translate(2, 6) scale(0.5)"/>
                 </svg>
             </div>
 
@@ -973,10 +971,8 @@
             title.innerText = "Victory!";
             desc.innerText = message;
             symbol.innerHTML = `
-                <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                    <path d="M4 3l1.5 3L8 7.5 5.5 9 4 12l-1.5-3L0 7.5 2.5 6z" transform="translate(14, -1) scale(0.6)"/>
-                    <path d="M4 3l1.5 3L8 7.5 5.5 9 4 12l-1.5-3L0 7.5 2.5 6z" transform="translate(2, 6) scale(0.5)"/>
                 </svg>
             `;
             amount.innerText = "+30 Coins";
@@ -996,11 +992,10 @@
 
             title.innerText = "Game Over";
             desc.innerText = message;
-            // Broken heart SVG vector drawing
+            // Clean normal heart SVG (no sparkles) for game over screen as requested
             symbol.innerHTML = `
-                <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09V11l-2 2 3 3-2 3z"/>
-                    <path d="M12 5.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35v-4.35l2-2-3-3 2-3V5.09z"/>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                 </svg>
             `;
             amount.innerText = "Better luck next time";
@@ -1060,4 +1055,5 @@
         );
     </script>
 </body>
-</html>
+                                       </html>
+                                       
