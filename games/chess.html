@@ -250,8 +250,8 @@ h1{font-size:27px}
 
 <div id="reward-modal" class="modal-overlay">
 <div class="modal-card">
-<h2>✦ You won ♡</h2>
-<p style="color:var(--text-main);font-size:14px;margin-bottom:18px;">Earned <strong>50 Coins</strong>!</p>
+<h2 id="modal-title">✦ You won ♡</h2>
+<p id="modal-desc" style="color:var(--text-main);font-size:14px;margin-bottom:18px;">Earned <strong>50 Coins</strong>!</p>
 <button class="btn" onclick="closeModalAndReset()" style="width:100%">Play Again</button>
 </div>
 </div>
@@ -655,11 +655,15 @@ updateStatus();
 function updateStatus(){
 if(!game)return;
 const box=document.getElementById("status-box");
+const titleEl=document.getElementById("modal-title");
+const descEl=document.getElementById("modal-desc");
 
 if(game.in_checkmate()){
 AudioFX.play("end");
 if(game.turn()==="b"){
 box.textContent="✦ Checkmate · You won ♡";
+titleEl.textContent="✦ You won ♡";
+descEl.innerHTML="Earned <strong>50 Coins</strong>!";
 if(typeof addCoins==="function")addCoins(50);
 updateCoins();
 setTimeout(()=>{
@@ -668,10 +672,20 @@ document.getElementById("reward-modal").style.display="flex";
 },280);
 }else{
 box.textContent="Checkmate · Computer won";
+titleEl.textContent="✦ Game Over ♡";
+descEl.innerHTML="Computer won this match. Try again!";
+setTimeout(()=>{
+document.getElementById("reward-modal").style.display="flex";
+},280);
 }
 }else if(game.in_draw()){
 AudioFX.play("end");
 box.textContent="Draw game";
+titleEl.textContent="✦ Draw Game ♡";
+descEl.innerHTML="It's a tie!";
+setTimeout(()=>{
+document.getElementById("reward-modal").style.display="flex";
+},280);
 }else if(game.in_check()){
 box.textContent="Check!";
 }else{
