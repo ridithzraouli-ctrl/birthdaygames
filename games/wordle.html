@@ -1,714 +1,531 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wordle</title>
-    <style>
-        :root {
-            --bg-base: #f2f7fa;
-            --bg-grad-1: #dce8f3;
-            --bg-grad-2: #d3e2ea;
-            --text-main: #3f5260;
-            --text-heading: #46637a;
-            --accent-border: #82a8bd;
-            --accent-soft: #e9f3f9;
-            --accent-badge: #dfe8f8;
-            --ornament-color: #799eb8;
-            --card-bg: rgba(255, 255, 255, 0.88);
-            --header-bg: rgba(255, 255, 255, 0.88);
-        }
-
-        body[data-theme="pink"] {
-            --bg-base: #faf2f5;
-            --bg-grad-1: #f3dce5;
-            --bg-grad-2: #ead3dc;
-            --text-main: #603f4c;
-            --text-heading: #7a4659;
-            --accent-border: #bd8297;
-            --accent-soft: #f9e9f0;
-            --accent-badge: #f8dfe8;
-            --ornament-color: #b87992;
-            --card-bg: rgba(255, 255, 255, 0.88);
-            --header-bg: rgba(255, 255, 255, 0.88);
-        }
-
-        body[data-theme="green"] {
-            --bg-base: #f3f7f2;
-            --bg-grad-1: #dce8dc;
-            --bg-grad-2: #d3ead3;
-            --text-main: #3f6043;
-            --text-heading: #467a4c;
-            --accent-border: #82bd8b;
-            --accent-soft: #e9f9eb;
-            --accent-badge: #dff8e2;
-            --ornament-color: #79b882;
-            --card-bg: rgba(255, 255, 255, 0.88);
-            --header-bg: rgba(255, 255, 255, 0.88);
-        }
-
-        body[data-theme="lavender"] {
-            --bg-base: #f5f2fa;
-            --bg-grad-1: #e3dcf3;
-            --bg-grad-2: #dad3ea;
-            --text-main: #4a3f60;
-            --text-heading: #59467a;
-            --accent-border: #9882bd;
-            --accent-soft: #f0e9f9;
-            --accent-badge: #e9dff8;
-            --ornament-color: #9379b8;
-            --card-bg: rgba(255, 255, 255, 0.88);
-            --header-bg: rgba(255, 255, 255, 0.88);
-        }
-
-        body[data-theme="yellow"] {
-            --bg-base: #faf8f2;
-            --bg-grad-1: #f3edd2;
-            --bg-grad-2: #eae3c5;
-            --text-main: #60573f;
-            --text-heading: #7a6e46;
-            --accent-border: #bdb182;
-            --accent-soft: #f9f5e9;
-            --accent-badge: #f8f3df;
-            --ornament-color: #b8aa79;
-            --card-bg: rgba(255, 255, 255, 0.88);
-            --header-bg: rgba(255, 255, 255, 0.88);
-        }
-
-        * {
-            box-sizing: border-box;
-            min-width: 0;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        html {
-            width: 100%;
-            max-width: 100%;
-            overflow-x: hidden;
-        }
-
-        body {
-            width: 100%;
-            max-width: 100%;
-            min-height: 100vh;
-            margin: 0;
-            overflow-x: hidden;
-            background:
-                radial-gradient(circle at 10% 12%, var(--bg-grad-1) 0, transparent 28%),
-                radial-gradient(circle at 90% 85%, var(--bg-grad-2) 0, transparent 30%),
-                var(--bg-base);
-            color: var(--text-main);
-            font-family: Georgia, "Times New Roman", serif;
-            transition: background 0.3s ease, color 0.3s ease;
-        }
-
-        header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            min-height: 70px;
-            padding: 15px 22px;
-            background: var(--header-bg);
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid var(--bg-grad-2);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            gap: 16px;
-        }
-
-        .header-left,
-        .header-right {
-            display: flex;
-            align-items: center;
-            min-width: 0;
-        }
-
-        .header-left {
-            gap: 12px;
-        }
-
-        .header-right {
-            justify-content: flex-end;
-            gap: 10px;
-        }
-
-        .nav-link {
-            color: var(--text-heading);
-            text-decoration: none;
-            font-size: 15px;
-            font-weight: normal;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: opacity 0.2s ease;
-        }
-
-        .nav-link:hover {
-            opacity: 0.7;
-        }
-
-        .coin-display {
-            background: var(--accent-soft);
-            border: 1px solid var(--accent-border);
-            padding: 9px 15px;
-            border-radius: 100px;
-            font-size: 13px;
-            font-weight: bold;
-            color: var(--text-heading);
-            white-space: nowrap;
-        }
-
-        main {
-            width: 100%;
-            max-width: 560px;
-            margin: 0 auto;
-            padding: 28px 18px 40px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .ornament {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            height: 22px;
-            margin-bottom: 15px;
-            color: var(--ornament-color);
-        }
-
-        .ornament span {
-            font-size: 16px;
-        }
-
-        .ornament i {
-            width: 38px;
-            height: 1px;
-            background: var(--ornament-color);
-            opacity: 0.45;
-        }
-
-        h1 {
-            color: var(--text-heading);
-            font-weight: normal;
-            font-size: 28px;
-            margin: 0 0 7px;
-            text-align: center;
-        }
-
-        p.subtitle {
-            color: var(--text-main);
-            opacity: 0.78;
-            margin: 0 0 24px;
-            font-size: 14px;
-            text-align: center;
-            line-height: 1.5;
-        }
-
-        .board {
-            display: grid;
-            grid-template-rows: repeat(6, 1fr);
-            gap: 6px;
-            margin-bottom: 24px;
-        }
-
-        .row {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 6px;
-        }
-
-        .tile {
-            width: 50px;
-            height: 50px;
-            border: 2px solid var(--accent-border);
-            border-radius: 8px;
-            background: var(--card-bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            font-weight: bold;
-            color: var(--text-heading);
-            text-transform: uppercase;
-            user-select: none;
-            transition: transform 0.15s ease, background-color 0.2s ease, border-color 0.2s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-        }
-
-        .tile[data-state="active"] {
-            border-color: var(--text-heading);
-            transform: scale(1.05);
-        }
-
-        .tile[data-state="correct"] {
-            background-color: #88b04b;
-            border-color: #88b04b;
-            color: #ffffff;
-        }
-
-        .tile[data-state="present"] {
-            background-color: #f0c961;
-            border-color: #f0c961;
-            color: #ffffff;
-        }
-
-        .tile[data-state="absent"] {
-            background-color: var(--bg-grad-2);
-            border-color: var(--bg-grad-2);
-            color: var(--text-main);
-            opacity: 0.7;
-        }
-
-        .keyboard {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            width: 100%;
-            max-width: 480px;
-        }
-
-        .kb-row {
-            display: flex;
-            justify-content: center;
-            gap: 5px;
-        }
-
-        .key-btn {
-            height: 46px;
-            border: 1px solid var(--accent-border);
-            border-radius: 8px;
-            background: var(--card-bg);
-            color: var(--text-heading);
-            font-family: Georgia, "Times New Roman", serif;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.15s ease;
-            user-select: none;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
-        }
-
-        .key-btn:hover:not(:disabled) {
-            background: var(--accent-soft);
-            transform: translateY(-1px);
-        }
-
-        .key-btn.wide { flex: 1.5; font-size: 11px; }
-
-        .key-btn[data-state="correct"] { background: #88b04b; color: #fff; border-color: #88b04b; }
-        .key-btn[data-state="present"] { background: #f0c961; color: #fff; border-color: #f0c961; }
-        .key-btn[data-state="absent"] { background: var(--bg-grad-2); color: var(--text-main); opacity: 0.5; border-color: var(--bg-grad-2); }
-
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            padding: 20px;
-            background: rgba(30, 25, 25, 0.3);
-            backdrop-filter: blur(3px);
-            z-index: 200;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-card {
-            background: var(--card-bg);
-            border: 1px solid var(--bg-grad-2);
-            border-radius: 14px;
-            padding: 28px 24px;
-            max-width: 340px;
-            width: 100%;
-            text-align: center;
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
-        }
-
-        .modal-card h2 {
-            color: var(--text-heading);
-            font-size: 21px;
-            font-weight: normal;
-            margin: 0 0 10px;
-        }
-
-        .modal-card p {
-            color: var(--text-main);
-            opacity: 0.8;
-            font-size: 14px;
-            line-height: 1.5;
-            margin: 0 0 20px;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border: 1px solid var(--accent-border);
-            border-radius: 100px;
-            background: var(--card-bg);
-            color: var(--text-heading);
-            font-family: Georgia, "Times New Roman", serif;
-            font-size: 13px;
-            cursor: pointer;
-            transition: 0.2s ease;
-        }
-
-        .btn:hover {
-            background: var(--accent-soft);
-            transform: translateY(-1px);
-        }
-
-        .decorations {
-            position: fixed;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: -1;
-        }
-
-        .decorations span {
-            position: absolute;
-            color: var(--ornament-color);
-            opacity: 0.35;
-            animation: float 5s ease-in-out infinite;
-        }
-
-        .decorations span:nth-child(1) { top: 13%; left: 7%; font-size: 20px; }
-        .decorations span:nth-child(2) { top: 28%; right: 8%; font-size: 13px; animation-delay: 1s; }
-        .decorations span:nth-child(3) { top: 55%; left: 5%; font-size: 14px; animation-delay: 2s; }
-        .decorations span:nth-child(4) { top: 68%; right: 6%; font-size: 21px; animation-delay: 1.5s; }
-        .decorations span:nth-child(5) { bottom: 12%; left: 12%; font-size: 12px; animation-delay: 0.5s; }
-        .decorations span:nth-child(6) { bottom: 20%; right: 13%; font-size: 16px; animation-delay: 2.5s; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0); }
-            50% { transform: translateY(-7px) rotate(7deg); }
-        }
-
-        @media (max-width: 600px) {
-            header {
-                min-height: 66px;
-                padding: 12px 11px;
-            }
-            main {
-                padding: 24px 12px 35px;
-            }
-            .tile {
-                width: 44px;
-                height: 44px;
-                font-size: 20px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Wordle</title>
+<style>
+:root{
+--bg-base:#f2f7fa;--bg-grad-1:#dce8f3;--bg-grad-2:#d3e2ea;
+--text-main:#3f5260;--text-heading:#46637a;--accent-border:#82a8bd;
+--accent-soft:#e9f3f9;--accent-badge:#dfe8f8;--ornament-color:#799eb8;
+--card-bg:rgba(255,255,255,.88);--header-bg:rgba(255,255,255,.88);
+}
+body[data-theme="pink"]{
+--bg-base:#faf2f5;--bg-grad-1:#f3dce5;--bg-grad-2:#ead3dc;
+--text-main:#603f4c;--text-heading:#7a4659;--accent-border:#bd8297;
+--accent-soft:#f9e9f0;--accent-badge:#f8dfe8;--ornament-color:#b87992;
+}
+body[data-theme="green"]{
+--bg-base:#f3f7f2;--bg-grad-1:#dce8dc;--bg-grad-2:#d3ead3;
+--text-main:#3f6043;--text-heading:#467a4c;--accent-border:#82bd8b;
+--accent-soft:#e9f9eb;--accent-badge:#dff8e2;--ornament-color:#79b882;
+}
+body[data-theme="lavender"]{
+--bg-base:#f5f2fa;--bg-grad-1:#e3dcf3;--bg-grad-2:#dad3ea;
+--text-main:#4a3f60;--text-heading:#59467a;--accent-border:#9882bd;
+--accent-soft:#f0e9f9;--accent-badge:#e9dff8;--ornament-color:#9379b8;
+}
+body[data-theme="yellow"]{
+--bg-base:#faf8f2;--bg-grad-1:#f3edd2;--bg-grad-2:#eae3c5;
+--text-main:#60573f;--text-heading:#7a6e46;--accent-border:#bdb182;
+--accent-soft:#f9f5e9;--accent-badge:#f8f3df;--ornament-color:#b8aa79;
+}
+*{box-sizing:border-box;min-width:0;-webkit-tap-highlight-color:transparent}
+html{width:100%;max-width:100%;overflow-x:hidden}
+body{
+width:100%;max-width:100%;min-height:100vh;margin:0;overflow-x:hidden;
+background:
+radial-gradient(circle at 10% 12%,var(--bg-grad-1) 0,transparent 28%),
+radial-gradient(circle at 90% 85%,var(--bg-grad-2) 0,transparent 30%),
+var(--bg-base);
+color:var(--text-main);font-family:Georgia,"Times New Roman",serif;
+transition:background .3s ease,color .3s ease;
+}
+header{
+display:flex;align-items:center;justify-content:space-between;width:100%;
+min-height:70px;padding:15px 22px;background:var(--header-bg);
+backdrop-filter:blur(8px);border-bottom:1px solid var(--bg-grad-2);
+position:sticky;top:0;z-index:100;gap:16px;
+}
+.header-left,.header-right{display:flex;align-items:center;min-width:0}
+.header-left{gap:12px}.header-right{justify-content:flex-end;gap:10px}
+.nav-link{
+color:var(--text-heading);text-decoration:none;font-size:15px;cursor:pointer;
+white-space:nowrap;transition:opacity .2s ease
+}
+.nav-link:hover{opacity:.7}
+.coin-display{
+background:var(--accent-soft);border:1px solid var(--accent-border);
+padding:9px 15px;border-radius:100px;font-size:13px;font-weight:bold;
+color:var(--text-heading);white-space:nowrap;box-shadow:0 3px 12px rgba(50,60,70,.05)
+}
+main{
+width:100%;max-width:560px;margin:0 auto;padding:28px 18px 40px;
+display:flex;flex-direction:column;align-items:center
+}
+.ornament{
+display:flex;align-items:center;justify-content:center;gap:10px;
+height:22px;margin-bottom:15px;color:var(--ornament-color)
+}
+.ornament span{font-size:16px}.ornament i{
+width:38px;height:1px;background:var(--ornament-color);opacity:.45
+}
+h1{
+color:var(--text-heading);font-weight:normal;font-size:28px;
+margin:0 0 7px;text-align:center
+}
+p.subtitle{
+color:var(--text-main);opacity:.78;margin:0 0 24px;font-size:14px;
+text-align:center;line-height:1.5
+}
+.board{
+display:grid;grid-template-rows:repeat(6,1fr);gap:6px;margin-bottom:24px
+}
+.row{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.tile{
+width:50px;height:50px;border:2px solid var(--accent-border);
+border-radius:8px;background:var(--card-bg);display:flex;
+align-items:center;justify-content:center;font-size:22px;font-weight:bold;
+color:var(--text-heading);text-transform:uppercase;user-select:none;
+transition:transform .15s ease,background-color .25s ease,border-color .25s ease;
+box-shadow:0 2px 8px rgba(0,0,0,.03)
+}
+.tile[data-state="active"]{
+border-color:var(--text-heading);transform:scale(1.05)
+}
+.tile[data-state="correct"]{
+background:#88b04b;border-color:#88b04b;color:#fff
+}
+.tile[data-state="present"]{
+background:#f0c961;border-color:#f0c961;color:#fff
+}
+.tile[data-state="absent"]{
+background:var(--bg-grad-2);border-color:var(--bg-grad-2);
+color:var(--text-main);opacity:.7
+}
+.keyboard{
+display:flex;flex-direction:column;gap:6px;width:100%;max-width:480px
+}
+.kb-row{display:flex;justify-content:center;gap:5px}
+.key-btn{
+height:46px;border:1px solid var(--accent-border);border-radius:8px;
+background:var(--card-bg);color:var(--text-heading);
+font-family:Georgia,"Times New Roman",serif;font-size:13px;font-weight:bold;
+cursor:pointer;text-transform:uppercase;flex:1;display:flex;
+align-items:center;justify-content:center;transition:all .15s ease;
+user-select:none;box-shadow:0 2px 6px rgba(0,0,0,.03)
+}
+.key-btn:hover:not(:disabled){
+background:var(--accent-soft);transform:translateY(-1px)
+}
+.key-btn.wide{flex:1.5;font-size:11px}
+.key-btn[data-state="correct"]{background:#88b04b;color:#fff;border-color:#88b04b}
+.key-btn[data-state="present"]{background:#f0c961;color:#fff;border-color:#f0c961}
+.key-btn[data-state="absent"]{
+background:var(--bg-grad-2);color:var(--text-main);opacity:.5;border-color:var(--bg-grad-2)
+}<style>
+.modal-overlay{
+display:none;position:fixed;inset:0;padding:20px;
+background:rgba(30,25,25,.32);backdrop-filter:blur(7px);
+z-index:200;align-items:center;justify-content:center
+}
+.modal-overlay.show{display:flex}
+.modal-card{
+position:relative;background:linear-gradient(145deg,var(--accent-soft),var(--card-bg));
+border:1px solid var(--accent-border);border-radius:28px;
+padding:38px 28px 30px;max-width:390px;width:100%;
+text-align:center;box-shadow:0 22px 60px rgba(40,50,60,.18);
+overflow:hidden;animation:rewardPop .45s cubic-bezier(.2,.9,.3,1.25)
+}
+.modal-card::before,.modal-card::after{
+position:absolute;color:var(--ornament-color);opacity:.7
+}
+.modal-card::before{content:"✦";top:17px;left:23px;font-size:27px}
+.modal-card::after{content:"♡";bottom:16px;right:24px;font-size:24px}
+.reward-sparkles{
+color:var(--ornament-color);font-size:22px;letter-spacing:9px;
+margin-bottom:8px;animation:sparkleFloat 2s ease-in-out infinite
+}
+.modal-card h2{
+color:var(--text-heading);font-family:Georgia,"Times New Roman",serif;
+font-size:32px;font-weight:normal;margin:0 0 11px
+}
+.modal-card p{
+color:var(--text-main);opacity:.82;font-size:14px;line-height:1.6;
+margin:0 0 23px
+}
+.modal-card .btn{
+width:100%;padding:12px 20px;border:1px solid var(--accent-border);
+border-radius:100px;background:var(--accent-badge);color:var(--text-heading);
+font-family:Georgia,"Times New Roman",serif;font-size:14px;cursor:pointer;
+transition:.2s ease
+}
+.modal-card .btn:hover{
+background:var(--accent-soft);transform:translateY(-2px);
+box-shadow:0 8px 20px rgba(50,60,70,.12)
+}
+.reward-divider{
+display:flex;align-items:center;gap:9px;margin:0 auto 18px;
+width:85%;color:var(--ornament-color);opacity:.55
+}
+.reward-divider i{height:1px;background:var(--ornament-color);flex:1}
+.reward-coins{
+display:inline-block;margin-bottom:20px;padding:7px 14px;
+border:1px solid var(--accent-border);border-radius:100px;
+background:var(--card-bg);color:var(--text-heading);font-size:13px
+}
+@keyframes rewardPop{
+0%{opacity:0;transform:scale(.72) translateY(18px)}
+70%{transform:scale(1.025) translateY(-2px)}
+100%{opacity:1;transform:scale(1) translateY(0)}
+}
+@keyframes sparkleFloat{
+0%,100%{transform:translateY(0)}
+50%{transform:translateY(-4px)}
+}
+.tile.pop{animation:tilePop .18s ease}
+@keyframes tilePop{
+50%{transform:scale(1.12)}
+}
+.tile.shake{animation:shake .38s ease}
+@keyframes shake{
+0%,100%{transform:translateX(0)}
+20%{transform:translateX(-5px)}
+40%{transform:translateX(5px)}
+60%{transform:translateX(-4px)}
+80%{transform:translateX(4px)}
+}
+.decorations{
+position:fixed;inset:0;width:100%;height:100%;pointer-events:none;
+overflow:hidden;z-index:-1
+}
+.decorations span{
+position:absolute;color:var(--ornament-color);opacity:.35;
+animation:float 5s ease-in-out infinite
+}
+.decorations span:nth-child(1){top:13%;left:7%;font-size:20px}
+.decorations span:nth-child(2){top:28%;right:8%;font-size:13px;animation-delay:1s}
+.decorations span:nth-child(3){top:55%;left:5%;font-size:14px;animation-delay:2s}
+.decorations span:nth-child(4){top:68%;right:6%;font-size:21px;animation-delay:1.5s}
+.decorations span:nth-child(5){bottom:12%;left:12%;font-size:12px;animation-delay:.5s}
+.decorations span:nth-child(6){bottom:20%;right:13%;font-size:16px;animation-delay:2.5s}
+@keyframes float{
+0%,100%{transform:translateY(0) rotate(0)}
+50%{transform:translateY(-7px) rotate(7deg)}
+}
+@media(max-width:600px){
+header{min-height:66px;padding:12px 11px}
+main{padding:24px 12px 35px}
+.tile{width:44px;height:44px;font-size:20px}
+.modal-card{padding:35px 23px 28px}
+}
+</style>
 </head>
 <body>
 
-    <div class="decorations">
-        <span>✦</span>
-        <span>✧</span>
-        <span>♡</span>
-        <span>✦</span>
-        <span>✧</span>
-        <span>♡</span>
-    </div>
+<div class="decorations">
+<span>✦</span><span>✧</span><span>♡</span>
+<span>✦</span><span>✧</span><span>♡</span>
+</div>
 
-    <header>
-        <div class="header-left">
-            <a onclick="goBack()" class="nav-link">← Back to Games</a>
-        </div>
-        <div class="header-right">
-            <div class="coin-display"><span class="coin-count">0</span> Coins</div>
-        </div>
-    </header>
+<header>
+<div class="header-left">
+<a onclick="goBack()" class="nav-link">← Back to Games</a>
+</div>
+<div class="header-right">
+<div class="coin-display"><span class="coin-count">0</span> Coins</div>
+</div>
+</header>
 
-    <main>
-        <div class="ornament">
-            <span>✦</span>
-            <i></i>
-            <span>♡</span>
-            <i></i>
-            <span>✦</span>
-        </div>
+<main>
+<div class="ornament">
+<span>✦</span><i></i><span>♡</span><i></i><span>✦</span>
+</div>
 
-        <h1>Wordle</h1>
-        <p class="subtitle">Guess the 5-letter word in 6 tries.</p>
+<h1>Wordle</h1>
+<p class="subtitle">Guess the 5-letter word in 6 tries.</p>
 
-        <div class="board" id="board"></div>
-        <div class="keyboard" id="keyboard"></div>
+<div class="board" id="board"></div>
+<div class="keyboard" id="keyboard"></div>
 
-        <div class="ornament" style="margin-top: 25px; margin-bottom: 0;">
-            <span>✧</span>
-            <i></i>
-            <span>♡</span>
-            <i></i>
-            <span>✧</span>
-        </div>
-    </main>
+<div class="ornament" style="margin-top:25px;margin-bottom:0">
+<span>✧</span><i></i><span>♡</span><i></i><span>✧</span>
+</div>
+</main>
 
-    <div id="reward-modal" class="modal-overlay">
-        <div class="modal-card">
-            <h2 id="modal-title">Victory!</h2>
-            <p id="modal-desc">You guessed the word and earned 30 Coins.</p>
-            <button class="btn" onclick="closeModalAndReset()" style="width: 100%;">Play Again</button>
-        </div>
-    </div>
+<div id="reward-modal" class="modal-overlay">
+<div class="modal-card">
+<div class="reward-sparkles">✦ ✧ ✦</div>
+<h2 id="modal-title">Victory!</h2>
+<div class="reward-divider"><i></i><span>♡</span><i></i></div>
+<p id="modal-desc">You guessed the word and earned 30 Coins.</p>
+<div class="reward-coins">✦ +30 Coins ✦</div>
+<button class="btn" onclick="closeModalAndReset()">Play Again</button>
+</div>
+</div>
 
-    <script src="../script.js"></script>
-    <script>
-        function loadSavedTheme() {
-            const savedTheme = localStorage.getItem("arcade_theme");
-            if (savedTheme === "pink" || savedTheme === "green" || savedTheme === "lavender" || savedTheme === "yellow") {
-                document.body.setAttribute("data-theme", savedTheme);
-            } else {
-                document.body.removeAttribute("data-theme");
-            }
-        }
-        loadSavedTheme();
+<script src="../script.js"></script>
+<script>
+function loadSavedTheme(){
+const savedTheme=localStorage.getItem("arcade_theme");
+if(["pink","green","lavender","yellow"].includes(savedTheme)){
+document.body.setAttribute("data-theme",savedTheme);
+}else document.body.removeAttribute("data-theme");
+}
+loadSavedTheme();
 
-        const AudioFX = {
-            ctx: null,
-            init() {
-                if (!this.ctx) {
-                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                    if (AudioCtx) this.ctx = new AudioCtx();
-                }
-            },
-            play(type) {
-                this.init();
-                if (!this.ctx) return;
-                if (this.ctx.state === 'suspended') this.ctx.resume();
+const AudioFX={
+ctx:null,
+init(){
+if(!this.ctx){
+const AudioCtx=window.AudioContext||window.webkitAudioContext;
+if(AudioCtx)this.ctx=new AudioCtx();
+}
+},
+tone(freq,duration=.08,type="sine",volume=.05,delay=0){
+this.init();if(!this.ctx)return;
+if(this.ctx.state==="suspended")this.ctx.resume();
+const now=this.ctx.currentTime+delay;
+const osc=this.ctx.createOscillator();
+const gain=this.ctx.createGain();
+osc.type=type;osc.frequency.setValueAtTime(freq,now);
+gain.gain.setValueAtTime(volume,now);
+gain.gain.exponentialRampToValueAtTime(.001,now+duration);
+osc.connect(gain);gain.connect(this.ctx.destination);
+osc.start(now);osc.stop(now+duration);
+},
+play(type){
+if(type==="key")this.tone(400,.05,"sine",.045);
+if(type==="delete")this.tone(320,.05,"sine",.04);
+if(type==="submit")this.tone(470,.08,"triangle",.05);
+if(type==="win"){
+this.tone(523.25,.25,"sine",.11,0);
+this.tone(659.25,.25,"sine",.11,.09);
+this.tone(783.99,.3,"sine",.13,.18);
+this.tone(1046.5,.4,"sine",.1,.3);
+}
+if(type==="lose"){
+this.tone(260,.15,"triangle",.08,0);
+this.tone(190,.3,"triangle",.06,.12);
+}
+}
+};
 
-                const now = this.ctx.currentTime;
-                const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
-                osc.connect(gain);
-                gain.connect(this.ctx.destination);
+const WORD_LIST=[
+'APPLE','BEACH','CHAIR','DANCE','EARTH','FLUTE','GRAPE','HEART','IMAGE','JUICE',
+'KNIFE','LEMON','MUSIC','NIGHT','OCEAN','PIANO','QUEEN','RIVER','SMILE','TRAIN',
+'UNITY','VOICE','WATER','YOUTH','ZEBRA','PLANT','CRANE','GHOST','FLAME','SHARK',
+'SMART','CLOUD','BREAD','LIGHT','HOUSE','CROWN','STORM','TIGER','BRICK','CANDY',
+'DREAM','FROST','GLORY','HONEY','IVORY','JOKER','KOWTOW','LUNAR','MAPLE','NOBLE'
+];
 
-                if (type === 'key') {
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(400, now);
-                    gain.gain.setValueAtTime(0.05, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
-                    osc.start(now);
-                    osc.stop(now + 0.05);
-                } else if (type === 'win') {
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(523.25, now);
-                    osc.frequency.setValueAtTime(659.25, now + 0.08);
-                    osc.frequency.setValueAtTime(783.99, now + 0.16);
-                    gain.gain.setValueAtTime(0.2, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
-                    osc.start(now);
-                    osc.stop(now + 0.35);
-                } else if (type === 'lose') {
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(260, now);
-                    osc.frequency.exponentialRampToValueAtTime(110, now + 0.35);
-                    gain.gain.setValueAtTime(0.2, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
-                    osc.start(now);
-                    osc.stop(now + 0.35);
-                }
-            }
-        };
+let targetWord='';
+let currentRow=0;
+let currentTile=0;
+let isGameOver=false;
+const guesses=Array(6).fill('').map(()=>Array(5).fill(''));
 
-        const WORD_LIST = [
-            'APPLE', 'BEACH', 'CHAIR', 'DANCE', 'EARTH', 'FLUTE', 'GRAPE', 'HEART', 'IMAGE', 'JUICE',
-            'KNIFE', 'LEMON', 'MUSIC', 'NIGHT', 'OCEAN', 'PIANO', 'QUEEN', 'RIVER', 'SMILE', 'TRAIN',
-            'UNITY', 'VOICE', 'WATER', 'YOUTH', 'ZEBRA', 'PLANT', 'CRANE', 'GHOST', 'FLAME', 'SHARK',
-            'SMART', 'CLOUD', 'BREAD', 'LIGHT', 'HOUSE', 'CROWN', 'STORM', 'TIGER', 'BRICK', 'CANDY',
-            'DREAM', 'FROST', 'GLORY', 'HONEY', 'IVORY', 'JOKER', 'KOWTOW', 'LUNAR', 'MAPLE', 'NOBLE'
-        ];
-        
-        let targetWord = '';
-        let currentRow = 0;
-        let currentTile = 0;
-        let isGameOver = false;
-        const guesses = Array(6).fill('').map(() => Array(5).fill(''));
+function goBack(){
+if(window.history.length>1)window.history.back();
+else window.location.href='../index.html';
+    }<script>
+function initBoard(){
+const boardEl=document.getElementById('board');
+boardEl.innerHTML='';
+for(let r=0;r<6;r++){
+const rowEl=document.createElement('div');
+rowEl.className='row';
+rowEl.id=`row-${r}`;
+for(let c=0;c<5;c++){
+const tileEl=document.createElement('div');
+tileEl.className='tile';
+tileEl.id=`tile-${r}-${c}`;
+rowEl.appendChild(tileEl);
+}
+boardEl.appendChild(rowEl);
+}
+}
 
-        function goBack() {
-            if (window.history.length > 1) {
-                window.history.back();
-            } else {
-                window.location.href = '../index.html';
-            }
-        }
+function initKeyboard(){
+const kbEl=document.getElementById('keyboard');
+kbEl.innerHTML='';
+const layout=[
+['Q','W','E','R','T','Y','U','I','O','P'],
+['A','S','D','F','G','H','J','K','L'],
+['ENTER','Z','X','C','V','B','N','M','BACK']
+];
+layout.forEach(row=>{
+const rowEl=document.createElement('div');
+rowEl.className='kb-row';
+row.forEach(key=>{
+const btn=document.createElement('button');
+btn.className='key-btn'+(key.length>1?' wide':'');
+btn.innerText=key==='BACK'?'⌫':key;
+btn.id=`key-${key}`;
+btn.addEventListener('click',()=>handleKeyPress(key));
+rowEl.appendChild(btn);
+});
+kbEl.appendChild(rowEl);
+});
+}
 
-        function initBoard() {
-            const boardEl = document.getElementById('board');
-            boardEl.innerHTML = '';
-            for (let r = 0; r < 6; r++) {
-                const rowEl = document.createElement('div');
-                rowEl.className = 'row';
-                rowEl.id = `row-${r}`;
-                for (let c = 0; c < 5; c++) {
-                    const tileEl = document.createElement('div');
-                    tileEl.className = 'tile';
-                    tileEl.id = `tile-${r}-${c}`;
-                    rowEl.appendChild(tileEl);
-                }
-                boardEl.appendChild(rowEl);
-            }
-        }
+function handleKeyPress(key){
+if(isGameOver)return;
+if(key==='ENTER')submitGuess();
+else if(key==='BACK'||key==='BACKSPACE')deleteLetter();
+else if(/^[A-Z]$/.test(key)&&currentTile<5)addLetter(key);
+}
 
-        function initKeyboard() {
-            const kbEl = document.getElementById('keyboard');
-            kbEl.innerHTML = '';
-            const layout = [
-                ['Q','W','E','R','T','Y','U','I','O','P'],
-                ['A','S','D','F','G','H','J','K','L'],
-                ['ENTER','Z','X','C','V','B','N','M','BACK']
-            ];
+function addLetter(letter){
+AudioFX.play('key');
+guesses[currentRow][currentTile]=letter;
+const tile=document.getElementById(`tile-${currentRow}-${currentTile}`);
+tile.innerText=letter;
+tile.setAttribute('data-state','active');
+tile.classList.remove('pop');
+void tile.offsetWidth;
+tile.classList.add('pop');
+currentTile++;
+}
 
-            layout.forEach(row => {
-                const rowEl = document.createElement('div');
-                rowEl.className = 'kb-row';
-                row.forEach(key => {
-                    const btn = document.createElement('button');
-                    btn.className = 'key-btn' + (key.length > 1 ? ' wide' : '');
-                    btn.innerText = key === 'BACK' ? '⌫' : key;
-                    btn.id = `key-${key}`;
-                    btn.addEventListener('click', () => handleKeyPress(key));
-                    rowEl.appendChild(btn);
-                });
-                kbEl.appendChild(rowEl);
-            });
-        }
+function deleteLetter(){
+if(currentTile===0)return;
+AudioFX.play('delete');
+currentTile--;
+guesses[currentRow][currentTile]='';
+const tile=document.getElementById(`tile-${currentRow}-${currentTile}`);
+tile.innerText='';
+tile.removeAttribute('data-state');
+}
 
-        function handleKeyPress(key) {
-            if (isGameOver) return;
+function shakeRow(){
+for(let c=0;c<5;c++){
+const tile=document.getElementById(`tile-${currentRow}-${c}`);
+tile.classList.remove('shake');
+void tile.offsetWidth;
+tile.classList.add('shake');
+}
+}
 
-            if (key === 'ENTER') {
-                submitGuess();
-            } else if (key === 'BACK' || key === 'BACKSPACE') {
-                deleteLetter();
-            } else if (/^[A-Z]$/.test(key) && currentTile < 5) {
-                addLetter(key);
-            }
-        }
+function submitGuess(){
+if(currentTile<5){
+shakeRow();
+return;
+}
 
-        function addLetter(letter) {
-            AudioFX.play('key');
-            guesses[currentRow][currentTile] = letter;
-            const tile = document.getElementById(`tile-${currentRow}-${currentTile}`);
-            tile.innerText = letter;
-            tile.setAttribute('data-state', 'active');
-            currentTile++;
-        }
+AudioFX.play('submit');
 
-        function deleteLetter() {
-            if (currentTile === 0) return;
-            AudioFX.play('key');
-            currentTile--;
-            guesses[currentRow][currentTile] = '';
-            const tile = document.getElementById(`tile-${currentRow}-${currentTile}`);
-            tile.innerText = '';
-            tile.removeAttribute('data-state');
-        }
+const guess=guesses[currentRow].join('');
+const targetArr=targetWord.split('');
+const result=Array(5).fill('absent');
+const used=Array(5).fill(false);
 
-        function submitGuess() {
-            if (currentTile < 5) return;
+for(let i=0;i<5;i++){
+if(guess[i]===targetArr[i]){
+result[i]='correct';
+used[i]=true;
+}
+}
 
-            const guess = guesses[currentRow].join('');
-            const targetArr = targetWord.split('');
-            const result = Array(5).fill('absent');
-            const used = Array(5).fill(false);
+for(let i=0;i<5;i++){
+if(result[i]!=='correct'){
+for(let j=0;j<5;j++){
+if(!used[j]&&guess[i]===targetArr[j]){
+result[i]='present';
+used[j]=true;
+break;
+}
+}
+}
+}
 
-            for (let i = 0; i < 5; i++) {
-                if (guess[i] === targetArr[i]) {
-                    result[i] = 'correct';
-                    used[i] = true;
-                }
-            }
+for(let i=0;i<5;i++){
+const tile=document.getElementById(`tile-${currentRow}-${i}`);
+const keyBtn=document.getElementById(`key-${guess[i]}`);
+tile.setAttribute('data-state',result[i]);
 
-            for (let i = 0; i < 5; i++) {
-                if (result[i] !== 'correct') {
-                    for (let j = 0; j < 5; j++) {
-                        if (!used[j] && guess[i] === targetArr[j]) {
-                            result[i] = 'present';
-                            used[j] = true;
-                            break;
-                        }
-                    }
-                }
-            }
+if(keyBtn){
+const currentState=keyBtn.getAttribute('data-state');
+if(
+result[i]==='correct'||
+(result[i]==='present'&&currentState!=='correct')||
+(!currentState&&result[i]==='absent')
+){
+keyBtn.setAttribute('data-state',result[i]);
+}
+}
+}
 
-            for (let i = 0; i < 5; i++) {
-                const tile = document.getElementById(`tile-${currentRow}-${i}`);
-                const letter = guess[i];
-                const keyBtn = document.getElementById(`key-${letter}`);
+if(guess===targetWord){
+isGameOver=true;
+AudioFX.play('win');
 
-                tile.setAttribute('data-state', result[i]);
+if(typeof addCoins==='function')addCoins(30);
+if(typeof updateCoinDisplays==='function')updateCoinDisplays();
 
-                if (keyBtn) {
-                    const currentState = keyBtn.getAttribute('data-state');
-                    if (result[i] === 'correct' || (result[i] === 'present' && currentState !== 'correct') || (!currentState && result[i] === 'absent')) {
-                        keyBtn.setAttribute('data-state', result[i]);
-                    }
-                }
-            }
+document.getElementById('modal-title').innerText='Victory!';
+document.getElementById('modal-desc').innerText=
+`You found "${targetWord}" in ${currentRow+1} ${currentRow===0?'try':'tries'} and earned 30 Coins.`;
 
-            if (guess === targetWord) {
-                isGameOver = true;
-                AudioFX.play('win');
-                if (typeof addCoins === 'function') addCoins(30);
-                document.getElementById('modal-title').innerText = 'Victory!';
-                document.getElementById('modal-desc').innerText = `You found "${targetWord}" in ${currentRow + 1} try/tries and earned 30 Coins!`;
-                document.getElementById('reward-modal').style.display = 'flex';
-                return;
-            }
+document.getElementById('reward-modal').classList.add('show');
+return;
+}
 
-            currentRow++;
-            currentTile = 0;
+currentRow++;
+currentTile=0;
 
-            if (currentRow === 6) {
-                isGameOver = true;
-                AudioFX.play('lose');
-                document.getElementById('modal-title').innerText = 'Game Over';
-                document.getElementById('modal-desc').innerText = `Out of tries! The word was "${targetWord}".`;
-                document.getElementById('reward-modal').style.display = 'flex';
-            }
-        }
+if(currentRow===6){
+isGameOver=true;
+AudioFX.play('lose');
 
-        function resetGame() {
-            targetWord = WORD_LIST[Math.floor(Math.random() * WORD_LIST.length)];
-            currentRow = 0;
-            currentTile = 0;
-            isGameOver = false;
+document.getElementById('modal-title').innerText='Game Over';
+document.getElementById('modal-desc').innerText=
+`Out of tries! The word was "${targetWord}".`;
 
-            for (let r = 0; r < 6; r++) {
-                for (let c = 0; c < 5; c++) {
-                    guesses[r][c] = '';
-                }
-            }
+document.querySelector('.reward-coins').style.display='none';
+document.getElementById('reward-modal').classList.add('show');
+}
+}
 
-            initBoard();
-            initKeyboard();
-        }
+function resetGame(){
+targetWord=WORD_LIST[Math.floor(Math.random()*WORD_LIST.length)];
+currentRow=0;
+currentTile=0;
+isGameOver=false;
 
-        function closeModalAndReset() {
-            document.getElementById('reward-modal').style.display = 'none';
-            resetGame();
-        }
+for(let r=0;r<6;r++){
+for(let c=0;c<5;c++){
+guesses[r][c]='';
+}
+}
 
-        document.addEventListener('keydown', (e) => {
-            const key = e.key.toUpperCase();
-            handleKeyPress(key);
-        });
+document.querySelector('.reward-coins').style.display='inline-block';
+initBoard();
+initKeyboard();
+}
 
-        document.addEventListener("DOMContentLoaded", function() {
-            loadSavedTheme();
-            if (typeof updateCoinDisplays === "function") {
-                updateCoinDisplays();
-            }
-            resetGame();
-        });
-    </script>
+function closeModalAndReset(){
+document.getElementById('reward-modal').classList.remove('show');
+resetGame();
+}
+
+document.addEventListener('keydown',e=>{
+if(e.key==='Escape'&&isGameOver){
+closeModalAndReset();
+return;
+}
+const key=e.key.toUpperCase();
+handleKeyPress(key);
+});
+
+document.addEventListener('DOMContentLoaded',()=>{
+loadSavedTheme();
+if(typeof updateCoinDisplays==='function')updateCoinDisplays();
+resetGame();
+});
+
+window.addEventListener('pageshow',loadSavedTheme);
+</script>
 </body>
 </html>
