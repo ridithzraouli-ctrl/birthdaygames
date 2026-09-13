@@ -45,72 +45,70 @@ html,body{min-height:100%;margin:0}
 body{
 min-height:100vh;
 background:
-radial-gradient(circle at 15% 15%,rgba(255,255,255,.65),transparent 30%),
-radial-gradient(circle at 85% 85%,rgba(255,255,255,.45),transparent 28%),
-linear-gradient(145deg,var(--bg-base),var(--bg-grad-1) 52%,var(--bg-grad-2));
+radial-gradient(circle at 10% 12%,var(--bg-grad-1) 0,transparent 28%),
+radial-gradient(circle at 90% 85%,var(--bg-grad-2) 0,transparent 30%),
+var(--bg-base);
 color:var(--text-main);
 font-family:Georgia,"Times New Roman",serif;
 position:relative;
 overflow-x:hidden;
 }
-.decorations{position:fixed;inset:0;pointer-events:none;z-index:0;color:var(--ornament-color);opacity:.5}
-.decorations span{position:absolute;font-size:18px}
-.decorations span:nth-child(1){top:16%;left:5%}
-.decorations span:nth-child(2){top:30%;right:6%;font-size:13px}
-.decorations span:nth-child(3){bottom:17%;left:8%;font-size:15px}
-.decorations span:nth-child(4){bottom:10%;right:9%;font-size:21px}
-.decorations span:nth-child(5){top:8%;right:27%;font-size:11px}
+.decorations{position:fixed;inset:0;pointer-events:none;z-index:-1;color:var(--ornament-color);opacity:.4}
+.decorations span{position:absolute}
+.decorations span:nth-child(1){top:10%;left:7%;font-size:20px}
+.decorations span:nth-child(2){top:25%;right:8%;font-size:13px}
+.decorations span:nth-child(3){top:52%;left:5%;font-size:14px}
+.decorations span:nth-child(4){top:68%;right:6%;font-size:21px}
+.decorations span:nth-child(5){bottom:12%;left:12%;font-size:12px}
+.decorations span:nth-child(6){bottom:20%;right:13%;font-size:16px}
 header{
-height:64px;display:flex;justify-content:space-between;align-items:center;
-padding:0 24px;background:rgba(255,255,255,.72);
-backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-border-bottom:1px solid color-mix(in srgb,var(--accent-border) 30%,transparent);
-position:relative;z-index:100;
+height:70px;display:flex;justify-content:space-between;align-items:center;
+padding:15px 22px;background:rgba(255,255,255,.88);
+backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+border-bottom:1px solid var(--bg-grad-2);
+position:sticky;top:0;z-index:100;
 }
 .header-left,.header-right{display:flex;align-items:center;gap:12px}
 .nav-link{
-color:var(--text-main);text-decoration:none;font-size:14px;cursor:pointer;
-transition:opacity .2s,transform .2s;
+color:var(--text-heading);text-decoration:none;font-size:15px;cursor:pointer;
+transition:opacity .2s;white-space:nowrap;
 }
-.nav-link:hover{opacity:.7;transform:translateX(-2px)}
+.nav-link:hover{opacity:.7}
 .coin-display{
-background:var(--accent-badge);
-border:1px solid color-mix(in srgb,var(--accent-border) 45%,transparent);
-padding:7px 14px;border-radius:999px;font-size:13px;font-weight:bold;
-color:var(--text-heading);box-shadow:0 3px 12px rgba(70,90,110,.08);
+background:var(--accent-soft);
+border:1px solid var(--accent-border);
+padding:9px 15px;border-radius:100px;font-size:13px;font-weight:bold;
+color:var(--text-heading);white-space:nowrap;
 }
 main{
-width:min(100%,600px);margin:0 auto;padding:28px 18px 42px;
+width:min(100%,560px);margin:0 auto;padding:28px 18px 40px;
 display:flex;flex-direction:column;align-items:center;position:relative;z-index:1;
 }
-.top-ornament,.bottom-ornament{
-color:var(--ornament-color);font-size:17px;letter-spacing:7px;opacity:.8;user-select:none;
+.ornament{
+display:flex;align-items:center;justify-content:center;
+gap:10px;height:22px;margin-bottom:15px;color:var(--ornament-color);
 }
-.top-ornament{margin-bottom:8px}
-.bottom-ornament{margin-top:20px}
+.ornament span{font-size:16px}
+.ornament i{width:38px;height:1px;background:var(--ornament-color);opacity:.45}
+.ornament.bottom{margin-top:30px;margin-bottom:0}
 h1{
-color:var(--text-heading);font-weight:normal;font-size:29px;
-letter-spacing:.5px;margin:0 0 6px;
-}
-.subtitle{
-color:color-mix(in srgb,var(--text-main) 70%,transparent);
-margin:0 0 18px;font-size:13px;text-align:center;min-height:18px;
+color:var(--text-heading);font-weight:normal;font-size:28px;
+margin:0 0 22px;text-align:center;
 }
 .game-panel{
-width:min(100%,500px);padding:16px;border:1px solid color-mix(in srgb,var(--accent-border) 45%,transparent);
-border-radius:22px;background:rgba(255,255,255,.42);
-box-shadow:0 12px 35px rgba(70,90,110,.10),inset 0 1px rgba(255,255,255,.75);
+width:100%;padding:8px;background:rgba(255,255,255,.55);
+border:1px solid var(--bg-grad-2);border-radius:13px;
+box-shadow:0 6px 20px rgba(0,0,0,.045);
 }
 .board-frame{
-width:100%;padding:7px;border-radius:15px;background:rgba(255,255,255,.58);
-border:1px solid color-mix(in srgb,var(--accent-border) 42%,transparent);
-box-shadow:0 5px 18px rgba(70,90,110,.12);
+width:100%;padding:7px;border-radius:11px;background:rgba(255,255,255,.8);
+border:1px solid var(--accent-border);
 }
 #board-wrapper{width:100%;aspect-ratio:1;position:relative}
 #board{
 display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);
-width:100%;height:100%;border:2px solid var(--board-line);border-radius:9px;
-overflow:hidden;user-select:none;box-shadow:0 3px 12px rgba(50,70,80,.15);
+width:100%;height:100%;border:2px solid var(--accent-border);border-radius:7px;
+overflow:hidden;user-select:none;background:var(--board-light);
 }
 .square{
 width:100%;height:100%;display:flex;align-items:center;justify-content:center;
@@ -118,7 +116,7 @@ cursor:pointer;position:relative;
 }
 .square.white{background:var(--board-light)}
 .square.black{background:var(--board-dark)}
-.square.selected{background:var(--selected)!important;box-shadow:inset 0 0 0 3px var(--board-line)}
+.square.selected{background:var(--selected)!important}
 .square.legal::after{
 content:"";position:absolute;width:22%;height:22%;border-radius:50%;
 background:var(--legal);pointer-events:none;z-index:2;
@@ -127,41 +125,37 @@ background:var(--legal);pointer-events:none;z-index:2;
 content:"";position:absolute;inset:8%;border:3px solid var(--capture);
 border-radius:50%;pointer-events:none;z-index:2;
 }
-.square.last-move{box-shadow:inset 0 0 0 999px color-mix(in srgb,var(--accent-border) 12%,transparent)}
+.square.last-move{background:color-mix(in srgb,var(--accent-border) 18%,transparent)}
 .piece{
 width:90%;height:90%;position:absolute;top:5%;left:5%;pointer-events:none;
 z-index:10;will-change:transform;transition:transform .24s cubic-bezier(.4,0,.2,1);
 }
 .square:hover .piece{transform:scale(1.045)}
-.piece img{width:100%;height:100%;display:block;filter:drop-shadow(0 3px 3px rgba(0,0,0,.18))}
+.piece img{width:100%;height:100%;display:block;filter:drop-shadow(0 3px 3px rgba(0,0,0,.15))}
 .status-box{
-margin-top:15px;min-height:40px;display:flex;align-items:center;justify-content:center;
-padding:9px 15px;border-radius:13px;background:var(--accent-soft);
-border:1px solid color-mix(in srgb,var(--accent-border) 35%,transparent);
-color:var(--text-heading);font-size:13px;text-align:center;
+margin-top:13px;min-height:20px;display:flex;align-items:center;justify-content:center;
+color:var(--text-heading);font-size:14px;text-align:center;
 }
-.controls{display:flex;gap:10px;margin-top:15px;justify-content:center}
+.controls{display:flex;gap:10px;margin-top:16px;justify-content:center}
 .btn{
-padding:10px 19px;border:1px solid color-mix(in srgb,var(--accent-border) 48%,transparent);
-border-radius:12px;background:rgba(255,255,255,.75);color:var(--text-heading);
+padding:10px 17px;border:1px solid var(--accent-border);
+border-radius:100px;background:rgba(255,255,255,.8);color:var(--text-heading);
 font-family:Georgia,"Times New Roman",serif;font-size:13px;cursor:pointer;
-transition:transform .18s,background .18s,box-shadow .18s;
-box-shadow:0 3px 10px rgba(70,90,110,.07);
+transition:.2s ease;
 }
-.btn:hover{background:var(--accent-soft);transform:translateY(-1px);box-shadow:0 5px 14px rgba(70,90,110,.11)}
-.btn:active{transform:translateY(1px)}
+.btn:hover{background:var(--accent-soft);transform:translateY(-1px)}
 .difficulty-dropdown{position:relative}
 .diff-btn{
-padding:7px 11px;border:1px solid color-mix(in srgb,var(--accent-border) 45%,transparent);
-border-radius:11px;background:rgba(255,255,255,.68);color:var(--text-heading);
-font-family:Georgia,"Times New Roman",serif;font-size:12px;cursor:pointer;
+padding:9px 15px;border:1px solid var(--accent-border);
+border-radius:100px;background:var(--accent-soft);color:var(--text-heading);
+font-family:Georgia,"Times New Roman",serif;font-size:13px;font-weight:bold;cursor:pointer;
 display:flex;align-items:center;gap:5px;
 }
-.diff-btn:hover{background:var(--accent-soft)}
+.diff-btn:hover{opacity:.8}
 .diff-menu{
 display:none;position:absolute;right:0;top:calc(100% + 7px);
 background:rgba(255,255,255,.96);backdrop-filter:blur(10px);
-border:1px solid color-mix(in srgb,var(--accent-border) 45%,transparent);
+border:1px solid var(--accent-border);
 border-radius:13px;box-shadow:0 8px 25px rgba(60,70,80,.14);
 z-index:200;min-width:125px;overflow:hidden;padding:4px;
 }
@@ -171,84 +165,60 @@ padding:9px 11px;border-radius:9px;font-size:12px;color:var(--text-main);
 cursor:pointer;transition:background .15s;
 }
 .diff-option:hover{background:var(--accent-soft)}
-.diff-option.active{font-weight:bold;color:var(--text-heading);background:var(--accent-soft)}.modal-overlay{
-display:none;position:fixed;inset:0;background:rgba(40,45,50,.25);
+.diff-option.active{font-weight:bold;color:var(--text-heading);background:var(--accent-soft)}
+.modal-overlay{
+display:none;position:fixed;inset:0;background:rgba(45,55,65,.28);
 backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);
 z-index:500;align-items:center;justify-content:center;padding:20px;
 }
 .modal-card{
-position:relative;background:rgba(255,255,255,.94);
-border:1px solid color-mix(in srgb,var(--accent-border) 45%,transparent);
-border-radius:22px;padding:25px 22px 23px;max-width:350px;width:100%;
-text-align:center;box-shadow:0 18px 50px rgba(50,60,70,.2);
-animation:modalIn .25s ease-out;
+position:relative;background:rgba(255,255,255,.96);
+border:1px solid var(--accent-border);
+border-radius:15px;padding:28px 24px;max-width:360px;width:100%;
+text-align:center;box-shadow:0 15px 45px rgba(0,0,0,.12);
 }
-.modal-sparkles{color:var(--ornament-color);font-size:17px;letter-spacing:7px;margin-bottom:8px}
-.modal-card h2{font-size:21px;font-weight:normal;margin:0 0 8px;color:var(--text-heading)}
-.modal-card p{color:color-mix(in srgb,var(--text-main) 68%,transparent);font-size:13px;line-height:1.5;margin:0 0 19px}
+.modal-card h2{font-size:23px;font-weight:normal;margin:0 0 18px;color:var(--text-heading)}
 .promotion-options{display:flex;justify-content:center;gap:9px;margin-top:17px}
 .promo-choice{
-width:58px;height:58px;border:1px solid color-mix(in srgb,var(--accent-border) 45%,transparent);
+width:58px;height:58px;border:1px solid var(--accent-border);
 border-radius:14px;background:rgba(255,255,255,.8);cursor:pointer;padding:4px;
-transition:background .18s,transform .15s,box-shadow .18s;
+transition:background .18s,transform .15s;
 }
-.promo-choice:hover{background:var(--accent-soft);transform:translateY(-2px) scale(1.04);box-shadow:0 5px 14px rgba(70,90,110,.12)}
-.promo-choice:active{transform:scale(.97)}
+.promo-choice:hover{background:var(--accent-soft);transform:scale(1.04)}
 .promo-choice img{width:100%;height:100%;display:block}
-.reward-card{overflow:hidden}
-.reward-card::before,.reward-card::after{
-content:"✦";position:absolute;color:var(--ornament-color);opacity:.5;font-size:18px;
-}
-.reward-card::before{top:13px;left:18px}
-.reward-card::after{right:18px;bottom:13px}
-@keyframes modalIn{
-from{opacity:0;transform:scale(.94) translateY(8px)}
-to{opacity:1;transform:scale(1) translateY(0)}
-}
 @media(max-width:600px){
-header{padding:0 14px;height:58px}
-.nav-link{font-size:13px}
-.coin-display{padding:6px 11px;font-size:12px}
-.diff-btn{font-size:11px;padding:6px 8px}
+header{padding:15px 14px}
 main{padding:22px 10px 35px}
 h1{font-size:27px}
-.game-panel{padding:10px;border-radius:18px}
-.board-frame{padding:5px;border-radius:13px}
-.status-box{font-size:12px}
-}
-@media(max-width:390px){
-.header-right{gap:6px}
-.diff-btn{max-width:106px}
 }
 </style>
 </head>
 <body>
 
 <div class="decorations">
-<span>✦</span><span>✧</span><span>♡</span><span>✦</span><span>✧</span>
+<span>✦</span><span>✧</span><span>♡</span><span>✦</span><span>✧</span><span>♡</span>
 </div>
 
 <header>
 <div class="header-left">
-<a onclick="goBack()" class="nav-link">← Games</a>
+<a onclick="goBack()" class="nav-link">← Back to Games</a>
 </div>
 <div class="header-right">
 <div class="difficulty-dropdown">
-<button class="diff-btn" onclick="toggleDiffMenu()">Difficulty · <span id="current-diff-label">Medium</span>⌄</button>
+<button class="diff-btn" onclick="toggleDiffMenu()">Difficulty · <span id="current-diff-label">Medium</span> ⌄</button>
 <div class="diff-menu" id="diff-menu">
 <div class="diff-option" onclick="setDifficulty('easy')">Easy</div>
 <div class="diff-option active" onclick="setDifficulty('medium')">Medium</div>
 <div class="diff-option" onclick="setDifficulty('hard')">Hard</div>
 </div>
 </div>
-<div class="coin-display">♡ <span class="coin-count">0</span></div>
+<div class="coin-display"><span class="coin-count">0</span> Coins</div>
 </div>
 </header>
 
 <main>
-<div class="top-ornament">✦ ✧ ♡ ✧ ✦</div>
+<div class="ornament"><span>✦</span><i></i><span>♡</span><i></i><span>✦</span></div>
 <h1>Chess</h1>
-<p class="subtitle" id="status">Your turn · White</p>
 
 <div class="game-panel">
 <div class="board-frame">
@@ -257,21 +227,18 @@ h1{font-size:27px}
 </div>
 </div>
 
-<div class="status-box" id="status-box">Select a piece to begin.</div>
+<div class="status-box" id="status-box"></div>
 
 <div class="controls">
 <button class="btn" onclick="resetGame()">New Game</button>
 </div>
 </div>
-
-<div class="bottom-ornament">✧ ♡ ✧</div>
+<div class="ornament bottom"><span>✧</span><i></i><span>♡</span><i></i><span>✧</span></div>
 </main>
 
 <div id="promotion-modal" class="modal-overlay">
 <div class="modal-card">
-<div class="modal-sparkles">✦ ✧ ♡ ✧ ✦</div>
 <h2>Promote Pawn</h2>
-<p>Choose your new piece</p>
 <div class="promotion-options">
 <button class="promo-choice" onclick="selectPromotion('q')"><img id="p-q" alt="Queen"></button>
 <button class="promo-choice" onclick="selectPromotion('r')"><img id="p-r" alt="Rook"></button>
@@ -282,14 +249,12 @@ h1{font-size:27px}
 </div>
 
 <div id="reward-modal" class="modal-overlay">
-<div class="modal-card reward-card">
-<div class="modal-sparkles">✦ ✧ ♡ ✧ ✦</div>
-<h2>Victory ♡</h2>
-<p>You won the game and earned <strong>50 Coins</strong>.</p>
+<div class="modal-card">
+<h2>✦ You won ♡</h2>
+<p style="color:var(--text-main);font-size:14px;margin-bottom:18px;">Earned <strong>50 Coins</strong>!</p>
 <button class="btn" onclick="closeModalAndReset()" style="width:100%">Play Again</button>
 </div>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/chess.js@0.10.3/chess.min.js"></script>
 <script src="../script.js"></script>
 <script>
@@ -411,7 +376,9 @@ opt.classList.toggle("active",opt.textContent.toLowerCase()===diff);
 document.getElementById("diff-menu").classList.remove("show");
 AudioFX.play("move");
 resetGame();
-    }function createGrid(){
+}
+
+function createGrid(){
 const boardEl=document.getElementById("board");
 boardEl.innerHTML="";
 for(let r=0;r<8;r++){
@@ -548,7 +515,7 @@ renderPieces();
 updateStatus();
 
 if(!game.game_over()){
-setTimeout(makeComputerMove,180);
+setTimeout(makeComputerMove,150);
 }
 }else{
 renderPieces();
@@ -592,7 +559,7 @@ fromEl.style.transform=`translate3d(${b.left-a.left}px,${b.top-a.top}px,0)`;
 setTimeout(()=>{
 isAnimating=false;
 callback();
-},250);
+},220);
 }
 
 function evaluateBoard(board){
@@ -650,8 +617,7 @@ if(currentDifficulty==="easy"){
 selectedMove=moves[Math.floor(Math.random()*moves.length)];
 }else if(currentDifficulty==="medium"){
 const captures=moves.filter(m=>m.flags.includes("c")||m.flags.includes("e"));
-
-if(captures.length&&Math.random()<.7){
+if(captures.length&&Math.random()<.6){
 selectedMove=captures[Math.floor(Math.random()*captures.length)];
 }else{
 selectedMove=moves[Math.floor(Math.random()*moves.length)];
@@ -672,7 +638,6 @@ bestMoves=[move];
 bestMoves.push(move);
 }
 }
-
 selectedMove=bestMoves[Math.floor(Math.random()*bestMoves.length)]||moves[0];
 }
 
@@ -689,42 +654,28 @@ updateStatus();
 
 function updateStatus(){
 if(!game)return;
-
-const status=document.getElementById("status");
 const box=document.getElementById("status-box");
 
 if(game.in_checkmate()){
 AudioFX.play("end");
-
 if(game.turn()==="b"){
-status.textContent="Checkmate · You won ♡";
-box.textContent="Victory · 50 Coins earned ✦";
-
+box.textContent="✦ Checkmate · You won ♡";
 if(typeof addCoins==="function")addCoins(50);
 updateCoins();
-
 setTimeout(()=>{
 AudioFX.win();
 document.getElementById("reward-modal").style.display="flex";
 },280);
-
 }else{
-status.textContent="Checkmate · Computer won";
-box.textContent="Game over · Try again ♡";
+box.textContent="Checkmate · Computer won";
 }
-
 }else if(game.in_draw()){
 AudioFX.play("end");
-status.textContent="Draw";
-box.textContent="The game ended in a draw.";
-
-}else if(game.turn()==="w"){
-status.textContent=game.in_check()?"Your turn · Check!":"Your turn · White";
-box.textContent=game.in_check()?"Your king is in check.":"Select a piece to move.";
-
+box.textContent="Draw game";
+}else if(game.in_check()){
+box.textContent="Check!";
 }else{
-status.textContent="Computer thinking · Black";
-box.textContent="The computer is choosing a move…";
+box.textContent="";
 }
 }
 
@@ -761,15 +712,12 @@ window.addEventListener("pageshow",applySavedTheme);
 
 document.addEventListener("DOMContentLoaded",()=>{
 applySavedTheme();
-
 try{
 game=new Chess();
 }catch(e){
-document.getElementById("status").textContent="Chess could not load";
-document.getElementById("status-box").textContent="Please refresh the page.";
+document.getElementById("status-box").textContent="Chess failed to load.";
 return;
 }
-
 createGrid();
 renderPieces();
 updateStatus();
