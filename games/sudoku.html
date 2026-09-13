@@ -16,10 +16,8 @@
             --accent-soft:#e9f3f9;
             --accent-badge:#dfe8f8;
             --ornament-color:#799eb8;
-
-            --cell-bg:#fafdff;
-            --cell-dark:#e7f0f5;
-            --cell-selected:#d5e9f3;
+            --cell-bg:rgba(255,255,255,.88);
+            --cell-selected:#dcecf5;
             --cell-number:#46637a;
             --cell-error:#f2d7dd;
             --cell-correct:#dceede;
@@ -35,10 +33,8 @@
             --accent-soft:#f9e9f0;
             --accent-badge:#f8dfe8;
             --ornament-color:#b87992;
-
-            --cell-bg:#fffafd;
-            --cell-dark:#f5e4ea;
-            --cell-selected:#f3d5e1;
+            --cell-bg:rgba(255,255,255,.88);
+            --cell-selected:#f4dce6;
             --cell-number:#7a4659;
             --cell-error:#f2d1da;
             --cell-correct:#dceedd;
@@ -54,10 +50,8 @@
             --accent-soft:#e9f9eb;
             --accent-badge:#dff8e2;
             --ornament-color:#79b882;
-
-            --cell-bg:#fbfffb;
-            --cell-dark:#e4f1e4;
-            --cell-selected:#d4ead4;
+            --cell-bg:rgba(255,255,255,.88);
+            --cell-selected:#dcefdc;
             --cell-number:#467a4c;
             --cell-error:#f2d1d1;
             --cell-correct:#dcefdc;
@@ -73,10 +67,8 @@
             --accent-soft:#f0e9f9;
             --accent-badge:#e9dff8;
             --ornament-color:#9379b8;
-
-            --cell-bg:#fdfbff;
-            --cell-dark:#ece5f5;
-            --cell-selected:#e7daf4;
+            --cell-bg:rgba(255,255,255,.88);
+            --cell-selected:#e8def5;
             --cell-number:#59467a;
             --cell-error:#f0d5df;
             --cell-correct:#dcefdc;
@@ -92,10 +84,8 @@
             --accent-soft:#f9f5e9;
             --accent-badge:#f8f3df;
             --ornament-color:#b8aa79;
-
-            --cell-bg:#fffef9;
-            --cell-dark:#f1ecd9;
-            --cell-selected:#eee5c7;
+            --cell-bg:rgba(255,255,255,.88);
+            --cell-selected:#f2ebd0;
             --cell-number:#7a6e46;
             --cell-error:#f0d7d7;
             --cell-correct:#dfedd8;
@@ -214,36 +204,6 @@
             color:var(--text-heading);
         }
 
-        .theme-selector {
-            display:flex;
-            align-items:center;
-            gap:7px;
-            padding:6px 10px;
-            background:rgba(255,255,255,.6);
-            border:1px solid var(--bg-grad-2);
-            border-radius:100px;
-        }
-
-        .theme-dot {
-            width:20px;
-            height:20px;
-            flex:0 0 20px;
-            border-radius:50%;
-            border:1px solid rgba(0,0,0,.15);
-            cursor:pointer;
-            transition:transform .2s ease;
-        }
-
-        .theme-dot:hover {
-            transform:scale(1.25);
-        }
-
-        .dot-blue { background:#d3e2ea; }
-        .dot-pink { background:#ead3dc; }
-        .dot-green { background:#d3ead3; }
-        .dot-lavender { background:#dad3ea; }
-        .dot-yellow { background:#eae3c5; }
-
         main {
             width:100%;
             max-width:520px;
@@ -288,19 +248,13 @@
             opacity:.4;
         }
 
-        /*
-         * SUDOKU GAME AREA
-         */
-
         .board-wrap {
             width:100%;
-            padding:9px;
-            background:rgba(255,255,255,.52);
-            border:1px solid var(--accent-border);
-            border-radius:5px;
-            box-shadow:
-                4px 4px 0 rgba(0,0,0,.035),
-                0 8px 22px rgba(0,0,0,.045);
+            padding:8px;
+            background:rgba(255,255,255,.55);
+            border:1px solid var(--bg-grad-2);
+            border-radius:13px;
+            box-shadow:0 5px 20px rgba(0,0,0,.045);
         }
 
         #sudoku-board {
@@ -310,8 +264,8 @@
             grid-template-columns:repeat(9,1fr);
             grid-template-rows:repeat(9,1fr);
             overflow:hidden;
-            border:3px solid var(--accent-border);
-            border-radius:2px;
+            border:2px solid var(--accent-border);
+            border-radius:7px;
             background:var(--cell-bg);
         }
 
@@ -322,34 +276,17 @@
             justify-content:center;
             min-width:0;
             min-height:0;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(255,255,255,.22) 25%,
-                    transparent 25%
-                ) 0 0 / 4px 4px,
-                var(--cell-bg);
-
+            background:var(--cell-bg);
             color:var(--cell-number);
-
-            font-family:
-                "Courier New",
-                Courier,
-                monospace;
-
             font-size:clamp(18px,5vw,25px);
-            font-weight:500;
-
             cursor:pointer;
             user-select:none;
-
             border-right:1px solid var(--bg-grad-2);
             border-bottom:1px solid var(--bg-grad-2);
 
             transition:
-                background-color .12s ease,
-                transform .08s ease;
+                background-color 1.2s ease;
+
         }
 
         .cell:nth-child(9n) {
@@ -360,21 +297,13 @@
             border-bottom:none;
         }
 
-        /*
-         * Thick 3 × 3 Sudoku boundaries
-         */
-
         .cell:nth-child(3n) {
-            border-right:2px solid var(--accent-border);
-        }
-
-        .cell:nth-child(9n) {
-            border-right:none;
+            border-right:1.8px solid var(--accent-border);
         }
 
         .cell:nth-child(n+19):nth-child(-n+27),
         .cell:nth-child(n+46):nth-child(-n+54) {
-            border-bottom:2px solid var(--accent-border);
+            border-bottom:1.8px solid var(--accent-border);
         }
 
         .cell.given {
@@ -384,16 +313,7 @@
         }
 
         .cell.selected {
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(255,255,255,.18) 25%,
-                    transparent 25%
-                ) 0 0 / 4px 4px,
-                var(--cell-selected);
-
-            box-shadow:
-                inset 0 0 0 2px var(--accent-border);
+            background:var(--cell-selected);
         }
 
         .cell.same-number {
@@ -406,17 +326,13 @@
 
         .cell.correct {
             background:var(--cell-correct);
-            animation:cellPop .18s ease;
+            transition:background-color .9s ease;
         }
 
         .cell.wrong {
             background:var(--cell-error);
-            animation:cellShake .22s ease;
+            transition:background-color .9s ease;
         }
-
-        /*
-         * NUMBER PAD
-         */
 
         .keyboard {
             width:100%;
@@ -424,38 +340,20 @@
             margin-top:18px;
             display:grid;
             grid-template-columns:repeat(3,1fr);
-            gap:8px;
+            gap:9px;
         }
 
         .number-btn {
             height:52px;
             border:1px solid var(--accent-border);
-            border-radius:4px;
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(255,255,255,.45) 25%,
-                    transparent 25%
-                ) 0 0 / 6px 6px,
-                rgba(255,255,255,.82);
-
+            border-radius:12px;
+            background:rgba(255,255,255,.82);
             color:var(--text-heading);
-
-            font-family:
-                Georgia,
-                "Times New Roman",
-                serif;
-
+            font-family:Georgia,"Times New Roman",serif;
             font-size:20px;
             cursor:pointer;
-
-            box-shadow:
-                3px 3px 0 rgba(0,0,0,.035);
-
-            transition:
-                transform .1s ease,
-                background .1s ease,
-                box-shadow .1s ease;
+            box-shadow:0 2px 7px rgba(0,0,0,.035);
+            transition:transform .12s ease,background .12s ease;
         }
 
         .number-btn:hover {
@@ -463,8 +361,7 @@
         }
 
         .number-btn:active {
-            transform:translate(2px,2px);
-            box-shadow:1px 1px 0 rgba(0,0,0,.035);
+            transform:scale(.95);
         }
 
         .delete-btn {
@@ -472,10 +369,6 @@
             height:46px;
             font-size:18px;
         }
-
-        /*
-         * ACTIONS
-         */
 
         .actions {
             display:flex;
@@ -489,32 +382,17 @@
             border:1px solid var(--accent-border);
             background:rgba(255,255,255,.8);
             color:var(--text-heading);
-
-            font-family:
-                Georgia,
-                "Times New Roman",
-                serif;
-
+            font-family:Georgia,"Times New Roman",serif;
             font-size:13px;
             padding:10px 17px;
-            border-radius:4px;
-
+            border-radius:100px;
             cursor:pointer;
-
-            box-shadow:
-                2px 2px 0 rgba(0,0,0,.035);
-
-            transition:
-                .15s ease;
+            transition:.2s ease;
         }
 
         .action-btn:hover {
             background:var(--accent-soft);
             transform:translateY(-1px);
-        }
-
-        .action-btn:active {
-            transform:translate(1px,1px);
         }
 
         .message {
@@ -524,10 +402,6 @@
             font-size:14px;
             text-align:center;
         }
-
-        /*
-         * WIN MODAL
-         */
 
         .modal {
             position:fixed;
@@ -548,16 +422,11 @@
         .modal-box {
             width:min(360px,100%);
             padding:28px 24px;
-
             background:rgba(255,255,255,.96);
             border:1px solid var(--accent-border);
-            border-radius:6px;
-
+            border-radius:15px;
             text-align:center;
-
-            box-shadow:
-                5px 5px 0 rgba(0,0,0,.045),
-                0 15px 45px rgba(0,0,0,.12);
+            box-shadow:0 15px 45px rgba(0,0,0,.12);
         }
 
         .modal-box h2 {
@@ -571,14 +440,9 @@
             border:1px solid var(--accent-border);
             background:var(--accent-soft);
             color:var(--text-heading);
-
-            font-family:
-                Georgia,
-                "Times New Roman",
-                serif;
-
+            font-family:Georgia,"Times New Roman",serif;
             padding:10px 20px;
-            border-radius:4px;
+            border-radius:100px;
             cursor:pointer;
         }
 
@@ -592,50 +456,41 @@
             }
         }
 
-        @keyframes cellPop {
-            0% {
-                transform:scale(.88);
-            }
-
-            100% {
-                transform:scale(1);
-            }
-        }
-
-        @keyframes cellShake {
-            0%,100% {
-                transform:translateX(0);
-            }
-
-            25% {
-                transform:translateX(-3px);
-            }
-
-            75% {
-                transform:translateX(3px);
-            }
-        }
-
-        @media (max-width:520px) {
+        @media (max-width:600px) {
             header {
-                padding:18px 16px;
+                padding:16px 18px;
             }
 
             main {
-                padding-left:12px;
-                padding-right:12px;
+                padding:28px 14px 40px;
+            }
+        }
+
+        @media (max-width:430px) {
+            header {
+                padding:15px 12px;
+            }
+
+            .nav-link {
+                font-size:13px;
+            }
+
+            .coin-display {
+                padding:6px 11px;
+                font-size:12px;
+            }
+
+            main {
+                padding-left:10px;
+                padding-right:10px;
             }
 
             .board-wrap {
                 padding:7px;
             }
 
-            .keyboard {
-                gap:7px;
-            }
-
             .number-btn {
-                height:49px;
+                height:50px;
             }
         }
     </style>
@@ -657,14 +512,6 @@
         <a onclick="goBack()" class="nav-link">
             ← Games
         </a>
-
-        <div class="theme-selector">
-            <div class="theme-dot dot-blue" onclick="setTheme('blue')"></div>
-            <div class="theme-dot dot-pink" onclick="setTheme('pink')"></div>
-            <div class="theme-dot dot-green" onclick="setTheme('green')"></div>
-            <div class="theme-dot dot-lavender" onclick="setTheme('lavender')"></div>
-            <div class="theme-dot dot-yellow" onclick="setTheme('yellow')"></div>
-        </div>
 
         <div class="coin-display">
             <span class="coin-count">0</span> Coins
@@ -709,6 +556,7 @@
         </div>
 
         <div class="actions">
+
             <button class="action-btn" onclick="checkBoard()">
                 Check
             </button>
@@ -716,6 +564,7 @@
             <button class="action-btn" onclick="newGame()">
                 New Game
             </button>
+
         </div>
 
         <div class="message" id="message"></div>
@@ -742,31 +591,17 @@
 
         </div>
 
-    </div>    <script src="../script.js"></script>
+    </div>
+
+    <script src="../script.js"></script>
 
     <script>
-        let solution = [];
-        let puzzle = [];
-        let board = [];
 
-        let selectedRow = -1;
-        let selectedCol = -1;
-
-        let solved = false;
-        let feedbackTimer = null;
-
-
-        function setTheme(themeName) {
-
-            if (themeName === "blue") {
-                document.body.removeAttribute("data-theme");
-            } else {
-                document.body.setAttribute("data-theme", themeName);
-            }
-
-            localStorage.setItem("arcade_theme", themeName);
-        }
-
+        /*
+        ========================================
+        THEME
+        ========================================
+        */
 
         function loadSavedTheme() {
 
@@ -774,360 +609,200 @@
                 localStorage.getItem("arcade_theme");
 
             if (
-                savedTheme === "blue" ||
                 savedTheme === "pink" ||
                 savedTheme === "green" ||
                 savedTheme === "lavender" ||
                 savedTheme === "yellow"
             ) {
-                if (savedTheme === "blue") {
-                    document.body.removeAttribute("data-theme");
-                } else {
-                    document.body.setAttribute(
-                        "data-theme",
-                        savedTheme
-                    );
-                }
-            }
-        }
 
+                document.body.setAttribute(
+                    "data-theme",
+                    savedTheme
+                );
 
-        function goBack() {
-
-            if (window.history.length > 1) {
-                window.history.back();
             } else {
-                window.location.href = "../index.html";
-            }
-        }
 
-
-        function shuffle(array) {
-
-            for (
-                let i = array.length - 1;
-                i > 0;
-                i--
-            ) {
-
-                const j =
-                    Math.floor(Math.random() * (i + 1));
-
-                [
-                    array[i],
-                    array[j]
-                ] = [
-                    array[j],
-                    array[i]
-                ];
-            }
-
-            return array;
-        }
-
-
-        function isSafe(grid, row, col, num) {
-
-            for (let x = 0; x < 9; x++) {
-
-                if (grid[row][x] === num) {
-                    return false;
-                }
-
-                if (grid[x][col] === num) {
-                    return false;
-                }
-            }
-
-
-            const startRow =
-                row - row % 3;
-
-            const startCol =
-                col - col % 3;
-
-
-            for (let r = 0; r < 3; r++) {
-
-                for (let c = 0; c < 3; c++) {
-
-                    if (
-                        grid[startRow + r][startCol + c]
-                        === num
-                    ) {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
-        }
-
-
-        function fillGrid(grid) {
-
-            for (let row = 0; row < 9; row++) {
-
-                for (let col = 0; col < 9; col++) {
-
-                    if (grid[row][col] === 0) {
-
-                        const numbers =
-                            shuffle([
-                                1,2,3,
-                                4,5,6,
-                                7,8,9
-                            ]);
-
-
-                        for (const num of numbers) {
-
-                            if (
-                                isSafe(
-                                    grid,
-                                    row,
-                                    col,
-                                    num
-                                )
-                            ) {
-
-                                grid[row][col] = num;
-
-
-                                if (
-                                    fillGrid(grid)
-                                ) {
-                                    return true;
-                                }
-
-
-                                grid[row][col] = 0;
-                            }
-                        }
-
-                        return false;
-                    }
-                }
-            }
-
-            return true;
-        }
-
-
-        function generateSudoku() {
-
-            solution =
-                Array.from(
-                    { length:9 },
-                    () => Array(9).fill(0)
+                document.body.removeAttribute(
+                    "data-theme"
                 );
 
+            }
 
-            fillGrid(solution);
-
-
-            puzzle =
-                solution.map(
-                    row => [...row]
-                );
+        }
 
 
-            let removed = 0;
+        /*
+        ========================================
+        SOUND EFFECTS
+        ========================================
+        */
+
+        const AudioFX = {
+
+            ctx: null,
+
+            init() {
+
+                if (this.ctx) return;
+
+                const AudioContext =
+                    window.AudioContext ||
+                    window.webkitAudioContext;
+
+                if (AudioContext) {
+                    this.ctx = new AudioContext();
+                }
+
+            },
+
+            play(type) {
+
+                this.init();
+
+                if (!this.ctx) return;
+
+                if (this.ctx.state === "suspended") {
+                    this.ctx.resume();
+                }
+
+                const now =
+                    this.ctx.currentTime;
+
+                const oscillator =
+                    this.ctx.createOscillator();
+
+                const gain =
+                    this.ctx.createGain();
+
+                oscillator.connect(gain);
+                gain.connect(this.ctx.destination);
 
 
-            while (removed < 40) {
+                if (type === "input") {
 
-                const row =
-                    Math.floor(
-                        Math.random() * 9
+                    oscillator.type = "sine";
+
+                    oscillator.frequency.setValueAtTime(
+                        520,
+                        now
                     );
 
-                const col =
-                    Math.floor(
-                        Math.random() * 9
+                    oscillator.frequency.exponentialRampToValueAtTime(
+                        650,
+                        now + 0.08
                     );
 
-
-                if (puzzle[row][col] !== 0) {
-
-                    puzzle[row][col] = 0;
-                    removed++;
-                }
-            }
-
-
-            board =
-                puzzle.map(
-                    row => [...row]
-                );
-
-
-            solved = false;
-
-            selectedRow = -1;
-            selectedCol = -1;
-
-
-            if (feedbackTimer) {
-
-                clearTimeout(feedbackTimer);
-
-                feedbackTimer = null;
-            }
-
-
-            document.getElementById(
-                "message"
-            ).textContent = "";
-
-
-            renderBoard();
-        }
-
-
-        function renderBoard() {
-
-            const container =
-                document.getElementById(
-                    "sudoku-board"
-                );
-
-
-            container.innerHTML = "";
-
-
-            for (let row = 0; row < 9; row++) {
-
-                for (let col = 0; col < 9; col++) {
-
-                    const cell =
-                        document.createElement("div");
-
-
-                    const value =
-                        board[row][col];
-
-
-                    cell.className = "cell";
-
-
-                    if (
-                        puzzle[row][col] !== 0
-                    ) {
-                        cell.classList.add("given");
-                    }
-
-
-                    if (
-                        row === selectedRow &&
-                        col === selectedCol
-                    ) {
-                        cell.classList.add("selected");
-                    }
-
-
-                    if (
-                        selectedRow !== -1 &&
-                        selectedCol !== -1 &&
-                        value !== 0 &&
-                        value ===
-                        board[selectedRow][selectedCol]
-                    ) {
-                        cell.classList.add(
-                            "same-number"
-                        );
-                    }
-
-
-                    if (value !== 0) {
-                        cell.textContent = value;
-                    }
-
-
-                    cell.addEventListener(
-                        "click",
-                        function() {
-                            selectCell(row, col);
-                        }
+                    gain.gain.setValueAtTime(
+                        0.055,
+                        now
                     );
 
+                    gain.gain.exponentialRampToValueAtTime(
+                        0.001,
+                        now + 0.12
+                    );
 
-                    container.appendChild(cell);
+                    oscillator.start(now);
+                    oscillator.stop(now + 0.12);
+
                 }
-            }
-        }
 
 
-        function selectCell(row, col) {
+                else if (type === "delete") {
 
-            if (
-                puzzle[row][col] !== 0
-            ) {
-                return;
-            }
+                    oscillator.type = "sine";
 
+                    oscillator.frequency.setValueAtTime(
+                        360,
+                        now
+                    );
 
-            selectedRow = row;
-            selectedCol = col;
+                    oscillator.frequency.exponentialRampToValueAtTime(
+                        240,
+                        now + 0.08
+                    );
 
+                    gain.gain.setValueAtTime(
+                        0.05,
+                        now
+                    );
 
-            renderBoard();
-        }
+                    gain.gain.exponentialRampToValueAtTime(
+                        0.001,
+                        now + 0.1
+                    );
 
+                    oscillator.start(now);
+                    oscillator.stop(now + 0.1);
 
-        function inputNumber(number) {
-
-            if (
-                solved ||
-                selectedRow === -1 ||
-                selectedCol === -1
-            ) {
-                return;
-            }
-
-
-            if (
-                puzzle[selectedRow][selectedCol]
-                !== 0
-            ) {
-                return;
-            }
+                }
 
 
-            board[selectedRow][selectedCol] =
-                number;
+                else if (type === "correct") {
+
+                    oscillator.type = "sine";
+
+                    oscillator.frequency.setValueAtTime(
+                        523.25,
+                        now
+                    );
+
+                    oscillator.frequency.setValueAtTime(
+                        659.25,
+                        now + 0.09
+                    );
+
+                    gain.gain.setValueAtTime(
+                        0.09,
+                        now
+                    );
+
+                    gain.gain.exponentialRampToValueAtTime(
+                        0.001,
+                        now + 0.22
+                    );
+
+                    oscillator.start(now);
+                    oscillator.stop(now + 0.22);
+
+                }
 
 
-            renderBoard();
-        }
+                else if (type === "wrong") {
+
+                    oscillator.type = "triangle";
+
+                    oscillator.frequency.setValueAtTime(
+                        240,
+                        now
+                    );
+
+                    oscillator.frequency.exponentialRampToValueAtTime(
+                        150,
+                        now + 0.16
+                    );
+
+                    gain.gain.setValueAtTime(
+                        0.08,
+                        now
+                    );
+
+                    gain.gain.exponentialRampToValueAtTime(
+                        0.001,
+                        now + 0.18
+                    );
+
+                    oscillator.start(now);
+                    oscillator.stop(now + 0.18);
+
+                }
 
 
-        function deleteNumber() {
-
-            if (
-                solved ||
-                selectedRow === -1 ||
-                selectedCol === -1
-            ) {
-                return;
-            }
-
-
-            if (
-                puzzle[selectedRow][selectedCol]
-                !== 0
-            ) {
-                return;
-            }
-
-
-            board[selectedRow][selectedCol] =
-                0;
-
-
-            renderBoard();
-        }
-
+          /*
+        ========================================
+        CHECK BOARD
+        ========================================
+        */
 
         function checkBoard() {
 
@@ -1137,19 +812,34 @@
 
 
             let complete = true;
+
             let incorrect = false;
 
+            let correctCount = 0;
 
-            for (let row = 0; row < 9; row++) {
+            let wrongCount = 0;
 
-                for (let col = 0; col < 9; col++) {
+
+            for (
+                let row = 0;
+                row < 9;
+                row++
+            ) {
+
+                for (
+                    let col = 0;
+                    col < 9;
+                    col++
+                ) {
 
                     const value =
                         board[row][col];
 
 
                     if (value === 0) {
+
                         complete = false;
+
                     }
 
 
@@ -1157,9 +847,26 @@
                         value !== 0 &&
                         value !== solution[row][col]
                     ) {
+
                         incorrect = true;
+
+                        wrongCount++;
+
                     }
+
+
+                    if (
+                        puzzle[row][col] === 0 &&
+                        value !== 0 &&
+                        value === solution[row][col]
+                    ) {
+
+                        correctCount++;
+
+                    }
+
                 }
+
             }
 
 
@@ -1172,9 +879,17 @@
                 );
 
 
-            for (let row = 0; row < 9; row++) {
+            for (
+                let row = 0;
+                row < 9;
+                row++
+            ) {
 
-                for (let col = 0; col < 9; col++) {
+                for (
+                    let col = 0;
+                    col < 9;
+                    col++
+                ) {
 
                     const index =
                         row * 9 + col;
@@ -1190,8 +905,8 @@
                     ) {
 
                         if (
-                            board[row][col]
-                            === solution[row][col]
+                            board[row][col] ===
+                            solution[row][col]
                         ) {
 
                             cell.classList.add(
@@ -1203,45 +918,71 @@
                             cell.classList.add(
                                 "wrong"
                             );
+
                         }
+
                     }
+
                 }
+
             }
 
 
-            if (feedbackTimer) {
-
-                clearTimeout(feedbackTimer);
+            if (correctCount > 0) {
+                AudioFX.play("correct");
             }
 
+
+            if (wrongCount > 0) {
+                setTimeout(function() {
+                    AudioFX.play("wrong");
+                }, 90);
+            }
+
+
+            /*
+            The color remains visible for
+            3.5 seconds, then the background
+            color alone fades back to normal.
+            */
 
             feedbackTimer =
-                setTimeout(function() {
+                setTimeout(
+                    function() {
 
-                    const currentCells =
-                        document.querySelectorAll(
-                            ".cell"
+                        const currentCells =
+                            document.querySelectorAll(
+                                ".cell"
+                            );
+
+
+                        currentCells.forEach(
+                            function(cell) {
+
+                                cell.classList.remove(
+                                    "correct"
+                                );
+
+                                cell.classList.remove(
+                                    "wrong"
+                                );
+
+                            }
                         );
 
 
-                    currentCells.forEach(
-                        function(cell) {
+                        feedbackTimer = null;
 
-                            cell.classList.remove(
-                                "correct"
-                            );
-
-                            cell.classList.remove(
-                                "wrong"
-                            );
-                        }
-                    );
+                    },
+                    3500
+                );
 
 
-                    feedbackTimer = null;
-
-                }, 2300);
-
+            /*
+            ========================================
+            WIN
+            ========================================
+            */
 
             if (
                 complete &&
@@ -1251,44 +992,76 @@
                 solved = true;
 
 
+                AudioFX.play("win");
+
+
                 if (
-                    typeof addCoins === "function"
+                    typeof addCoins ===
+                    "function"
                 ) {
+
                     addCoins(50);
+
                 }
 
 
                 document
-                    .getElementById("win-modal")
-                    .classList.add("show");
+                    .getElementById(
+                        "win-modal"
+                    )
+                    .classList.add(
+                        "show"
+                    );
 
 
                 return;
+
             }
 
 
-            document.getElementById(
-                "message"
-            ).textContent = "";
+            document
+                .getElementById(
+                    "message"
+                )
+                .textContent = "";
+
         }
 
+
+        /*
+        ========================================
+        NEW GAME
+        ========================================
+        */
 
         function newGame() {
 
             generateSudoku();
+
         }
 
 
         function closeModal() {
 
             document
-                .getElementById("win-modal")
-                .classList.remove("show");
+                .getElementById(
+                    "win-modal"
+                )
+                .classList.remove(
+                    "show"
+                );
 
 
             newGame();
+
         }
 
+
+        /*
+        ========================================
+        KEYBOARD CONTROLS
+        ========================================
+        */
 
         function moveSelection(
             rowDirection,
@@ -1299,17 +1072,27 @@
                 selectedRow === -1 ||
                 selectedCol === -1
             ) {
+
                 return;
+
             }
 
 
-            let row = selectedRow;
-            let col = selectedCol;
+            let row =
+                selectedRow;
+
+            let col =
+                selectedCol;
 
 
-            for (let i = 0; i < 81; i++) {
+            for (
+                let i = 0;
+                i < 81;
+                i++
+            ) {
 
                 row += rowDirection;
+
                 col += colDirection;
 
 
@@ -1334,11 +1117,17 @@
                     puzzle[row][col] === 0
                 ) {
 
-                    selectCell(row, col);
+                    selectCell(
+                        row,
+                        col
+                    );
 
                     return;
+
                 }
+
             }
+
         }
 
 
@@ -1356,6 +1145,7 @@
                     );
 
                     return;
+
                 }
 
 
@@ -1367,42 +1157,74 @@
                     deleteNumber();
 
                     return;
+
                 }
 
 
-                if (event.key === "ArrowUp") {
+                if (
+                    event.key === "ArrowUp"
+                ) {
 
                     event.preventDefault();
 
-                    moveSelection(-1, 0);
+                    moveSelection(
+                        -1,
+                        0
+                    );
+
                 }
 
 
-                if (event.key === "ArrowDown") {
+                if (
+                    event.key === "ArrowDown"
+                ) {
 
                     event.preventDefault();
 
-                    moveSelection(1, 0);
+                    moveSelection(
+                        1,
+                        0
+                    );
+
                 }
 
 
-                if (event.key === "ArrowLeft") {
+                if (
+                    event.key === "ArrowLeft"
+                ) {
 
                     event.preventDefault();
 
-                    moveSelection(0, -1);
+                    moveSelection(
+                        0,
+                        -1
+                    );
+
                 }
 
 
-                if (event.key === "ArrowRight") {
+                if (
+                    event.key === "ArrowRight"
+                ) {
 
                     event.preventDefault();
 
-                    moveSelection(0, 1);
+                    moveSelection(
+                        0,
+                        1
+                    );
+
                 }
+
             }
         );
 
+
+        /*
+        ========================================
+        STARTUP
+        ========================================
+        */
 
         document.addEventListener(
             "DOMContentLoaded",
@@ -1417,8 +1239,11 @@
                     typeof updateCoinDisplays ===
                     "function"
                 ) {
+
                     updateCoinDisplays();
+
                 }
+
             }
         );
 
@@ -1434,10 +1259,14 @@
                     typeof updateCoinDisplays ===
                     "function"
                 ) {
+
                     updateCoinDisplays();
+
                 }
+
             }
         );
+
     </script>
 
 </body>
