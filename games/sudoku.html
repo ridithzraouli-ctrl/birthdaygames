@@ -205,7 +205,8 @@
             text-align: center;
             line-height: 1.5;
         }
-                .board {
+
+        .board {
             display: grid;
             grid-template-rows: repeat(6, 1fr);
             gap: 6px;
@@ -321,9 +322,8 @@
             color: var(--text-main);
             opacity: 0.5;
             border-color: var(--bg-grad-2);
-        }
-
-        .modal-overlay {
+            }
+                .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
@@ -399,7 +399,6 @@
             align-items: center;
             justify-content: center;
             color: var(--ornament-color);
-            font-size: 20px;
             animation: victoryFloat 2s ease-in-out infinite;
         }
 
@@ -466,37 +465,19 @@
         .confetti:nth-child(5) { right: 17%; top: 6%; animation-delay: 0.18s; }
 
         @keyframes victoryPop {
-            0% {
-                transform: scale(0.88);
-                opacity: 0;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
+            0% { transform: scale(0.88); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
 
         @keyframes victoryFloat {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-5px);
-            }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
 
         @keyframes confettiFall {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 0;
-            }
-            15% {
-                opacity: 0.8;
-            }
-            100% {
-                transform: translateY(115px) rotate(120deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            15% { opacity: 0.8; }
+            100% { transform: translateY(115px) rotate(120deg); opacity: 0; }
         }
 
         .decorations {
@@ -551,6 +532,7 @@
         <div class="header-left">
             <a onclick="goBack()" class="nav-link">← Back to Games</a>
         </div>
+
         <div class="header-right">
             <div class="coin-display">
                 <span class="coin-count">0</span> Coins
@@ -571,6 +553,7 @@
         <p class="subtitle">Guess the 5-letter word in 6 tries.</p>
 
         <div class="board" id="board"></div>
+
         <div class="keyboard" id="keyboard"></div>
 
         <div class="ornament" style="margin-top: 25px; margin-bottom: 0;">
@@ -584,6 +567,7 @@
 
     <div id="reward-modal" class="modal-overlay">
         <div class="modal-card" id="modal-card">
+
             <span class="confetti">✦</span>
             <span class="confetti">✧</span>
             <span class="confetti">♡</span>
@@ -598,11 +582,24 @@
                 <span>✧</span>
             </div>
 
-            <div class="victory-symbol" id="modal-symbol">♡ ✨</div>
+            <div class="victory-symbol" id="modal-symbol">
+                <!-- Heart with two drawn stars (SVG) -->
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    <path d="M4 3l1.5 3L8 7.5 5.5 9 4 12l-1.5-3L0 7.5 2.5 6z" transform="translate(14, -1) scale(0.6)"/>
+                    <path d="M4 3l1.5 3L8 7.5 5.5 9 4 12l-1.5-3L0 7.5 2.5 6z" transform="translate(2, 6) scale(0.5)"/>
+                </svg>
+            </div>
 
             <h2 id="modal-title">Victory!</h2>
-            <p id="modal-desc">You guessed the word and earned 30 Coins.</p>
-            <div class="reward-amount" id="reward-amount">+30 Coins</div>
+
+            <p id="modal-desc">
+                You guessed the word and earned 30 Coins.
+            </p>
+
+            <div class="reward-amount" id="reward-amount">
+                +30 Coins
+            </div>
 
             <button class="btn" onclick="closeModalAndReset()" style="width: 100%;">
                 Play Again
@@ -610,58 +607,100 @@
         </div>
     </div>
         <script src="../script.js"></script>
+
     <script>
         function loadSavedTheme() {
             const savedTheme = localStorage.getItem("arcade_theme");
-            if (["pink", "green", "lavender", "yellow"].includes(savedTheme)) {
+
+            if (
+                savedTheme === "pink" ||
+                savedTheme === "green" ||
+                savedTheme === "lavender" ||
+                savedTheme === "yellow"
+            ) {
                 document.body.setAttribute("data-theme", savedTheme);
             } else {
                 document.body.removeAttribute("data-theme");
             }
         }
+
         loadSavedTheme();
 
         const AudioFX = {
             ctx: null,
+
             init() {
                 if (!this.ctx) {
-                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                    if (AudioCtx) this.ctx = new AudioCtx();
+                    const AudioCtx =
+                        window.AudioContext ||
+                        window.webkitAudioContext;
+
+                    if (AudioCtx) {
+                        this.ctx = new AudioCtx();
+                    }
                 }
             },
+
             play(type) {
                 this.init();
+
                 if (!this.ctx) return;
-                if (this.ctx.state === "suspended") this.ctx.resume();
+
+                if (this.ctx.state === "suspended") {
+                    this.ctx.resume();
+                }
 
                 const now = this.ctx.currentTime;
                 const osc = this.ctx.createOscillator();
                 const gain = this.ctx.createGain();
+
                 osc.connect(gain);
                 gain.connect(this.ctx.destination);
 
                 if (type === "key") {
                     osc.type = "sine";
                     osc.frequency.setValueAtTime(400, now);
+
                     gain.gain.setValueAtTime(0.05, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                    gain.gain.exponentialRampToValueAtTime(
+                        0.001,
+                        now + 0.05
+                    );
+
                     osc.start(now);
                     osc.stop(now + 0.05);
+
                 } else if (type === "win") {
                     osc.type = "sine";
+
                     osc.frequency.setValueAtTime(523.25, now);
                     osc.frequency.setValueAtTime(659.25, now + 0.08);
                     osc.frequency.setValueAtTime(783.99, now + 0.16);
+
                     gain.gain.setValueAtTime(0.2, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+                    gain.gain.exponentialRampToValueAtTime(
+                        0.001,
+                        now + 0.35
+                    );
+
                     osc.start(now);
                     osc.stop(now + 0.35);
+
                 } else if (type === "lose") {
                     osc.type = "triangle";
+
                     osc.frequency.setValueAtTime(260, now);
-                    osc.frequency.exponentialRampToValueAtTime(110, now + 0.35);
+                    osc.frequency.exponentialRampToValueAtTime(
+                        110,
+                        now + 0.35
+                    );
+
                     gain.gain.setValueAtTime(0.2, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+                    gain.gain.exponentialRampToValueAtTime(
+                        0.001,
+                        now + 0.35
+                    );
+
                     osc.start(now);
                     osc.stop(now + 0.35);
                 }
@@ -685,7 +724,10 @@
         let currentRow = 0;
         let currentTile = 0;
         let isGameOver = false;
-        const guesses = Array(6).fill("").map(() => Array(5).fill(""));
+
+        const guesses = Array(6)
+            .fill("")
+            .map(() => Array(5).fill(""));
 
         function goBack() {
             if (window.history.length > 1) {
@@ -697,78 +739,125 @@
 
         function initBoard() {
             const boardEl = document.getElementById("board");
+
             boardEl.innerHTML = "";
+
             for (let r = 0; r < 6; r++) {
                 const rowEl = document.createElement("div");
+
                 rowEl.className = "row";
                 rowEl.id = `row-${r}`;
+
                 for (let c = 0; c < 5; c++) {
                     const tileEl = document.createElement("div");
+
                     tileEl.className = "tile";
                     tileEl.id = `tile-${r}-${c}`;
+
                     rowEl.appendChild(tileEl);
                 }
+
                 boardEl.appendChild(rowEl);
             }
         }
 
         function initKeyboard() {
             const kbEl = document.getElementById("keyboard");
+
             kbEl.innerHTML = "";
+
             const layout = [
                 ["Q","W","E","R","T","Y","U","I","O","P"],
                 ["A","S","D","F","G","H","J","K","L"],
                 ["ENTER","Z","X","C","V","B","N","M","BACK"]
             ];
+
             layout.forEach(row => {
                 const rowEl = document.createElement("div");
+
                 rowEl.className = "kb-row";
+
                 row.forEach(key => {
                     const btn = document.createElement("button");
-                    btn.className = "key-btn" + (key.length > 1 ? " wide" : "");
-                    btn.innerText = key === "BACK" ? "⌫" : key;
+
+                    btn.className =
+                        "key-btn" +
+                        (key.length > 1 ? " wide" : "");
+
+                    btn.innerText =
+                        key === "BACK" ? "⌫" : key;
+
                     btn.id = `key-${key}`;
-                    btn.addEventListener("click", () => handleKeyPress(key));
+
+                    btn.addEventListener("click", () => {
+                        handleKeyPress(key);
+                    });
+
                     rowEl.appendChild(btn);
                 });
+
                 kbEl.appendChild(rowEl);
             });
         }
 
         function handleKeyPress(key) {
             if (isGameOver) return;
+
             if (key === "ENTER") {
                 submitGuess();
-            } else if (key === "BACK" || key === "BACKSPACE") {
+
+            } else if (
+                key === "BACK" ||
+                key === "BACKSPACE"
+            ) {
                 deleteLetter();
-            } else if (/^[A-Z]$/.test(key) && currentTile < 5) {
+
+            } else if (
+                /^[A-Z]$/.test(key) &&
+                currentTile < 5
+            ) {
                 addLetter(key);
             }
         }
 
         function addLetter(letter) {
             AudioFX.play("key");
+
             guesses[currentRow][currentTile] = letter;
-            const tile = document.getElementById(`tile-${currentRow}-${currentTile}`);
+
+            const tile = document.getElementById(
+                `tile-${currentRow}-${currentTile}`
+            );
+
             tile.innerText = letter;
             tile.setAttribute("data-state", "active");
+
             currentTile++;
         }
 
         function deleteLetter() {
             if (currentTile === 0) return;
+
             AudioFX.play("key");
+
             currentTile--;
+
             guesses[currentRow][currentTile] = "";
-            const tile = document.getElementById(`tile-${currentRow}-${currentTile}`);
+
+            const tile = document.getElementById(
+                `tile-${currentRow}-${currentTile}`
+            );
+
             tile.innerText = "";
             tile.removeAttribute("data-state");
         }
 
         function submitGuess() {
             if (currentTile < 5) return;
+
             const guess = guesses[currentRow].join("");
             const targetArr = targetWord.split("");
+
             const result = Array(5).fill("absent");
             const used = Array(5).fill(false);
 
@@ -782,7 +871,10 @@
             for (let i = 0; i < 5; i++) {
                 if (result[i] !== "correct") {
                     for (let j = 0; j < 5; j++) {
-                        if (!used[j] && guess[i] === targetArr[j]) {
+                        if (
+                            !used[j] &&
+                            guess[i] === targetArr[j]
+                        ) {
                             result[i] = "present";
                             used[j] = true;
                             break;
@@ -792,28 +884,65 @@
             }
 
             for (let i = 0; i < 5; i++) {
-                const tile = document.getElementById(`tile-${currentRow}-${i}`);
+                const tile = document.getElementById(
+                    `tile-${currentRow}-${i}`
+                );
+
                 const letter = guess[i];
-                const keyBtn = document.getElementById(`key-${letter}`);
-                tile.setAttribute("data-state", result[i]);
+
+                const keyBtn = document.getElementById(
+                    `key-${letter}`
+                );
+
+                tile.setAttribute(
+                    "data-state",
+                    result[i]
+                );
 
                 if (keyBtn) {
-                    const currentState = keyBtn.getAttribute("data-state");
+                    const currentState =
+                        keyBtn.getAttribute("data-state");
+
                     if (result[i] === "correct") {
-                        keyBtn.setAttribute("data-state", "correct");
-                    } else if (result[i] === "present" && currentState !== "correct") {
-                        keyBtn.setAttribute("data-state", "present");
-                    } else if (result[i] === "absent" && !currentState) {
-                        keyBtn.setAttribute("data-state", "absent");
+                        keyBtn.setAttribute(
+                            "data-state",
+                            "correct"
+                        );
+
+                    } else if (
+                        result[i] === "present" &&
+                        currentState !== "correct"
+                    ) {
+                        keyBtn.setAttribute(
+                            "data-state",
+                            "present"
+                        );
+
+                    } else if (
+                        result[i] === "absent" &&
+                        !currentState
+                    ) {
+                        keyBtn.setAttribute(
+                            "data-state",
+                            "absent"
+                        );
                     }
                 }
             }
 
             if (guess === targetWord) {
                 isGameOver = true;
+
                 AudioFX.play("win");
-                if (typeof addCoins === "function") addCoins(30);
-                showVictory(`You found "${targetWord}" in ${currentRow + 1} try/tries and earned 30 Coins!`);
+
+                if (typeof addCoins === "function") {
+                    addCoins(30);
+                }
+
+                showVictory(
+                    `You found "${targetWord}" in ${currentRow + 1} try/tries and earned 30 Coins!`
+                );
+
                 return;
             }
 
@@ -822,8 +951,12 @@
 
             if (currentRow === 6) {
                 isGameOver = true;
+
                 AudioFX.play("lose");
-                showGameOver(`Out of tries! The word was "${targetWord}".`);
+
+                showGameOver(
+                    `Out of tries! The word was "${targetWord}".`
+                );
             }
         }
 
@@ -836,10 +969,18 @@
             const amount = document.getElementById("reward-amount");
 
             card.classList.remove("game-over");
+
             title.innerText = "Victory!";
             desc.innerText = message;
-            symbol.innerText = "♡ ✨";
+            symbol.innerHTML = `
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    <path d="M4 3l1.5 3L8 7.5 5.5 9 4 12l-1.5-3L0 7.5 2.5 6z" transform="translate(14, -1) scale(0.6)"/>
+                    <path d="M4 3l1.5 3L8 7.5 5.5 9 4 12l-1.5-3L0 7.5 2.5 6z" transform="translate(2, 6) scale(0.5)"/>
+                </svg>
+            `;
             amount.innerText = "+30 Coins";
+
             modal.style.display = "flex";
         }
 
@@ -852,43 +993,71 @@
             const amount = document.getElementById("reward-amount");
 
             card.classList.add("game-over");
+
             title.innerText = "Game Over";
             desc.innerText = message;
-            symbol.innerText = "♡ ̷";
+            // Broken heart SVG vector drawing
+            symbol.innerHTML = `
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09V11l-2 2 3 3-2 3z"/>
+                    <path d="M12 5.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35v-4.35l2-2-3-3 2-3V5.09z"/>
+                </svg>
+            `;
             amount.innerText = "Better luck next time";
+
             modal.style.display = "flex";
         }
 
         function resetGame() {
-            targetWord = WORD_LIST[Math.floor(Math.random() * WORD_LIST.length)];
+            targetWord =
+                WORD_LIST[
+                    Math.floor(
+                        Math.random() * WORD_LIST.length
+                    )
+                ];
+
             currentRow = 0;
             currentTile = 0;
             isGameOver = false;
+
             for (let r = 0; r < 6; r++) {
                 for (let c = 0; c < 5; c++) {
                     guesses[r][c] = "";
                 }
             }
+
             initBoard();
             initKeyboard();
         }
 
         function closeModalAndReset() {
-            document.getElementById("reward-modal").style.display = "none";
+            document.getElementById(
+                "reward-modal"
+            ).style.display = "none";
+
             resetGame();
         }
 
         document.addEventListener("keydown", (e) => {
-            handleKeyPress(e.key.toUpperCase());
+            const key = e.key.toUpperCase();
+
+            handleKeyPress(key);
         });
 
-        document.addEventListener("DOMContentLoaded", function() {
-            loadSavedTheme();
-            if (typeof updateCoinDisplays === "function") {
-                updateCoinDisplays();
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
+                loadSavedTheme();
+
+                if (
+                    typeof updateCoinDisplays === "function"
+                ) {
+                    updateCoinDisplays();
+                }
+
+                resetGame();
             }
-            resetGame();
-        });
+        );
     </script>
 </body>
 </html>
