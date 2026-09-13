@@ -322,7 +322,7 @@
             color: var(--text-main);
             opacity: 0.5;
             border-color: var(--bg-grad-2);
-            }
+        }
                 .modal-overlay {
             display: none;
             position: fixed;
@@ -583,7 +583,7 @@
             </div>
 
             <div class="victory-symbol" id="modal-symbol">
-                <!-- Clean normal heart SVG (no sparkles) -->
+                <!-- Clean normal heart SVG for victory -->
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                 </svg>
@@ -992,10 +992,11 @@
 
             title.innerText = "Game Over";
             desc.innerText = message;
-            // Clean normal heart SVG (no sparkles) for game over screen as requested
+            // Clean custom broken heart SVG vector drawing for game over screen
             symbol.innerHTML = `
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    <path d="M11 21.35l-1.45-1.32C3.4 15.36 1 12.28 1 8.5 1 5.42 3.42 3 6.5 3c1.3 0 2.54.47 3.5 1.32V11l-3 3 2 4-2.5 3.35z"/>
+                    <path d="M13 4.32C13.96 3.47 15.2 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-2.4 6.86-8.55 11.54L12 21.35V16l3-3-2-4 2-4.68z"/>
                 </svg>
             `;
             amount.innerText = "Better luck next time";
@@ -1055,5 +1056,4 @@
         );
     </script>
 </body>
-                                       </html>
-                                       
+</html>
