@@ -261,11 +261,14 @@
             align-items: center;
             color: var(--text-heading);
             font-size: 13px;
+            font-family: monospace;
+            letter-spacing: 0.5px;
         }
 
         .score-value {
-            min-width: 45px;
+            min-width: 55px;
             text-align: right;
+            font-variant-numeric: tabular-nums;
         }
 
         .high-score {
@@ -282,7 +285,7 @@
             image-rendering: crisp-edges;
             border: 1px solid var(--accent-border);
             border-radius: 10px;
-            background: #f7f1e9;
+            background: #eef4f8;
             cursor: pointer;
             touch-action: manipulation;
         }
@@ -305,7 +308,9 @@
             z-index: 500;
             align-items: center;
             justify-content: center;
-        }        .modal-card {
+        }
+
+        .modal-card {
             position: relative;
             background: var(--card-bg);
             border: 1px solid var(--accent-border);
@@ -336,9 +341,7 @@
         .modal-card::after {
             top: 13px;
             right: 18px;
-        }
-
-        .victory-decoration {
+        }        .victory-decoration {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -557,12 +560,12 @@
             <div class="game-top">
                 <div class="score-box">
                     <span>SCORE</span>
-                    <span class="score-value" id="score">0</span>
+                    <span class="score-value" id="score">00000</span>
                 </div>
 
                 <div class="score-box high-score">
                     <span>BEST</span>
-                    <span class="score-value" id="high-score">0</span>
+                    <span class="score-value" id="high-score">00000</span>
                 </div>
             </div>
 
@@ -607,7 +610,8 @@
         </div>
     </div>
 
-    <script src="../script.js"></script>    <script>
+    <script src="../script.js"></script>
+    <script>
         const AudioFX = {
             ctx: null,
 
@@ -652,6 +656,16 @@
                     osc.start(now);
                     osc.stop(now + 0.3);
                 }
+
+                if (type === 'score') {
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(620, now);
+                    osc.frequency.setValueAtTime(760, now + 0.045);
+                    gain.gain.setValueAtTime(0.035, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+                    osc.start(now);
+                    osc.stop(now + 0.08);
+                }
             }
         };
 
@@ -673,14 +687,13 @@
         let lastTime = 0;
         let cactusTimer = 0;
         let cloudTimer = 0;
-        let groundOffset = 0;
+        let worldDistance = 0;
         let rewardGiven = false;
 
         const groundY = 174;
+        const PIXEL = 3;
 
-        highScoreElement.innerText = highScore;
-
-        function goBack() {
+        highScoreElement.innerText = String(highScore).padStart(5, '0');        function goBack() {
             if (window.history.length > 1) {
                 window.history.back();
             } else {
@@ -691,17 +704,76 @@
         function loadSavedTheme() {
             const savedTheme = localStorage.getItem('arcade_theme');
 
-            if (savedTheme) {
+            if (savedTheme && savedTheme !== 'blue') {
                 document.body.setAttribute('data-theme', savedTheme);
+            } else {
+                document.body.removeAttribute('data-theme');
             }
+        }
+
+        function getTheme() {
+            return localStorage.getItem('arcade_theme') || 'blue';
+        }
+
+        function getSkyColors() {
+            const theme = getTheme();
+
+            const skies = {
+                blue: {
+                    top: '#dcecf7',
+                    bottom: '#f4f8fa',
+                    cloud: '#ffffff',
+                    sun: '#f4d9a6',
+                    distant: '#c7dce8',
+                    line: '#718995'
+                },
+
+                pink: {
+                    top: '#f3d9e4',
+                    bottom: '#fcf3f6',
+                    cloud: '#fff8fa',
+                    sun: '#edb9c9',
+                    distant: '#e3bdcb',
+                    line: '#9a6878'
+                },
+
+                green: {
+                    top: '#dcebdc',
+                    bottom: '#f4f8f2',
+                    cloud: '#fbfff9',
+                    sun: '#d9d99d',
+                    distant: '#c4d9c2',
+                    line: '#66836a'
+                },
+
+                lavender: {
+                    top: '#e5ddf2',
+                    bottom: '#f8f5fb',
+                    cloud: '#fffaff',
+                    sun: '#d9c5e7',
+                    distant: '#d0c5e4',
+                    line: '#786b91'
+                },
+
+                yellow: {
+                    top: '#f1e8c8',
+                    bottom: '#fcfaf1',
+                    cloud: '#fffdf4',
+                    sun: '#e5c96e',
+                    distant: '#ddd2a8',
+                    line: '#8c8056'
+                }
+            };
+
+            return skies[theme] || skies.blue;
         }
 
         function resetObjects() {
             bunny = {
-                x: 70,
-                y: groundY - 38,
+                x: 58,
+                y: groundY - 39,
                 width: 30,
-                height: 38,
+                height: 39,
                 velocityY: 0,
                 jumping: false,
                 frame: 0
@@ -712,136 +784,188 @@
             score = 0;
             cactusTimer = 0;
             cloudTimer = 0;
-            groundOffset = 0;
+            worldDistance = 0;
             rewardGiven = false;
 
-            scoreElement.innerText = '0';
+            scoreElement.innerText = '00000';
 
-            for (let i = 0; i < 3; i++) {
-                clouds.push({
-                    x: 90 + i * 180,
-                    y: 35 + (i % 2) * 27,
-                    speed: 0.18 + (i * 0.04)
-                });
-            }
+            clouds.push(
+                { x: 75, y: 34, speed: 0.16, size: 1 },
+                { x: 260, y: 59, speed: 0.22, size: 0.8 },
+                { x: 420, y: 29, speed: 0.13, size: 1.15 }
+            );
         }
 
         function drawPixelRect(x, y, width, height, color) {
             ctx.fillStyle = color;
             ctx.fillRect(
-                Math.round(x),
-                Math.round(y),
-                Math.round(width),
-                Math.round(height)
+                Math.round(x / PIXEL) * PIXEL,
+                Math.round(y / PIXEL) * PIXEL,
+                Math.round(width / PIXEL) * PIXEL,
+                Math.round(height / PIXEL) * PIXEL
             );
         }
 
-        function drawCloud(x, y) {
-            const cloudColor = '#eadfd6';
+        function drawPixelShape(x, y, pixels, color) {
+            pixels.forEach(pixel => {
+                drawPixelRect(
+                    x + pixel[0] * PIXEL,
+                    y + pixel[1] * PIXEL,
+                    PIXEL,
+                    PIXEL,
+                    color
+                );
+            });
+        }
 
-            drawPixelRect(x + 8, y + 6, 38, 9, cloudColor);
-            drawPixelRect(x + 15, y, 20, 15, cloudColor);
-            drawPixelRect(x + 25, y - 5, 12, 20, cloudColor);
-            drawPixelRect(x, y + 10, 55, 8, cloudColor);
+        function drawCloud(cloud) {
+            const sky = getSkyColors();
+            const s = cloud.size;
+
+            drawPixelRect(cloud.x + 6 * s, cloud.y + 6 * s, 39 * s, 9 * s, sky.cloud);
+            drawPixelRect(cloud.x + 13 * s, cloud.y + 1 * s, 20 * s, 14 * s, sky.cloud);
+            drawPixelRect(cloud.x + 22 * s, cloud.y - 4 * s, 12 * s, 19 * s, sky.cloud);
+            drawPixelRect(cloud.x, cloud.y + 11 * s, 52 * s, 8 * s, sky.cloud);
+        }
+
+        function drawSun() {
+            const sky = getSkyColors();
+
+            drawPixelRect(392, 29, 18, 18, sky.sun);
+            drawPixelRect(386, 35, 30, 6, sky.sun);
+            drawPixelRect(398, 23, 6, 30, sky.sun);
         }
 
         function drawBackground() {
-            ctx.fillStyle = '#faf7f1';
+            const sky = getSkyColors();
+
+            const gradient = ctx.createLinearGradient(0, 0, 0, groundY);
+            gradient.addColorStop(0, sky.top);
+            gradient.addColorStop(1, sky.bottom);
+
+            ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            clouds.forEach(cloud => drawCloud(cloud.x, cloud.y));
+            drawSun();
 
-            drawPixelRect(0, groundY, canvas.width, 2, '#8d766b');
+            clouds.forEach(drawCloud);
 
-            const groundColor = '#d9b99d';
-            const groundDark = '#b98f76';
+            drawPixelRect(0, groundY - 1, canvas.width, 2, sky.line);
 
-            drawPixelRect(0, groundY + 2, canvas.width, 36, groundColor);
+            drawPixelRect(0, groundY + 1, canvas.width, 38, sky.bottom);
 
-            for (let x = -40 + groundOffset; x < canvas.width + 40; x += 46) {
-                drawPixelRect(x, groundY + 9, 7, 4, groundDark);
-                drawPixelRect(x + 20, groundY + 20, 5, 5, groundDark);
-                drawPixelRect(x + 32, groundY + 29, 9, 3, groundDark);
-            }
+            const offset = Math.floor(worldDistance) % 48;
 
-            for (let x = -20 + groundOffset; x < canvas.width + 30; x += 75) {
-                drawPixelRect(x, groundY - 5, 4, 5, '#78936c');
-                drawPixelRect(x + 4, groundY - 8, 4, 8, '#78936c');
-                drawPixelRect(x + 8, groundY - 4, 4, 4, '#78936c');
+            for (let x = -48 + offset; x < canvas.width + 48; x += 48) {
+                drawPixelRect(x, groundY + 12, 12, 2, sky.distant);
+                drawPixelRect(x + 24, groundY + 25, 6, 2, sky.distant);
             }
         }
 
         function drawBunny() {
             const x = bunny.x;
             const y = bunny.y;
-            const fur = '#f5eadb';
+
             const outline = '#58443f';
+            const fur = '#fffaf2';
+            const shadow = '#e6d7c8';
             const innerEar = '#e9a7a0';
+            const eye = '#493b38';
 
-            drawPixelRect(x + 7, y + 12, 21, 22, outline);
-            drawPixelRect(x + 3, y + 20, 27, 14, outline);
-            drawPixelRect(x + 10, y + 6, 16, 19, outline);
+            const bunnyPixels = [
+                [4, 8], [5, 8], [6, 8],
+                [3, 9], [4, 9], [5, 9], [6, 9], [7, 9],
+                [3, 10], [4, 10], [5, 10], [6, 10], [7, 10],
+                [3, 11], [4, 11], [5, 11], [6, 11], [7, 11],
+                [2, 12], [3, 12], [4, 12], [5, 12], [6, 12], [7, 12], [8, 12],
+                [2, 13], [3, 13], [4, 13], [5, 13], [6, 13], [7, 13], [8, 13],
+                [2, 14], [3, 14], [4, 14], [5, 14], [6, 14], [7, 14], [8, 14],
+                [2, 15], [3, 15], [4, 15], [5, 15], [6, 15], [7, 15], [8, 15],
+                [3, 16], [4, 16], [5, 16], [6, 16], [7, 16], [8, 16],
+                [3, 17], [4, 17], [5, 17], [6, 17], [7, 17],
+                [4, 18], [5, 18], [6, 18],
+                [1, 19], [2, 19], [3, 19],
+                [7, 19], [8, 19], [9, 19],
+                [1, 20], [2, 20], [3, 20],
+                [7, 20], [8, 20], [9, 20]
+            ];
 
-            drawPixelRect(x + 5, y + 14, 21, 18, fur);
-            drawPixelRect(x + 8, y + 10, 16, 16, fur);
-            drawPixelRect(x + 13, y + 3, 5, 15, outline);
-            drawPixelRect(x + 20, y + 4, 5, 14, outline);
+            drawPixelShape(x, y, bunnyPixels, outline);
 
-            drawPixelRect(x + 14, y + 6, 3, 9, fur);
-            drawPixelRect(x + 21, y + 7, 3, 8, fur);
+            const furPixels = [
+                [4, 9], [5, 9], [6, 9],
+                [4, 10], [5, 10], [6, 10],
+                [3, 11], [4, 11], [5, 11], [6, 11], [7, 11],
+                [3, 12], [4, 12], [5, 12], [6, 12], [7, 12],
+                [3, 13], [4, 13], [5, 13], [6, 13], [7, 13],
+                [3, 14], [4, 14], [5, 14], [6, 14], [7, 14],
+                [3, 15], [4, 15], [5, 15], [6, 15], [7, 15],
+                [4, 16], [5, 16], [6, 16],
+                [4, 17], [5, 17], [6, 17],
+                [2, 19], [3, 19],
+                [7, 19], [8, 19]
+            ];
 
-            drawPixelRect(x + 14, y + 9, 3, 6, innerEar);
-            drawPixelRect(x + 21, y + 10, 3, 5, innerEar);
+            drawPixelShape(x, y, furPixels, fur);
 
-            drawPixelRect(x + 23, y + 17, 3, 3, outline);
-            drawPixelRect(x + 27, y + 21, 3, 3, outline);
-            drawPixelRect(x + 12, y + 17, 3, 3, outline);
+            drawPixelRect(x + 12, y + 3, 3, 12, outline);
+            drawPixelRect(x + 18, y + 3, 3, 12, outline);
 
-            drawPixelRect(x + 3, y + 29, 8, 5, outline);
-            drawPixelRect(x + 21, y + 29, 8, 5, outline);
+            drawPixelRect(x + 13, y + 5, 1, 7, innerEar);
+            drawPixelRect(x + 19, y + 5, 1, 7, innerEar);
 
-            drawPixelRect(x + 5, y + 28, 7, 4, fur);
-            drawPixelRect(x + 20, y + 28, 7, 4, fur);
+            drawPixelRect(x + 21, y + 14, 3, 3, eye);
+            drawPixelRect(x + 24, y + 17, 2, 2, outline);
+
+            drawPixelRect(x + 9, y + 16, 3, 3, shadow);
 
             if (!bunny.jumping && bunny.frame % 2 === 0) {
-                drawPixelRect(x + 3, y + 34, 9, 3, outline);
-                drawPixelRect(x + 20, y + 34, 9, 3, outline);
+                drawPixelRect(x + 3, y + 21, 4, 2, outline);
+                drawPixelRect(x + 21, y + 21, 4, 2, outline);
             }
-        }
-
-        function drawCactus(cactus) {
+                }        function drawCactus(cactus) {
             const x = cactus.x;
             const y = groundY - cactus.height;
-            const green = '#6e895d';
-            const dark = '#4e6849';
-            const light = '#8fa878';
 
-            drawPixelRect(x + 8, y, 15, cactus.height, dark);
-            drawPixelRect(x + 11, y + 3, 12, cactus.height - 5, green);
-            drawPixelRect(x + 15, y + 6, 5, cactus.height - 12, light);
+            const dark = '#3f6650';
+            const green = '#5f8b69';
+            const light = '#8fb28f';
 
-            if (cactus.type === 1 || cactus.type === 2) {
-                drawPixelRect(x, y + 15, 9, 6, dark);
-                drawPixelRect(x, y + 8, 6, 15, dark);
-                drawPixelRect(x + 1, y + 14, 7, 5, green);
-                drawPixelRect(x + 3, y + 9, 3, 8, green);
+            if (cactus.type === 1) {
+                drawPixelRect(x + 9, y, 12, cactus.height, dark);
+                drawPixelRect(x + 12, y + 3, 9, cactus.height - 6, green);
+                drawPixelRect(x + 15, y + 6, 3, cactus.height - 12, light);
+
+                drawPixelRect(x + 3, y + 14, 7, 6, dark);
+                drawPixelRect(x, y + 11, 6, 12, dark);
+                drawPixelRect(x + 4, y + 16, 6, 4, green);
+                drawPixelRect(x + 3, y + 13, 3, 7, green);
             }
 
             if (cactus.type === 2) {
-                drawPixelRect(x + 23, y + 22, 9, 6, dark);
-                drawPixelRect(x + 26, y + 15, 6, 14, dark);
-                drawPixelRect(x + 25, y + 22, 7, 5, green);
-                drawPixelRect(x + 28, y + 16, 3, 8, green);
+                drawPixelRect(x + 12, y, 15, cactus.height, dark);
+                drawPixelRect(x + 15, y + 3, 11, cactus.height - 6, green);
+                drawPixelRect(x + 19, y + 6, 3, cactus.height - 12, light);
+
+                drawPixelRect(x + 3, y + 17, 9, 6, dark);
+                drawPixelRect(x, y + 13, 6, 14, dark);
+                drawPixelRect(x + 4, y + 19, 8, 4, green);
+                drawPixelRect(x + 3, y + 15, 3, 9, green);
+
+                drawPixelRect(x + 27, y + 23, 9, 6, dark);
+                drawPixelRect(x + 31, y + 18, 6, 14, dark);
+                drawPixelRect(x + 27, y + 25, 9, 4, green);
+                drawPixelRect(x + 32, y + 20, 3, 8, green);
             }
         }
 
         function spawnCactus() {
-            const type = Math.random() < 0.6 ? 1 : 2;
+            const type = Math.random() < 0.68 ? 1 : 2;
 
             cactuses.push({
-                x: canvas.width + 10,
-                height: type === 1 ? 34 : 42,
-                width: type === 1 ? 32 : 35,
+                x: canvas.width + 12,
+                height: type === 1 ? 27 : 36,
+                width: type === 1 ? 27 : 37,
                 type,
                 passed: false
             });
@@ -852,10 +976,20 @@
 
             if (!gameStarted) {
                 gameStarted = true;
+
+                if (cactuses.length === 0) {
+                    cactuses.push({
+                        x: canvas.width + 105,
+                        height: 27,
+                        width: 27,
+                        type: 1,
+                        passed: false
+                    });
+                }
             }
 
             if (!bunny.jumping) {
-                bunny.velocityY = -8.7;
+                bunny.velocityY = -8.9;
                 bunny.jumping = true;
                 AudioFX.play('jump');
             }
@@ -863,14 +997,14 @@
 
         function checkCollision(cactus) {
             const bx = bunny.x + 6;
-            const by = bunny.y + 5;
-            const bw = bunny.width - 9;
-            const bh = bunny.height - 6;
+            const by = bunny.y + 6;
+            const bw = bunny.width - 11;
+            const bh = bunny.height - 8;
 
-            const cx = cactus.x + 3;
-            const cy = groundY - cactus.height;
-            const cw = cactus.width - 6;
-            const ch = cactus.height;
+            const cx = cactus.x + 5;
+            const cy = groundY - cactus.height + 2;
+            const cw = cactus.width - 10;
+            const ch = cactus.height - 3;
 
             return (
                 bx < cx + cw &&
@@ -880,10 +1014,34 @@
             );
         }
 
+        function getSpeed() {
+            return Math.min(8.2, 4.0 + score / 900);
+        }
+
+        function getSpawnDelay() {
+            return Math.max(850, 1550 - score * 1.7);
+        }
+
+        function updateScore(delta) {
+            score += delta * 0.012;
+
+            const displayedScore = Math.floor(score);
+
+            scoreElement.innerText = String(displayedScore).padStart(5, '0');
+
+            if (displayedScore > highScore) {
+                highScore = displayedScore;
+                highScoreElement.innerText = String(highScore).padStart(5, '0');
+                localStorage.setItem('bunny_jump_best', highScore);
+            }
+        }
+
         function update(delta) {
             if (!gameStarted || gameOver) return;
 
-            const speed = Math.min(5.2, 3.1 + score / 650);
+            const speed = getSpeed();
+
+            updateScore(delta);
 
             bunny.velocityY += 0.48;
             bunny.y += bunny.velocityY;
@@ -896,19 +1054,19 @@
 
             bunny.frame += 1;
 
-            groundOffset -= speed;
-
-            if (groundOffset <= -46) {
-                groundOffset += 46;
-            }
+            worldDistance += speed;
 
             cactusTimer += delta;
 
-            const spawnDelay = Math.max(850, 1450 - score * 2.2);
+            const spawnDelay = getSpawnDelay();
 
-            if (cactusTimer >= spawnDelay) {
-                spawnCactus();
-                cactusTimer = 0;
+            if (cactuses.length > 0 && cactusTimer >= spawnDelay) {
+                const lastCactus = cactuses[cactuses.length - 1];
+
+                if (lastCactus.x < canvas.width - 170) {
+                    spawnCactus();
+                    cactusTimer = 0;
+                }
             }
 
             cactuses.forEach(cactus => {
@@ -916,8 +1074,7 @@
 
                 if (!cactus.passed && cactus.x + cactus.width < bunny.x) {
                     cactus.passed = true;
-                    score++;
-                    scoreElement.innerText = score;
+                    AudioFX.play('score');
                 }
 
                 if (checkCollision(cactus)) {
@@ -925,15 +1082,16 @@
                 }
             });
 
-            cactuses = cactuses.filter(cactus => cactus.x > -60);
+            cactuses = cactuses.filter(cactus => cactus.x > -70);
 
             cloudTimer += delta;
 
-            if (cloudTimer > 2400) {
+            if (cloudTimer > 2600) {
                 clouds.push({
                     x: canvas.width + 20,
-                    y: 28 + Math.random() * 70,
-                    speed: 0.18 + Math.random() * 0.12
+                    y: 27 + Math.random() * 65,
+                    speed: 0.13 + Math.random() * 0.12,
+                    size: 0.75 + Math.random() * 0.45
                 });
 
                 cloudTimer = 0;
@@ -943,22 +1101,24 @@
                 cloud.x -= cloud.speed;
             });
 
-            clouds = clouds.filter(cloud => cloud.x > -80);
-        }        function drawStartScreen() {
-            drawBackground();
+            clouds = clouds.filter(cloud => cloud.x > -90);
+        }
 
+        function drawStartScreen() {
+            drawBackground();
             drawBunny();
 
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
 
-            ctx.fillStyle = '#58443f';
+            const sky = getSkyColors();
+
+            ctx.fillStyle = sky.line;
             ctx.font = 'bold 18px monospace';
-            ctx.fillText('TAP TO START', canvas.width / 2, 72);
+            ctx.fillText('TAP TO START', canvas.width / 2, 73);
 
             ctx.font = '11px monospace';
-            ctx.fillStyle = '#8d766b';
-            ctx.fillText('JUMP OVER THE CACTUSES', canvas.width / 2, 92);
+            ctx.fillText('JUMP OVER THE CACTUSES', canvas.width / 2, 94);
         }
 
         function drawGameOver() {
@@ -967,19 +1127,20 @@
             cactuses.forEach(drawCactus);
             drawBunny();
 
-            ctx.fillStyle = 'rgba(250, 247, 241, 0.72)';
+            const sky = getSkyColors();
+
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.72)';
             ctx.fillRect(0, 0, canvas.width, groundY);
 
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
 
-            ctx.fillStyle = '#58443f';
+            ctx.fillStyle = sky.line;
             ctx.font = 'bold 18px monospace';
             ctx.fillText('GAME OVER', canvas.width / 2, 70);
 
             ctx.font = '11px monospace';
-            ctx.fillStyle = '#8d766b';
-            ctx.fillText('TAP TO TRY AGAIN', canvas.width / 2, 92);
+            ctx.fillText('TAP TO TRY AGAIN', canvas.width / 2, 93);
         }
 
         function draw() {
@@ -1014,24 +1175,30 @@
             gameOver = true;
             AudioFX.play('hit');
 
-            if (score > highScore) {
-                highScore = score;
+            const finalScore = Math.floor(score);
+
+            if (finalScore > highScore) {
+                highScore = finalScore;
                 localStorage.setItem('bunny_jump_best', highScore);
-                highScoreElement.innerText = highScore;
+                highScoreElement.innerText = String(highScore).padStart(5, '0');
             }
 
             let reward = 10;
 
-            if (score >= 15) {
+            if (finalScore >= 100) {
                 reward = 15;
             }
 
-            if (score >= 30) {
+            if (finalScore >= 250) {
                 reward = 20;
             }
 
-            if (score >= 50) {
+            if (finalScore >= 500) {
                 reward = 25;
+            }
+
+            if (finalScore >= 1000) {
+                reward = 35;
             }
 
             if (!rewardGiven) {
@@ -1043,11 +1210,11 @@
             }
 
             setTimeout(() => {
-                showGameOverModal(reward);
+                showGameOverModal(finalScore, reward);
             }, 300);
         }
 
-        function showGameOverModal(reward) {
+        function showGameOverModal(finalScore, reward) {
             const modal = document.getElementById('reward-modal');
             const card = modal.querySelector('.modal-card');
             const symbol = document.getElementById('victory-symbol');
@@ -1065,7 +1232,7 @@
 
             document.getElementById('modal-title').innerText = 'Run Over';
             document.getElementById('modal-desc').innerText =
-                `You made it ${score} points before the cactus got you.`;
+                `You made it ${finalScore} points before the cactus got you.`;
 
             amount.innerText = `+${reward} Coins`;
             amount.style.display = 'inline-block';
@@ -1075,6 +1242,9 @@
 
         function restartGame() {
             document.getElementById('reward-modal').style.display = 'none';
+
+            const card = document.querySelector('.modal-card');
+            card.classList.remove('game-over');
 
             gameStarted = false;
             gameOver = false;
