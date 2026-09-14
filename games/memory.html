@@ -293,8 +293,8 @@
             inset:0;
             padding:20px;
             background:rgba(30,25,25,.3);
-            backdrop-filter:blur(3px);
-            z-index:200;
+            backdrop-filter:blur(5px);
+            z-index:500;
             align-items:center;
             justify-content:center;
         }
@@ -302,29 +302,170 @@
         .modal-card {
             position:relative;
             background:var(--card-bg);
-            border:1px solid var(--bg-grad-2);
-            border-radius:14px;
-            padding:28px 24px;
-            max-width:340px;
+            border:1px solid var(--accent-border);
+            border-radius:18px;
+            padding:32px 26px 26px;
+            max-width:360px;
             width:100%;
             text-align:center;
-            box-shadow:0 12px 35px rgba(0,0,0,.12);
-            overflow:visible;
+            box-shadow:0 18px 50px rgba(0,0,0,.16);
+            animation:victoryPop .35s ease;
+            overflow:hidden;
+        }
+
+        .modal-card::before,
+        .modal-card::after {
+            content:"✦";
+            position:absolute;
+            color:var(--ornament-color);
+            opacity:.5;
+            font-size:20px;
+        }
+
+        .modal-card::before {
+            top:10px;
+            left:14px;
+        }
+
+        .modal-card::after {
+            top:10px;
+            right:14px;
+        }
+
+        .victory-decoration {
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:9px;
+            margin:0 0 14px;
+            color:var(--ornament-color);
+        }
+
+        .victory-decoration span {
+            font-size:14px;
+        }
+
+        .victory-decoration i {
+            width:34px;
+            height:1px;
+            background:var(--ornament-color);
+            opacity:.45;
+        }
+
+        .victory-symbol {
+            width:66px;
+            height:66px;
+            margin:2px auto 14px;
+            border-radius:50%;
+            background:var(--accent-soft);
+            border:1px solid var(--accent-border);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:var(--ornament-color);
+            animation:victoryFloat 2s ease-in-out infinite;
+        }
+
+        .victory-symbol svg {
+            width:32px;
+            height:32px;
         }
 
         .modal-card h2 {
             color:var(--text-heading);
-            font-size:21px;
+            font-size:25px;
             font-weight:normal;
-            margin:8px 0 10px;
+            margin:0 0 9px;
         }
 
         .modal-card p {
             color:var(--text-main);
-            opacity:.8;
+            opacity:.82;
             font-size:14px;
-            line-height:1.5;
-            margin:0 0 20px;
+            line-height:1.6;
+            margin:0 0 21px;
+        }
+
+        .reward-amount {
+            display:inline-block;
+            margin:-5px 0 20px;
+            padding:7px 13px;
+            border-radius:100px;
+            background:var(--accent-badge);
+            border:1px solid var(--accent-border);
+            color:var(--text-heading);
+            font-size:13px;
+            font-weight:bold;
+        }
+
+        .confetti {
+            position:absolute;
+            color:var(--ornament-color);
+            font-size:14px;
+            animation:confettiFall 1.8s ease-out forwards;
+        }
+
+        .confetti:nth-child(1) {
+            top:18px;
+            left:23%;
+        }
+
+        .confetti:nth-child(2) {
+            top:34px;
+            left:12%;
+            animation-delay:.12s;
+        }
+
+        .confetti:nth-child(3) {
+            top:24px;
+            right:22%;
+            animation-delay:.18s;
+        }
+
+        .confetti:nth-child(4) {
+            top:45px;
+            right:10%;
+            animation-delay:.08s;
+        }
+
+        .confetti:nth-child(5) {
+            top:55px;
+            left:30%;
+            animation-delay:.22s;
+        }
+
+        @keyframes victoryPop {
+            from {
+                transform:scale(.88);
+                opacity:0;
+            }
+            to {
+                transform:scale(1);
+                opacity:1;
+            }
+        }
+
+        @keyframes victoryFloat {
+            0%,100% {
+                transform:translateY(0);
+            }
+            50% {
+                transform:translateY(-5px);
+            }
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform:translateY(0) rotate(0);
+                opacity:0;
+            }
+            15% {
+                opacity:.8;
+            }
+            100% {
+                transform:translateY(115px) rotate(120deg);
+                opacity:0;
+            }
         }
 
         .decorations {
@@ -385,199 +526,6 @@
             animation-delay:2.5s;
         }
 
-        /* VICTORY HEART */
-
-        .heart-art {
-            width:90px;
-            height:82px;
-            margin:0 auto 2px;
-            position:relative;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            animation:heartFloat 2.4s ease-in-out infinite;
-        }
-
-        .heart-svg {
-            width:76px;
-            height:76px;
-            overflow:visible;
-        }
-
-        .heart-outline {
-            fill:none;
-            stroke:var(--text-heading);
-            stroke-width:1.7;
-            stroke-linecap:round;
-            stroke-linejoin:round;
-            stroke-dasharray:180;
-            stroke-dashoffset:180;
-            animation:drawHeart 1.2s ease forwards;
-        }
-
-        .heart-fill {
-            fill:var(--accent-soft);
-            stroke:var(--text-heading);
-            stroke-width:1.2;
-            opacity:0;
-            transform-origin:center;
-            animation:heartAppear .5s ease .85s forwards;
-        }
-
-        .heart-shine {
-            fill:none;
-            stroke:var(--text-heading);
-            stroke-width:1.3;
-            stroke-linecap:round;
-            opacity:0;
-            animation:shineAppear .45s ease 1.25s forwards;
-        }
-
-        .heart-spark {
-            position:absolute;
-            color:var(--ornament-color);
-            font-size:13px;
-            opacity:0;
-            animation:sparkAppear .6s ease forwards;
-        }
-
-        .heart-spark.one {
-            top:7px;
-            left:7px;
-            animation-delay:1.25s;
-        }
-
-        .heart-spark.two {
-            top:16px;
-            right:4px;
-            animation-delay:1.45s;
-        }
-
-        .heart-spark.three {
-            bottom:9px;
-            left:13px;
-            animation-delay:1.6s;
-        }
-
-        .confetti {
-            position:absolute;
-            inset:-35px;
-            pointer-events:none;
-            overflow:visible;
-        }
-
-        .confetti span {
-            position:absolute;
-            left:50%;
-            top:35px;
-            width:4px;
-            height:9px;
-            background:var(--ornament-color);
-            opacity:0;
-            animation:confettiFall 1.5s ease-out forwards;
-        }
-
-        .confetti span:nth-child(1) {
-            margin-left:-70px;
-            animation-delay:.1s;
-            transform:rotate(20deg);
-        }
-
-        .confetti span:nth-child(2) {
-            margin-left:-45px;
-            animation-delay:.2s;
-            transform:rotate(-25deg);
-        }
-
-        .confetti span:nth-child(3) {
-            margin-left:-20px;
-            animation-delay:.05s;
-            transform:rotate(40deg);
-        }
-
-        .confetti span:nth-child(4) {
-            margin-left:20px;
-            animation-delay:.18s;
-            transform:rotate(-35deg);
-        }
-
-        .confetti span:nth-child(5) {
-            margin-left:47px;
-            animation-delay:.08s;
-            transform:rotate(25deg);
-        }
-
-        .confetti span:nth-child(6) {
-            margin-left:72px;
-            animation-delay:.24s;
-            transform:rotate(-15deg);
-        }
-
-        @keyframes drawHeart {
-            to {
-                stroke-dashoffset:0;
-            }
-        }
-
-        @keyframes heartAppear {
-            0% {
-                opacity:0;
-                transform:scale(.65);
-            }
-            70% {
-                opacity:1;
-                transform:scale(1.08);
-            }
-            100% {
-                opacity:1;
-                transform:scale(1);
-            }
-        }
-
-        @keyframes shineAppear {
-            to {
-                opacity:.65;
-            }
-        }
-
-        @keyframes heartFloat {
-            0%,100% {
-                transform:translateY(0);
-            }
-            50% {
-                transform:translateY(-5px);
-            }
-        }
-
-        @keyframes sparkAppear {
-            0% {
-                opacity:0;
-                transform:scale(.3) rotate(-20deg);
-            }
-            60% {
-                opacity:1;
-                transform:scale(1.15) rotate(5deg);
-            }
-            100% {
-                opacity:.7;
-                transform:scale(1) rotate(0);
-            }
-        }
-
-        @keyframes confettiFall {
-            0% {
-                opacity:0;
-                transform:translateY(0) rotate(0);
-            }
-            15% {
-                opacity:.8;
-            }
-            100% {
-                opacity:0;
-                transform:translateY(70px) rotate(180deg);
-            }
-        }
-
         @keyframes float {
             0%,100% {
                 transform:translateY(0) rotate(0);
@@ -601,7 +549,12 @@
                 max-width:360px;
                 gap:8px;
             }
-        }        }
+
+            .modal-card {
+                max-width:340px;
+                padding:30px 21px 23px;
+            }
+        }
     </style>
 </head>
 
@@ -657,54 +610,46 @@
             <span>✧</span>
         </div>
 
-    </main>
+    </main>    <div id="reward-modal" class="modal-overlay">
 
-    <div id="reward-modal" class="modal-overlay">
+        <div class="modal-card" id="modal-card">
 
-        <div class="modal-card">
+            <span class="confetti">✦</span>
+            <span class="confetti">✧</span>
+            <span class="confetti">♡</span>
+            <span class="confetti">✦</span>
+            <span class="confetti">✧</span>
 
-            <div class="heart-art">
-
-                <div class="confetti">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-
-                <svg
-                    class="heart-svg"
-                    viewBox="0 0 80 76"
-                >
-                    <path
-                        class="heart-fill"
-                        d="M40 68C35 63 10 48 7 29C5 17 12 9 22 9C30 9 36 14 40 21C44 14 50 9 58 9C68 9 75 17 73 29C70 48 45 63 40 68Z"
-                    />
-
-                    <path
-                        class="heart-outline"
-                        d="M40 68C35 63 10 48 7 29C5 17 12 9 22 9C30 9 36 14 40 21C44 14 50 9 58 9C68 9 75 17 73 29C70 48 45 63 40 68Z"
-                    />
-
-                    <path
-                        class="heart-shine"
-                        d="M19 20C16 22 15 25 15 28"
-                    />
-                </svg>
-
-                <span class="heart-spark one">✦</span>
-                <span class="heart-spark two">✧</span>
-                <span class="heart-spark three">✦</span>
-
+            <div class="victory-decoration">
+                <span>✧</span>
+                <i></i>
+                <span>♡</span>
+                <i></i>
+                <span>✧</span>
             </div>
 
-            <h2>✦ You matched them all ♡</h2>
+            <div class="victory-symbol" id="modal-symbol">
+                <svg
+                    width="32"
+                    height="32"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                >
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+            </div>
 
-            <p>
-                You matched all the pictures and earned 40 Coins!
+            <h2 id="modal-title">
+                You matched them all ♡
+            </h2>
+
+            <p id="modal-desc">
+                You matched all the pictures and earned 40 Coins.
             </p>
+
+            <div class="reward-amount" id="reward-amount">
+                +40 Coins
+            </div>
 
             <button
                 class="btn"
@@ -1154,104 +1099,9 @@
                                 "flex";
 
 
-                            const heart =
-                                modal.querySelector(
-                                    ".heart-art"
-                                );
-
-
-                            if (heart) {
-
-                                heart.style.animation =
-                                    "none";
-
-                                void heart.offsetWidth;
-
-                                heart.style.animation =
-                                    "heartFloat 2.4s ease-in-out infinite";
-
-                            }
-
-
-                            const outline =
-                                modal.querySelector(
-                                    ".heart-outline"
-                                );
-
-
-                            if (outline) {
-
-                                outline.style.animation =
-                                    "none";
-
-                                void outline.offsetWidth;
-
-                                outline.style.animation =
-                                    "drawHeart 1.2s ease forwards";
-
-                            }
-
-
-                            const fill =
-                                modal.querySelector(
-                                    ".heart-fill"
-                                );
-
-
-                            if (fill) {
-
-                                fill.style.animation =
-                                    "none";
-
-                                void fill.offsetWidth;
-
-                                fill.style.animation =
-                                    "heartAppear .5s ease .85s forwards";
-
-                            }
-
-
-                            const shine =
-                                modal.querySelector(
-                                    ".heart-shine"
-                                );
-
-
-                            if (shine) {
-
-                                shine.style.animation =
-                                    "none";
-
-                                void shine.offsetWidth;
-
-                                shine.style.animation =
-                                    "shineAppear .45s ease 1.25s forwards";
-
-                            }
-
-
                             modal
                                 .querySelectorAll(
-                                    ".heart-spark"
-                                )
-                                .forEach(
-                                    spark => {
-
-                                        spark.style.animation =
-                                            "none";
-
-                                        void spark.offsetWidth;
-
-                                        spark.style.animation =
-                                            "sparkAppear .6s ease forwards";
-
-                                    }
-                                );
-
-
-                            modal
-                                .querySelectorAll(
-                                    ".confetti span"
+                                    ".confetti"
                                 )
                                 .forEach(
                                     confetti => {
@@ -1262,11 +1112,10 @@
                                         void confetti.offsetWidth;
 
                                         confetti.style.animation =
-                                            "confettiFall 1.5s ease-out forwards";
+                                            "confettiFall 1.8s ease-out forwards";
 
                                     }
                                 );
-
 
                         },
                         500
