@@ -3,9 +3,158 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Minesweeper</title>
+<title>Minesweeper ♡</title>
+<link rel="stylesheet" href="style.css">
+</head>
 
-<style>
+<body>
+
+<div class="decorations">
+    <span>✦</span>
+    <span>✧</span>
+    <span>♡</span>
+    <span>✦</span>
+    <span>✧</span>
+    <span>♡</span>
+</div>
+
+<header>
+    <a onclick="goBack()" class="nav-link">&lt;- Back to Games</a>
+
+    <div class="coin-display">
+        <span class="coin-count">0</span> Coins
+    </div>
+</header>
+
+<main>
+
+    <div class="ornament">
+        <span>✦</span>
+        <i></i>
+        <span>♡</span>
+        <i></i>
+        <span>✦</span>
+    </div>
+
+    <div class="game-window">
+
+        <div class="status-bar">
+
+            <div class="counter" id="flag-count">010</div>
+
+            <div class="center-controls">
+
+                <button class="control-btn" id="face-btn" title="Reset Game">
+                    <svg class="icon-svg" viewBox="0 0 16 16" shape-rendering="crispEdges">
+                        <rect x="2" y="2" width="12" height="12" fill="#f4d96b"/>
+                        <rect x="3" y="1" width="10" height="1" fill="var(--game-accent)"/>
+                        <rect x="3" y="14" width="10" height="1" fill="var(--game-accent)"/>
+                        <rect x="1" y="3" width="1" height="10" fill="var(--game-accent)"/>
+                        <rect x="14" y="3" width="1" height="10" fill="var(--game-accent)"/>
+                        <rect x="5" y="6" width="2" height="2" fill="var(--game-accent)"/>
+                        <rect x="9" y="6" width="2" height="2" fill="var(--game-accent)"/>
+                        <rect x="5" y="10" width="6" height="1" fill="var(--game-accent)"/>
+                    </svg>
+                </button>
+
+                <button
+                    class="control-btn"
+                    id="mode-btn"
+                    onclick="toggleFlagMode()"
+                    title="Toggle Dig/Flag Mode"
+                >
+                    <svg id="mode-icon" class="pixel-flag" viewBox="0 0 16 16">
+                        <rect x="3" y="1" width="2" height="14" fill="var(--game-accent)"/>
+                        <rect x="5" y="2" width="7" height="2" fill="var(--game-accent)"/>
+                        <rect x="5" y="4" width="5" height="2" fill="var(--game-accent)"/>
+                        <rect x="5" y="6" width="3" height="2" fill="var(--game-accent)"/>
+                        <rect x="2" y="14" width="8" height="1" fill="var(--game-accent)"/>
+                    </svg>
+                </button>
+
+                <button class="custom-select-btn" onclick="openDiffModal()">
+                    <span id="diff-label">8x8</span> ▼
+                </button>
+
+            </div>
+
+            <div class="counter" id="timer">000</div>
+
+        </div>
+
+        <div class="grid-frame">
+            <div class="grid" id="grid"></div>
+        </div>
+
+        <div class="dashboard-bar">
+
+            <div class="stat-item">
+                <span>BEST</span>
+                <span class="stat-val" id="best-time">--</span>
+            </div>
+
+            <div class="stat-item">
+                <span>WINS</span>
+                <span class="stat-val" id="win-count">0</span>
+            </div>
+
+            <div class="stat-item">
+                <span>PROGRESS</span>
+                <span class="stat-val" id="cleared-pct">0%</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="ornament" style="margin-top:16px;margin-bottom:0;">
+        <span>✧</span>
+        <i></i>
+        <span>♡</span>
+        <i></i>
+        <span>✧</span>
+    </div>
+
+</main>
+
+<div id="diff-modal" class="diff-modal" onclick="closeDiffModal()">
+    <div class="diff-card" onclick="event.stopPropagation()">
+        <div class="diff-title">SELECT GRID SIZE</div>
+        <div class="diff-option selected" id="opt-easy" onclick="selectDifficulty('easy')">8 x 8 (10 Mines)</div>
+        <div class="diff-option" id="opt-medium" onclick="selectDifficulty('medium')">10 x 10 (18 Mines)</div>
+        <div class="diff-option" id="opt-hard" onclick="selectDifficulty('hard')">12 x 12 (28 Mines)</div>
+    </div>
+</div>
+
+<div id="game-modal" class="modal-overlay">
+    <div class="modal-card" id="modal-card">
+        <span class="confetti">✦</span>
+        <span class="confetti">✧</span>
+        <span class="confetti">♡</span>
+        <span class="confetti">✦</span>
+        <span class="confetti">✧</span>
+
+        <div class="victory-decoration">
+            <span>✧</span><i></i><span>♡</span><i></i><span>✧</span>
+        </div>
+
+        <div class="victory-symbol" id="modal-symbol">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+        </div>
+
+        <h2 id="modal-title">Victory!</h2>
+        <p id="modal-msg">You hit a mine!</p>
+        <div class="reward-amount" id="reward-amount">+20 Coins</div>
+
+        <button class="btn" onclick="closeModalAndReset()" style="width:100%;">Play Again</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
 :root {
     --bg-base:#f2f7fa;
     --bg-grad-1:#dce8f3;
@@ -148,8 +297,6 @@ header {
     color:var(--text-heading);
 }
 
-/* BACKGROUND DECORATION */
-
 .decorations {
     position:fixed;
     inset:0;
@@ -165,46 +312,12 @@ header {
     animation:float 5s ease-in-out infinite;
 }
 
-.decorations span:nth-child(1) {
-    top:13%;
-    left:7%;
-    font-size:20px;
-}
-
-.decorations span:nth-child(2) {
-    top:28%;
-    right:8%;
-    font-size:13px;
-    animation-delay:1s;
-}
-
-.decorations span:nth-child(3) {
-    top:55%;
-    left:5%;
-    font-size:14px;
-    animation-delay:2s;
-}
-
-.decorations span:nth-child(4) {
-    top:68%;
-    right:6%;
-    font-size:21px;
-    animation-delay:1.5s;
-}
-
-.decorations span:nth-child(5) {
-    bottom:12%;
-    left:12%;
-    font-size:12px;
-    animation-delay:.5s;
-}
-
-.decorations span:nth-child(6) {
-    bottom:20%;
-    right:13%;
-    font-size:16px;
-    animation-delay:2.5s;
-}
+.decorations span:nth-child(1) { top:13%; left:7%; font-size:20px; }
+.decorations span:nth-child(2) { top:28%; right:8%; font-size:13px; animation-delay:1s; }
+.decorations span:nth-child(3) { top:55%; left:5%; font-size:14px; animation-delay:2s; }
+.decorations span:nth-child(4) { top:68%; right:6%; font-size:21px; animation-delay:1.5s; }
+.decorations span:nth-child(5) { bottom:12%; left:12%; font-size:12px; animation-delay:.5s; }
+.decorations span:nth-child(6) { bottom:20%; right:13%; font-size:16px; animation-delay:2.5s; }
 
 @keyframes float {
     0%,100% { transform:translateY(0) rotate(0); }
@@ -231,18 +344,8 @@ main {
     color:var(--ornament-color);
 }
 
-.ornament span {
-    font-size:16px;
-}
-
-.ornament i {
-    width:38px;
-    height:1px;
-    background:var(--ornament-color);
-    opacity:.45;
-}
-
-/* GAME */
+.ornament span { font-size:16px; }
+.ornament i { width:38px; height:1px; background:var(--ornament-color); opacity:.45; }
 
 .game-window {
     background:var(--card-bg);
@@ -327,8 +430,6 @@ main {
     display:block;
     shape-rendering:crispEdges;
 }
-
-/* PIXEL MINESWEEPER BOARD */
 
 .grid-frame {
     border:3px solid;
@@ -430,31 +531,25 @@ main {
     margin-top:1px;
 }
 
-/* MODALS */
-
 .diff-modal,
 .modal-overlay {
     display:none;
     position:fixed;
     inset:0;
-    background:rgba(30,25,25,.25);
-    backdrop-filter:blur(3px);
-    z-index:200;
+    background:rgba(30,25,25,.3);
+    backdrop-filter:blur(5px);
+    z-index:500;
     align-items:center;
     justify-content:center;
     padding:20px;
 }
 
-.diff-card,
-.modal-card {
+.diff-card {
     background:var(--card-bg);
     border:1px solid var(--bg-grad-2);
     border-radius:14px;
     padding:16px;
     box-shadow:0 12px 35px rgba(0,0,0,.12);
-}
-
-.diff-card {
     width:210px;
     display:flex;
     flex-direction:column;
@@ -489,27 +584,103 @@ main {
 }
 
 .modal-card {
-    max-width:300px;
-    width:90%;
+    position:relative;
+    background:var(--card-bg);
+    border:1px solid var(--accent-border);
+    border-radius:18px;
+    padding:32px 26px 26px;
+    max-width:360px;
+    width:100%;
     text-align:center;
+    box-shadow:0 18px 50px rgba(0,0,0,0.16);
+    animation:victoryPop 0.35s ease;
+    overflow:hidden;
 }
 
-.modal-card h2 {
+.modal-card::before,
+.modal-card::after {
+    content:"✦";
+    position:absolute;
+    color:var(--ornament-color);
+    opacity:0.5;
+    font-size:20px;
+}
+.modal-card::before { top: 13px; left: 18px; }
+.modal-card::after { top: 13px; right: 18px; }
+
+.victory-decoration {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+    color:var(--ornament-color);
+    margin-bottom:13px;
+}
+.victory-decoration span { font-size:15px; }
+.victory-decoration i { width:30px; height:1px; background:var(--ornament-color); opacity:0.5; }
+
+.victory-symbol {
+    width:66px;
+    height:66px;
+    margin:2px auto 14px;
+    border-radius:50%;
+    background:var(--accent-soft);
+    border:1px solid var(--accent-border);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--ornament-color);
+    animation:victoryFloat 2s ease-in-out infinite;
+}
+
+.modal-card h2 { color:var(--text-heading); font-size:25px; font-weight:normal; margin:0 0 9px; }
+.modal-card p { color:var(--text-main); opacity:0.82; font-size:14px; line-height:1.6; margin:0 0 21px; }
+
+.reward-amount {
+    display:inline-block;
+    margin:-5px 0 20px;
+    padding:7px 13px;
+    border-radius:100px;
+    background:var(--accent-badge);
+    border:1px solid var(--accent-border);
     color:var(--text-heading);
-    font-size:21px;
-    font-weight:normal;
-    margin:0 0 10px;
+    font-size:13px;
+    font-weight:bold;
 }
 
-.modal-card p {
-    color:var(--text-main);
+.modal-card.game-over .victory-symbol { animation:none; }
+
+.confetti {
+    position:absolute;
+    pointer-events:none;
+    color:var(--ornament-color);
     font-size:14px;
-    line-height:1.5;
-    margin:0 0 20px;
+    animation:confettiFall 1.8s ease-out forwards;
+}
+.confetti:nth-child(1) { left: 18%; top: 5%; animation-delay: 0s; }
+.confetti:nth-child(2) { left: 32%; top: 2%; animation-delay: 0.12s; }
+.confetti:nth-child(3) { left: 50%; top: 4%; animation-delay: 0.2s; }
+.confetti:nth-child(4) { right: 32%; top: 2%; animation-delay: 0.08s; }
+.confetti:nth-child(5) { right: 17%; top: 6%; animation-delay: 0.18s; }
+
+@keyframes victoryPop {
+    0% { transform:scale(0.88); opacity:0; }
+    100% { transform:scale(1); opacity:1; }
+}
+
+@keyframes victoryFloat {
+    0%, 100% { transform:translateY(0); }
+    50% { transform:translateY(-5px); }
+}
+
+@keyframes confettiFall {
+    0% { transform:translateY(0) rotate(0deg); opacity:0; }
+    15% { opacity:0.8; }
+    100% { transform:translateY(115px) rotate(120deg); opacity:0; }
 }
 
 .btn {
-    padding:10px 20px;
+    padding:11px 20px;
     border:1px solid var(--accent-border);
     border-radius:100px;
     background:var(--card-bg);
@@ -517,9 +688,9 @@ main {
     font-family:Georgia,"Times New Roman",serif;
     font-size:13px;
     cursor:pointer;
+    transition:0.2s ease;
 }
-
-/* PIXEL ICONS */
+.btn:hover { background:var(--accent-soft); transform:translateY(-1px); }
 
 .pixel-flag {
     width:16px;
@@ -538,242 +709,16 @@ main {
 }
 
 @media (max-width:600px) {
-    header {
-        min-height:66px;
-        padding:12px 11px;
-    }
-
-    .nav-link {
-        font-size:13px;
-    }
-
-    .coin-display {
-        padding:8px 10px;
-        font-size:11px;
-    }
-
-    main {
-        padding:16px 8px 22px;
-    }
-
-    .game-window {
-        padding:8px;
-        max-width:98vw;
-    }
+    header { min-height:66px; padding:12px 11px; }
+    .nav-link { font-size:13px; }
+    .coin-display { padding:8px 10px; font-size:11px; }
+    main { padding:16px 8px 22px; }
+    .game-window { padding:8px; max-width:98vw; }
+    .modal-card { max-width:340px; padding:30px 21px 23px; }
 }
-
-@media (max-width:430px) {
-    header {
-        padding:10px 7px;
-    }
-
-    .nav-link {
-        font-size:12px;
-    }
-
-    .coin-display {
-        padding:7px 8px;
-        font-size:10px;
-    }
-
-    .game-window {
-        padding:6px;
-        gap:7px;
-    }
-
-    .status-bar {
-        padding:5px;
-    }
-
-    .counter {
-        font-size:17px;
-        min-width:44px;
-    }
-
-    .control-btn,
-    .custom-select-btn {
-        height:31px;
-    }
-}
-</style>
-</head>
-
-<body>
-
-<div class="decorations">
-    <span>✦</span>
-    <span>✧</span>
-    <span>♡</span>
-    <span>✦</span>
-    <span>✧</span>
-    <span>♡</span>
-</div>
-
-<header>
-    <a onclick="goBack()" class="nav-link">&lt;- Back to Games</a>
-
-    <div class="coin-display">
-        <span class="coin-count">0</span> Coins
-    </div>
-</header>
-
-<main>
-
-    <div class="ornament">
-        <span>✦</span>
-        <i></i>
-        <span>♡</span>
-        <i></i>
-        <span>✦</span>
-    </div>
-
-    <div class="game-window">
-
-        <div class="status-bar">
-
-            <div class="counter" id="flag-count">010</div>
-
-            <div class="center-controls">
-
-                <button class="control-btn" id="face-btn" title="Reset Game">
-                    <svg class="icon-svg" viewBox="0 0 16 16" shape-rendering="crispEdges">
-                        <rect x="2" y="2" width="12" height="12" fill="#f4d96b"/>
-                        <rect x="3" y="1" width="10" height="1" fill="var(--game-accent)"/>
-                        <rect x="3" y="14" width="10" height="1" fill="var(--game-accent)"/>
-                        <rect x="1" y="3" width="1" height="10" fill="var(--game-accent)"/>
-                        <rect x="14" y="3" width="1" height="10" fill="var(--game-accent)"/>
-                        <rect x="5" y="6" width="2" height="2" fill="var(--game-accent)"/>
-                        <rect x="9" y="6" width="2" height="2" fill="var(--game-accent)"/>
-                        <rect x="5" y="10" width="6" height="1" fill="var(--game-accent)"/>
-                    </svg>
-                </button>
-
-                <button
-                    class="control-btn"
-                    id="mode-btn"
-                    onclick="toggleFlagMode()"
-                    title="Toggle Dig/Flag Mode"
-                >
-                    <svg id="mode-icon" class="pixel-flag" viewBox="0 0 16 16">
-                        <rect x="3" y="1" width="2" height="14" fill="var(--game-accent)"/>
-                        <rect x="5" y="2" width="7" height="2" fill="var(--game-accent)"/>
-                        <rect x="5" y="4" width="5" height="2" fill="var(--game-accent)"/>
-                        <rect x="5" y="6" width="3" height="2" fill="var(--game-accent)"/>
-                        <rect x="2" y="14" width="8" height="1" fill="var(--game-accent)"/>
-                    </svg>
-                </button>
-
-                <button class="custom-select-btn" onclick="openDiffModal()">
-                    <span id="diff-label">8x8</span> ▼
-                </button>
-
-            </div>
-
-            <div class="counter" id="timer">000</div>
-
-        </div>
-
-        <div class="grid-frame">
-            <div class="grid" id="grid"></div>
-        </div>
-
-        <div class="dashboard-bar">
-
-            <div class="stat-item">
-                <span>BEST</span>
-                <span class="stat-val" id="best-time">--</span>
-            </div>
-
-            <div class="stat-item">
-                <span>WINS</span>
-                <span class="stat-val" id="win-count">0</span>
-            </div>
-
-            <div class="stat-item">
-                <span>PROGRESS</span>
-                <span class="stat-val" id="cleared-pct">0%</span>
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="ornament" style="margin-top:16px;margin-bottom:0;">
-        <span>✧</span>
-        <i></i>
-        <span>♡</span>
-        <i></i>
-        <span>✧</span>
-    </div>
-
-</main>
-
-<div id="diff-modal" class="diff-modal" onclick="closeDiffModal()">
-
-    <div class="diff-card" onclick="event.stopPropagation()">
-
-        <div class="diff-title">SELECT GRID SIZE</div>
-
-        <div
-            class="diff-option selected"
-            id="opt-easy"
-            onclick="selectDifficulty('easy')"
-        >
-            8 x 8 (10 Mines)
-        </div>
-
-        <div
-            class="diff-option"
-            id="opt-medium"
-            onclick="selectDifficulty('medium')"
-        >
-            10 x 10 (18 Mines)
-        </div>
-
-        <div
-            class="diff-option"
-            id="opt-hard"
-            onclick="selectDifficulty('hard')"
-        >
-            12 x 12 (28 Mines)
-        </div>
-
-    </div>
-
-</div>
-
-<div id="game-modal" class="modal-overlay">
-
-    <div class="modal-card">
-
-        <h2 id="modal-title">Game Over</h2>
-
-        <p id="modal-msg">You hit a mine!</p>
-
-        <button
-            class="btn"
-            onclick="closeModalAndReset()"
-            style="width:100%;"
-        >
-            Play Again
-        </button>
-
-    </div>
-
-</div>
-
-<script src="../script.js"></script><script>
-
 function loadSavedTheme() {
-
     const savedTheme = localStorage.getItem("arcade_theme");
-
-    if (
-        savedTheme === "pink" ||
-        savedTheme === "green" ||
-        savedTheme === "lavender" ||
-        savedTheme === "yellow"
-    ) {
+    if (["pink", "green", "lavender", "yellow"].includes(savedTheme)) {
         document.body.setAttribute("data-theme", savedTheme);
     } else {
         document.body.removeAttribute("data-theme");
@@ -782,35 +727,11 @@ function loadSavedTheme() {
 
 loadSavedTheme();
 
-
 const PRESETS = {
-
-    easy: {
-        rows: 8,
-        cols: 8,
-        mines: 10,
-        reward: 20,
-        label: "8x8"
-    },
-
-    medium: {
-        rows: 10,
-        cols: 10,
-        mines: 18,
-        reward: 40,
-        label: "10x10"
-    },
-
-    hard: {
-        rows: 12,
-        cols: 12,
-        mines: 28,
-        reward: 70,
-        label: "12x12"
-    }
-
+    easy: { rows: 8, cols: 8, mines: 10, reward: 20, label: "8x8" },
+    medium: { rows: 10, cols: 10, mines: 18, reward: 40, label: "10x10" },
+    hard: { rows: 12, cols: 12, mines: 28, reward: 70, label: "12x12" }
 };
-
 
 let currentDiff = "easy";
 let board = [];
@@ -822,993 +743,382 @@ let firstClick = true;
 let timerInterval = null;
 let seconds = 0;
 
-let wins =
-    parseInt(localStorage.getItem("ms_wins")) || 0;
-
-
-/* PIXEL FLAG */
+let wins = parseInt(localStorage.getItem("ms_wins")) || 0;
 
 function createFlagSVG() {
-
     return `
         <svg class="pixel-flag" viewBox="0 0 16 16">
-            <rect x="3" y="1" width="2" height="14"
-                fill="var(--game-accent)"/>
-            <rect x="5" y="2" width="7" height="2"
-                fill="var(--game-accent)"/>
-            <rect x="5" y="4" width="5" height="2"
-                fill="var(--game-accent)"/>
-            <rect x="5" y="6" width="3" height="2"
-                fill="var(--game-accent)"/>
-            <rect x="2" y="14" width="8" height="1"
-                fill="var(--game-accent)"/>
+            <rect x="3" y="1" width="2" height="14" fill="var(--game-accent)"/>
+            <rect x="5" y="2" width="7" height="2" fill="var(--game-accent)"/>
+            <rect x="5" y="4" width="5" height="2" fill="var(--game-accent)"/>
+            <rect x="5" y="6" width="3" height="2" fill="var(--game-accent)"/>
+            <rect x="2" y="14" width="8" height="1" fill="var(--game-accent)"/>
         </svg>
     `;
-
 }
-
-
-/* PIXEL DIG */
 
 function createDigSVG() {
-
     return `
         <svg class="pixel-flag" viewBox="0 0 16 16">
-            <rect x="9" y="2" width="3" height="2"
-                fill="var(--game-accent)"/>
-            <rect x="8" y="4" width="3" height="2"
-                fill="var(--game-accent)"/>
-            <rect x="7" y="6" width="3" height="2"
-                fill="var(--game-accent)"/>
-            <rect x="6" y="8" width="3" height="2"
-                fill="var(--game-accent)"/>
-            <rect x="3" y="10" width="5" height="3"
-                fill="var(--game-accent)"/>
-            <rect x="2" y="13" width="7" height="2"
-                fill="var(--game-accent)"/>
-            <rect x="9" y="9" width="2" height="2"
-                fill="var(--game-accent)"/>
-            <rect x="10" y="8" width="2" height="2"
-                fill="var(--game-accent)"/>
-            <rect x="11" y="7" width="2" height="2"
-                fill="var(--game-accent)"/>
+            <rect x="9" y="2" width="3" height="2" fill="var(--game-accent)"/>
+            <rect x="8" y="4" width="3" height="2" fill="var(--game-accent)"/>
+            <rect x="7" y="6" width="3" height="2" fill="var(--game-accent)"/>
+            <rect x="6" y="8" width="3" height="2" fill="var(--game-accent)"/>
+            <rect x="3" y="10" width="5" height="3" fill="var(--game-accent)"/>
+            <rect x="2" y="13" width="7" height="2" fill="var(--game-accent)"/>
+            <rect x="9" y="9" width="2" height="2" fill="var(--game-accent)"/>
+            <rect x="10" y="8" width="2" height="2" fill="var(--game-accent)"/>
+            <rect x="11" y="7" width="2" height="2" fill="var(--game-accent)"/>
         </svg>
     `;
-
 }
-
-
-/* PIXEL MINE */
 
 function createMineSVG() {
-
     return `
         <svg class="pixel-mine" viewBox="0 0 16 16">
-
-            <rect x="6" y="1" width="4" height="2"
-                fill="var(--game-accent)"/>
-
-            <rect x="3" y="3" width="10" height="2"
-                fill="var(--game-accent)"/>
-
-            <rect x="2" y="5" width="12" height="6"
-                fill="var(--game-accent)"/>
-
-            <rect x="3" y="11" width="10" height="2"
-                fill="var(--game-accent)"/>
-
-            <rect x="6" y="13" width="4" height="2"
-                fill="var(--game-accent)"/>
-
-            <rect x="5" y="5" width="2" height="2"
-                fill="#ffffff"/>
-
-            <rect x="8" y="3" width="2" height="2"
-                fill="#ffffff"/>
-
+            <rect x="6" y="1" width="4" height="2" fill="var(--game-accent)"/>
+            <rect x="3" y="3" width="10" height="2" fill="var(--game-accent)"/>
+            <rect x="2" y="5" width="12" height="6" fill="var(--game-accent)"/>
+            <rect x="3" y="11" width="10" height="2" fill="var(--game-accent)"/>
+            <rect x="6" y="13" width="4" height="2" fill="var(--game-accent)"/>
+            <rect x="5" y="5" width="2" height="2" fill="#ffffff"/>
+            <rect x="8" y="3" width="2" height="2" fill="#ffffff"/>
         </svg>
     `;
-
 }
 
-
-document
-    .getElementById("face-btn")
-    .addEventListener("click", function() {
-
-        initGame();
-
-    });
-
+document.getElementById("face-btn").addEventListener("click", function() {
+    initGame();
+});
 
 function goBack() {
-
     if (window.history.length > 1) {
-
         window.history.back();
-
     } else {
-
         window.location.href = "../index.html";
-
     }
-
 }
-
 
 function openDiffModal() {
-
-    document
-        .getElementById("diff-modal")
-        .style.display = "flex";
-
+    document.getElementById("diff-modal").style.display = "flex";
 }
-
 
 function closeDiffModal() {
-
-    document
-        .getElementById("diff-modal")
-        .style.display = "none";
-
+    document.getElementById("diff-modal").style.display = "none";
 }
-
 
 function selectDifficulty(diff) {
-
     currentDiff = diff;
-
-    document
-        .getElementById("diff-label")
-        .innerText = PRESETS[diff].label;
-
-    document
-        .querySelectorAll(".diff-option")
-        .forEach(function(el) {
-
-            el.classList.remove("selected");
-
-        });
-
-    document
-        .getElementById(`opt-${diff}`)
-        .classList.add("selected");
-
+    document.getElementById("diff-label").innerText = PRESETS[diff].label;
+    document.querySelectorAll(".diff-option").forEach(function(el) {
+        el.classList.remove("selected");
+    });
+    document.getElementById(`opt-${diff}`).classList.add("selected");
     closeDiffModal();
-
     initGame();
-
 }
-
-
-/* ONE BUTTON = DIG / FLAG */
 
 function toggleFlagMode() {
-
     flagMode = !flagMode;
-
-    const btn =
-        document.getElementById("mode-btn");
-
-    const icon =
-        document.getElementById("mode-icon");
-
-    btn.classList.toggle(
-        "active",
-        flagMode
-    );
-
-    icon.outerHTML =
-        flagMode
-            ? createFlagSVG()
-            : createDigSVG();
-
-    const newIcon =
-        document.querySelector("#mode-btn svg");
-
-    if (newIcon) {
-        newIcon.id = "mode-icon";
-    }
-
+    const btn = document.getElementById("mode-btn");
+    const icon = document.getElementById("mode-icon");
+    btn.classList.toggle("active", flagMode);
+    icon.outerHTML = flagMode ? createFlagSVG() : createDigSVG();
+    const newIcon = document.querySelector("#mode-btn svg");
+    if (newIcon) { newIcon.id = "mode-icon"; }
 }
-
 
 function startTimer() {
-
     clearInterval(timerInterval);
-
     seconds = 0;
-
     updateTimerDisplay();
-
-    timerInterval =
-        setInterval(function() {
-
-            seconds =
-                Math.min(
-                    999,
-                    seconds + 1
-                );
-
-            updateTimerDisplay();
-
-        }, 1000);
-
+    timerInterval = setInterval(function() {
+        seconds = Math.min(999, seconds + 1);
+        updateTimerDisplay();
+    }, 1000);
 }
-
 
 function stopTimer() {
-
     clearInterval(timerInterval);
-
 }
-
 
 function updateTimerDisplay() {
-
-    document
-        .getElementById("timer")
-        .innerText =
-        String(seconds).padStart(3, "0");
-
+    document.getElementById("timer").innerText = String(seconds).padStart(3, "0");
 }
-
 
 function updateFlagDisplay() {
-
-    document
-        .getElementById("flag-count")
-        .innerText =
-        flagsLeft < 0
-            ? flagsLeft
-            : String(flagsLeft).padStart(3, "0");
-
+    document.getElementById("flag-count").innerText = flagsLeft < 0 ? flagsLeft : String(flagsLeft).padStart(3, "0");
 }
-
 
 function updateStatsDisplay() {
+    const best = localStorage.getItem(`ms_best_${currentDiff}`);
+    document.getElementById("best-time").innerText = best ? `${best}s` : "--";
+    document.getElementById("win-count").innerText = wins;
 
-    const best =
-        localStorage.getItem(
-            `ms_best_${currentDiff}`
-        );
-
-    document
-        .getElementById("best-time")
-        .innerText =
-        best ? `${best}s` : "--";
-
-    document
-        .getElementById("win-count")
-        .innerText =
-        wins;
-
-    const config =
-        PRESETS[currentDiff];
-
-    const totalSafe =
-        (config.rows * config.cols)
-        - config.mines;
-
-    const pct =
-        Math.floor(
-            (revealedCount / totalSafe) * 100
-        );
-
-    document
-        .getElementById("cleared-pct")
-        .innerText =
-        `${pct}%`;
-
+    const config = PRESETS[currentDiff];
+    const totalSafe = (config.rows * config.cols) - config.mines;
+    const pct = Math.floor((revealedCount / totalSafe) * 100);
+    document.getElementById("cleared-pct").innerText = `${pct}%`;
 }
 
-
 function initGame() {
-
     stopTimer();
-
     seconds = 0;
-
     updateTimerDisplay();
 
-    const config =
-        PRESETS[currentDiff];
-
-    const gridEl =
-        document.getElementById("grid");
-
+    const config = PRESETS[currentDiff];
+    const gridEl = document.getElementById("grid");
     gridEl.innerHTML = "";
-
-    gridEl.style.gridTemplateColumns =
-        `repeat(${config.cols}, 1fr)`;
-
-    gridEl.style.gridTemplateRows =
-        `repeat(${config.rows}, 1fr)`;
+    gridEl.style.gridTemplateColumns = `repeat(${config.cols}, 1fr)`;
+    gridEl.style.gridTemplateRows = `repeat(${config.rows}, 1fr)`;
 
     board = [];
-
     gameOver = false;
-
     firstClick = true;
-
     revealedCount = 0;
-
     flagsLeft = config.mines;
 
     updateFlagDisplay();
-
     updateStatsDisplay();
 
-
-    for (
-        let r = 0;
-        r < config.rows;
-        r++
-    ) {
-
+    for (let r = 0; r < config.rows; r++) {
         board[r] = [];
-
-        for (
-            let c = 0;
-            c < config.cols;
-            c++
-        ) {
-
+        for (let c = 0; c < config.cols; c++) {
             board[r][c] = {
-
-                row:r,
-                col:c,
-
-                isMine:false,
-                isRevealed:false,
-                isFlagged:false,
-
-                neighborMines:0,
-
-                element:null
-
+                row: r, col: c,
+                isMine: false, isRevealed: false, isFlagged: false,
+                neighborMines: 0, element: null
             };
-
         }
-
     }
 
+    for (let r = 0; r < config.rows; r++) {
+        for (let c = 0; c < config.cols; c++) {
+            const cellEl = document.createElement("button");
+            cellEl.className = "cell";
+            board[r][c].element = cellEl;
 
-    for (
-        let r = 0;
-        r < config.rows;
-        r++
-    ) {
-
-        for (
-            let c = 0;
-            c < config.cols;
-            c++
-        ) {
-
-            const cellEl =
-                document.createElement("button");
-
-            cellEl.className =
-                "cell";
-
-            board[r][c].element =
-                cellEl;
-
-
-            cellEl.addEventListener(
-                "click",
-                function() {
-
-                    handleCellClick(r,c);
-
-                }
-            );
-
-
-            cellEl.addEventListener(
-                "contextmenu",
-                function(e) {
-
-                    e.preventDefault();
-
-                    handleFlag(r,c);
-
-                }
-            );
-
+            cellEl.addEventListener("click", function() { handleCellClick(r, c); });
+            cellEl.addEventListener("contextmenu", function(e) { e.preventDefault(); handleFlag(r, c); });
 
             gridEl.appendChild(cellEl);
-
         }
-
     }
-
-
     adjustBoardDimensions();
-
 }
-
 
 function adjustBoardDimensions() {
+    const config = PRESETS[currentDiff];
+    const gridEl = document.getElementById("grid");
+    const availWidth = Math.min(window.innerWidth * .91, 500);
+    const availHeight = Math.max(260, window.innerHeight - 215);
 
-    const config =
-        PRESETS[currentDiff];
+    const maxCellW = availWidth / config.cols;
+    const maxCellH = availHeight / config.rows;
+    const cellSize = Math.min(maxCellW, maxCellH, 52);
 
-    const gridEl =
-        document.getElementById("grid");
+    gridEl.style.width = `${cellSize * config.cols}px`;
+    gridEl.style.height = `${cellSize * config.rows}px`;
 
-
-    /*
-       The width stays constrained.
-       Height is increased so the board
-       fills the previously empty space.
-    */
-
-    const availWidth =
-        Math.min(
-            window.innerWidth * .91,
-            500
-        );
-
-    const availHeight =
-        Math.max(
-            260,
-            window.innerHeight - 215
-        );
-
-
-    const maxCellW =
-        availWidth / config.cols;
-
-    const maxCellH =
-        availHeight / config.rows;
-
-
-    const cellSize =
-        Math.min(
-            maxCellW,
-            maxCellH,
-            52
-        );
-
-
-    gridEl.style.width =
-        `${cellSize * config.cols}px`;
-
-    gridEl.style.height =
-        `${cellSize * config.rows}px`;
-
-
-    const fontSize =
-        Math.max(
-            12,
-            Math.floor(cellSize * .52)
-        );
-
-
-    document
-        .querySelectorAll(".cell")
-        .forEach(function(cell) {
-
-            cell.style.fontSize =
-                `${fontSize}px`;
-
-        });
-
+    const fontSize = Math.max(12, Math.floor(cellSize * .52));
+    document.querySelectorAll(".cell").forEach(function(cell) {
+        cell.style.fontSize = `${fontSize}px`;
+    });
 }
 
-
-function generateMines(
-    startRow,
-    startCol
-) {
-
-    const config =
-        PRESETS[currentDiff];
-
+function generateMines(startRow, startCol) {
+    const config = PRESETS[currentDiff];
     let minesPlaced = 0;
 
+    while (minesPlaced < config.mines) {
+        const r = Math.floor(Math.random() * config.rows);
+        const c = Math.floor(Math.random() * config.cols);
+        const isSafeZone = Math.abs(r - startRow) <= 1 && Math.abs(c - startCol) <= 1;
 
-    while (
-        minesPlaced <
-        config.mines
-    ) {
-
-        const r =
-            Math.floor(
-                Math.random()
-                * config.rows
-            );
-
-        const c =
-            Math.floor(
-                Math.random()
-                * config.cols
-            );
-
-
-        const isSafeZone =
-            Math.abs(
-                r - startRow
-            ) <= 1 &&
-            Math.abs(
-                c - startCol
-            ) <= 1;
-
-
-        if (
-            !board[r][c].isMine &&
-            !isSafeZone
-        ) {
-
-            board[r][c].isMine =
-                true;
-
+        if (!board[r][c].isMine && !isSafeZone) {
+            board[r][c].isMine = true;
             minesPlaced++;
-
         }
-
     }
 
-
-    for (
-        let r = 0;
-        r < config.rows;
-        r++
-    ) {
-
-        for (
-            let c = 0;
-            c < config.cols;
-            c++
-        ) {
-
-            if (
-                board[r][c].isMine
-            ) {
-                continue;
-            }
-
-
+    for (let r = 0; r < config.rows; r++) {
+        for (let c = 0; c < config.cols; c++) {
+            if (board[r][c].isMine) continue;
             let count = 0;
-
-
-            for (
-                let dr = -1;
-                dr <= 1;
-                dr++
-            ) {
-
-                for (
-                    let dc = -1;
-                    dc <= 1;
-                    dc++
-                ) {
-
-                    const nr =
-                        r + dr;
-
-                    const nc =
-                        c + dc;
-
-
-                    if (
-                        nr >= 0 &&
-                        nr < config.rows &&
-                        nc >= 0 &&
-                        nc < config.cols &&
-                        board[nr][nc].isMine
-                    ) {
-
+            for (let dr = -1; dr <= 1; dr++) {
+                for (let dc = -1; dc <= 1; dc++) {
+                    const nr = r + dr;
+                    const nc = c + dc;
+                    if (nr >= 0 && nr < config.rows && nc >= 0 && nc < config.cols && board[nr][nc].isMine) {
                         count++;
-
                     }
-
                 }
-
             }
-
-
-            board[r][c].neighborMines =
-                count;
-
+            board[r][c].neighborMines = count;
         }
-
     }
-
 }
 
-
-function handleCellClick(r,c) {
-
-    if (gameOver) {
-        return;
-    }
-
-
-    const cell =
-        board[r][c];
-
+function handleCellClick(r, c) {
+    if (gameOver) return;
+    const cell = board[r][c];
 
     if (flagMode) {
-
-        handleFlag(r,c);
-
-        return;
-
-    }
-
-
-    if (
-        cell.isFlagged ||
-        cell.isRevealed
-    ) {
+        handleFlag(r, c);
         return;
     }
 
+    if (cell.isFlagged || cell.isRevealed) return;
 
     if (firstClick) {
-
         firstClick = false;
-
-        generateMines(r,c);
-
+        generateMines(r, c);
         startTimer();
-
     }
-
 
     if (cell.isMine) {
-
         endGame(false);
-
         return;
-
     }
 
+    revealCell(r, c);
+    const config = PRESETS[currentDiff];
 
-    revealCell(r,c);
-
-
-    const config =
-        PRESETS[currentDiff];
-
-
-    if (
-        revealedCount ===
-        (
-            config.rows *
-            config.cols
-        ) - config.mines
-    ) {
-
+    if (revealedCount === (config.rows * config.cols) - config.mines) {
         endGame(true);
-
     }
-
 }
 
-
-function handleFlag(r,c) {
-
-    if (gameOver) {
-        return;
-    }
-
-
-    const cell =
-        board[r][c];
-
-
-    if (cell.isRevealed) {
-        return;
-    }
-
+function handleFlag(r, c) {
+    if (gameOver) return;
+    const cell = board[r][c];
+    if (cell.isRevealed) return;
 
     if (cell.isFlagged) {
-
         cell.isFlagged = false;
-
         cell.element.innerHTML = "";
-
-        cell.element.classList.remove(
-            "flagged"
-        );
-
+        cell.element.classList.remove("flagged");
         flagsLeft++;
-
-
     } else {
-
         cell.isFlagged = true;
-
-        cell.element.innerHTML =
-            createFlagSVG();
-
-        cell.element.classList.add(
-            "flagged"
-        );
-
+        cell.element.innerHTML = createFlagSVG();
+        cell.element.classList.add("flagged");
         flagsLeft--;
-
     }
-
-
     updateFlagDisplay();
-
 }
 
+function revealCell(r, c) {
+    const config = PRESETS[currentDiff];
+    const cell = board[r][c];
 
-function revealCell(r,c) {
-
-    const config =
-        PRESETS[currentDiff];
-
-    const cell =
-        board[r][c];
-
-
-    if (
-        cell.isRevealed ||
-        cell.isFlagged
-    ) {
-        return;
-    }
-
+    if (cell.isRevealed || cell.isFlagged) return;
 
     cell.isRevealed = true;
-
-    cell.element.classList.add(
-        "revealed"
-    );
-
+    cell.element.classList.add("revealed");
     revealedCount++;
-
-
     updateStatsDisplay();
 
-
-    if (
-        cell.neighborMines > 0
-    ) {
-
-        cell.element.innerText =
-            cell.neighborMines;
-
-        cell.element.classList.add(
-            `c-${cell.neighborMines}`
-        );
-
-
+    if (cell.neighborMines > 0) {
+        cell.element.innerText = cell.neighborMines;
+        cell.element.classList.add(`c-${cell.neighborMines}`);
     } else {
-
-
-        for (
-            let dr = -1;
-            dr <= 1;
-            dr++
-        ) {
-
-            for (
-                let dc = -1;
-                dc <= 1;
-                dc++
-            ) {
-
-                const nr =
-                    r + dr;
-
-                const nc =
-                    c + dc;
-
-
-                if (
-                    nr >= 0 &&
-                    nr < config.rows &&
-                    nc >= 0 &&
-                    nc < config.cols
-                ) {
-
-                    revealCell(nr,nc);
-
+        for (let dr = -1; dr <= 1; dr++) {
+            for (let dc = -1; dc <= 1; dc++) {
+                const nr = r + dr;
+                const nc = c + dc;
+                if (nr >= 0 && nr < config.rows && nc >= 0 && nc < config.cols) {
+                    revealCell(nr, nc);
                 }
-
             }
-
         }
-
     }
-
 }
-
 
 function endGame(won) {
-
     gameOver = true;
-
     stopTimer();
+    const config = PRESETS[currentDiff];
 
-    const config =
-        PRESETS[currentDiff];
-
-
-    for (
-        let r = 0;
-        r < config.rows;
-        r++
-    ) {
-
-        for (
-            let c = 0;
-            c < config.cols;
-            c++
-        ) {
-
-            const cell =
-                board[r][c];
-
-
+    for (let r = 0; r < config.rows; r++) {
+        for (let c = 0; c < config.cols; c++) {
+            const cell = board[r][c];
             if (cell.isMine) {
-
-                cell.element.classList.add(
-                    "revealed"
-                );
-
-
+                cell.element.classList.add("revealed");
                 if (!cell.isFlagged) {
-
-                    cell.element.classList.add(
-                        "mine"
-                    );
-
-                    cell.element.innerHTML =
-                        createMineSVG();
-
+                    cell.element.classList.add("mine");
+                    cell.element.innerHTML = createMineSVG();
                 }
-
             }
-
         }
-
     }
 
-
-    const modal =
-        document.getElementById(
-            "game-modal"
-        );
-
-    const title =
-        document.getElementById(
-            "modal-title"
-        );
-
-    const msg =
-        document.getElementById(
-            "modal-msg"
-        );
-
+    const modal = document.getElementById("game-modal");
+    const card = document.getElementById("modal-card");
+    const title = document.getElementById("modal-title");
+    const msg = document.getElementById("modal-msg");
+    const amount = document.getElementById("reward-amount");
+    const symbol = document.getElementById("modal-symbol");
 
     if (won) {
-
         wins++;
-
-        localStorage.setItem(
-            "ms_wins",
-            wins
-        );
-
-
-        const best =
-            localStorage.getItem(
-                `ms_best_${currentDiff}`
-            );
-
-
-        if (
-            !best ||
-            seconds < parseInt(best)
-        ) {
-
-            localStorage.setItem(
-                `ms_best_${currentDiff}`,
-                seconds
-            );
-
+        localStorage.setItem("ms_wins", wins);
+        const best = localStorage.getItem(`ms_best_${currentDiff}`);
+        if (!best || seconds < parseInt(best)) {
+            localStorage.setItem(`ms_best_${currentDiff}`, seconds);
         }
 
+        card.classList.remove("game-over");
+        title.innerText = "Victory!";
+        msg.innerText = `Cleared in ${seconds}s! Earned ${config.reward} Coins!`;
+        symbol.innerHTML = `
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+        `;
+        amount.style.display = "inline-block";
+        amount.innerText = `+${config.reward} Coins`;
 
-        title.innerText =
-            "Victory!";
-
-
-        msg.innerText =
-            `Cleared in ${seconds}s! Earned ${config.reward} Coins!`;
-
-
-        if (
-            typeof addCoins ===
-            "function"
-        ) {
-
-            addCoins(
-                config.reward
-            );
-
+        if (typeof addCoins === "function") {
+            addCoins(config.reward);
         }
-
-
     } else {
-
-        title.innerText =
-            "Boom!";
-
-
-        msg.innerText =
-            "You stepped on a mine. Try again!";
-
+        card.classList.add("game-over");
+        title.innerText = "Boom!";
+        msg.innerText = "You stepped on a mine. Try again!";
+        symbol.innerHTML = `
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
+                <path d="M16 28l-1.8-1.6C7.6 20.4 3 16.3 3 11.2 3 7 6.3 3.5 10.5 3.5c2.4 0 4.7 1.1 6.2 3 1.5-1.9 3.8-3 6.2-3C25.7 3.5 29 7 29 11.2c0 5.1-4.6 9.2-11.2 15.2L16 28z" fill="none"/>
+                <path d="M16 28l-1.8-1.6C7.6 20.4 3 16.3 3 11.2 3 7 6.3 3.5 10.5 3.5c2.4 0 4.7 1.1 6.2 3V12l-3 3 4 4-5 5 1.6 3z"/>
+                <path d="M16.7 6.5c1.5-1.9 3.8-3 6.2-3C25.7 3.5 29 7 29 11.2c0 5.1-4.6 9.2-11.2 15.2L16 28v-6l3-3-4-4 3-3V6.5z"/>
+            </svg>
+        `;
+        amount.style.display = "none";
     }
-
 
     updateStatsDisplay();
 
-
     setTimeout(function() {
-
-        modal.style.display =
-            "flex";
-
-    },400);
-
+        modal.style.display = "flex";
+    }, 400);
 }
-
 
 function closeModalAndReset() {
-
-    document
-        .getElementById("game-modal")
-        .style.display = "none";
-
+    document.getElementById("game-modal").style.display = "none";
     initGame();
-
 }
 
+window.addEventListener("resize", function() {
+    adjustBoardDimensions();
+});
 
-window.addEventListener(
-    "resize",
-    function() {
-
-        adjustBoardDimensions();
-
+document.addEventListener("DOMContentLoaded", function() {
+    loadSavedTheme();
+    if (typeof updateCoinDisplays === "function") {
+        updateCoinDisplays();
     }
-);
-
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function() {
-
-        loadSavedTheme();
-
-        if (
-            typeof updateCoinDisplays ===
-            "function"
-        ) {
-
-            updateCoinDisplays();
-
-        }
-
-        initGame();
-
-    }
-);
-
+    initGame();
+});
 
 initGame();
-
-</script>
-
-</body>
-    </html>
+            
