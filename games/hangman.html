@@ -1,840 +1,1190 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hangman ♡</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Match</title>
 
-<style>
-:root {
-    --bg-base: #f2f7fa;
-    --bg-grad-1: #dce8f3;
-    --bg-grad-2: #d3e2ea;
-    --text-main: #3f5260;
-    --text-heading: #46637a;
-    --accent-border: #82a8bd;
-    --accent-soft: #e9f3f9;
-    --accent-badge: #dfe8f8;
-    --ornament-color: #799eb8;
-    --card-bg: rgba(255, 255, 255, 0.88);
-    --header-bg: rgba(255, 255, 255, 0.88);
-}
+    <style>
+        :root {
+            --bg-base:#f2f7fa;
+            --bg-grad-1:#dce8f3;
+            --bg-grad-2:#d3e2ea;
+            --text-main:#3f5260;
+            --text-heading:#46637a;
+            --accent-border:#82a8bd;
+            --accent-soft:#e9f3f9;
+            --accent-badge:#dfe8f8;
+            --ornament-color:#799eb8;
+            --card-bg:rgba(255,255,255,.88);
+            --header-bg:rgba(255,255,255,.88);
+        }
 
-body[data-theme="pink"] {
-    --bg-base: #faf2f5;
-    --bg-grad-1: #f3dce5;
-    --bg-grad-2: #ead3dc;
-    --text-main: #603f4c;
-    --text-heading: #7a4659;
-    --accent-border: #bd8297;
-    --accent-soft: #f9e9f0;
-    --accent-badge: #f8dfe8;
-    --ornament-color: #b87992;
-    --card-bg: rgba(255, 255, 255, 0.88);
-    --header-bg: rgba(255, 255, 255, 0.88);
-}
+        body[data-theme="pink"] {
+            --bg-base:#faf2f5;
+            --bg-grad-1:#f3dce5;
+            --bg-grad-2:#ead3dc;
+            --text-main:#603f4c;
+            --text-heading:#7a4659;
+            --accent-border:#bd8297;
+            --accent-soft:#f9e9f0;
+            --accent-badge:#f8dfe8;
+            --ornament-color:#b87992;
+            --card-bg:rgba(255,255,255,.88);
+            --header-bg:rgba(255,255,255,.88);
+        }
 
-body[data-theme="green"] {
-    --bg-base: #f3f7f2;
-    --bg-grad-1: #dce8dc;
-    --bg-grad-2: #d3ead3;
-    --text-main: #3f6043;
-    --text-heading: #467a4c;
-    --accent-border: #82bd8b;
-    --accent-soft: #e9f9eb;
-    --accent-badge: #dff8e2;
-    --ornament-color: #79b882;
-    --card-bg: rgba(255, 255, 255, 0.88);
-    --header-bg: rgba(255, 255, 255, 0.88);
-}
+        body[data-theme="green"] {
+            --bg-base:#f3f7f2;
+            --bg-grad-1:#dce8dc;
+            --bg-grad-2:#d3ead3;
+            --text-main:#3f6043;
+            --text-heading:#467a4c;
+            --accent-border:#82bd8b;
+            --accent-soft:#e9f9eb;
+            --accent-badge:#dff8e2;
+            --ornament-color:#79b882;
+            --card-bg:rgba(255,255,255,.88);
+            --header-bg:rgba(255,255,255,.88);
+        }
 
-body[data-theme="lavender"] {
-    --bg-base: #f5f2fa;
-    --bg-grad-1: #e3dcf3;
-    --bg-grad-2: #dad3ea;
-    --text-main: #4a3f60;
-    --text-heading: #59467a;
-    --accent-border: #9882bd;
-    --accent-soft: #f0e9f9;
-    --accent-badge: #e9dff8;
-    --ornament-color: #9379b8;
-    --card-bg: rgba(255, 255, 255, 0.88);
-    --header-bg: rgba(255, 255, 255, 0.88);
-}
+        body[data-theme="lavender"] {
+            --bg-base:#f5f2fa;
+            --bg-grad-1:#e3dcf3;
+            --bg-grad-2:#dad3ea;
+            --text-main:#4a3f60;
+            --text-heading:#59467a;
+            --accent-border:#9882bd;
+            --accent-soft:#f0e9f9;
+            --accent-badge:#e9dff8;
+            --ornament-color:#9379b8;
+            --card-bg:rgba(255,255,255,.88);
+            --header-bg:rgba(255,255,255,.88);
+        }
 
-body[data-theme="yellow"] {
-    --bg-base: #faf8f2;
-    --bg-grad-1: #f3edd2;
-    --bg-grad-2: #eae3c5;
-    --text-main: #60573f;
-    --text-heading: #7a6e46;
-    --accent-border: #bdb182;
-    --accent-soft: #f9f5e9;
-    --accent-badge: #f8f3df;
-    --ornament-color: #b8aa79;
-    --card-bg: rgba(255, 255, 255, 0.88);
-    --header-bg: rgba(255, 255, 255, 0.88);
-}
+        body[data-theme="yellow"] {
+            --bg-base:#faf8f2;
+            --bg-grad-1:#f3edd2;
+            --bg-grad-2:#eae3c5;
+            --text-main:#60573f;
+            --text-heading:#7a6e46;
+            --accent-border:#bdb182;
+            --accent-soft:#f9f5e9;
+            --accent-badge:#f8f3df;
+            --ornament-color:#b8aa79;
+            --card-bg:rgba(255,255,255,.88);
+            --header-bg:rgba(255,255,255,.88);
+        }
 
-* {
-    box-sizing: border-box;
-    min-width: 0;
-    -webkit-tap-highlight-color: transparent;
-}
+        * {
+            box-sizing:border-box;
+            min-width:0;
+            -webkit-tap-highlight-color:transparent;
+        }
 
-html {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
-}
+        html {
+            width:100%;
+            max-width:100%;
+            overflow-x:hidden;
+        }
 
-body {
-    width: 100%;
-    max-width: 100%;
-    min-height: 100vh;
-    margin: 0;
-    overflow-x: hidden;
-    background:
-        radial-gradient(circle at 10% 12%, var(--bg-grad-1) 0, transparent 28%),
-        radial-gradient(circle at 90% 85%, var(--bg-grad-2) 0, transparent 30%),
-        var(--bg-base);
-    color: var(--text-main);
-    font-family: Georgia, "Times New Roman", serif;
-    transition: background 0.3s ease, color 0.3s ease;
-}
+        body {
+            width:100%;
+            max-width:100%;
+            min-height:100vh;
+            margin:0;
+            overflow-x:hidden;
+            background:
+                radial-gradient(circle at 10% 12%,var(--bg-grad-1) 0,transparent 28%),
+                radial-gradient(circle at 90% 85%,var(--bg-grad-2) 0,transparent 30%),
+                var(--bg-base);
+            color:var(--text-main);
+            font-family:Georgia,"Times New Roman",serif;
+            transition:background .3s ease,color .3s ease;
+        }
 
-.decorations {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    overflow: hidden;
-    z-index: -1;
-}
+        header {
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            width:100%;
+            min-height:70px;
+            padding:15px 22px;
+            background:var(--header-bg);
+            backdrop-filter:blur(8px);
+            border-bottom:1px solid var(--bg-grad-2);
+            position:sticky;
+            top:0;
+            z-index:100;
+            gap:16px;
+        }
 
-.decorations span {
-    position: absolute;
-    color: var(--ornament-color);
-    opacity: 0.35;
-    animation: float 5s ease-in-out infinite;
-}
+        .header-left,
+        .header-right {
+            display:flex;
+            align-items:center;
+            min-width:0;
+        }
 
-.decorations span:nth-child(1) { top: 13%; left: 7%; font-size: 20px; }
-.decorations span:nth-child(2) { top: 28%; right: 8%; font-size: 13px; animation-delay: 1s; }
-.decorations span:nth-child(3) { top: 55%; left: 5%; font-size: 14px; animation-delay: 2s; }
-.decorations span:nth-child(4) { top: 68%; right: 6%; font-size: 21px; animation-delay: 1.5s; }
-.decorations span:nth-child(5) { bottom: 12%; left: 12%; font-size: 12px; animation-delay: 0.5s; }
-.decorations span:nth-child(6) { bottom: 20%; right: 13%; font-size: 16px; animation-delay: 2.5s; }
+        .header-left {
+            gap:12px;
+        }
 
-@keyframes float {
-    0%, 100% { transform: translateY(0) rotate(0); }
-    50% { transform: translateY(-7px) rotate(7deg); }
-}
+        .header-right {
+            justify-content:flex-end;
+            gap:10px;
+        }
 
-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    min-height: 70px;
-    padding: 15px 22px;
-    background: var(--header-bg);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--bg-grad-2);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    gap: 16px;
-}
+        .nav-link {
+            color:var(--text-heading);
+            text-decoration:none;
+            font-size:15px;
+            font-weight:normal;
+            cursor:pointer;
+            white-space:nowrap;
+            transition:opacity .2s ease;
+        }
 
-.header-left,
-.header-right {
-    display: flex;
-    align-items: center;
-    min-width: 0;
-}
+        .nav-link:hover {
+            opacity:.7;
+        }
 
-.header-left { gap: 12px; }
-.header-right { justify-content: flex-end; gap: 10px; }
+        .coin-display {
+            background:var(--accent-soft);
+            border:1px solid var(--accent-border);
+            padding:9px 15px;
+            border-radius:100px;
+            font-size:13px;
+            font-weight:bold;
+            color:var(--text-heading);
+            white-space:nowrap;
+        }
 
-.nav-link {
-    color: var(--text-heading);
-    text-decoration: none;
-    font-size: 15px;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: opacity 0.2s ease;
-}
+        main {
+            width:100%;
+            max-width:560px;
+            margin:0 auto;
+            padding:28px 18px 40px;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+        }
 
-.nav-link:hover { opacity: 0.7; }
+        .ornament {
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:10px;
+            height:22px;
+            margin-bottom:15px;
+            color:var(--ornament-color);
+        }
 
-.coin-display {
-    background: var(--accent-soft);
-    border: 1px solid var(--accent-border);
-    padding: 9px 15px;
-    border-radius: 100px;
-    font-size: 13px;
-    font-weight: bold;
-    color: var(--text-heading);
-    white-space: nowrap;
-}
+        .ornament span {
+            font-size:16px;
+        }
 
-.category-dropdown {
-    position: relative;
-    display: inline-block;
-}
+        .ornament i {
+            width:38px;
+            height:1px;
+            background:var(--ornament-color);
+            opacity:.45;
+        }
 
-.cat-btn {
-    padding: 6px 12px;
-    border: 1px solid var(--accent-border);
-    border-radius: 100px;
-    background: var(--card-bg);
-    color: var(--text-heading);
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 13px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    white-space: nowrap;
-    transition: 0.2s ease;
-}
+        h1 {
+            color:var(--text-heading);
+            font-weight:normal;
+            font-size:28px;
+            margin:0 0 7px;
+            text-align:center;
+        }
 
+        p.subtitle {
+            color:var(--text-main);
+            opacity:.78;
+            margin:0 0 24px;
+            font-size:14px;
+            text-align:center;
+            line-height:1.5;
+        }
 
-.cat-btn:hover { background: var(--accent-soft); transform: translateY(-1px); }
+        .memory-grid {
+            display:grid;
+            grid-template-columns:repeat(4,1fr);
+            gap:12px;
+            width:100%;
+            max-width:440px;
+            perspective:1000px;
+            margin-bottom:25px;
+        }
 
-.cat-menu {
-    display: none;
-    position: absolute;
-    right: 0;
-    top: calc(100% + 7px);
-    background: var(--card-bg);
-    border: 1px solid var(--accent-border);
-    border-radius: 10px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-    z-index: 200;
-    min-width: 150px;
-    overflow: hidden;
-    padding: 4px;
-}
-.cat-menu.show { display: block; }
+        .card {
+            aspect-ratio:1/1;
+            position:relative;
+            transform-style:preserve-3d;
+            transition:transform .4s ease;
+            cursor:pointer;
+        }
 
-.cat-option {
-    padding: 9px 11px;
-    border-radius: 7px;
-    font-size: 13px;
-    color: var(--text-main);
-    cursor: pointer;
-    transition: background 0.15s ease;
-}
-.cat-option:hover { background: var(--accent-soft); }
-.cat-option.active { font-weight: bold; color: var(--text-heading); background: var(--accent-badge); }
+        .card.flipped,
+        .card.matched {
+            transform:rotateY(180deg);
+        }
 
-main {
-    width: 100%;
-    max-width: 560px;
-    margin: 0 auto;
-    padding: 28px 18px 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+        .card-front,
+        .card-back {
+            position:absolute;
+            inset:0;
+            backface-visibility:hidden;
+            border-radius:10px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            border:1px solid var(--accent-border);
+            overflow:hidden;
+            box-shadow:0 4px 15px rgba(0,0,0,.03);
+        }
 
-.ornament {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    height: 22px;
-    margin-bottom: 15px;
-    color: var(--ornament-color);
-}
-.ornament span { font-size: 16px; }
-.ornament i { width: 38px; height: 1px; background: var(--ornament-color); opacity: 0.45; }
+        .card-back {
+            background:var(--card-bg);
+            color:var(--ornament-color);
+            font-size:24px;
+            font-weight:bold;
+        }
 
-h1 {
-    color: var(--text-heading);
-    font-weight: normal;
-    font-size: 28px;
-    margin: 0 0 7px;
-    text-align: center;
-}
+        .card-front {
+            background:var(--card-bg);
+            transform:rotateY(180deg);
+            padding:6px;
+        }
 
-p.subtitle {
-    color: var(--text-main);
-    opacity: 0.78;
-    margin: 0 0 24px;
-    font-size: 14px;
-    text-align: center;
-    line-height: 1.5;
-}
+        .card-front img {
+            width:100%;
+            height:100%;
+            object-fit:cover;
+            border-radius:6px;
+        }
 
-.hangman-box {
-    width: 220px;
-    height: 190px;
-    background: var(--card-bg);
-    border: 1px solid var(--bg-grad-2);
-    border-radius: 12px;
-    margin-bottom: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.045);
-}
+        .card.matched .card-front {
+            border-color:var(--accent-border);
+            background:var(--accent-soft);
+        }
 
-svg line,
-svg circle {
-    stroke: var(--text-heading);
-    stroke-width: 3;
-    stroke-linecap: round;
-    fill: none;
-}
+        .btn {
+            padding:10px 20px;
+            border:1px solid var(--accent-border);
+            border-radius:100px;
+            background:var(--card-bg);
+            color:var(--text-heading);
+            font-family:Georgia,"Times New Roman",serif;
+            font-size:13px;
+            cursor:pointer;
+            transition:.2s ease;
+        }
 
-.word-display {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 27px;
-    flex-wrap: wrap;
-    justify-content: center;
-    max-width: 100%;
-}
+        .btn:hover {
+            background:var(--accent-soft);
+            transform:translateY(-1px);
+        }
 
-.letter-tile {
-    width: 38px;
-    height: 46px;
-    border-bottom: 3px solid var(--accent-border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    font-weight: bold;
-    color: var(--text-heading);
-    text-transform: uppercase;
-}
+        .modal-overlay {
+            display:none;
+            position:fixed;
+            inset:0;
+            padding:20px;
+            background:rgba(30,25,25,.3);
+            backdrop-filter:blur(5px);
+            z-index:500;
+            align-items:center;
+            justify-content:center;
+        }
 
-.keyboard {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    justify-content: center;
-    width: 100%;
-    max-width: 480px;
-    margin-bottom: 22px;
-}
+        .modal-card {
+            position:relative;
+            background:var(--card-bg);
+            border:1px solid var(--accent-border);
+            border-radius:18px;
+            padding:32px 26px 26px;
+            max-width:360px;
+            width:100%;
+            text-align:center;
+            box-shadow:0 18px 50px rgba(0,0,0,.16);
+            animation:victoryPop .35s ease;
+            overflow:hidden;
+        }
 
-.key-btn {
-    width: 37px;
-    height: 42px;
-    border: 1px solid var(--accent-border);
-    border-radius: 8px;
-    background: var(--card-bg);
-    color: var(--text-heading);
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 15px;
-    font-weight: bold;
-    cursor: pointer;
-    text-transform: uppercase;
-    transition: all 0.15s ease;
-}
+        .modal-card::before,
+        .modal-card::after {
+            content:"✦";
+            position:absolute;
+            color:var(--ornament-color);
+            opacity:.5;
+            font-size:20px;
+        }
 
-.key-btn:hover:not(:disabled) { background: var(--accent-soft); transform: translateY(-2px); }
-.key-btn:active:not(:disabled) { transform: translateY(0); }
-.key-btn:disabled {
-    background: var(--bg-grad-2);
-    color: var(--text-main);
-    opacity: 0.45;
-    border-color: var(--bg-grad-2);
-    cursor: not-allowed;
-}
+        .modal-card::before {
+            top:10px;
+            left:14px;
+        }
 
-.controls { display: flex; gap: 10px; }
+        .modal-card::after {
+            top:10px;
+            right:14px;
+        }
 
-.btn {
-    padding: 11px 20px;
-    border: 1px solid var(--accent-border);
-    border-radius: 100px;
-    background: var(--card-bg);
-    color: var(--text-heading);
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 13px;
-    cursor: pointer;
-    transition: 0.2s ease;
-}
+        .victory-decoration {
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:9px;
+            margin:0 0 14px;
+            color:var(--ornament-color);
+        }
 
-.btn:hover { background: var(--accent-soft); transform: translateY(-1px); }
+        .victory-decoration span {
+            font-size:14px;
+        }
 
-/* Unified Victory / Game Over Modal Styles */
-.modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    padding: 20px;
-    background: rgba(30, 25, 25, 0.3);
-    backdrop-filter: blur(5px);
-    z-index: 500;
-    align-items: center;
-    justify-content: center;
-}
+        .victory-decoration i {
+            width:34px;
+            height:1px;
+            background:var(--ornament-color);
+            opacity:.45;
+        }
 
-.modal-card {
-    position: relative;
-    background: var(--card-bg);
-    border: 1px solid var(--accent-border);
-    border-radius: 18px;
-    padding: 32px 26px 26px;
-    max-width: 360px;
-    width: 100%;
-    text-align: center;
-    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.16);
-    animation: victoryPop 0.35s ease;
-    overflow: hidden;
-}
+        .victory-symbol {
+            width:66px;
+            height:66px;
+            margin:2px auto 14px;
+            border-radius:50%;
+            background:var(--accent-soft);
+            border:1px solid var(--accent-border);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:var(--ornament-color);
+            animation:victoryFloat 2s ease-in-out infinite;
+        }
 
-.modal-card::before,
-.modal-card::after {
-    content: "✦";
-    position: absolute;
-    color: var(--ornament-color);
-    opacity: 0.5;
-    font-size: 20px;
-}
-.modal-card::before { top: 13px; left: 18px; }
-.modal-card::after { top: 13px; right: 18px; }
+        .victory-symbol svg {
+            width:32px;
+            height:32px;
+        }
 
-.victory-decoration {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 9px;
-    color: var(--ornament-color);
-    margin-bottom: 13px;
-}
-.victory-decoration span { font-size: 15px; }
-.victory-decoration i { width: 30px; height: 1px; background: var(--ornament-color); opacity: 0.5; }
+        .modal-card h2 {
+            color:var(--text-heading);
+            font-size:25px;
+            font-weight:normal;
+            margin:0 0 9px;
+        }
 
-.victory-symbol {
-    width: 66px;
-    height: 66px;
-    margin: 2px auto 14px;
-    border-radius: 50%;
-    background: var(--accent-soft);
-    border: 1px solid var(--accent-border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--ornament-color);
-    animation: victoryFloat 2s ease-in-out infinite;
-}
+        .modal-card p {
+            color:var(--text-main);
+            opacity:.82;
+            font-size:14px;
+            line-height:1.6;
+            margin:0 0 21px;
+        }
 
-.modal-card h2 { color: var(--text-heading); font-size: 25px; font-weight: normal; margin: 0 0 9px; }
-.modal-card p { color: var(--text-main); opacity: 0.82; font-size: 14px; line-height: 1.6; margin: 0 0 21px; }
+        .reward-amount {
+            display:inline-block;
+            margin:-5px 0 20px;
+            padding:7px 13px;
+            border-radius:100px;
+            background:var(--accent-badge);
+            border:1px solid var(--accent-border);
+            color:var(--text-heading);
+            font-size:13px;
+            font-weight:bold;
+        }
 
-.reward-amount {
-    display: inline-block;
-    margin: -5px 0 20px;
-    padding: 7px 13px;
-    border-radius: 100px;
-    background: var(--accent-badge);
-    border: 1px solid var(--accent-border);
-    color: var(--text-heading);
-    font-size: 13px;
-    font-weight: bold;
-}
+        .confetti {
+            position:absolute;
+            color:var(--ornament-color);
+            font-size:14px;
+            animation:confettiFall 1.8s ease-out forwards;
+        }
 
-.modal-card.game-over .victory-symbol { animation: none; }
+        .confetti:nth-child(1) {
+            top:18px;
+            left:23%;
+        }
 
-.confetti {
-    position: absolute;
-    pointer-events: none;
-    color: var(--ornament-color);
-    font-size: 14px;
-    animation: confettiFall 1.8s ease-out forwards;
-}
-.confetti:nth-child(1) { left: 18%; top: 5%; animation-delay: 0s; }
-.confetti:nth-child(2) { left: 32%; top: 2%; animation-delay: 0.12s; }
-.confetti:nth-child(3) { left: 50%; top: 4%; animation-delay: 0.2s; }
-.confetti:nth-child(4) { right: 32%; top: 2%; animation-delay: 0.08s; }
-.confetti:nth-child(5) { right: 17%; top: 6%; animation-delay: 0.18s; }
+        .confetti:nth-child(2) {
+            top:34px;
+            left:12%;
+            animation-delay:.12s;
+        }
 
-@keyframes victoryPop {
-    0% { transform: scale(0.88); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
-}
+        .confetti:nth-child(3) {
+            top:24px;
+            right:22%;
+            animation-delay:.18s;
+        }
 
-@keyframes victoryFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
-}
+        .confetti:nth-child(4) {
+            top:45px;
+            right:10%;
+            animation-delay:.08s;
+        }
 
-@keyframes confettiFall {
-    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-    15% { opacity: 0.8; }
-    100% { transform: translateY(115px) rotate(120deg); opacity: 0; }
-}
+        .confetti:nth-child(5) {
+            top:55px;
+            left:30%;
+            animation-delay:.22s;
+        }
 
-@media (max-width: 600px) {
-    header { min-height: 66px; padding: 12px 11px; gap: 8px; }
-    .modal-card { max-width: 340px; padding: 30px 21px 23px; }
-}
-</style>
+        @keyframes victoryPop {
+            from {
+                transform:scale(.88);
+                opacity:0;
+            }
+            to {
+                transform:scale(1);
+                opacity:1;
+            }
+        }
+
+        @keyframes victoryFloat {
+            0%,100% {
+                transform:translateY(0);
+            }
+            50% {
+                transform:translateY(-5px);
+            }
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform:translateY(0) rotate(0);
+                opacity:0;
+            }
+            15% {
+                opacity:.8;
+            }
+            100% {
+                transform:translateY(115px) rotate(120deg);
+                opacity:0;
+            }
+        }
+
+        .decorations {
+            position:fixed;
+            inset:0;
+            width:100%;
+            height:100%;
+            pointer-events:none;
+            overflow:hidden;
+            z-index:-1;
+        }
+
+        .decorations span {
+            position:absolute;
+            color:var(--ornament-color);
+            opacity:.35;
+            animation:float 5s ease-in-out infinite;
+        }
+
+        .decorations span:nth-child(1) {
+            top:13%;
+            left:7%;
+            font-size:20px;
+        }
+
+        .decorations span:nth-child(2) {
+            top:28%;
+            right:8%;
+            font-size:13px;
+            animation-delay:1s;
+        }
+
+        .decorations span:nth-child(3) {
+            top:55%;
+            left:5%;
+            font-size:14px;
+            animation-delay:2s;
+        }
+
+        .decorations span:nth-child(4) {
+            top:68%;
+            right:6%;
+            font-size:21px;
+            animation-delay:1.5s;
+        }
+
+        .decorations span:nth-child(5) {
+            bottom:12%;
+            left:12%;
+            font-size:12px;
+            animation-delay:.5s;
+        }
+
+        .decorations span:nth-child(6) {
+            bottom:20%;
+            right:13%;
+            font-size:16px;
+            animation-delay:2.5s;
+        }
+
+        @keyframes float {
+            0%,100% {
+                transform:translateY(0) rotate(0);
+            }
+            50% {
+                transform:translateY(-7px) rotate(7deg);
+            }
+        }
+
+        @media (max-width:600px) {
+            header {
+                min-height:66px;
+                padding:12px 11px;
+            }
+
+            main {
+                padding:24px 12px 35px;
+            }
+
+            .memory-grid {
+                max-width:360px;
+                gap:8px;
+            }
+
+            .modal-card {
+                max-width:340px;
+                padding:30px 21px 23px;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-<div class="decorations">
-    <span>✦</span>
-    <span>✧</span>
-    <span>♡</span>
-    <span>✦</span>
-    <span>✧</span>
-    <span>♡</span>
-</div>
-
-<header>
-    <div class="header-left">
-        <a onclick="goBack()" class="nav-link">← Back to Games</a>
+    <div class="decorations">
+        <span>✦</span>
+        <span>✧</span>
+        <span>♡</span>
+        <span>✦</span>
+        <span>✧</span>
+        <span>♡</span>
     </div>
 
-    <div class="header-right">
-        <div class="category-dropdown">
-            <button class="cat-btn" onclick="toggleCatMenu()">
-                Category: <span id="current-cat-label">Animals</span> ▾
-            </button>
+    <header>
+        <div class="header-left">
+            <a onclick="goBack()" class="nav-link">← Back to Games</a>
+        </div>
 
-            <div class="cat-menu" id="cat-menu">
-                <div class="cat-option active" onclick="setCategory('animals')">Animals</div>
-                <div class="cat-option" onclick="setCategory('countries')">Countries</div>
-                <div class="cat-option" onclick="setCategory('tech')">Tech</div>
-                <div class="cat-option" onclick="setCategory('food')">Food</div>
-                <div class="cat-option" onclick="setCategory('nature')">Nature</div>
-                <div class="cat-option" onclick="setCategory('space')">Space</div>
-                <div class="cat-option" onclick="setCategory('fantasy')">Fantasy</div>
+        <div class="header-right">
+            <div class="coin-display">
+                <span class="coin-count">0</span> Coins
             </div>
         </div>
+    </header>
 
-        <div class="coin-display">
-            <span class="coin-count">0</span> Coins
-        </div>
-    </div>
-</header>
+    <main>
 
-<main>
-    <div class="ornament">
-        <span>✦</span><i></i><span>♡</span><i></i><span>✦</span>
-    </div>
-
-    <h1>Hangman</h1>
-
-    <p class="subtitle" id="status">
-        Guess the hidden word before running out of attempts!
-    </p>
-
-    <div class="hangman-box">
-        <svg width="150" height="160" viewBox="0 0 140 150">
-            <line x1="10" y1="140" x2="70" y2="140" />
-            <line x1="40" y1="140" x2="40" y2="10" />
-            <line x1="40" y1="10" x2="90" y2="10" />
-            <line x1="90" y1="10" x2="90" y2="28" />
-
-            <circle id="part-0" class="figure-part" cx="90" cy="40" r="12" style="display:none;" />
-            <line id="part-1" class="figure-part" x1="90" y1="52" x2="90" y2="90" style="display:none;" />
-            <line id="part-2" class="figure-part" x1="90" y1="62" x2="70" y2="78" style="display:none;" />
-            <line id="part-3" class="figure-part" x1="90" y1="62" x2="110" y2="78" style="display:none;" />
-            <line id="part-4" class="figure-part" x1="90" y1="90" x2="70" y2="115" style="display:none;" />
-            <line id="part-5" class="figure-part" x1="90" y1="90" x2="110" y2="115" style="display:none;" />
-        </svg>
-    </div>
-
-    <div class="word-display" id="word-display"></div>
-
-    <div class="keyboard" id="keyboard"></div>
-
-    <div class="controls">
-        <button class="btn" onclick="resetGame()">New Word</button>
-    </div>
-
-    <div class="ornament" style="margin-top: 30px; margin-bottom: 0;">
-        <span>✧</span><i></i><span>♡</span><i></i><span>✧</span>
-    </div>
-</main>
-
-<div id="reward-modal" class="modal-overlay">
-    <div class="modal-card" id="modal-card">
-        <span class="confetti">✦</span>
-        <span class="confetti">✧</span>
-        <span class="confetti">♡</span>
-        <span class="confetti">✦</span>
-        <span class="confetti">✧</span>
-
-        <div class="victory-decoration">
-            <span>✧</span><i></i><span>♡</span><i></i><span>✧</span>
+        <div class="ornament">
+            <span>✦</span>
+            <i></i>
+            <span>♡</span>
+            <i></i>
+            <span>✦</span>
         </div>
 
-        <div class="victory-symbol" id="modal-symbol">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-            </svg>
+        <h1>Memory Match</h1>
+
+        <p class="subtitle">
+            Flip cards and find all matching pairs!
+        </p>
+
+        <div class="memory-grid" id="grid"></div>
+
+        <div
+            class="ornament"
+            style="margin-top:20px;margin-bottom:0;"
+        >
+            <span>✧</span>
+            <i></i>
+            <span>♡</span>
+            <i></i>
+            <span>✧</span>
         </div>
 
-        <h2 id="modal-title">Victory!</h2>
-        <p id="modal-desc">You guessed the word and earned 20 Coins.</p>
-        <div class="reward-amount" id="reward-amount">+20 Coins</div>
-        <button class="btn" onclick="closeModalAndReset()" style="width: 100%;">Play Again</button>
+    </main>    <div id="reward-modal" class="modal-overlay">
+
+        <div class="modal-card" id="modal-card">
+
+            <span class="confetti">✦</span>
+            <span class="confetti">✧</span>
+            <span class="confetti">♡</span>
+            <span class="confetti">✦</span>
+            <span class="confetti">✧</span>
+
+            <div class="victory-decoration">
+                <span>✧</span>
+                <i></i>
+                <span>♡</span>
+                <i></i>
+                <span>✧</span>
+            </div>
+
+            <div class="victory-symbol" id="modal-symbol">
+                <svg
+                    width="32"
+                    height="32"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                >
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+            </div>
+
+            <h2 id="modal-title">
+                You matched them all ♡
+            </h2>
+
+            <p id="modal-desc">
+                You matched all the pictures and earned 40 Coins.
+            </p>
+
+            <div class="reward-amount" id="reward-amount">
+                +40 Coins
+            </div>
+
+            <button
+                class="btn"
+                onclick="closeModalAndReset()"
+                style="width:100%;"
+            >
+                Play Again
+            </button>
+
+        </div>
+
     </div>
-</div>
-<script src="../script.js"></script>
-<script>
-function loadSavedTheme() {
-    const savedTheme = localStorage.getItem("arcade_theme");
-    if (["pink", "green", "lavender", "yellow"].includes(savedTheme)) {
-        document.body.setAttribute("data-theme", savedTheme);
-    } else {
-        document.body.removeAttribute("data-theme");
-    }
-}
-loadSavedTheme();
 
-const AudioFX = {
-    ctx: null,
-    init() {
-        if (!this.ctx) {
-            const AudioCtx = window.AudioContext || window.webkitAudioContext;
-            if (AudioCtx) this.ctx = new AudioCtx();
+    <script src="../script.js"></script>
+
+    <script>
+        function loadSavedTheme() {
+
+            const savedTheme =
+                localStorage.getItem("arcade_theme");
+
+            if (
+                savedTheme === "pink" ||
+                savedTheme === "green" ||
+                savedTheme === "lavender" ||
+                savedTheme === "yellow"
+            ) {
+
+                document.body.setAttribute(
+                    "data-theme",
+                    savedTheme
+                );
+
+            } else {
+
+                document.body.removeAttribute(
+                    "data-theme"
+                );
+
+            }
         }
-    },
-    play(type) {
-        this.init();
-        if (!this.ctx) return;
-        if (this.ctx.state === "suspended") this.ctx.resume();
 
-        const now = this.ctx.currentTime;
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
+        loadSavedTheme();
 
-        osc.connect(gain);
-        gain.connect(this.ctx.destination);
 
-        if (type === "correct") {
-            osc.type = "sine";
-            osc.frequency.setValueAtTime(523.25, now);
-            osc.frequency.setValueAtTime(659.25, now + 0.08);
-            gain.gain.setValueAtTime(0.2, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
-            osc.start(now); osc.stop(now + 0.2);
-        } else if (type === "wrong") {
-            osc.type = "sawtooth";
-            osc.frequency.setValueAtTime(180, now);
-            osc.frequency.exponentialRampToValueAtTime(110, now + 0.15);
-            gain.gain.setValueAtTime(0.2, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
-            osc.start(now); osc.stop(now + 0.15);
-        } else if (type === "win") {
-            osc.type = "sine";
-            osc.frequency.setValueAtTime(523.25, now);
-            osc.frequency.setValueAtTime(659.25, now + 0.08);
-            osc.frequency.setValueAtTime(783.99, now + 0.16);
-            gain.gain.setValueAtTime(0.25, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
-            osc.start(now); osc.stop(now + 0.35);
-        } else if (type === "lose") {
-            osc.type = "triangle";
-            osc.frequency.setValueAtTime(300, now);
-            osc.frequency.exponentialRampToValueAtTime(120, now + 0.4);
-            gain.gain.setValueAtTime(0.3, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
-            osc.start(now); osc.stop(now + 0.4);
+        const CARD_IMAGES = [
+
+            "../pictures/IMG_20260908_033600.jpg",
+            "../pictures/IMG_20260908_033616.jpg",
+            "../pictures/IMG_20260908_033631.jpg",
+            "../pictures/IMG_20260908_033830.jpg",
+            "../pictures/IMG_20260908_033902.jpg",
+            "../pictures/IMG_20260908_033926.jpg"
+
+        ];
+
+
+        const AudioFX = {
+
+            ctx:null,
+
+
+            init() {
+
+                if (!this.ctx) {
+
+                    const AudioCtx =
+                        window.AudioContext ||
+                        window.webkitAudioContext;
+
+                    if (AudioCtx) {
+                        this.ctx =
+                            new AudioCtx();
+                    }
+
+                }
+
+            },
+
+
+            play(type) {
+
+                this.init();
+
+                if (!this.ctx) return;
+
+                if (
+                    this.ctx.state ===
+                    "suspended"
+                ) {
+                    this.ctx.resume();
+                }
+
+
+                const now =
+                    this.ctx.currentTime;
+
+
+                const osc =
+                    this.ctx.createOscillator();
+
+                const gain =
+                    this.ctx.createGain();
+
+
+                osc.connect(gain);
+                gain.connect(
+                    this.ctx.destination
+                );
+
+
+                if (type === "flip") {
+
+                    osc.type = "sine";
+
+                    osc.frequency.setValueAtTime(
+                        350,
+                        now
+                    );
+
+                    gain.gain.setValueAtTime(
+                        .05,
+                        now
+                    );
+
+                    gain.gain.exponentialRampToValueAtTime(
+                        .001,
+                        now + .04
+                    );
+
+                    osc.start(now);
+                    osc.stop(now + .04);
+
+                }
+
+
+                else if (type === "match") {
+
+                    osc.type = "sine";
+
+                    osc.frequency.setValueAtTime(
+                        523.25,
+                        now
+                    );
+
+                    osc.frequency.setValueAtTime(
+                        659.25,
+                        now + .08
+                    );
+
+                    gain.gain.setValueAtTime(
+                        .1,
+                        now
+                    );
+
+                    gain.gain.exponentialRampToValueAtTime(
+                        .001,
+                        now + .2
+                    );
+
+                    osc.start(now);
+                    osc.stop(now + .2);
+
+                }
+
+
+                else if (type === "win") {
+
+                    osc.type = "sine";
+
+                    osc.frequency.setValueAtTime(
+                        523.25,
+                        now
+                    );
+
+                    osc.frequency.setValueAtTime(
+                        659.25,
+                        now + .08
+                    );
+
+                    osc.frequency.setValueAtTime(
+                        783.99,
+                        now + .16
+                    );
+
+                    gain.gain.setValueAtTime(
+                        .2,
+                        now
+                    );
+
+                    gain.gain.exponentialRampToValueAtTime(
+                        .001,
+                        now + .35
+                    );
+
+                    osc.start(now);
+                    osc.stop(now + .35);
+
+                }
+
+            }
+
+        };
+
+
+        let cards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let isBoardLocked = false;
+
+
+        function goBack() {
+
+            if (window.history.length > 1) {
+
+                window.history.back();
+
+            } else {
+
+                window.location.href =
+                    "../index.html";
+
+            }
+
         }
-    }
-};
 
-const words = {
-    animals: ["ELEPHANT", "GIRAFFE", "DOLPHIN", "PENGUIN", "LEOPARD", "KANGAROO", "CHEETAH", "BUTTERFLY", "OCTOPUS", "HAMSTER", "RABBIT", "FOX", "TIGER", "KOALA", "PARROT", "JELLYFISH", "CROCODILE", "HEDGEHOG"],
-    countries: ["CANADA", "BRAZIL", "GERMANY", "JAPAN", "AUSTRALIA", "EGYPT", "MEXICO", "MOROCCO", "SPAIN", "ITALY", "FRANCE", "PORTUGAL", "TURKEY", "BOSNIA", "NORWAY", "ICELAND", "ARGENTINA", "GREECE"],
-    tech: ["COMPUTER", "SOFTWARE", "KEYBOARD", "INTERNET", "DATABASE", "ALGORITHM", "NETWORK", "WEBSITE", "BROWSER", "JAVASCRIPT", "FIREWALL", "PROCESSOR", "PASSWORD", "SERVER", "PROGRAMMING", "PIXEL", "ANDROID", "DOWNLOAD"],
-    food: ["STRAWBERRY", "PANCAKE", "CHOCOLATE", "SPAGHETTI", "CUPCAKE", "POPCORN", "WATERMELON", "SANDWICH", "POTATO", "CHEESECAKE", "CROISSANT", "WAFFLE", "COOKIE", "PIZZA", "NOODLES", "MACARONI", "TANGERINE", "PISTACHIO"],
-    nature: ["SUNFLOWER", "MOUNTAIN", "RAINBOW", "FOREST", "WATERFALL", "THUNDER", "LIGHTNING", "OCEAN", "DESERT", "VOLCANO", "MEADOW", "SUNSET", "MOONLIGHT", "CLOUD", "RIVER", "ISLAND", "WILDFLOWER", "BUTTERCUP"],
-    space: ["PLANET", "GALAXY", "ASTEROID", "COMET", "SATELLITE", "ASTRONAUT", "NEBULA", "METEOR", "JUPITER", "SATURN", "MERCURY", "VENUS", "MOON", "STARLIGHT", "ROCKET", "UNIVERSE", "ORBIT", "TELESCOPE"],
-    fantasy: ["DRAGON", "UNICORN", "MERMAID", "FAIRY", "WIZARD", "PRINCESS", "CASTLE", "MAGIC", "PHOENIX", "ELF", "SPELLBOOK", "FAIRYTALE", "KNIGHT", "WEREWOLF", "VAMPIRE", "CRYSTAL", "ENCHANTED", "KINGDOM"]
-};
 
-let currentCategory = "animals";
-let currentWord = "";
-let guessedLetters = new Set();
-let wrongGuesses = 0;
-const maxWrong = 6;
+        function initGame() {
 
-function goBack() {
-    if (window.history.length > 1) window.history.back();
-    else window.location.href = "../index.html";
-}
+            const gridEl =
+                document.getElementById("grid");
 
-function toggleCatMenu() {
-    document.getElementById("cat-menu").classList.toggle("show");
-}
+            gridEl.innerHTML = "";
 
-document.addEventListener("click", function(e) {
-    if (!e.target.closest(".category-dropdown")) {
-        document.getElementById("cat-menu").classList.remove("show");
-    }
-});
+            flippedCards = [];
 
-function setCategory(cat) {
-    currentCategory = cat;
-    const labelMap = {
-        animals: "Animals", countries: "Countries", tech: "Tech",
-        food: "Food", nature: "Nature", space: "Space", fantasy: "Fantasy"
-    };
+            matchedPairs = 0;
 
-    document.getElementById("current-cat-label").innerText = labelMap[cat];
-    document.querySelectorAll(".cat-option").forEach(function(option) {
-        option.classList.toggle("active", option.innerText.toLowerCase() === cat);
-    });
-    document.getElementById("cat-menu").classList.remove("show");
-    resetGame();
-}
+            isBoardLocked = false;
 
-function buildKeyboard() {
-    const kbEl = document.getElementById("keyboard");
-    kbEl.innerHTML = "";
-    for (let i = 65; i <= 90; i++) {
-        const char = String.fromCharCode(i);
-        const btn = document.createElement("button");
-        btn.className = "key-btn";
-        btn.innerText = char;
-        btn.id = `key-${char}`;
-        btn.addEventListener("click", function() { handleGuess(char); });
-        kbEl.appendChild(btn);
-    }
-}
 
-function handleGuess(letter) {
-    if (guessedLetters.has(letter) || wrongGuesses >= maxWrong) return;
-    guessedLetters.add(letter);
+            const deck = [];
 
-    const btn = document.getElementById(`key-${letter}`);
-    if (btn) btn.disabled = true;
 
-    if (currentWord.includes(letter)) {
-        AudioFX.play("correct");
-        renderWord();
-        checkWin();
-    } else {
-        AudioFX.play("wrong");
-        wrongGuesses++;
-        updateHangman();
-        checkLoss();
-    }
-}
+            CARD_IMAGES.forEach(
+                (imgSrc,index) => {
 
-function renderWord() {
-    const displayEl = document.getElementById("word-display");
-    displayEl.innerHTML = "";
-    for (const char of currentWord) {
-        const tile = document.createElement("div");
-        tile.className = "letter-tile";
-        tile.innerText = guessedLetters.has(char) ? char : "";
-        displayEl.appendChild(tile);
-    }
-}
+                    deck.push({
+                        id:index,
+                        src:imgSrc
+                    });
 
-function updateHangman() {
-    for (let i = 0; i < maxWrong; i++) {
-        const part = document.getElementById(`part-${i}`);
-        if (part) {
-            part.style.display = i < wrongGuesses ? "block" : "none";
+                    deck.push({
+                        id:index,
+                        src:imgSrc
+                    });
+
+                }
+            );
+
+
+            cards =
+                deck.sort(
+                    () => Math.random() - .5
+                );
+
+
+            cards.forEach(
+                (cardData,idx) => {
+
+                    const cardEl =
+                        document.createElement(
+                            "div"
+                        );
+
+                    cardEl.className =
+                        "card";
+
+                    cardEl.dataset.index =
+                        idx;
+
+                    cardEl.dataset.id =
+                        cardData.id;
+
+
+                    const cardBack =
+                        document.createElement(
+                            "div"
+                        );
+
+                    cardBack.className =
+                        "card-back";
+
+                    cardBack.innerText =
+                        "♡";
+
+
+                    const cardFront =
+                        document.createElement(
+                            "div"
+                        );
+
+                    cardFront.className =
+                        "card-front";
+
+
+                    const img =
+                        document.createElement(
+                            "img"
+                        );
+
+                    img.src =
+                        cardData.src;
+
+                    img.alt =
+                        `Card ${cardData.id + 1}`;
+
+
+                    cardFront.appendChild(img);
+
+                    cardEl.appendChild(cardBack);
+
+                    cardEl.appendChild(cardFront);
+
+
+                    cardEl.addEventListener(
+                        "click",
+                        () =>
+                            handleCardClick(
+                                cardEl
+                            )
+                    );
+
+
+                    gridEl.appendChild(
+                        cardEl
+                    );
+
+                }
+            );
+
+        }        function handleCardClick(cardEl) {
+
+            if (isBoardLocked) return;
+
+            if (
+                cardEl.classList.contains(
+                    "flipped"
+                ) ||
+                cardEl.classList.contains(
+                    "matched"
+                )
+            ) {
+                return;
+            }
+
+
+            AudioFX.play("flip");
+
+
+            cardEl.classList.add(
+                "flipped"
+            );
+
+
+            flippedCards.push(
+                cardEl
+            );
+
+
+            if (
+                flippedCards.length === 2
+            ) {
+
+                checkMatch();
+
+            }
+
         }
-    }
-}
 
-function showVictoryModal(msg, rewardText) {
-    const modal = document.getElementById("reward-modal");
-    const card = document.getElementById("modal-card");
-    const title = document.getElementById("modal-title");
-    const desc = document.getElementById("modal-desc");
-    const amount = document.getElementById("reward-amount");
-    const symbol = document.getElementById("modal-symbol");
-    
-    card.classList.remove("game-over");
-    title.innerText = "Victory!";
-    desc.innerText = msg;
-    symbol.innerHTML = `
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-        </svg>
-    `;
-    amount.style.display = "inline-block";
-    amount.innerText = rewardText;
-    modal.style.display = "flex";
-}
 
-function showGameOverModal(headingText, msg) {
-    const modal = document.getElementById("reward-modal");
-    const card = document.getElementById("modal-card");
-    const title = document.getElementById("modal-title");
-    const desc = document.getElementById("modal-desc");
-    const amount = document.getElementById("reward-amount");
-    const symbol = document.getElementById("modal-symbol");
+        function checkMatch() {
 
-    card.classList.add("game-over");
-    title.innerText = headingText;
-    desc.innerText = msg;
-    symbol.innerHTML = `
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
-            <path d="M16 28l-1.8-1.6C7.6 20.4 3 16.3 3 11.2 3 7 6.3 3.5 10.5 3.5c2.4 0 4.7 1.1 6.2 3 1.5-1.9 3.8-3 6.2-3C25.7 3.5 29 7 29 11.2c0 5.1-4.6 9.2-11.2 15.2L16 28z" fill="none"/>
-            <path d="M16 28l-1.8-1.6C7.6 20.4 3 16.3 3 11.2 3 7 6.3 3.5 10.5 3.5c2.4 0 4.7 1.1 6.2 3V12l-3 3 4 4-5 5 1.6 3z"/>
-            <path d="M16.7 6.5c1.5-1.9 3.8-3 6.2-3C25.7 3.5 29 7 29 11.2c0 5.1-4.6 9.2-11.2 15.2L16 28v-6l3-3-4-4 3-3V6.5z"/>
-        </svg>
-    `;
-    amount.style.display = "none";
-    modal.style.display = "flex";
-}
+            isBoardLocked = true;
 
-function checkWin() {
-    const isWon = [...currentWord].every(char => guessedLetters.has(char));
-    if (isWon) {
-        AudioFX.play("win");
-        if (typeof addCoins === "function") addCoins(20);
-        if (typeof updateCoinDisplays === "function") updateCoinDisplays();
-        showVictoryModal(`You correctly guessed "${currentWord}" and earned 20 Coins!`, "+20 Coins");
-    }
-}
 
-function checkLoss() {
-    if (wrongGuesses >= maxWrong) {
-        AudioFX.play("lose");
-        showGameOverModal("Game Over", `Out of attempts! The word was "${currentWord}".`);
-    }
-}
+            const [
+                first,
+                second
+            ] = flippedCards;
 
-function resetGame() {
-    const wordList = words[currentCategory];
-    currentWord = wordList[Math.floor(Math.random() * wordList.length)];
-    guessedLetters.clear();
-    wrongGuesses = 0;
-    document.getElementById("reward-modal").style.display = "none";
-    updateHangman();
-    renderWord();
-    buildKeyboard();
-}
 
-function closeModalAndReset() {
-    document.getElementById("reward-modal").style.display = "none";
-    resetGame();
-}
+            if (
+                first.dataset.id ===
+                second.dataset.id
+            ) {
 
-document.addEventListener("keydown", function(e) {
-    const char = e.key.toUpperCase();
-    if (char.length === 1 && char >= "A" && char <= "Z") {
-        handleGuess(char);
-    }
-});
+                AudioFX.play("match");
 
-document.addEventListener("DOMContentLoaded", function() {
-    loadSavedTheme();
-    if (typeof updateCoinDisplays === "function") updateCoinDisplays();
-    resetGame();
-});
-</script>
 
+                first.classList.add(
+                    "matched"
+                );
+
+                second.classList.add(
+                    "matched"
+                );
+
+
+                flippedCards = [];
+
+                matchedPairs++;
+
+                isBoardLocked = false;
+
+
+                if (
+                    matchedPairs ===
+                    CARD_IMAGES.length
+                ) {
+
+                    setTimeout(
+                        () => {
+
+                            AudioFX.play(
+                                "win"
+                            );
+
+
+                            if (
+                                typeof addCoins ===
+                                "function"
+                            ) {
+
+                                addCoins(40);
+
+                            }
+
+
+                            const modal =
+                                document.getElementById(
+                                    "reward-modal"
+                                );
+
+
+                            modal.style.display =
+                                "flex";
+
+
+                            modal
+                                .querySelectorAll(
+                                    ".confetti"
+                                )
+                                .forEach(
+                                    confetti => {
+
+                                        confetti.style.animation =
+                                            "none";
+
+                                        void confetti.offsetWidth;
+
+                                        confetti.style.animation =
+                                            "confettiFall 1.8s ease-out forwards";
+
+                                    }
+                                );
+
+                        },
+                        500
+                    );
+
+                }
+
+
+            } else {
+
+                setTimeout(
+                    () => {
+
+                        first.classList.remove(
+                            "flipped"
+                        );
+
+                        second.classList.remove(
+                            "flipped"
+                        );
+
+                        flippedCards = [];
+
+                        isBoardLocked = false;
+
+                    },
+                    900
+                );
+
+            }
+
+        }
+
+
+        function closeModalAndReset() {
+
+            document.getElementById(
+                "reward-modal"
+            ).style.display =
+                "none";
+
+
+            initGame();
+
+        }
+
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
+
+                loadSavedTheme();
+
+
+                if (
+                    typeof updateCoinDisplays ===
+                    "function"
+                ) {
+
+                    updateCoinDisplays();
+
+                }
+
+
+                initGame();
+
+            }
+        );
+
+    </script>
 </body>
 </html>
