@@ -7,366 +7,604 @@
 
     <style>
         :root {
-            --bg-base: #f2f7fa;
-            --bg-grad-1: #dce8f3;
-            --bg-grad-2: #d3e2ea;
-            --text-main: #3f5260;
-            --text-heading: #46637a;
-            --accent-border: #82a8bd;
-            --accent-soft: #e9f3f9;
-            --accent-badge: #dfe8f8;
-            --ornament-color: #799eb8;
-            --card-bg: rgba(255, 255, 255, 0.88);
-            --header-bg: rgba(255, 255, 255, 0.88);
+            --bg-base:#f2f7fa;
+            --bg-grad-1:#dce8f3;
+            --bg-grad-2:#d3e2ea;
+            --text-main:#3f5260;
+            --text-heading:#46637a;
+            --accent-border:#82a8bd;
+            --accent-soft:#e9f3f9;
+            --accent-badge:#dfe8f8;
+            --ornament-color:#799eb8;
+            --card-bg:rgba(255,255,255,.88);
+            --header-bg:rgba(255,255,255,.88);
         }
 
         body[data-theme="pink"] {
-            --bg-base: #faf2f5;
-            --bg-grad-1: #f3dce5;
-            --bg-grad-2: #ead3dc;
-            --text-main: #603f4c;
-            --text-heading: #7a4659;
-            --accent-border: #bd8297;
-            --accent-soft: #f9e9f0;
-            --accent-badge: #f8dfe8;
-            --ornament-color: #b87992;
-            --card-bg: rgba(255, 255, 255, 0.88);
-            --header-bg: rgba(255, 255, 255, 0.88);
+            --bg-base:#faf2f5;
+            --bg-grad-1:#f3dce5;
+            --bg-grad-2:#ead3dc;
+            --text-main:#603f4c;
+            --text-heading:#7a4659;
+            --accent-border:#bd8297;
+            --accent-soft:#f9e9f0;
+            --accent-badge:#f8dfe8;
+            --ornament-color:#b87992;
+            --card-bg:rgba(255,255,255,.88);
+            --header-bg:rgba(255,255,255,.88);
         }
 
         body[data-theme="green"] {
-            --bg-base: #f3f7f2;
-            --bg-grad-1: #dce8dc;
-            --bg-grad-2: #d3ead3;
-            --text-main: #3f6043;
-            --text-heading: #467a4c;
-            --accent-border: #82bd8b;
-            --accent-soft: #e9f9eb;
-            --accent-badge: #dff8e2;
-            --ornament-color: #79b882;
-            --card-bg: rgba(255, 255, 255, 0.88);
-            --header-bg: rgba(255, 255, 255, 0.88);
+            --bg-base:#f3f7f2;
+            --bg-grad-1:#dce8dc;
+            --bg-grad-2:#d3ead3;
+            --text-main:#3f6043;
+            --text-heading:#467a4c;
+            --accent-border:#82bd8b;
+            --accent-soft:#e9f9eb;
+            --accent-badge:#dff8e2;
+            --ornament-color:#79b882;
+            --card-bg:rgba(255,255,255,.88);
+            --header-bg:rgba(255,255,255,.88);
         }
 
         body[data-theme="lavender"] {
-            --bg-base: #f5f2fa;
-            --bg-grad-1: #e3dcf3;
-            --bg-grad-2: #dad3ea;
-            --text-main: #4a3f60;
-            --text-heading: #59467a;
-            --accent-border: #9882bd;
-            --accent-soft: #f0e9f9;
-            --accent-badge: #e9dff8;
-            --ornament-color: #9379b8;
-            --card-bg: rgba(255, 255, 255, 0.88);
-            --header-bg: rgba(255, 255, 255, 0.88);
+            --bg-base:#f5f2fa;
+            --bg-grad-1:#e3dcf3;
+            --bg-grad-2:#dad3ea;
+            --text-main:#4a3f60;
+            --text-heading:#59467a;
+            --accent-border:#9882bd;
+            --accent-soft:#f0e9f9;
+            --accent-badge:#e9dff8;
+            --ornament-color:#9379b8;
+            --card-bg:rgba(255,255,255,.88);
+            --header-bg:rgba(255,255,255,.88);
         }
 
         body[data-theme="yellow"] {
-            --bg-base: #faf8f2;
-            --bg-grad-1: #f3edd2;
-            --bg-grad-2: #eae3c5;
-            --text-main: #60573f;
-            --text-heading: #7a6e46;
-            --accent-border: #bdb182;
-            --accent-soft: #f9f5e9;
-            --accent-badge: #f8f3df;
-            --ornament-color: #b8aa79;
-            --card-bg: rgba(255, 255, 255, 0.88);
-            --header-bg: rgba(255, 255, 255, 0.88);
+            --bg-base:#faf8f2;
+            --bg-grad-1:#f3edd2;
+            --bg-grad-2:#eae3c5;
+            --text-main:#60573f;
+            --text-heading:#7a6e46;
+            --accent-border:#bdb182;
+            --accent-soft:#f9f5e9;
+            --accent-badge:#f8f3df;
+            --ornament-color:#b8aa79;
+            --card-bg:rgba(255,255,255,.88);
+            --header-bg:rgba(255,255,255,.88);
         }
 
         * {
-            box-sizing: border-box;
-            min-width: 0;
-            -webkit-tap-highlight-color: transparent;
+            box-sizing:border-box;
+            min-width:0;
+            -webkit-tap-highlight-color:transparent;
         }
 
         html {
-            width: 100%;
-            max-width: 100%;
-            overflow-x: hidden;
+            width:100%;
+            max-width:100%;
+            overflow-x:hidden;
         }
 
         body {
-            width: 100%;
-            max-width: 100%;
-            min-height: 100vh;
-            margin: 0;
-            overflow-x: hidden;
+            width:100%;
+            max-width:100%;
+            min-height:100vh;
+            margin:0;
+            overflow-x:hidden;
             background:
-                radial-gradient(circle at 10% 12%, var(--bg-grad-1) 0, transparent 28%),
-                radial-gradient(circle at 90% 85%, var(--bg-grad-2) 0, transparent 30%),
+                radial-gradient(circle at 10% 12%,var(--bg-grad-1) 0,transparent 28%),
+                radial-gradient(circle at 90% 85%,var(--bg-grad-2) 0,transparent 30%),
                 var(--bg-base);
-            color: var(--text-main);
-            font-family: Georgia, "Times New Roman", serif;
-            transition: background 0.3s ease, color 0.3s ease;
+            color:var(--text-main);
+            font-family:Georgia,"Times New Roman",serif;
+            transition:background .3s ease,color .3s ease;
         }
 
         header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            min-height: 70px;
-            padding: 15px 22px;
-            background: var(--header-bg);
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid var(--bg-grad-2);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            gap: 16px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            width:100%;
+            min-height:70px;
+            padding:15px 22px;
+            background:var(--header-bg);
+            backdrop-filter:blur(8px);
+            border-bottom:1px solid var(--bg-grad-2);
+            position:sticky;
+            top:0;
+            z-index:100;
+            gap:16px;
         }
 
         .header-left,
         .header-right {
-            display: flex;
-            align-items: center;
-            min-width: 0;
+            display:flex;
+            align-items:center;
+            min-width:0;
         }
 
         .header-left {
-            gap: 12px;
+            gap:12px;
         }
 
         .header-right {
-            justify-content: flex-end;
-            gap: 10px;
+            justify-content:flex-end;
+            gap:10px;
         }
 
         .nav-link {
-            color: var(--text-heading);
-            text-decoration: none;
-            font-size: 15px;
-            font-weight: normal;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: opacity 0.2s ease;
+            color:var(--text-heading);
+            text-decoration:none;
+            font-size:15px;
+            font-weight:normal;
+            cursor:pointer;
+            white-space:nowrap;
+            transition:opacity .2s ease;
         }
 
         .nav-link:hover {
-            opacity: 0.7;
+            opacity:.7;
         }
 
         .coin-display {
-            background: var(--accent-soft);
-            border: 1px solid var(--accent-border);
-            padding: 9px 15px;
-            border-radius: 100px;
-            font-size: 13px;
-            font-weight: bold;
-            color: var(--text-heading);
-            white-space: nowrap;
+            background:var(--accent-soft);
+            border:1px solid var(--accent-border);
+            padding:9px 15px;
+            border-radius:100px;
+            font-size:13px;
+            font-weight:bold;
+            color:var(--text-heading);
+            white-space:nowrap;
         }
 
         main {
-            width: 100%;
-            max-width: 560px;
-            margin: 0 auto;
-            padding: 28px 18px 40px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            width:100%;
+            max-width:560px;
+            margin:0 auto;
+            padding:28px 18px 40px;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
         }
 
         .ornament {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            height: 22px;
-            margin-bottom: 15px;
-            color: var(--ornament-color);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:10px;
+            height:22px;
+            margin-bottom:15px;
+            color:var(--ornament-color);
         }
 
         .ornament span {
-            font-size: 16px;
+            font-size:16px;
         }
 
         .ornament i {
-            width: 38px;
-            height: 1px;
-            background: var(--ornament-color);
-            opacity: 0.45;
+            width:38px;
+            height:1px;
+            background:var(--ornament-color);
+            opacity:.45;
         }
 
         h1 {
-            color: var(--text-heading);
-            font-weight: normal;
-            font-size: 28px;
-            margin: 0 0 7px;
-            text-align: center;
+            color:var(--text-heading);
+            font-weight:normal;
+            font-size:28px;
+            margin:0 0 7px;
+            text-align:center;
         }
 
         p.subtitle {
-            color: var(--text-main);
-            opacity: 0.78;
-            margin: 0 0 24px;
-            font-size: 14px;
-            text-align: center;
-            line-height: 1.5;
+            color:var(--text-main);
+            opacity:.78;
+            margin:0 0 24px;
+            font-size:14px;
+            text-align:center;
+            line-height:1.5;
         }
 
         .memory-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            width: 100%;
-            max-width: 440px;
-            perspective: 1000px;
-            margin-bottom: 25px;
+            display:grid;
+            grid-template-columns:repeat(4,1fr);
+            gap:12px;
+            width:100%;
+            max-width:440px;
+            perspective:1000px;
+            margin-bottom:25px;
         }
 
         .card {
-            aspect-ratio: 1 / 1;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.4s ease;
-            cursor: pointer;
+            aspect-ratio:1/1;
+            position:relative;
+            transform-style:preserve-3d;
+            transition:transform .4s ease;
+            cursor:pointer;
         }
 
-        .card.flipped, .card.matched {
-            transform: rotateY(180deg);
+        .card.flipped,
+        .card.matched {
+            transform:rotateY(180deg);
         }
 
-        .card-front, .card-back {
-            position: absolute;
-            inset: 0;
-            backface-visibility: hidden;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--accent-border);
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        .card-front,
+        .card-back {
+            position:absolute;
+            inset:0;
+            backface-visibility:hidden;
+            border-radius:10px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            border:1px solid var(--accent-border);
+            overflow:hidden;
+            box-shadow:0 4px 15px rgba(0,0,0,.03);
         }
 
         .card-back {
-            background: var(--card-bg);
-            color: var(--ornament-color);
-            font-size: 24px;
-            font-weight: bold;
+            background:var(--card-bg);
+            color:var(--ornament-color);
+            font-size:24px;
+            font-weight:bold;
         }
 
         .card-front {
-            background: var(--card-bg);
-            transform: rotateY(180deg);
-            padding: 6px;
+            background:var(--card-bg);
+            transform:rotateY(180deg);
+            padding:6px;
         }
 
         .card-front img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 6px;
+            width:100%;
+            height:100%;
+            object-fit:cover;
+            border-radius:6px;
         }
 
         .card.matched .card-front {
-            border-color: var(--accent-border);
-            background: var(--accent-soft);
+            border-color:var(--accent-border);
+            background:var(--accent-soft);
         }
 
         .btn {
-            padding: 10px 20px;
-            border: 1px solid var(--accent-border);
-            border-radius: 100px;
-            background: var(--card-bg);
-            color: var(--text-heading);
-            font-family: Georgia, "Times New Roman", serif;
-            font-size: 13px;
-            cursor: pointer;
-            transition: 0.2s ease;
+            padding:10px 20px;
+            border:1px solid var(--accent-border);
+            border-radius:100px;
+            background:var(--card-bg);
+            color:var(--text-heading);
+            font-family:Georgia,"Times New Roman",serif;
+            font-size:13px;
+            cursor:pointer;
+            transition:.2s ease;
         }
 
         .btn:hover {
-            background: var(--accent-soft);
-            transform: translateY(-1px);
+            background:var(--accent-soft);
+            transform:translateY(-1px);
         }
 
         .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            padding: 20px;
-            background: rgba(30, 25, 25, 0.3);
-            backdrop-filter: blur(3px);
-            z-index: 200;
-            align-items: center;
-            justify-content: center;
+            display:none;
+            position:fixed;
+            inset:0;
+            padding:20px;
+            background:rgba(30,25,25,.3);
+            backdrop-filter:blur(3px);
+            z-index:200;
+            align-items:center;
+            justify-content:center;
         }
 
         .modal-card {
-            background: var(--card-bg);
-            border: 1px solid var(--bg-grad-2);
-            border-radius: 14px;
-            padding: 28px 24px;
-            max-width: 340px;
-            width: 100%;
-            text-align: center;
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+            position:relative;
+            background:var(--card-bg);
+            border:1px solid var(--bg-grad-2);
+            border-radius:14px;
+            padding:28px 24px;
+            max-width:340px;
+            width:100%;
+            text-align:center;
+            box-shadow:0 12px 35px rgba(0,0,0,.12);
+            overflow:visible;
         }
 
         .modal-card h2 {
-            color: var(--text-heading);
-            font-size: 21px;
-            font-weight: normal;
-            margin: 0 0 10px;
+            color:var(--text-heading);
+            font-size:21px;
+            font-weight:normal;
+            margin:8px 0 10px;
         }
 
         .modal-card p {
-            color: var(--text-main);
-            opacity: 0.8;
-            font-size: 14px;
-            line-height: 1.5;
-            margin: 0 0 20px;
+            color:var(--text-main);
+            opacity:.8;
+            font-size:14px;
+            line-height:1.5;
+            margin:0 0 20px;
         }
 
         .decorations {
-            position: fixed;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: -1;
+            position:fixed;
+            inset:0;
+            width:100%;
+            height:100%;
+            pointer-events:none;
+            overflow:hidden;
+            z-index:-1;
         }
 
         .decorations span {
-            position: absolute;
-            color: var(--ornament-color);
-            opacity: 0.35;
-            animation: float 5s ease-in-out infinite;
+            position:absolute;
+            color:var(--ornament-color);
+            opacity:.35;
+            animation:float 5s ease-in-out infinite;
         }
 
-        .decorations span:nth-child(1) { top: 13%; left: 7%; font-size: 20px; }
-        .decorations span:nth-child(2) { top: 28%; right: 8%; font-size: 13px; animation-delay: 1s; }
-        .decorations span:nth-child(3) { top: 55%; left: 5%; font-size: 14px; animation-delay: 2s; }
-        .decorations span:nth-child(4) { top: 68%; right: 6%; font-size: 21px; animation-delay: 1.5s; }
-        .decorations span:nth-child(5) { bottom: 12%; left: 12%; font-size: 12px; animation-delay: 0.5s; }
-        .decorations span:nth-child(6) { bottom: 20%; right: 13%; font-size: 16px; animation-delay: 2.5s; }
+        .decorations span:nth-child(1) {
+            top:13%;
+            left:7%;
+            font-size:20px;
+        }
+
+        .decorations span:nth-child(2) {
+            top:28%;
+            right:8%;
+            font-size:13px;
+            animation-delay:1s;
+        }
+
+        .decorations span:nth-child(3) {
+            top:55%;
+            left:5%;
+            font-size:14px;
+            animation-delay:2s;
+        }
+
+        .decorations span:nth-child(4) {
+            top:68%;
+            right:6%;
+            font-size:21px;
+            animation-delay:1.5s;
+        }
+
+        .decorations span:nth-child(5) {
+            bottom:12%;
+            left:12%;
+            font-size:12px;
+            animation-delay:.5s;
+        }
+
+        .decorations span:nth-child(6) {
+            bottom:20%;
+            right:13%;
+            font-size:16px;
+            animation-delay:2.5s;
+        }
+
+        /* VICTORY HEART */
+
+        .heart-art {
+            width:90px;
+            height:82px;
+            margin:0 auto 2px;
+            position:relative;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            animation:heartFloat 2.4s ease-in-out infinite;
+        }
+
+        .heart-svg {
+            width:76px;
+            height:76px;
+            overflow:visible;
+        }
+
+        .heart-outline {
+            fill:none;
+            stroke:var(--text-heading);
+            stroke-width:1.7;
+            stroke-linecap:round;
+            stroke-linejoin:round;
+            stroke-dasharray:180;
+            stroke-dashoffset:180;
+            animation:drawHeart 1.2s ease forwards;
+        }
+
+        .heart-fill {
+            fill:var(--accent-soft);
+            stroke:var(--text-heading);
+            stroke-width:1.2;
+            opacity:0;
+            transform-origin:center;
+            animation:heartAppear .5s ease .85s forwards;
+        }
+
+        .heart-shine {
+            fill:none;
+            stroke:var(--text-heading);
+            stroke-width:1.3;
+            stroke-linecap:round;
+            opacity:0;
+            animation:shineAppear .45s ease 1.25s forwards;
+        }
+
+        .heart-spark {
+            position:absolute;
+            color:var(--ornament-color);
+            font-size:13px;
+            opacity:0;
+            animation:sparkAppear .6s ease forwards;
+        }
+
+        .heart-spark.one {
+            top:7px;
+            left:7px;
+            animation-delay:1.25s;
+        }
+
+        .heart-spark.two {
+            top:16px;
+            right:4px;
+            animation-delay:1.45s;
+        }
+
+        .heart-spark.three {
+            bottom:9px;
+            left:13px;
+            animation-delay:1.6s;
+        }
+
+        .confetti {
+            position:absolute;
+            inset:-35px;
+            pointer-events:none;
+            overflow:visible;
+        }
+
+        .confetti span {
+            position:absolute;
+            left:50%;
+            top:35px;
+            width:4px;
+            height:9px;
+            background:var(--ornament-color);
+            opacity:0;
+            animation:confettiFall 1.5s ease-out forwards;
+        }
+
+        .confetti span:nth-child(1) {
+            margin-left:-70px;
+            animation-delay:.1s;
+            transform:rotate(20deg);
+        }
+
+        .confetti span:nth-child(2) {
+            margin-left:-45px;
+            animation-delay:.2s;
+            transform:rotate(-25deg);
+        }
+
+        .confetti span:nth-child(3) {
+            margin-left:-20px;
+            animation-delay:.05s;
+            transform:rotate(40deg);
+        }
+
+        .confetti span:nth-child(4) {
+            margin-left:20px;
+            animation-delay:.18s;
+            transform:rotate(-35deg);
+        }
+
+        .confetti span:nth-child(5) {
+            margin-left:47px;
+            animation-delay:.08s;
+            transform:rotate(25deg);
+        }
+
+        .confetti span:nth-child(6) {
+            margin-left:72px;
+            animation-delay:.24s;
+            transform:rotate(-15deg);
+        }
+
+        @keyframes drawHeart {
+            to {
+                stroke-dashoffset:0;
+            }
+        }
+
+        @keyframes heartAppear {
+            0% {
+                opacity:0;
+                transform:scale(.65);
+            }
+            70% {
+                opacity:1;
+                transform:scale(1.08);
+            }
+            100% {
+                opacity:1;
+                transform:scale(1);
+            }
+        }
+
+        @keyframes shineAppear {
+            to {
+                opacity:.65;
+            }
+        }
+
+        @keyframes heartFloat {
+            0%,100% {
+                transform:translateY(0);
+            }
+            50% {
+                transform:translateY(-5px);
+            }
+        }
+
+        @keyframes sparkAppear {
+            0% {
+                opacity:0;
+                transform:scale(.3) rotate(-20deg);
+            }
+            60% {
+                opacity:1;
+                transform:scale(1.15) rotate(5deg);
+            }
+            100% {
+                opacity:.7;
+                transform:scale(1) rotate(0);
+            }
+        }
+
+        @keyframes confettiFall {
+            0% {
+                opacity:0;
+                transform:translateY(0) rotate(0);
+            }
+            15% {
+                opacity:.8;
+            }
+            100% {
+                opacity:0;
+                transform:translateY(70px) rotate(180deg);
+            }
+        }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0); }
-            50% { transform: translateY(-7px) rotate(7deg); }
+            0%,100% {
+                transform:translateY(0) rotate(0);
+            }
+            50% {
+                transform:translateY(-7px) rotate(7deg);
+            }
         }
 
-        @media (max-width: 600px) {
+        @media (max-width:600px) {
             header {
-                min-height: 66px;
-                padding: 12px 11px;
+                min-height:66px;
+                padding:12px 11px;
             }
+
             main {
-                padding: 24px 12px 35px;
+                padding:24px 12px 35px;
             }
+
             .memory-grid {
-                max-width: 360px;
-                gap: 8px;
+                max-width:360px;
+                gap:8px;
             }
-        }
+        }        }
     </style>
 </head>
+
 <body>
 
     <div class="decorations">
@@ -382,12 +620,16 @@
         <div class="header-left">
             <a onclick="goBack()" class="nav-link">← Back to Games</a>
         </div>
+
         <div class="header-right">
-            <div class="coin-display"><span class="coin-count">0</span> Coins</div>
+            <div class="coin-display">
+                <span class="coin-count">0</span> Coins
+            </div>
         </div>
     </header>
 
     <main>
+
         <div class="ornament">
             <span>✦</span>
             <i></i>
@@ -397,203 +639,703 @@
         </div>
 
         <h1>Memory Match</h1>
-        <p class="subtitle">Flip cards and find all matching pairs!</p>
+
+        <p class="subtitle">
+            Flip cards and find all matching pairs!
+        </p>
 
         <div class="memory-grid" id="grid"></div>
 
-        <div class="ornament" style="margin-top: 20px; margin-bottom: 0;">
+        <div
+            class="ornament"
+            style="margin-top:20px;margin-bottom:0;"
+        >
             <span>✧</span>
             <i></i>
             <span>♡</span>
             <i></i>
             <span>✧</span>
         </div>
+
     </main>
 
     <div id="reward-modal" class="modal-overlay">
+
         <div class="modal-card">
-            <h2>Victory!</h2>
-            <p>You matched all the pictures and earned 40 Coins!</p>
-            <button class="btn" onclick="closeModalAndReset()" style="width: 100%;">Play Again</button>
+
+            <div class="heart-art">
+
+                <div class="confetti">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <svg
+                    class="heart-svg"
+                    viewBox="0 0 80 76"
+                >
+                    <path
+                        class="heart-fill"
+                        d="M40 68C35 63 10 48 7 29C5 17 12 9 22 9C30 9 36 14 40 21C44 14 50 9 58 9C68 9 75 17 73 29C70 48 45 63 40 68Z"
+                    />
+
+                    <path
+                        class="heart-outline"
+                        d="M40 68C35 63 10 48 7 29C5 17 12 9 22 9C30 9 36 14 40 21C44 14 50 9 58 9C68 9 75 17 73 29C70 48 45 63 40 68Z"
+                    />
+
+                    <path
+                        class="heart-shine"
+                        d="M19 20C16 22 15 25 15 28"
+                    />
+                </svg>
+
+                <span class="heart-spark one">✦</span>
+                <span class="heart-spark two">✧</span>
+                <span class="heart-spark three">✦</span>
+
+            </div>
+
+            <h2>✦ You matched them all ♡</h2>
+
+            <p>
+                You matched all the pictures and earned 40 Coins!
+            </p>
+
+            <button
+                class="btn"
+                onclick="closeModalAndReset()"
+                style="width:100%;"
+            >
+                Play Again
+            </button>
+
         </div>
+
     </div>
 
     <script src="../script.js"></script>
+
     <script>
         function loadSavedTheme() {
-            const savedTheme = localStorage.getItem("arcade_theme");
-            if (savedTheme === "pink" || savedTheme === "green" || savedTheme === "lavender" || savedTheme === "yellow") {
-                document.body.setAttribute("data-theme", savedTheme);
+
+            const savedTheme =
+                localStorage.getItem("arcade_theme");
+
+            if (
+                savedTheme === "pink" ||
+                savedTheme === "green" ||
+                savedTheme === "lavender" ||
+                savedTheme === "yellow"
+            ) {
+
+                document.body.setAttribute(
+                    "data-theme",
+                    savedTheme
+                );
+
             } else {
-                document.body.removeAttribute("data-theme");
+
+                document.body.removeAttribute(
+                    "data-theme"
+                );
+
             }
         }
+
         loadSavedTheme();
 
+
         const CARD_IMAGES = [
+
             "../pictures/IMG_20260908_033600.jpg",
             "../pictures/IMG_20260908_033616.jpg",
             "../pictures/IMG_20260908_033631.jpg",
             "../pictures/IMG_20260908_033830.jpg",
             "../pictures/IMG_20260908_033902.jpg",
             "../pictures/IMG_20260908_033926.jpg"
+
         ];
 
+
         const AudioFX = {
-            ctx: null,
+
+            ctx:null,
+
+
             init() {
+
                 if (!this.ctx) {
-                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                    if (AudioCtx) this.ctx = new AudioCtx();
+
+                    const AudioCtx =
+                        window.AudioContext ||
+                        window.webkitAudioContext;
+
+                    if (AudioCtx) {
+                        this.ctx =
+                            new AudioCtx();
+                    }
+
                 }
+
             },
+
+
             play(type) {
+
                 this.init();
+
                 if (!this.ctx) return;
-                if (this.ctx.state === 'suspended') this.ctx.resume();
 
-                const now = this.ctx.currentTime;
-                const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
-                osc.connect(gain);
-                gain.connect(this.ctx.destination);
-
-                if (type === 'flip') {
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(350, now);
-                    gain.gain.setValueAtTime(0.05, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
-                    osc.start(now);
-                    osc.stop(now + 0.04);
-                } else if (type === 'match') {
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(523.25, now);
-                    osc.frequency.setValueAtTime(659.25, now + 0.08);
-                    gain.gain.setValueAtTime(0.1, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
-                    osc.start(now);
-                    osc.stop(now + 0.2);
-                } else if (type === 'win') {
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(523.25, now);
-                    osc.frequency.setValueAtTime(659.25, now + 0.08);
-                    osc.frequency.setValueAtTime(783.99, now + 0.16);
-                    gain.gain.setValueAtTime(0.2, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
-                    osc.start(now);
-                    osc.stop(now + 0.35);
+                if (
+                    this.ctx.state ===
+                    "suspended"
+                ) {
+                    this.ctx.resume();
                 }
+
+
+                const now =
+                    this.ctx.currentTime;
+
+
+                const osc =
+                    this.ctx.createOscillator();
+
+                const gain =
+                    this.ctx.createGain();
+
+
+                osc.connect(gain);
+                gain.connect(
+                    this.ctx.destination
+                );
+
+
+                if (type === "flip") {
+
+                    osc.type = "sine";
+
+                    osc.frequency.setValueAtTime(
+                        350,
+                        now
+                    );
+
+                    gain.gain.setValueAtTime(
+                        .05,
+                        now
+                    );
+
+                    gain.gain.exponentialRampToValueAtTime(
+                        .001,
+                        now + .04
+                    );
+
+                    osc.start(now);
+                    osc.stop(now + .04);
+
+                }
+
+
+                else if (type === "match") {
+
+                    osc.type = "sine";
+
+                    osc.frequency.setValueAtTime(
+                        523.25,
+                        now
+                    );
+
+                    osc.frequency.setValueAtTime(
+                        659.25,
+                        now + .08
+                    );
+
+                    gain.gain.setValueAtTime(
+                        .1,
+                        now
+                    );
+
+                    gain.gain.exponentialRampToValueAtTime(
+                        .001,
+                        now + .2
+                    );
+
+                    osc.start(now);
+                    osc.stop(now + .2);
+
+                }
+
+
+                else if (type === "win") {
+
+                    osc.type = "sine";
+
+                    osc.frequency.setValueAtTime(
+                        523.25,
+                        now
+                    );
+
+                    osc.frequency.setValueAtTime(
+                        659.25,
+                        now + .08
+                    );
+
+                    osc.frequency.setValueAtTime(
+                        783.99,
+                        now + .16
+                    );
+
+                    gain.gain.setValueAtTime(
+                        .2,
+                        now
+                    );
+
+                    gain.gain.exponentialRampToValueAtTime(
+                        .001,
+                        now + .35
+                    );
+
+                    osc.start(now);
+                    osc.stop(now + .35);
+
+                }
+
             }
+
         };
+
 
         let cards = [];
         let flippedCards = [];
         let matchedPairs = 0;
         let isBoardLocked = false;
 
+
         function goBack() {
+
             if (window.history.length > 1) {
+
                 window.history.back();
+
             } else {
-                window.location.href = '../index.html';
+
+                window.location.href =
+                    "../index.html";
+
             }
+
         }
+
 
         function initGame() {
-            const gridEl = document.getElementById('grid');
-            gridEl.innerHTML = '';
+
+            const gridEl =
+                document.getElementById("grid");
+
+            gridEl.innerHTML = "";
+
             flippedCards = [];
+
             matchedPairs = 0;
+
             isBoardLocked = false;
 
+
             const deck = [];
-            CARD_IMAGES.forEach((imgSrc, index) => {
-                deck.push({ id: index, src: imgSrc });
-                deck.push({ id: index, src: imgSrc });
-            });
 
-            cards = deck.sort(() => Math.random() - 0.5);
 
-            cards.forEach((cardData, idx) => {
-                const cardEl = document.createElement('div');
-                cardEl.className = 'card';
-                cardEl.dataset.index = idx;
-                cardEl.dataset.id = cardData.id;
+            CARD_IMAGES.forEach(
+                (imgSrc,index) => {
 
-                const cardBack = document.createElement('div');
-                cardBack.className = 'card-back';
-                cardBack.innerText = '♡';
+                    deck.push({
+                        id:index,
+                        src:imgSrc
+                    });
 
-                const cardFront = document.createElement('div');
-                cardFront.className = 'card-front';
+                    deck.push({
+                        id:index,
+                        src:imgSrc
+                    });
 
-                const img = document.createElement('img');
-                img.src = cardData.src;
-                img.alt = `Card ${cardData.id + 1}`;
+                }
+            );
 
-                cardFront.appendChild(img);
-                cardEl.appendChild(cardBack);
-                cardEl.appendChild(cardFront);
 
-                cardEl.addEventListener('click', () => handleCardClick(cardEl));
-                gridEl.appendChild(cardEl);
-            });
-        }
+            cards =
+                deck.sort(
+                    () => Math.random() - .5
+                );
 
-        function handleCardClick(cardEl) {
+
+            cards.forEach(
+                (cardData,idx) => {
+
+                    const cardEl =
+                        document.createElement(
+                            "div"
+                        );
+
+                    cardEl.className =
+                        "card";
+
+                    cardEl.dataset.index =
+                        idx;
+
+                    cardEl.dataset.id =
+                        cardData.id;
+
+
+                    const cardBack =
+                        document.createElement(
+                            "div"
+                        );
+
+                    cardBack.className =
+                        "card-back";
+
+                    cardBack.innerText =
+                        "♡";
+
+
+                    const cardFront =
+                        document.createElement(
+                            "div"
+                        );
+
+                    cardFront.className =
+                        "card-front";
+
+
+                    const img =
+                        document.createElement(
+                            "img"
+                        );
+
+                    img.src =
+                        cardData.src;
+
+                    img.alt =
+                        `Card ${cardData.id + 1}`;
+
+
+                    cardFront.appendChild(img);
+
+                    cardEl.appendChild(cardBack);
+
+                    cardEl.appendChild(cardFront);
+
+
+                    cardEl.addEventListener(
+                        "click",
+                        () =>
+                            handleCardClick(
+                                cardEl
+                            )
+                    );
+
+
+                    gridEl.appendChild(
+                        cardEl
+                    );
+
+                }
+            );
+
+        }        function handleCardClick(cardEl) {
+
             if (isBoardLocked) return;
-            if (cardEl.classList.contains('flipped') || cardEl.classList.contains('matched')) return;
 
-            AudioFX.play('flip');
-            cardEl.classList.add('flipped');
-            flippedCards.push(cardEl);
-
-            if (flippedCards.length === 2) {
-                checkMatch();
+            if (
+                cardEl.classList.contains(
+                    "flipped"
+                ) ||
+                cardEl.classList.contains(
+                    "matched"
+                )
+            ) {
+                return;
             }
+
+
+            AudioFX.play("flip");
+
+
+            cardEl.classList.add(
+                "flipped"
+            );
+
+
+            flippedCards.push(
+                cardEl
+            );
+
+
+            if (
+                flippedCards.length === 2
+            ) {
+
+                checkMatch();
+
+            }
+
         }
+
 
         function checkMatch() {
-            isBoardLocked = true;
-            const [first, second] = flippedCards;
 
-            if (first.dataset.id === second.dataset.id) {
-                AudioFX.play('match');
-                first.classList.add('matched');
-                second.classList.add('matched');
+            isBoardLocked = true;
+
+
+            const [
+                first,
+                second
+            ] = flippedCards;
+
+
+            if (
+                first.dataset.id ===
+                second.dataset.id
+            ) {
+
+                AudioFX.play("match");
+
+
+                first.classList.add(
+                    "matched"
+                );
+
+                second.classList.add(
+                    "matched"
+                );
+
+
                 flippedCards = [];
+
                 matchedPairs++;
+
                 isBoardLocked = false;
 
-                if (matchedPairs === CARD_IMAGES.length) {
-                    setTimeout(() => {
-                        AudioFX.play('win');
-                        if (typeof addCoins === 'function') addCoins(40);
-                        document.getElementById('reward-modal').style.display = 'flex';
-                    }, 500);
+
+                if (
+                    matchedPairs ===
+                    CARD_IMAGES.length
+                ) {
+
+                    setTimeout(
+                        () => {
+
+                            AudioFX.play(
+                                "win"
+                            );
+
+
+                            if (
+                                typeof addCoins ===
+                                "function"
+                            ) {
+
+                                addCoins(40);
+
+                            }
+
+
+                            const modal =
+                                document.getElementById(
+                                    "reward-modal"
+                                );
+
+
+                            modal.style.display =
+                                "flex";
+
+
+                            const heart =
+                                modal.querySelector(
+                                    ".heart-art"
+                                );
+
+
+                            if (heart) {
+
+                                heart.style.animation =
+                                    "none";
+
+                                void heart.offsetWidth;
+
+                                heart.style.animation =
+                                    "heartFloat 2.4s ease-in-out infinite";
+
+                            }
+
+
+                            const outline =
+                                modal.querySelector(
+                                    ".heart-outline"
+                                );
+
+
+                            if (outline) {
+
+                                outline.style.animation =
+                                    "none";
+
+                                void outline.offsetWidth;
+
+                                outline.style.animation =
+                                    "drawHeart 1.2s ease forwards";
+
+                            }
+
+
+                            const fill =
+                                modal.querySelector(
+                                    ".heart-fill"
+                                );
+
+
+                            if (fill) {
+
+                                fill.style.animation =
+                                    "none";
+
+                                void fill.offsetWidth;
+
+                                fill.style.animation =
+                                    "heartAppear .5s ease .85s forwards";
+
+                            }
+
+
+                            const shine =
+                                modal.querySelector(
+                                    ".heart-shine"
+                                );
+
+
+                            if (shine) {
+
+                                shine.style.animation =
+                                    "none";
+
+                                void shine.offsetWidth;
+
+                                shine.style.animation =
+                                    "shineAppear .45s ease 1.25s forwards";
+
+                            }
+
+
+                            modal
+                                .querySelectorAll(
+                                    ".heart-spark"
+                                )
+                                .forEach(
+                                    spark => {
+
+                                        spark.style.animation =
+                                            "none";
+
+                                        void spark.offsetWidth;
+
+                                        spark.style.animation =
+                                            "sparkAppear .6s ease forwards";
+
+                                    }
+                                );
+
+
+                            modal
+                                .querySelectorAll(
+                                    ".confetti span"
+                                )
+                                .forEach(
+                                    confetti => {
+
+                                        confetti.style.animation =
+                                            "none";
+
+                                        void confetti.offsetWidth;
+
+                                        confetti.style.animation =
+                                            "confettiFall 1.5s ease-out forwards";
+
+                                    }
+                                );
+
+
+                        },
+                        500
+                    );
+
                 }
+
+
             } else {
-                setTimeout(() => {
-                    first.classList.remove('flipped');
-                    second.classList.remove('flipped');
-                    flippedCards = [];
-                    isBoardLocked = false;
-                }, 900);
+
+                setTimeout(
+                    () => {
+
+                        first.classList.remove(
+                            "flipped"
+                        );
+
+                        second.classList.remove(
+                            "flipped"
+                        );
+
+                        flippedCards = [];
+
+                        isBoardLocked = false;
+
+                    },
+                    900
+                );
+
             }
+
         }
+
 
         function closeModalAndReset() {
-            document.getElementById('reward-modal').style.display = 'none';
+
+            document.getElementById(
+                "reward-modal"
+            ).style.display =
+                "none";
+
+
             initGame();
+
         }
 
-        document.addEventListener("DOMContentLoaded", function() {
-            loadSavedTheme();
-            if (typeof updateCoinDisplays === "function") {
-                updateCoinDisplays();
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
+
+                loadSavedTheme();
+
+
+                if (
+                    typeof updateCoinDisplays ===
+                    "function"
+                ) {
+
+                    updateCoinDisplays();
+
+                }
+
+
+                initGame();
+
             }
-            initGame();
-        });
+        );
+
     </script>
 </body>
 </html>
