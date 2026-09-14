@@ -6,13 +6,80 @@
     <title>Water Sort</title>
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        :root {
+            --bg-base: #f2f7fa;
+            --bg-grad-1: #dce8f3;
+            --bg-grad-2: #d3e2ea;
+            --text-main: #3f5260;
+            --text-heading: #46637a;
+            --accent-border: #82a8bd;
+            --accent-soft: #e9f3f9;
+            --accent-badge: #dfe8f8;
+            --ornament-color: #799eb8;
+            --card-bg: rgba(255, 255, 255, 0.88);
+            --header-bg: rgba(255, 255, 255, 0.88);
+        }
+
+        body[data-theme="pink"] {
+            --bg-base: #faf2f5;
+            --bg-grad-1: #f3dce5;
+            --bg-grad-2: #ead3dc;
+            --text-main: #603f4c;
+            --text-heading: #7a4659;
+            --accent-border: #bd8297;
+            --accent-soft: #f9e9f0;
+            --accent-badge: #f8dfe8;
+            --ornament-color: #b87992;
+        }
+
+        body[data-theme="green"] {
+            --bg-base: #f3f7f2;
+            --bg-grad-1: #dce8dc;
+            --bg-grad-2: #d3ead3;
+            --text-main: #3f6043;
+            --text-heading: #467a4c;
+            --accent-border: #82bd8b;
+            --accent-soft: #e9f9eb;
+            --accent-badge: #dff8e2;
+            --ornament-color: #79b882;
+        }
+
+        body[data-theme="lavender"] {
+            --bg-base: #f5f2fa;
+            --bg-grad-1: #e3dcf3;
+            --bg-grad-2: #dad3ea;
+            --text-main: #4a3f60;
+            --text-heading: #59467a;
+            --accent-border: #9882bd;
+            --accent-soft: #f0e9f9;
+            --accent-badge: #e9dff8;
+            --ornament-color: #9379b8;
+        }
+
+        body[data-theme="yellow"] {
+            --bg-base: #faf8f2;
+            --bg-grad-1: #f3edd2;
+            --bg-grad-2: #eae3c5;
+            --text-main: #60573f;
+            --text-heading: #7a6e46;
+            --accent-border: #bdb182;
+            --accent-soft: #f9f5e9;
+            --accent-badge: #f8f3df;
+            --ornament-color: #b8aa79;
+        }
+
         body {
             margin: 0;
             min-height: 100vh;
-            background: #faf7f5;
-            color: #4a3e3d;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background:
+                radial-gradient(circle at 20% 10%, var(--bg-grad-1), transparent 35%),
+                radial-gradient(circle at 80% 90%, var(--bg-grad-2), transparent 40%),
+                var(--bg-base);
+            color: var(--text-main);
+            font-family: Georgia, "Times New Roman", serif;
             user-select: none;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
         header {
@@ -20,9 +87,12 @@
             justify-content: space-between;
             align-items: center;
             padding: 14px 24px;
-            background: #ffffff;
-            border-bottom: 1px solid #eee8e5;
-            position: relative;
+            min-height: 68px;
+            background: var(--header-bg);
+            border-bottom: 1px solid var(--accent-border);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
             z-index: 100;
         }
 
@@ -32,12 +102,26 @@
             gap: 12px;
         }
 
-        .nav-link { color: #7d6b6d; text-decoration: none; font-size: 14px; font-weight: 500; cursor: pointer; }
-        .nav-link:hover { color: #4a3e3d; }
-        .coin-display { background: #f4ece9; border: 1px solid #e2d7d3; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; color: #635052; }
+        .nav-link {
+            color: var(--text-heading);
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .nav-link:hover { opacity: 0.7; }
+
+        .coin-display {
+            background: var(--accent-badge);
+            border: 1px solid var(--accent-border);
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 13px;
+            color: var(--text-heading);
+        }
 
         main {
-            padding: 20px;
+            padding: 24px 20px 35px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -45,19 +129,80 @@
             margin: 0 auto;
         }
 
-        h1 { color: #4a3e3d; font-weight: 500; font-size: 24px; margin: 0 0 4px; }
-        p.subtitle { color: #8c7b7d; margin: 0 0 20px; font-size: 14px; text-align: center; }
+        h1 {
+            color: var(--text-heading);
+            font-weight: normal;
+            font-size: 25px;
+            margin: 0 0 5px;
+        }
+
+        p.subtitle {
+            color: var(--text-main);
+            opacity: 0.72;
+            margin: 0 0 17px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .ornament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            height: 22px;
+            margin-bottom: 15px;
+            color: var(--ornament-color);
+        }
+
+        .ornament span { font-size: 16px; }
+
+        .ornament i {
+            width: 38px;
+            height: 1px;
+            background: var(--ornament-color);
+            opacity: 0.45;
+        }
+
+        .decorations {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .decorations span {
+            position: absolute;
+            color: var(--ornament-color);
+            opacity: 0.35;
+            animation: float 5s ease-in-out infinite;
+        }
+
+        .decorations span:nth-child(1) { top: 13%; left: 7%; font-size: 20px; }
+        .decorations span:nth-child(2) { top: 28%; right: 8%; font-size: 13px; animation-delay: 1s; }
+        .decorations span:nth-child(3) { top: 55%; left: 5%; font-size: 14px; animation-delay: 2s; }
+        .decorations span:nth-child(4) { top: 68%; right: 6%; font-size: 21px; animation-delay: 1.5s; }
+        .decorations span:nth-child(5) { bottom: 12%; left: 12%; font-size: 12px; animation-delay: 0.5s; }
+        .decorations span:nth-child(6) { bottom: 20%; right: 13%; font-size: 16px; animation-delay: 2.5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0); }
+            50% { transform: translateY(-7px) rotate(7deg); }
+        }
 
         .game-card {
-            background: #ffffff;
-            border: 1px solid #eee8e5;
-            border-radius: 8px;
+            background: var(--card-bg);
+            border: 1px solid var(--accent-border);
+            border-radius: 18px;
             padding: 24px;
             width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 24px;
+            box-shadow: 0 12px 35px rgba(60, 70, 80, 0.08);
         }
 
         .controls-row {
@@ -68,41 +213,43 @@
         }
 
         .level-badge {
-            background: #f4ece9;
-            color: #635052;
-            padding: 6px 12px;
-            border-radius: 4px;
+            background: var(--accent-badge);
+            color: var(--text-heading);
+            padding: 7px 13px;
+            border-radius: 100px;
             font-size: 12px;
-            font-weight: 600;
         }
 
         .btn {
-            padding: 8px 16px;
-            border: 1px solid #d1c4c0;
-            border-radius: 6px;
-            background: #ffffff;
-            color: #4a3e3d;
+            padding: 9px 17px;
+            border: 1px solid var(--accent-border);
+            border-radius: 100px;
+            background: var(--card-bg);
+            color: var(--text-heading);
+            font-family: Georgia, "Times New Roman", serif;
             font-size: 13px;
-            font-weight: 500;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s ease;
         }
 
-        .btn:hover { background: #faf7f5; }
+        .btn:hover {
+            background: var(--accent-soft);
+            transform: translateY(-1px);
+        }
 
         .bottles-container {
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 20px 16px;
+            gap: 24px 18px;
             width: 100%;
-            padding: 10px 0;
+            padding: 12px 0;
         }
 
         .bottle {
             width: 44px;
             height: 140px;
-            border: 3px solid #d1c4c0;
+            border: 3px solid var(--accent-border);
             border-top: none;
             border-radius: 0 0 16px 16px;
             display: flex;
@@ -121,58 +268,202 @@
             left: -4px;
             right: -4px;
             height: 6px;
-            border: 3px solid #d1c4c0;
+            border: 3px solid var(--accent-border);
             border-radius: 4px;
-            background: #ffffff;
+            background: var(--card-bg);
         }
 
         .bottle.selected {
             transform: translateY(-16px);
-            border-color: #a26778;
+            border-color: var(--ornament-color);
         }
 
         .bottle.selected::before {
-            border-color: #a26778;
+            border-color: var(--ornament-color);
         }
 
         .water-segment {
             width: 100%;
             height: 25%;
             transition: height 0.3s ease, background-color 0.3s ease;
-        }
-
-        .modal-overlay {
+        }        .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.3);
-            z-index: 200;
+            padding: 20px;
+            background: rgba(30, 25, 25, 0.3);
+            backdrop-filter: blur(5px);
+            z-index: 500;
             align-items: center;
             justify-content: center;
         }
 
         .modal-card {
-            background: #ffffff;
-            border-radius: 8px;
-            padding: 24px;
-            max-width: 320px;
-            width: 90%;
+            position: relative;
+            background: var(--card-bg);
+            border: 1px solid var(--accent-border);
+            border-radius: 18px;
+            padding: 32px 26px 26px;
+            max-width: 360px;
+            width: 100%;
             text-align: center;
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.16);
+            animation: victoryPop 0.35s ease;
+            overflow: hidden;
+        }
+
+        .modal-card::before,
+        .modal-card::after {
+            content: "✦";
+            position: absolute;
+            color: var(--ornament-color);
+            opacity: 0.5;
+            font-size: 20px;
+        }
+
+        .modal-card::before { top: 13px; left: 18px; }
+        .modal-card::after { top: 13px; right: 18px; }
+
+        .victory-decoration {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            color: var(--ornament-color);
+            margin-bottom: 13px;
+        }
+
+        .victory-decoration span { font-size: 15px; }
+
+        .victory-decoration i {
+            width: 30px;
+            height: 1px;
+            background: var(--ornament-color);
+            opacity: 0.5;
+        }
+
+        .victory-symbol {
+            width: 66px;
+            height: 66px;
+            margin: 2px auto 14px;
+            border-radius: 50%;
+            background: var(--accent-soft);
+            border: 1px solid var(--accent-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--ornament-color);
+            animation: victoryFloat 2s ease-in-out infinite;
+        }
+
+        .modal-card h2 {
+            color: var(--text-heading);
+            font-size: 25px;
+            font-weight: normal;
+            margin: 0 0 9px;
+        }
+
+        .modal-card p {
+            color: var(--text-main);
+            opacity: 0.82;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0 0 21px;
+        }
+
+        .reward-amount {
+            display: inline-block;
+            margin: -5px 0 20px;
+            padding: 7px 13px;
+            border-radius: 100px;
+            background: var(--accent-badge);
+            border: 1px solid var(--accent-border);
+            color: var(--text-heading);
+            font-size: 13px;
+        }
+
+        .modal-card.game-over .victory-symbol {
+            animation: none;
+        }
+
+        .confetti {
+            position: absolute;
+            pointer-events: none;
+            color: var(--ornament-color);
+            font-size: 14px;
+            animation: confettiFall 1.8s ease-out forwards;
+        }
+
+        .confetti:nth-child(1) { left: 18%; top: 5%; animation-delay: 0s; }
+        .confetti:nth-child(2) { left: 32%; top: 2%; animation-delay: 0.12s; }
+        .confetti:nth-child(3) { left: 50%; top: 4%; animation-delay: 0.2s; }
+        .confetti:nth-child(4) { right: 32%; top: 2%; animation-delay: 0.08s; }
+        .confetti:nth-child(5) { right: 17%; top: 6%; animation-delay: 0.18s; }
+
+        @keyframes victoryPop {
+            0% { transform: scale(0.88); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes victoryFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            15% { opacity: 0.8; }
+            100% { transform: translateY(115px) rotate(120deg); opacity: 0; }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                min-height: 66px;
+                padding: 12px 11px;
+                gap: 8px;
+            }
+
+            main {
+                padding: 20px 14px 30px;
+            }
+
+            .game-card {
+                padding: 20px 16px;
+            }
+
+            .modal-card {
+                max-width: 340px;
+                padding: 30px 21px 23px;
+            }
         }
     </style>
 </head>
 <body>
 
+    <div class="decorations">
+        <span>✦</span>
+        <span>✧</span>
+        <span>♡</span>
+        <span>✦</span>
+        <span>✧</span>
+        <span>♡</span>
+    </div>
+
     <header>
         <div class="header-left">
             <a onclick="goBack()" class="nav-link">← Back to Games</a>
         </div>
+
         <div class="header-right">
             <div class="coin-display"><span class="coin-count">0</span> Coins</div>
         </div>
     </header>
 
     <main>
+        <div class="ornament">
+            <span>✦</span><i></i><span>♡</span><i></i><span>✦</span>
+        </div>
+
         <h1>Water Sort</h1>
         <p class="subtitle">Sort identical colors into single bottles.</p>
 
@@ -184,18 +475,44 @@
 
             <div class="bottles-container" id="bottles-container"></div>
         </div>
+
+        <div class="ornament" style="margin-top: 30px; margin-bottom: 0;">
+            <span>✧</span><i></i><span>♡</span><i></i><span>✧</span>
+        </div>
     </main>
 
     <div id="reward-modal" class="modal-overlay">
         <div class="modal-card">
-            <h2 id="modal-title" style="font-size: 20px; margin: 0 0 10px;">Level Clear!</h2>
-            <p id="modal-desc" style="color: #8c7b7d; font-size: 14px; margin: 0 0 20px;">You organized all liquids and earned 25 Coins!</p>
+            <span class="confetti">✦</span>
+            <span class="confetti">✧</span>
+            <span class="confetti">♡</span>
+            <span class="confetti">✦</span>
+            <span class="confetti">✧</span>
+
+            <div class="victory-decoration">
+                <span>✦</span>
+                <i></i>
+                <span>♡</span>
+                <i></i>
+                <span>✦</span>
+            </div>
+
+            <div class="victory-symbol" id="victory-symbol">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+            </div>
+
+            <h2 id="modal-title">Level Clear!</h2>
+            <p id="modal-desc">You organized all liquids.</p>
+
+            <div class="reward-amount" id="reward-amount">+25 Coins</div>
+
             <button class="btn" onclick="nextLevel()" style="width: 100%;">Next Level</button>
         </div>
     </div>
 
-    <script src="../script.js"></script>
-    <script>
+    <script src="../script.js"></script>    <script>
         const AudioFX = {
             ctx: null,
             init() {
@@ -244,12 +561,12 @@
         };
 
         const COLOR_PALETTE = [
-            '#b85b56', // Soft Red
-            '#5b8868', // Soft Green
-            '#5a7d9a', // Soft Blue
-            '#d4a359', // Gold/Yellow
-            '#8d6380', // Purple
-            '#c78351'  // Orange
+            '#b85b56',
+            '#5b8868',
+            '#5a7d9a',
+            '#d4a359',
+            '#8d6380',
+            '#c78351'
         ];
 
         let currentLevel = 1;
@@ -264,30 +581,57 @@
             }
         }
 
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem('arcade_theme');
+            if (savedTheme) {
+                document.body.setAttribute('data-theme', savedTheme);
+            }
+        }
+
+        function showVictoryModal() {
+            const modal = document.getElementById('reward-modal');
+            const card = modal.querySelector('.modal-card');
+            const symbol = document.getElementById('victory-symbol');
+            const amount = document.getElementById('reward-amount');
+
+            card.classList.remove('game-over');
+
+            symbol.innerHTML = `
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+            `;
+
+            document.getElementById('modal-title').innerText = 'Level Clear!';
+            document.getElementById('modal-desc').innerText = 'You organized all liquids and earned 25 Coins!';
+            amount.style.display = 'inline-block';
+            amount.innerText = '+25 Coins';
+            modal.style.display = 'flex';
+        }
+
         function initLevel() {
             selectedBottleIdx = null;
             document.getElementById('level-display').innerText = `LEVEL ${currentLevel}`;
-            
-            // Generate color sets based on level
+
             const numColors = Math.min(3 + Math.floor(currentLevel / 2), 6);
             let pool = [];
-            
+
             for (let i = 0; i < numColors; i++) {
                 for (let j = 0; j < 4; j++) {
                     pool.push(COLOR_PALETTE[i]);
                 }
             }
 
-            // Shuffle color pool
             pool.sort(() => Math.random() - 0.5);
 
-            // Create bottles (colors + 2 empty bottles)
             bottles = [];
+
             for (let i = 0; i < numColors; i++) {
                 bottles.push(pool.slice(i * 4, (i + 1) * 4));
             }
-            bottles.push([]); // Empty 1
-            bottles.push([]); // Empty 2
+
+            bottles.push([]);
+            bottles.push([]);
 
             renderBottles();
         }
@@ -314,19 +658,17 @@
 
         function handleBottleClick(idx) {
             if (selectedBottleIdx === null) {
-                // Select bottle if not empty
                 if (bottles[idx].length > 0) {
                     selectedBottleIdx = idx;
                     AudioFX.play('select');
                 }
             } else if (selectedBottleIdx === idx) {
-                // Deselect
                 selectedBottleIdx = null;
                 AudioFX.play('select');
             } else {
-                // Attempt Pour
                 pourWater(selectedBottleIdx, idx);
             }
+
             renderBottles();
         }
 
@@ -335,39 +677,47 @@
             const toBottle = bottles[toIdx];
 
             if (fromBottle.length === 0) return;
+
             if (toBottle.length >= 4) {
-                selectedBottleIdx = idx; // Switch selection if target is full
+                selectedBottleIdx = toIdx;
+                AudioFX.play('select');
                 return;
             }
 
             const topColor = fromBottle[fromBottle.length - 1];
 
-            // Valid if destination is empty or matching color
             if (toBottle.length === 0 || toBottle[toBottle.length - 1] === topColor) {
-                while (fromBottle.length > 0 && 
-                       fromBottle[fromBottle.length - 1] === topColor && 
-                       toBottle.length < 4) {
+                while (
+                    fromBottle.length > 0 &&
+                    fromBottle[fromBottle.length - 1] === topColor &&
+                    toBottle.length < 4
+                ) {
                     toBottle.push(fromBottle.pop());
                 }
+
                 AudioFX.play('pour');
                 selectedBottleIdx = null;
                 checkWinCondition();
             } else {
-                // Switch selection to new bottle
                 selectedBottleIdx = toIdx;
                 AudioFX.play('select');
             }
         }
 
         function checkWinCondition() {
-            const isSolved = bottles.every(b => b.length === 0 || (b.length === 4 && b.every(color => color === b[0])));
+            const isSolved = bottles.every(
+                b => b.length === 0 ||
+                (b.length === 4 && b.every(color => color === b[0]))
+            );
 
             if (isSolved) {
                 AudioFX.play('win');
-                if (typeof addCoins === 'function') addCoins(25);
-                setTimeout(() => {
-                    document.getElementById('reward-modal').style.display = 'flex';
-                }, 300);
+
+                if (typeof addCoins === 'function') {
+                    addCoins(25);
+                }
+
+                setTimeout(showVictoryModal, 300);
             }
         }
 
@@ -381,9 +731,15 @@
             initLevel();
         }
 
-        // Start initial game
-        initLevel();
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSavedTheme();
+
+            if (typeof updateCoinDisplays === 'function') {
+                updateCoinDisplays();
+            }
+
+            initLevel();
+        });
     </script>
 </body>
-              </html>
-              
+</html>
