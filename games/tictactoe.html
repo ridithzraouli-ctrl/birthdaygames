@@ -1,4 +1,3 @@
-<!-- PART 1/3 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +10,6 @@ body{margin:0;min-height:100vh;background:#faf7f5;color:#4a3e3d;font-family:Geor
 header{display:flex;justify-content:space-between;align-items:center;padding:14px 24px;background:#fff;border-bottom:1px solid #eee8e5;position:relative;z-index:100}
 .header-left,.header-right{display:flex;align-items:center;gap:12px}
 .nav-link{color:#7d6b6d;text-decoration:none;font-size:14px;font-weight:500;cursor:pointer}
-.nav-link:hover{color:#4a3e3d}
 .coin-display{background:#f4ece9;border:1px solid #e2d7d3;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:600;color:#635052}
 main{padding:20px;display:flex;flex-direction:column;align-items:center;max-width:500px;margin:0 auto}
 h1{color:#4a3e3d;font-weight:500;font-size:24px;margin:0 0 4px}
@@ -19,10 +17,10 @@ p.subtitle{color:#8c7b7d;margin:0 0 20px;font-size:14px;text-align:center}
 .game-card{background:#fff;border:1px solid #eee8e5;border-radius:8px;padding:24px;width:100%;display:flex;flex-direction:column;align-items:center;gap:20px}
 .controls-row{width:100%;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
 .turn-badge{background:#f4ece9;color:#635052;padding:6px 12px;border-radius:4px;font-size:12px;font-weight:600}
-.btn{padding:8px 12px;border:1px solid #d1c4c0;border-radius:6px;background:#fff;color:#4a3e3d;font-size:13px;font-weight:500;cursor:pointer;transition:background .2s}
+.btn{padding:8px 12px;border:1px solid #d1c4c0;border-radius:6px;background:#fff;color:#4a3e3d;font-size:13px;font-weight:500;cursor:pointer}
 .btn:hover{background:#faf7f5}
 .board{display:grid;grid-template-columns:repeat(3,100px);grid-template-rows:repeat(3,100px);gap:8px;width:316px;height:316px}
-.tile{width:100px;height:100px;border:2px solid #e2d7d3;border-radius:6px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:700;cursor:pointer;transition:background-color .2s ease,border-color .2s ease}
+.tile{width:100px;height:100px;border:2px solid #e2d7d3;border-radius:6px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:700;cursor:pointer}
 .tile:hover{border-color:#8c7b7d}
 .tile.x-mark{color:#b85b56}
 .tile.o-mark{color:#5b8868}
@@ -30,7 +28,6 @@ p.subtitle{color:#8c7b7d;margin:0 0 20px;font-size:14px;text-align:center}
 .score-item{display:flex;flex-direction:column;gap:2px}
 .score-label{font-size:12px;color:#8c7b7d}
 .score-val{font-size:15px;color:#4a3e3d;font-weight:600}
-
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(30,25,25,.3);backdrop-filter:blur(5px);z-index:500;align-items:center;justify-content:center}
 .modal-card{position:relative;background:#fff;border:1px solid #d9b7c2;border-radius:18px;padding:32px 26px 26px;max-width:360px;width:90%;text-align:center;box-shadow:0 18px 50px rgba(80,50,60,.18);animation:victoryPop .35s ease;overflow:hidden}
 @keyframes victoryPop{0%{transform:scale(.82);opacity:0}100%{transform:scale(1);opacity:1}}
@@ -42,8 +39,8 @@ p.subtitle{color:#8c7b7d;margin:0 0 20px;font-size:14px;text-align:center}
 .victory-decoration span:nth-child(2),.victory-decoration span:nth-child(4){width:42px;height:1px;background:#d9b7c2}
 .victory-symbol{width:66px;height:66px;margin:0 auto 14px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#f8edf1;border:1px solid #e2c6d0;animation:victoryFloat 2s ease-in-out infinite}
 @keyframes victoryFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-.victory-symbol svg{width:38px;height:38px}
-.reward-amount{display:inline-block;margin:8px 0 14px;padding:6px 14px;border-radius:20px;background:#f8edf1;border:1px solid #e2c6d0;color:#a55f79;font-size:14px;font-weight:600}
+.victory-symbol svg{width:40px;height:40px}
+.reward-amount{display:none;margin:8px 0 14px;padding:6px 14px;border-radius:20px;background:#f8edf1;border:1px solid #e2c6d0;color:#a55f79;font-size:14px;font-weight:600}
 .confetti{position:absolute;top:-10px;font-size:16px;color:#bd8297;animation:confettiFall 2.8s linear infinite}
 .confetti:nth-child(1){left:12%;animation-delay:.1s}
 .confetti:nth-child(2){left:30%;animation-delay:.8s}
@@ -51,7 +48,6 @@ p.subtitle{color:#8c7b7d;margin:0 0 20px;font-size:14px;text-align:center}
 .confetti:nth-child(4){left:73%;animation-delay:1.2s}
 .confetti:nth-child(5){left:88%;animation-delay:.6s}
 @keyframes confettiFall{0%{transform:translateY(-10px) rotate(0);opacity:0}15%{opacity:1}100%{transform:translateY(310px) rotate(180deg);opacity:0}}
-.broken-heart svg{width:40px;height:40px}
 </style>
 </head>
 <body>
@@ -67,7 +63,6 @@ p.subtitle{color:#8c7b7d;margin:0 0 20px;font-size:14px;text-align:center}
 <main>
 <h1>Tic-Tac-Toe</h1>
 <p class="subtitle">Get 3 in a row to win.</p>
-
 <div class="game-card">
 <div class="controls-row">
 <span class="turn-badge" id="status-text">X'S TURN</span>
@@ -75,7 +70,6 @@ p.subtitle{color:#8c7b7d;margin:0 0 20px;font-size:14px;text-align:center}
 <button class="btn" onclick="resetGame()">Reset Board</button>
 <button class="btn" onclick="resetStats()">Reset Stats</button>
 </div>
-
 <div class="board" id="board">
 <div class="tile" onclick="handleCellClick(0)"></div>
 <div class="tile" onclick="handleCellClick(1)"></div>
@@ -87,7 +81,6 @@ p.subtitle{color:#8c7b7d;margin:0 0 20px;font-size:14px;text-align:center}
 <div class="tile" onclick="handleCellClick(7)"></div>
 <div class="tile" onclick="handleCellClick(8)"></div>
 </div>
-
 <div class="score-bar">
 <div class="score-item"><span class="score-label">X Wins</span><span class="score-val" id="x-score">0</span></div>
 <div class="score-item"><span class="score-label">Draws</span><span class="score-val" id="draw-score">0</span></div>
@@ -115,30 +108,21 @@ p.subtitle{color:#8c7b7d;margin:0 0 20px;font-size:14px;text-align:center}
 <div class="confetti">♡</div>
 <div class="confetti">✧</div>
 <div class="confetti">✦</div>
-
 <div class="ornament">✧ ♡ ✧</div>
-<div class="victory-decoration">
-<span>✧</span><span></span><span>♡</span><span></span><span>✧</span>
-</div>
-
-<div class="victory-symbol" id="victory-symbol">
-<svg viewBox="0 0 64 64" fill="none">
-<path d="M32 51S10 38 10 22c0-7 5-12 12-12 5 0 8 3 10 7 2-4 5-7 10-7 7 0 12 5 12 12 0 16-22 29-22 29Z" fill="#c77d98"/>
-</svg>
-</div>
-
-<h2 id="modal-title" style="font-size:20px;margin:0 0 10px;color:#4a3e3d">Victory!</h2>
+<div class="victory-decoration"><span>✧</span><span></span><span>♡</span><span></span><span>✧</span></div>
+<div class="victory-symbol" id="victory-symbol"></div>
+<h2 id="modal-title" style="font-size:20px;margin:0 0 10px;color:#4a3e3d"></h2>
 <p id="modal-desc" style="color:#8c7b7d;font-size:14px;margin:0 0 8px"></p>
 <div id="reward-amount" class="reward-amount"></div>
 <button class="btn" onclick="closeModalAndReset()" style="width:100%;margin-top:6px">Play Again</button>
 </div>
-</div><!-- PART 2/3 -->
-<script src="../script.js"></script>
+</div><script src="../script.js"></script>
 <script>
 const AudioFX={
 ctx:null,
 init(){
 if(!this.ctx)this.ctx=new(window.AudioContext||window.webkitAudioContext)();
+if(this.ctx.state==="suspended")this.ctx.resume();
 },
 play(type){
 try{
@@ -148,16 +132,15 @@ const osc=this.ctx.createOscillator();
 const gain=this.ctx.createGain();
 osc.connect(gain);
 gain.connect(this.ctx.destination);
-
-if(type==='key'){
+if(type==="key"){
+osc.type="sine";
 osc.frequency.value=400;
-osc.type='sine';
 gain.gain.setValueAtTime(.05,now);
 gain.gain.exponentialRampToValueAtTime(.001,now+.08);
 osc.start(now);
 osc.stop(now+.08);
-}else if(type==='win'){
-osc.type='sine';
+}else if(type==="win"){
+osc.type="sine";
 osc.frequency.setValueAtTime(523.25,now);
 osc.frequency.setValueAtTime(659.25,now+.12);
 osc.frequency.setValueAtTime(783.99,now+.24);
@@ -166,7 +149,7 @@ gain.gain.exponentialRampToValueAtTime(.001,now+.5);
 osc.start(now);
 osc.stop(now+.5);
 }else{
-osc.type='triangle';
+osc.type="triangle";
 osc.frequency.setValueAtTime(260,now);
 osc.frequency.exponentialRampToValueAtTime(110,now+.35);
 gain.gain.setValueAtTime(.06,now);
@@ -191,10 +174,6 @@ const winConditions=[
 [0,3,6],[1,4,7],[2,5,8],
 [0,4,8],[2,4,6]
 ];
-
-function goBack(){
-window.location.href="../index.html";
-}
 
 function openModeModal(){
 document.getElementById("mode-modal").style.display="flex";
@@ -229,9 +208,7 @@ document.getElementById("draw-score").textContent="0";
 
 function handleCellClick(index){
 if(board[index]!==""||!gameActive)return;
-
 makeMove(index,currentPlayer);
-
 if(gameActive&&gameMode!=="pvp"&&currentPlayer==="O"){
 setTimeout(aiMove,250);
 }
@@ -251,13 +228,13 @@ endGame(false,player);
 endGame(true,null);
 }else{
 currentPlayer=currentPlayer==="X"?"O":"X";
-document.getElementById("status-text").textContent=`${currentPlayer}'S TURN`;
+document.getElementById("status-text").textContent=currentPlayer+"'S TURN";
 }
 }
 
 function getRandomMove(){
 const available=board.map((v,i)=>v===""?i:null).filter(v=>v!==null);
-return available[Math.floor(Math.random()*available.length)];
+return available.length?available[Math.floor(Math.random()*available.length)]:null;
 }
 
 function aiMove(){
@@ -273,11 +250,21 @@ move=Math.random()<.5?minimax(board,"O").index:getRandomMove();
 move=Math.random()<.85?minimax(board,"O").index:getRandomMove();
 }
 
-if(move!==undefined&&move!==null)makeMove(move,"O");
+if(move!==undefined&&move!==null){
+makeMove(move,"O");
+}
 }
 
 function checkWin(player){
 return winConditions.some(condition=>condition.every(index=>board[index]===player));
+}
+
+function heartSVG(){
+return '<svg viewBox="0 0 64 64" fill="none"><path d="M32 51S10 38 10 22c0-7 5-12 12-12 5 0 8 3 10 7 2-4 5-7 10-7 7 0 12 5 12 12 0 16-22 29-22 29Z" fill="#c77d98"/></svg>';
+}
+
+function brokenHeartSVG(){
+return '<svg viewBox="0 0 64 64" fill="none"><path d="M31 52S9 39 9 23c0-7 5-12 12-12 5 0 9 3 11 8l-1 13 7-7 3 4-8 8-2 13Z" fill="#c77d98"/><path d="M33 19c2-5 6-8 11-8 7 0 12 5 12 12 0 7-5 13-10 18l-8 7 2-13-7-7 8-8-8-8Z" fill="#c77d98"/><path d="M31 19 25 26 32 32 25 39 32 46" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 }
 
 function endGame(isDraw,winner){
@@ -296,47 +283,31 @@ document.getElementById("draw-score").textContent=drawCount;
 AudioFX.play("lose");
 title.textContent="It's a Draw!";
 desc.textContent="Neither of you won this time.";
-symbol.classList.remove("broken-heart");
-symbol.innerHTML=`
-<svg viewBox="0 0 64 64" fill="none">
-<path d="M32 51S10 38 10 22c0-7 5-12 12-12 5 0 8 3 10 7 2-4 5-7 10-7 7 0 12 5 12 12 0 16-22 29-22 29Z" fill="#c77d98"/>
-</svg>`;
+symbol.innerHTML=heartSVG();
 }else if(winner==="X"){
 xWins++;
 document.getElementById("x-score").textContent=xWins;
 AudioFX.play("win");
-
 title.textContent="Victory!";
 desc.textContent="You got three in a row!";
-symbol.classList.remove("broken-heart");
-symbol.innerHTML=`
-<svg viewBox="0 0 64 64" fill="none">
-<path d="M32 51S10 38 10 22c0-7 5-12 12-12 5 0 8 3 10 7 2-4 5-7 10-7 7 0 12 5 12 12 0 16-22 29-22 29Z" fill="#c77d98"/>
-</svg>`;
+symbol.innerHTML=heartSVG();
 
 if(gameMode!=="pvp"){
-let coins=gameMode==="easy"?10:gameMode==="medium"?18:25;
+const coins=gameMode==="easy"?10:gameMode==="medium"?18:25;
 addCoins(coins);
-reward.textContent=`+${coins} ♡`;
+reward.textContent="+"+coins+" ♡";
 reward.style.display="inline-block";
 }
 }else{
 oWins++;
 document.getElementById("o-score").textContent=oWins;
 AudioFX.play("lose");
-
 title.textContent="Game Over";
 desc.textContent="This one slipped away...";
-symbol.classList.add("broken-heart");
-symbol.innerHTML=`
-<svg viewBox="0 0 64 64" fill="none">
-<path d="M31 52S9 39 9 23c0-7 5-12 12-12 5 0 9 3 11 8l-1 13 7-7 3 4-8 8-2 13Z" fill="#c77d98"/>
-<path d="M33 19c2-5 6-8 11-8 7 0 12 5 12 12 0 7-5 13-10 18l-8 7 2-13-7-7 8-8-8-8Z" fill="#c77d98"/>
-<path d="M31 19 25 26 32 32 25 39 32 46" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>`;
+symbol.innerHTML=brokenHeartSVG();
 }
 
-setTimeout(()=>{
+setTimeout(function(){
 document.getElementById("reward-modal").style.display="flex";
 },300);
 }
@@ -350,15 +321,13 @@ function resetGame(){
 board=["","","","","","","","",""];
 currentPlayer="X";
 gameActive=true;
-
 document.getElementById("status-text").textContent="X'S TURN";
 
-document.querySelectorAll(".tile").forEach(tile=>{
+document.querySelectorAll(".tile").forEach(function(tile){
 tile.textContent="";
 tile.classList.remove("x-mark","o-mark");
 });
-}
-
+}<script>
 function minimax(newBoard,player){
 const available=newBoard.map((v,i)=>v===""?i:null).filter(v=>v!==null);
 
@@ -371,20 +340,12 @@ const moves=[];
 for(const index of available){
 const move={index};
 newBoard[index]=player;
-
-if(player==="O"){
-const result=minimax(newBoard,"X");
-move.score=result.score;
-}else{
-const result=minimax(newBoard,"O");
-move.score=result.score;
-}
-
+move.score=minimax(newBoard,player==="O"?"X":"O").score;
 newBoard[index]="";
 moves.push(move);
 }
 
-let bestMove;
+let bestMove=0;
 
 if(player==="O"){
 let bestScore=-Infinity;
@@ -405,8 +366,8 @@ bestMove=i;
 }
 
 return moves[bestMove];
-}<!-- PART 3/3 -->
-<script>
+}
+
 function checkWinCond(boardState,player){
 return winConditions.some(condition=>
 condition.every(index=>boardState[index]===player)
