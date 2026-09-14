@@ -432,7 +432,7 @@ main {
     position:fixed;
     inset:0;
     background:rgba(30,25,25,.25);
-    backdrop-filter:blur(3px);
+    backdrop-filter:blur(5px);
     z-index:200;
     align-items:center;
     justify-content:center;
@@ -442,10 +442,10 @@ main {
 .diff-card,
 .modal-card {
     background:var(--card-bg);
-    border:1px solid var(--bg-grad-2);
-    border-radius:14px;
+    border:1px solid var(--accent-border);
+    border-radius:18px;
     padding:16px;
-    box-shadow:0 12px 35px rgba(0,0,0,.12);
+    box-shadow:0 18px 50px rgba(0,0,0,.16);
 }
 
 .diff-card {
@@ -483,19 +483,66 @@ main {
 }
 
 .modal-card {
-    max-width:300px;
-    width:90%;
+    position:relative;
+    max-width:360px;
+    width:100%;
     text-align:center;
+    padding:32px 26px 26px;
+    animation:victoryPop .35s ease;
+    overflow:hidden;
 }
 
-.modal-symbol {
-    color:var(--game-accent);
-    width:40px;
-    height:40px;
-    margin:0 auto 8px;
+.modal-card::before,
+.modal-card::after {
+    content:"✦";
+    position:absolute;
+    color:var(--ornament-color);
+    opacity:.5;
+    font-size:20px;
+}
+
+.modal-card::before {
+    top:13px;
+    left:18px;
+}
+
+.modal-card::after {
+    top:13px;
+    right:18px;
+}
+
+.victory-decoration {
     display:flex;
     align-items:center;
     justify-content:center;
+    gap:9px;
+    color:var(--ornament-color);
+    margin-bottom:13px;
+}
+
+.victory-decoration span {
+    font-size:15px;
+}
+
+.victory-decoration i {
+    width:30px;
+    height:1px;
+    background:var(--ornament-color);
+    opacity:.5;
+}
+
+.modal-symbol {
+    width:66px;
+    height:66px;
+    margin:2px auto 14px;
+    border-radius:50%;
+    background:var(--accent-soft);
+    border:1px solid var(--accent-border);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--ornament-color);
+    animation:victoryFloat 2s ease-in-out infinite;
 }
 
 .modal-symbol svg {
@@ -506,20 +553,113 @@ main {
 
 .modal-card h2 {
     color:var(--text-heading);
-    font-size:21px;
+    font-size:25px;
     font-weight:normal;
-    margin:0 0 10px;
+    margin:0 0 9px;
 }
 
 .modal-card p {
     color:var(--text-main);
+    opacity:.82;
     font-size:14px;
-    line-height:1.5;
-    margin:0 0 20px;
+    line-height:1.6;
+    margin:0 0 21px;
+}
+
+.reward-amount {
+    display:inline-block;
+    margin:-5px 0 20px;
+    padding:7px 13px;
+    border-radius:100px;
+    background:var(--accent-badge);
+    border:1px solid var(--accent-border);
+    color:var(--text-heading);
+    font-size:13px;
+    font-weight:bold;
+}
+
+.modal-card.game-over .modal-symbol {
+    animation:none;
+}
+
+.confetti {
+    position:absolute;
+    pointer-events:none;
+    color:var(--ornament-color);
+    font-size:14px;
+    animation:confettiFall 1.8s ease-out forwards;
+}
+
+.confetti:nth-child(1) {
+    left:18%;
+    top:5%;
+    animation-delay:0s;
+}
+
+.confetti:nth-child(2) {
+    left:32%;
+    top:2%;
+    animation-delay:.12s;
+}
+
+.confetti:nth-child(3) {
+    left:50%;
+    top:4%;
+    animation-delay:.2s;
+}
+
+.confetti:nth-child(4) {
+    right:32%;
+    top:2%;
+    animation-delay:.08s;
+}
+
+.confetti:nth-child(5) {
+    right:17%;
+    top:6%;
+    animation-delay:.18s;
+}
+
+@keyframes victoryPop {
+    0% {
+        transform:scale(.88);
+        opacity:0;
+    }
+
+    100% {
+        transform:scale(1);
+        opacity:1;
+    }
+}
+
+@keyframes victoryFloat {
+    0%,100% {
+        transform:translateY(0);
+    }
+
+    50% {
+        transform:translateY(-5px);
+    }
+}
+
+@keyframes confettiFall {
+    0% {
+        transform:translateY(0) rotate(0deg);
+        opacity:0;
+    }
+
+    15% {
+        opacity:.8;
+    }
+
+    100% {
+        transform:translateY(115px) rotate(120deg);
+        opacity:0;
+    }
 }
 
 .btn {
-    padding:10px 20px;
+    padding:11px 20px;
     border:1px solid var(--accent-border);
     border-radius:100px;
     background:var(--card-bg);
@@ -527,6 +667,12 @@ main {
     font-family:Georgia,"Times New Roman",serif;
     font-size:13px;
     cursor:pointer;
+    transition:.2s ease;
+}
+
+.btn:hover {
+    background:var(--accent-soft);
+    transform:translateY(-1px);
 }
 
 .pixel-flag {
@@ -567,6 +713,11 @@ main {
     .game-window {
         padding:8px;
         max-width:98vw;
+    }
+
+    .modal-card {
+        max-width:340px;
+        padding:30px 21px 23px;
     }
 }
 
@@ -736,17 +887,31 @@ main {
 
     </div>
 
-</div>
+    </div><div id="game-modal" class="modal-overlay">
 
-<div id="game-modal" class="modal-overlay">
+    <div class="modal-card" id="modal-card">
 
-    <div class="modal-card">
+        <span class="confetti">✦</span>
+        <span class="confetti">✧</span>
+        <span class="confetti">♡</span>
+        <span class="confetti">✦</span>
+        <span class="confetti">✧</span>
+
+        <div class="victory-decoration">
+            <span>✧</span>
+            <i></i>
+            <span>♡</span>
+            <i></i>
+            <span>✧</span>
+        </div>
 
         <div id="modal-symbol" class="modal-symbol"></div>
 
         <h2 id="modal-title">Game Over</h2>
 
         <p id="modal-msg">You hit a mine!</p>
+
+        <div class="reward-amount" id="reward-amount">+20 Coins</div>
 
         <button class="btn" onclick="closeModalAndReset()" style="width:100%;">
             Play Again
@@ -869,7 +1034,10 @@ function createDigSVG() {
         </svg>
     `;
 
-}/* PIXEL MINE */
+}
+
+
+/* PIXEL MINE */
 
 function createMineSVG() {
 
@@ -1000,7 +1168,6 @@ function toggleFlagMode() {
     }
 
 }
-
 
 function startTimer() {
 
@@ -1470,10 +1637,7 @@ function handleCellClick(r,c) {
 
     }
 
-}
-
-
-function handleFlag(r,c) {
+}function handleFlag(r,c) {
 
     if (gameOver) {
         return;
@@ -1602,7 +1766,10 @@ function revealCell(r,c) {
 
     }
 
-    }function endGame(won) {
+}
+
+
+function endGame(won) {
 
     gameOver = true;
 
@@ -1658,6 +1825,11 @@ function revealCell(r,c) {
             "game-modal"
         );
 
+    const card =
+        document.getElementById(
+            "modal-card"
+        );
+
     const title =
         document.getElementById(
             "modal-title"
@@ -1671,6 +1843,11 @@ function revealCell(r,c) {
     const symbol =
         document.getElementById(
             "modal-symbol"
+        );
+
+    const amount =
+        document.getElementById(
+            "reward-amount"
         );
 
 
@@ -1703,6 +1880,10 @@ function revealCell(r,c) {
         }
 
 
+        card.classList.remove(
+            "game-over"
+        );
+
         title.innerText =
             "Victory!";
 
@@ -1710,11 +1891,19 @@ function revealCell(r,c) {
         msg.innerText =
             `Cleared in ${seconds}s! Earned ${config.reward} Coins!`;
 
+
         symbol.innerHTML = `
             <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
             </svg>
         `;
+
+
+        amount.style.display =
+            "inline-block";
+
+        amount.innerText =
+            `+${config.reward} Coins`;
 
 
         if (
@@ -1731,12 +1920,17 @@ function revealCell(r,c) {
 
     } else {
 
+        card.classList.add(
+            "game-over"
+        );
+
         title.innerText =
             "Boom!";
 
 
         msg.innerText =
             "You stepped on a mine. Try again!";
+
 
         symbol.innerHTML = `
             <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
@@ -1745,6 +1939,10 @@ function revealCell(r,c) {
                 <path d="M16.7 6.5c1.5-1.9 3.8-3 6.2-3C25.7 3.5 29 7 29 11.2c0 5.1-4.6 9.2-11.2 15.2L16 28v-6l3-3-4-4 3-3V6.5z"/>
             </svg>
         `;
+
+
+        amount.style.display =
+            "none";
 
     }
 
