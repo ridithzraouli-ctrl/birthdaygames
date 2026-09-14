@@ -6,12 +6,13 @@
     <title>Tic-Tac-Toe</title>
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
         body {
             margin: 0;
             min-height: 100vh;
             background: #faf7f5;
             color: #4a3e3d;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: Georgia, "Times New Roman", serif;
             user-select: none;
         }
 
@@ -32,12 +33,28 @@
             gap: 12px;
         }
 
-        .nav-link { color: #7d6b6d; text-decoration: none; font-size: 14px; font-weight: 500; cursor: pointer; }
+        .nav-link {
+            color: #7d6b6d;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
         .nav-link:hover { color: #4a3e3d; }
-        .coin-display { background: #f4ece9; border: 1px solid #e2d7d3; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; color: #635052; }
+
+        .coin-display {
+            background: #f4ece9;
+            border: 1px solid #e2d7d3;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #635052;
+        }
 
         main {
-            padding: 20px;
+            padding: 28px 20px 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -45,8 +62,38 @@
             margin: 0 auto;
         }
 
-        h1 { color: #4a3e3d; font-weight: 500; font-size: 24px; margin: 0 0 4px; }
-        p.subtitle { color: #8c7b7d; margin: 0 0 20px; font-size: 14px; text-align: center; }
+        .ornament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            height: 22px;
+            margin-bottom: 15px;
+            color: #a9898f;
+        }
+
+        .ornament span { font-size: 16px; }
+
+        .ornament i {
+            width: 34px;
+            height: 1px;
+            background: #a9898f;
+            opacity: .45;
+        }
+
+        h1 {
+            color: #4a3e3d;
+            font-weight: normal;
+            font-size: 28px;
+            margin: 0 0 7px;
+        }
+
+        p.subtitle {
+            color: #8c7b7d;
+            margin: 0 0 24px;
+            font-size: 14px;
+            text-align: center;
+        }
 
         .game-card {
             background: #ffffff;
@@ -84,8 +131,9 @@
             border-radius: 6px;
             background: #ffffff;
             color: #4a3e3d;
+            font-family: Georgia, "Times New Roman", serif;
             font-size: 13px;
-            font-weight: 500;
+            font-weight: normal;
             cursor: pointer;
             transition: background 0.2s;
         }
@@ -116,9 +164,7 @@
             transition: background-color 0.2s ease, border-color 0.2s ease;
         }
 
-        .tile:hover {
-            border-color: #8c7b7d;
-        }
+        .tile:hover { border-color: #8c7b7d; }
 
         .tile.x-mark { color: #b85b56; }
         .tile.o-mark { color: #5b8868; }
@@ -139,50 +185,276 @@
             gap: 2px;
         }
 
-        .score-label { font-size: 12px; color: #8c7b7d; }
-        .score-val { font-size: 15px; color: #4a3e3d; font-weight: 600; }
+        .score-label {
+            font-size: 12px;
+            color: #8c7b7d;
+        }
+
+        .score-val {
+            font-size: 15px;
+            color: #4a3e3d;
+            font-weight: 600;
+        }
 
         .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.3);
-            z-index: 200;
+            padding: 20px;
+            background: rgba(30,25,25,.3);
+            backdrop-filter: blur(5px);
+            z-index: 500;
             align-items: center;
             justify-content: center;
         }
 
         .modal-card {
+            position: relative;
             background: #ffffff;
-            border-radius: 8px;
-            padding: 24px;
-            max-width: 320px;
-            width: 90%;
+            border: 1px solid #bd8297;
+            border-radius: 18px;
+            padding: 32px 26px 26px;
+            max-width: 360px;
+            width: 100%;
             text-align: center;
+            box-shadow: 0 18px 50px rgba(0,0,0,.16);
+            animation: victoryPop .35s ease;
+            overflow: hidden;
+        }
+
+        .modal-card::before,
+        .modal-card::after {
+            content: "✦";
+            position: absolute;
+            color: #b87992;
+            opacity: .5;
+            font-size: 20px;
+        }
+
+        .modal-card::before {
+            top: 10px;
+            left: 14px;
+        }
+
+        .modal-card::after {
+            top: 10px;
+            right: 14px;
+        }
+
+        .victory-decoration {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            margin: 0 0 14px;
+            color: #b87992;
+        }
+
+        .victory-decoration span { font-size: 14px; }
+
+        .victory-decoration i {
+            width: 34px;
+            height: 1px;
+            background: #b87992;
+            opacity: .45;
+        }
+
+        .victory-symbol {
+            width: 66px;
+            height: 66px;
+            margin: 2px auto 14px;
+            border-radius: 50%;
+            background: #f9e9f0;
+            border: 1px solid #bd8297;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #b87992;
+            animation: victoryFloat 2s ease-in-out infinite;
+        }
+
+        .victory-symbol svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .modal-card h2 {
+            color: #7a4659;
+            font-size: 25px;
+            font-weight: normal;
+            margin: 0 0 9px;
+        }
+
+        .modal-card p {
+            color: #603f4c;
+            opacity: .82;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0 0 21px;
+        }
+
+        .reward-amount {
+            display: inline-block;
+            margin: -5px 0 20px;
+            padding: 7px 13px;
+            border-radius: 100px;
+            background: #f8dfe8;
+            border: 1px solid #bd8297;
+            color: #7a4659;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .confetti {
+            position: absolute;
+            color: #b87992;
+            font-size: 14px;
+            animation: confettiFall 1.8s ease-out forwards;
+        }
+
+        .confetti:nth-child(1) {
+            top: 18px;
+            left: 23%;
+        }
+
+        .confetti:nth-child(2) {
+            top: 34px;
+            left: 12%;
+            animation-delay: .12s;
+        }
+
+        .confetti:nth-child(3) {
+            top: 24px;
+            right: 22%;
+            animation-delay: .18s;
+        }
+
+        .confetti:nth-child(4) {
+            top: 45px;
+            right: 10%;
+            animation-delay: .08s;
+        }
+
+        .confetti:nth-child(5) {
+            top: 55px;
+            left: 30%;
+            animation-delay: .22s;
+        }
+
+        @keyframes victoryPop {
+            from {
+                transform: scale(.88);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes victoryFloat {
+            0%,100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(0) rotate(0);
+                opacity: 0;
+            }
+            15% {
+                opacity: .8;
+            }
+            100% {
+                transform: translateY(115px) rotate(120deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 12px 11px;
+            }
+
+            main {
+                padding: 24px 12px 35px;
+            }
+
+            .game-card {
+                padding: 18px 12px;
+            }
+
+            .board {
+                grid-template-columns: repeat(3, 82px);
+                grid-template-rows: repeat(3, 82px);
+                width: 260px;
+                height: 260px;
+                gap: 7px;
+            }
+
+            .tile {
+                width: 82px;
+                height: 82px;
+                font-size: 34px;
+            }
+
+            .modal-card {
+                max-width: 340px;
+                padding: 30px 21px 23px;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <header>
         <div class="header-left">
             <a onclick="goBack()" class="nav-link">← Back to Games</a>
         </div>
+
         <div class="header-right">
-            <div class="coin-display"><span class="coin-count">0</span> Coins</div>
+            <div class="coin-display">
+                <span class="coin-count">0</span> Coins
+            </div>
         </div>
     </header>
 
     <main>
+
+        <div class="ornament">
+            <span>✦</span>
+            <i></i>
+            <span>♡</span>
+            <i></i>
+            <span>✦</span>
+        </div>
+
         <h1>Tic-Tac-Toe</h1>
-        <p class="subtitle">Get 3 in a row to win.</p>
+
+        <p class="subtitle">
+            Get 3 in a row to win.
+        </p>
 
         <div class="game-card">
             <div class="controls-row">
                 <span class="turn-badge" id="status-text">X'S TURN</span>
-                <button class="btn" onclick="openModeModal()"><span id="mode-label">VS AI (EASY)</span> ▼</button>
-                <button class="btn" onclick="resetGame()">Reset Board</button>
-                <button class="btn" onclick="resetStats()">Reset Stats</button>
+
+                <button class="btn" onclick="openModeModal()">
+                    <span id="mode-label">VS AI (EASY)</span> ▼
+                </button>
+
+                <button class="btn" onclick="resetGame()">
+                    Reset Board
+                </button>
+
+                <button class="btn" onclick="resetStats()">
+                    Reset Stats
+                </button>
             </div>
 
             <div class="board" id="board">
@@ -202,298 +474,915 @@
                     <span class="score-label">X Wins</span>
                     <span class="score-val" id="x-wins">0</span>
                 </div>
+
                 <div class="score-item">
                     <span class="score-label">Draws</span>
                     <span class="score-val" id="draws">0</span>
                 </div>
+
                 <div class="score-item">
                     <span class="score-label">O Wins</span>
                     <span class="score-val" id="o-wins">0</span>
                 </div>
             </div>
         </div>
-    </main>
 
-    <div id="mode-modal" class="modal-overlay" onclick="closeModeModal()">
-        <div class="modal-card" onclick="event.stopPropagation()">
-            <h2 style="font-size: 18px; margin: 0 0 16px; color: #4a3e3d;">Select Mode</h2>
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-                <button class="btn" onclick="setMode('easy')">VS AI (Easy)</button>
-                <button class="btn" onclick="setMode('medium')">VS AI (Medium)</button>
-                <button class="btn" onclick="setMode('hard')">VS AI (Hard)</button>
-                <button class="btn" onclick="setMode('pvp')">2 Player (Local)</button>
+        <div
+            class="ornament"
+            style="margin-top:20px;margin-bottom:0;"
+        >
+            <span>✧</span>
+            <i></i>
+            <span>♡</span>
+            <i></i>
+            <span>✧</span>
+        </div>
+    </main>    <div id="mode-modal" class="modal-overlay" onclick="closeModeModal()">
+
+        <div
+            class="modal-card"
+            onclick="event.stopPropagation()"
+        >
+            <h2 style="font-size:18px;margin:0 0 16px;color:#7a4659;">
+                Select Mode
+            </h2>
+
+            <div style="display:flex;flex-direction:column;gap:8px;">
+                <button class="btn" onclick="setMode('easy')">
+                    VS AI (Easy)
+                </button>
+
+                <button class="btn" onclick="setMode('medium')">
+                    VS AI (Medium)
+                </button>
+
+                <button class="btn" onclick="setMode('hard')">
+                    VS AI (Hard)
+                </button>
+
+                <button class="btn" onclick="setMode('pvp')">
+                    2 Player (Local)
+                </button>
             </div>
         </div>
+
     </div>
+
 
     <div id="reward-modal" class="modal-overlay">
-        <div class="modal-card">
-            <h2 id="modal-title" style="font-size: 20px; margin: 0 0 10px;">Victory!</h2>
-            <p id="modal-desc" style="color: #8c7b7d; font-size: 14px; margin: 0 0 20px;"></p>
-            <button class="btn" onclick="closeModalAndReset()" style="width: 100%;">Play Again</button>
+
+        <div class="modal-card" id="modal-card">
+
+            <span class="confetti">✦</span>
+            <span class="confetti">✧</span>
+            <span class="confetti">♡</span>
+            <span class="confetti">✦</span>
+            <span class="confetti">✧</span>
+
+            <div class="victory-decoration">
+                <span>✧</span>
+                <i></i>
+                <span>♡</span>
+                <i></i>
+                <span>✧</span>
+            </div>
+
+            <div class="victory-symbol" id="modal-symbol">
+                <svg
+                    width="32"
+                    height="32"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                >
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+            </div>
+
+            <h2 id="modal-title">
+                Victory!
+            </h2>
+
+            <p id="modal-desc"></p>
+
+            <div class="reward-amount" id="reward-amount">
+                +10 Coins
+            </div>
+
+            <button
+                class="btn"
+                onclick="closeModalAndReset()"
+                style="width:100%;"
+            >
+                Play Again
+            </button>
+
         </div>
+
     </div>
 
+
     <script src="../script.js"></script>
+
     <script>
         const AudioFX = {
             ctx: null,
+
             init() {
                 if (!this.ctx) {
-                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                    if (AudioCtx) this.ctx = new AudioCtx();
+                    const AudioCtx =
+                        window.AudioContext ||
+                        window.webkitAudioContext;
+
+                    if (AudioCtx) {
+                        this.ctx = new AudioCtx();
+                    }
                 }
             },
+
             play(type) {
                 this.init();
+
                 if (!this.ctx) return;
-                if (this.ctx.state === 'suspended') this.ctx.resume();
+
+                if (this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
 
                 const now = this.ctx.currentTime;
+
                 const osc = this.ctx.createOscillator();
                 const gain = this.ctx.createGain();
+
                 osc.connect(gain);
                 gain.connect(this.ctx.destination);
 
                 if (type === 'key') {
+
                     osc.type = 'sine';
-                    osc.frequency.setValueAtTime(400, now);
-                    gain.gain.setValueAtTime(0.05, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+
+                    osc.frequency.setValueAtTime(
+                        400,
+                        now
+                    );
+
+                    gain.gain.setValueAtTime(
+                        0.05,
+                        now
+                    );
+
+                    gain.gain.exponentialRampToValueAtTime(
+                        0.001,
+                        now + 0.05
+                    );
+
                     osc.start(now);
                     osc.stop(now + 0.05);
+
                 } else if (type === 'win') {
+
                     osc.type = 'sine';
-                    osc.frequency.setValueAtTime(523.25, now);
-                    osc.frequency.setValueAtTime(659.25, now + 0.08);
-                    osc.frequency.setValueAtTime(783.99, now + 0.16);
-                    gain.gain.setValueAtTime(0.2, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+
+                    osc.frequency.setValueAtTime(
+                        523.25,
+                        now
+                    );
+
+                    osc.frequency.setValueAtTime(
+                        659.25,
+                        now + 0.08
+                    );
+
+                    osc.frequency.setValueAtTime(
+                        783.99,
+                        now + 0.16
+                    );
+
+                    gain.gain.setValueAtTime(
+                        0.2,
+                        now
+                    );
+
+                    gain.gain.exponentialRampToValueAtTime(
+                        0.001,
+                        now + 0.35
+                    );
+
                     osc.start(now);
                     osc.stop(now + 0.35);
+
                 } else if (type === 'lose') {
+
                     osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(260, now);
-                    osc.frequency.exponentialRampToValueAtTime(110, now + 0.35);
-                    gain.gain.setValueAtTime(0.2, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+
+                    osc.frequency.setValueAtTime(
+                        260,
+                        now
+                    );
+
+                    osc.frequency.exponentialRampToValueAtTime(
+                        110,
+                        now + 0.35
+                    );
+
+                    gain.gain.setValueAtTime(
+                        0.2,
+                        now
+                    );
+
+                    gain.gain.exponentialRampToValueAtTime(
+                        0.001,
+                        now + 0.35
+                    );
+
                     osc.start(now);
                     osc.stop(now + 0.35);
+
                 }
             }
         };
 
-        let board = ["", "", "", "", "", "", "", "", ""];
+
+        let board = [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ];
+
         let currentPlayer = "X";
         let gameActive = true;
         let gameMode = "easy";
-        
+
         let xWins = 0;
         let oWins = 0;
         let drawCount = 0;
 
+
         const winConditions = [
-            [0, 1, 2], [3, 4, 5], [6, 7, 8],
-            [0, 3, 6], [1, 4, 7], [2, 5, 8],
-            [0, 4, 8], [2, 4, 6]
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
         ];
 
+
         function goBack() {
+
             if (window.history.length > 1) {
+
                 window.history.back();
+
             } else {
-                window.location.href = '../index.html';
+
+                window.location.href =
+                    '../index.html';
+
             }
+
         }
 
-        function openModeModal() { document.getElementById('mode-modal').style.display = 'flex'; }
-        function closeModeModal() { document.getElementById('mode-modal').style.display = 'none'; }
+
+        function openModeModal() {
+
+            document.getElementById(
+                'mode-modal'
+            ).style.display = 'flex';
+
+        }
+
+
+        function closeModeModal() {
+
+            document.getElementById(
+                'mode-modal'
+            ).style.display = 'none';
+
+        }
+
 
         function setMode(mode) {
+
             gameMode = mode;
-            const labels = { easy: 'VS AI (EASY)', medium: 'VS AI (MEDIUM)', hard: 'VS AI (HARD)', pvp: '2 PLAYER' };
-            document.getElementById('mode-label').innerText = labels[mode];
+
+            const labels = {
+                easy: 'VS AI (EASY)',
+                medium: 'VS AI (MEDIUM)',
+                hard: 'VS AI (HARD)',
+                pvp: '2 PLAYER'
+            };
+
+            document.getElementById(
+                'mode-label'
+            ).innerText = labels[mode];
+
             closeModeModal();
+
             resetGame();
             resetStats();
+
         }
 
+
         function resetStats() {
+
             xWins = 0;
             oWins = 0;
             drawCount = 0;
-            document.getElementById('x-wins').innerText = '0';
-            document.getElementById('o-wins').innerText = '0';
-            document.getElementById('draws').innerText = '0';
+
+            document.getElementById(
+                'x-wins'
+            ).innerText = '0';
+
+            document.getElementById(
+                'o-wins'
+            ).innerText = '0';
+
+            document.getElementById(
+                'draws'
+            ).innerText = '0';
+
         }
+
 
         function handleCellClick(index) {
-            if (board[index] !== "" || !gameActive) return;
 
-            makeMove(index, currentPlayer);
-
-            if (gameActive && gameMode !== 'pvp' && currentPlayer === 'O') {
-                setTimeout(aiMove, 250);
+            if (
+                board[index] !== "" ||
+                !gameActive
+            ) {
+                return;
             }
+
+            makeMove(
+                index,
+                currentPlayer
+            );
+
+            if (
+                gameActive &&
+                gameMode !== 'pvp' &&
+                currentPlayer === 'O'
+            ) {
+
+                setTimeout(
+                    aiMove,
+                    250
+                );
+
+            }
+
         }
+
 
         function makeMove(index, player) {
+
             AudioFX.play('key');
+
             board[index] = player;
-            const tile = document.querySelectorAll('.tile')[index];
+
+            const tile =
+                document.querySelectorAll(
+                    '.tile'
+                )[index];
+
             tile.innerText = player;
-            tile.classList.add(player === 'X' ? 'x-mark' : 'o-mark');
+
+            tile.classList.add(
+                player === 'X'
+                    ? 'x-mark'
+                    : 'o-mark'
+            );
+
 
             if (checkWin(player)) {
-                endGame(false, player);
-            } else if (board.every(c => c !== "")) {
-                endGame(true, null);
+
+                endGame(
+                    false,
+                    player
+                );
+
+            } else if (
+                board.every(
+                    c => c !== ""
+                )
+            ) {
+
+                endGame(
+                    true,
+                    null
+                );
+
             } else {
-                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-                document.getElementById('status-text').innerText = `${currentPlayer}'S TURN`;
+
+                currentPlayer =
+                    currentPlayer === 'X'
+                        ? 'O'
+                        : 'X';
+
+                document.getElementById(
+                    'status-text'
+                ).innerText =
+                    `${currentPlayer}'S TURN`;
+
             }
+
+        }        function getRandomMove() {
+
+            let emptyIndices =
+                board
+                    .map(
+                        (val, idx) =>
+                            val === ""
+                                ? idx
+                                : null
+                    )
+                    .filter(
+                        val => val !== null
+                    );
+
+            return emptyIndices[
+                Math.floor(
+                    Math.random() *
+                    emptyIndices.length
+                )
+            ];
+
         }
 
-        function getRandomMove() {
-            let emptyIndices = board.map((val, idx) => val === "" ? idx : null).filter(val => val !== null);
-            return emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
-        }
 
         function aiMove() {
+
             if (!gameActive) return;
 
             let move;
+
             if (gameMode === 'easy') {
+
                 move = getRandomMove();
+
             } else if (gameMode === 'medium') {
-                // 50% optimal move, 50% random move
+
                 if (Math.random() < 0.5) {
-                    move = minimax(board, 'O').index;
+
+                    move =
+                        minimax(
+                            board,
+                            'O'
+                        ).index;
+
                 } else {
+
                     move = getRandomMove();
+
                 }
+
             } else if (gameMode === 'hard') {
-                // 85% optimal move, 15% random mistake chance
+
                 if (Math.random() < 0.85) {
-                    move = minimax(board, 'O').index;
+
+                    move =
+                        minimax(
+                            board,
+                            'O'
+                        ).index;
+
                 } else {
+
                     move = getRandomMove();
+
                 }
+
             }
 
             if (move !== undefined) {
-                makeMove(move, 'O');
+
+                makeMove(
+                    move,
+                    'O'
+                );
+
             }
+
         }
+
 
         function checkWin(player) {
-            return winConditions.some(cond => cond.every(idx => board[idx] === player));
+
+            return winConditions.some(
+                cond =>
+                    cond.every(
+                        idx =>
+                            board[idx] === player
+                    )
+            );
+
         }
+
 
         function endGame(isDraw, winner) {
+
             gameActive = false;
-            const title = document.getElementById('modal-title');
-            const desc = document.getElementById('modal-desc');
+
+            const title =
+                document.getElementById(
+                    'modal-title'
+                );
+
+            const desc =
+                document.getElementById(
+                    'modal-desc'
+                );
+
+            const rewardAmount =
+                document.getElementById(
+                    'reward-amount'
+                );
+
 
             if (isDraw) {
+
                 drawCount++;
-                document.getElementById('draws').innerText = drawCount;
+
+                document.getElementById(
+                    'draws'
+                ).innerText =
+                    drawCount;
+
                 AudioFX.play('lose');
-                title.innerText = "Draw!";
-                desc.innerText = "It's a tie.";
+
+                title.innerText =
+                    "Draw!";
+
+                desc.innerText =
+                    "It's a tie.";
+
+                rewardAmount.style.display =
+                    "none";
+
+
             } else {
+
                 if (winner === 'X') {
+
                     xWins++;
-                    document.getElementById('x-wins').innerText = xWins;
+
+                    document.getElementById(
+                        'x-wins'
+                    ).innerText =
+                        xWins;
+
                     AudioFX.play('win');
-                    title.innerText = "Victory!";
-                    desc.innerText = "X won the match.";
-                    
+
+                    title.innerText =
+                        "Victory!";
+
+                    let reward = 0;
+
                     if (gameMode !== 'pvp') {
-                        const rewards = { easy: 10, medium: 18, hard: 25 };
-                        const reward = rewards[gameMode] || 10;
-                        desc.innerText += ` Earned ${reward} Coins!`;
-                        if (typeof addCoins === 'function') addCoins(reward);
+
+                        const rewards = {
+                            easy: 10,
+                            medium: 18,
+                            hard: 25
+                        };
+
+                        reward =
+                            rewards[gameMode] || 10;
+
+                        desc.innerText =
+                            `X won the match and earned ${reward} Coins!`;
+
+                        rewardAmount.innerText =
+                            `+${reward} Coins`;
+
+                        rewardAmount.style.display =
+                            "inline-block";
+
+                        if (
+                            typeof addCoins ===
+                            'function'
+                        ) {
+
+                            addCoins(reward);
+
+                        }
+
+                    } else {
+
+                        desc.innerText =
+                            "X won the match.";
+
+                        rewardAmount.style.display =
+                            "none";
+
                     }
+
+
                 } else {
+
                     oWins++;
-                    document.getElementById('o-wins').innerText = oWins;
+
+                    document.getElementById(
+                        'o-wins'
+                    ).innerText =
+                        oWins;
+
                     AudioFX.play('lose');
-                    title.innerText = "Game Over";
-                    desc.innerText = "O won the match.";
+
+                    title.innerText =
+                        "Game Over!";
+
+                    desc.innerText =
+                        "O won the match.";
+
+                    rewardAmount.style.display =
+                        "none";
+
                 }
+
             }
 
-            setTimeout(() => {
-                document.getElementById('reward-modal').style.display = 'flex';
-            }, 300);
+
+            setTimeout(
+                () => {
+
+                    const modal =
+                        document.getElementById(
+                            'reward-modal'
+                        );
+
+                    modal.style.display =
+                        'flex';
+
+
+                    modal
+                        .querySelectorAll(
+                            '.confetti'
+                        )
+                        .forEach(
+                            confetti => {
+
+                                confetti.style.animation =
+                                    'none';
+
+                                void confetti.offsetWidth;
+
+                                confetti.style.animation =
+                                    'confettiFall 1.8s ease-out forwards';
+
+                            }
+                        );
+
+                },
+                300
+            );
+
         }
+
 
         function closeModalAndReset() {
-            document.getElementById('reward-modal').style.display = 'none';
+
+            document.getElementById(
+                'reward-modal'
+            ).style.display =
+                'none';
+
             resetGame();
+
         }
+
 
         function resetGame() {
-            board = ["", "", "", "", "", "", "", "", ""];
+
+            board = [
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                ""
+            ];
+
             currentPlayer = "X";
             gameActive = true;
-            document.getElementById('status-text').innerText = "X'S TURN";
 
-            document.querySelectorAll('.tile').forEach(tile => {
-                tile.innerText = "";
-                tile.classList.remove('x-mark', 'o-mark');
-            });
+            document.getElementById(
+                'status-text'
+            ).innerText =
+                "X'S TURN";
+
+
+            document
+                .querySelectorAll(
+                    '.tile'
+                )
+                .forEach(
+                    tile => {
+
+                        tile.innerText = "";
+
+                        tile.classList.remove(
+                            'x-mark',
+                            'o-mark'
+                        );
+
+                    }
+                );
+
         }
+
 
         function minimax(newBoard, player) {
-            let availSpots = newBoard.map((val, idx) => val === "" ? idx : null).filter(val => val !== null);
 
-            if (checkWinCond(newBoard, 'X')) return { score: -10 };
-            if (checkWinCond(newBoard, 'O')) return { score: 10 };
-            if (availSpots.length === 0) return { score: 0 };
+            let availSpots =
+                newBoard
+                    .map(
+                        (val, idx) =>
+                            val === ""
+                                ? idx
+                                : null
+                    )
+                    .filter(
+                        val => val !== null
+                    );
+
+
+            if (
+                checkWinCond(
+                    newBoard,
+                    'X'
+                )
+            ) {
+
+                return {
+                    score: -10
+                };
+
+            }
+
+
+            if (
+                checkWinCond(
+                    newBoard,
+                    'O'
+                )
+            ) {
+
+                return {
+                    score: 10
+                };
+
+            }
+
+
+            if (
+                availSpots.length === 0
+            ) {
+
+                return {
+                    score: 0
+                };
+
+            }
+
 
             let moves = [];
-            for (let i = 0; i < availSpots.length; i++) {
+
+
+            for (
+                let i = 0;
+                i < availSpots.length;
+                i++
+            ) {
+
                 let move = {};
-                move.index = availSpots[i];
-                newBoard[availSpots[i]] = player;
+
+                move.index =
+                    availSpots[i];
+
+                newBoard[
+                    availSpots[i]
+                ] = player;
+
 
                 if (player === 'O') {
-                    let result = minimax(newBoard, 'X');
-                    move.score = result.score;
+
+                    let result =
+                        minimax(
+                            newBoard,
+                            'X'
+                        );
+
+                    move.score =
+                        result.score;
+
                 } else {
-                    let result = minimax(newBoard, 'O');
-                    move.score = result.score;
+
+                    let result =
+                        minimax(
+                            newBoard,
+                            'O'
+                        );
+
+                    move.score =
+                        result.score;
+
                 }
 
-                newBoard[availSpots[i]] = "";
+
+                newBoard[
+                    availSpots[i]
+                ] = "";
+
                 moves.push(move);
+
             }
+
 
             let bestMove;
+
+
             if (player === 'O') {
+
                 let bestScore = -10000;
-                for (let i = 0; i < moves.length; i++) {
-                    if (moves[i].score > bestScore) {
-                        bestScore = moves[i].score;
+
+                for (
+                    let i = 0;
+                    i < moves.length;
+                    i++
+                ) {
+
+                    if (
+                        moves[i].score >
+                        bestScore
+                    ) {
+
+                        bestScore =
+                            moves[i].score;
+
                         bestMove = i;
+
                     }
+
                 }
+
             } else {
+
                 let bestScore = 10000;
-                for (let i = 0; i < moves.length; i++) {
-                    if (moves[i].score < bestScore) {
-                        bestScore = moves[i].score;
+
+                for (
+                    let i = 0;
+                    i < moves.length;
+                    i++
+                ) {
+
+                    if (
+                        moves[i].score <
+                        bestScore
+                    ) {
+
+                        bestScore =
+                            moves[i].score;
+
                         bestMove = i;
+
                     }
+
                 }
+
             }
+
+
             return moves[bestMove];
+
         }
 
-        function checkWinCond(boardState, player) {
-            return winConditions.some(cond => cond.every(idx => boardState[idx] === player));
+
+        function checkWinCond(
+            boardState,
+            player
+        ) {
+
+            return winConditions.some(
+                cond =>
+                    cond.every(
+                        idx =>
+                            boardState[idx] === player
+                    )
+            );
+
         }
     </script>
 </body>
