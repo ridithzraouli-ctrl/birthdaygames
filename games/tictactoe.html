@@ -1,3 +1,4 @@
+<!-- PART 1/3 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -131,7 +132,7 @@ p.subtitle{color:#8c7b7d;margin:0 0 20px;font-size:14px;text-align:center}
 <div id="reward-amount" class="reward-amount"></div>
 <button class="btn" onclick="closeModalAndReset()" style="width:100%;margin-top:6px">Play Again</button>
 </div>
-</div>
+</div><!-- PART 2/3 -->
 <script src="../script.js"></script>
 <script>
 const AudioFX={
@@ -404,7 +405,7 @@ bestMove=i;
 }
 
 return moves[bestMove];
-    }
+}<!-- PART 3/3 -->
 <script>
 function checkWinCond(boardState,player){
 return winConditions.some(condition=>
