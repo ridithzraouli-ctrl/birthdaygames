@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hangman</title>
+<title>Hangman ♡</title>
 
 <style>
 :root {
@@ -103,6 +103,35 @@ body {
     transition: background 0.3s ease, color 0.3s ease;
 }
 
+.decorations {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.decorations span {
+    position: absolute;
+    color: var(--ornament-color);
+    opacity: 0.35;
+    animation: float 5s ease-in-out infinite;
+}
+
+.decorations span:nth-child(1) { top: 13%; left: 7%; font-size: 20px; }
+.decorations span:nth-child(2) { top: 28%; right: 8%; font-size: 13px; animation-delay: 1s; }
+.decorations span:nth-child(3) { top: 55%; left: 5%; font-size: 14px; animation-delay: 2s; }
+.decorations span:nth-child(4) { top: 68%; right: 6%; font-size: 21px; animation-delay: 1.5s; }
+.decorations span:nth-child(5) { bottom: 12%; left: 12%; font-size: 12px; animation-delay: 0.5s; }
+.decorations span:nth-child(6) { bottom: 20%; right: 13%; font-size: 16px; animation-delay: 2.5s; }
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0); }
+    50% { transform: translateY(-7px) rotate(7deg); }
+}
+
 header {
     display: flex;
     align-items: center;
@@ -133,7 +162,6 @@ header {
     color: var(--text-heading);
     text-decoration: none;
     font-size: 15px;
-    font-weight: normal;
     cursor: pointer;
     white-space: nowrap;
     transition: opacity 0.2s ease;
@@ -173,10 +201,7 @@ header {
     transition: 0.2s ease;
 }
 
-.cat-btn:hover {
-    background: var(--accent-soft);
-    transform: translateY(-1px);
-}
+.cat-btn:hover { background: var(--accent-soft); transform: translateY(-1px); }
 
 .cat-menu {
     display: none;
@@ -192,7 +217,6 @@ header {
     overflow: hidden;
     padding: 4px;
 }
-
 .cat-menu.show { display: block; }
 
 .cat-option {
@@ -203,7 +227,6 @@ header {
     cursor: pointer;
     transition: background 0.15s ease;
 }
-
 .cat-option:hover { background: var(--accent-soft); }
 .cat-option.active { font-weight: bold; color: var(--text-heading); background: var(--accent-badge); }
 
@@ -226,7 +249,6 @@ main {
     margin-bottom: 15px;
     color: var(--ornament-color);
 }
-
 .ornament span { font-size: 16px; }
 .ornament i { width: 38px; height: 1px; background: var(--ornament-color); opacity: 0.45; }
 
@@ -315,13 +337,8 @@ svg circle {
     transition: all 0.15s ease;
 }
 
-.key-btn:hover:not(:disabled) {
-    background: var(--accent-soft);
-    transform: translateY(-2px);
-}
-
+.key-btn:hover:not(:disabled) { background: var(--accent-soft); transform: translateY(-2px); }
 .key-btn:active:not(:disabled) { transform: translateY(0); }
-
 .key-btn:disabled {
     background: var(--bg-grad-2);
     color: var(--text-main);
@@ -333,7 +350,7 @@ svg circle {
 .controls { display: flex; gap: 10px; }
 
 .btn {
-    padding: 10px 20px;
+    padding: 11px 20px;
     border: 1px solid var(--accent-border);
     border-radius: 100px;
     background: var(--card-bg);
@@ -344,89 +361,120 @@ svg circle {
     transition: 0.2s ease;
 }
 
-.btn:hover {
-    background: var(--accent-soft);
-    transform: translateY(-1px);
-}
+.btn:hover { background: var(--accent-soft); transform: translateY(-1px); }
 
+/* Unified Victory / Game Over Modal Styles */
 .modal-overlay {
     display: none;
     position: fixed;
     inset: 0;
     padding: 20px;
     background: rgba(30, 25, 25, 0.3);
-    backdrop-filter: blur(3px);
-    z-index: 200;
+    backdrop-filter: blur(5px);
+    z-index: 500;
     align-items: center;
     justify-content: center;
 }
 
 .modal-card {
+    position: relative;
     background: var(--card-bg);
-    border: 1px solid var(--bg-grad-2);
-    border-radius: 14px;
-    padding: 28px 24px;
-    max-width: 340px;
+    border: 1px solid var(--accent-border);
+    border-radius: 18px;
+    padding: 32px 26px 26px;
+    max-width: 360px;
     width: 100%;
     text-align: center;
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
-}
-
-.modal-card h2 {
-    color: var(--text-heading);
-    font-size: 21px;
-    font-weight: normal;
-    margin: 0 0 10px;
-}
-
-.modal-card p {
-    color: var(--text-main);
-    opacity: 0.8;
-    font-size: 14px;
-    line-height: 1.5;
-    margin: 0 0 20px;
-}
-
-.decorations {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.16);
+    animation: victoryPop 0.35s ease;
     overflow: hidden;
-    z-index: -1;
 }
 
-.decorations span {
+.modal-card::before,
+.modal-card::after {
+    content: "✦";
     position: absolute;
     color: var(--ornament-color);
-    opacity: 0.35;
-    animation: float 5s ease-in-out infinite;
+    opacity: 0.5;
+    font-size: 20px;
+}
+.modal-card::before { top: 13px; left: 18px; }
+.modal-card::after { top: 13px; right: 18px; }
+
+.victory-decoration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    color: var(--ornament-color);
+    margin-bottom: 13px;
+}
+.victory-decoration span { font-size: 15px; }
+.victory-decoration i { width: 30px; height: 1px; background: var(--ornament-color); opacity: 0.5; }
+
+.victory-symbol {
+    width: 66px;
+    height: 66px;
+    margin: 2px auto 14px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ornament-color);
+    animation: victoryFloat 2s ease-in-out infinite;
 }
 
-.decorations span:nth-child(1) { top: 13%; left: 7%; font-size: 20px; }
-.decorations span:nth-child(2) { top: 28%; right: 8%; font-size: 13px; animation-delay: 1s; }
-.decorations span:nth-child(3) { top: 55%; left: 5%; font-size: 14px; animation-delay: 2s; }
-.decorations span:nth-child(4) { top: 68%; right: 6%; font-size: 21px; animation-delay: 1.5s; }
-.decorations span:nth-child(5) { bottom: 12%; left: 12%; font-size: 12px; animation-delay: 0.5s; }
-.decorations span:nth-child(6) { bottom: 20%; right: 13%; font-size: 16px; animation-delay: 2.5s; }
+.modal-card h2 { color: var(--text-heading); font-size: 25px; font-weight: normal; margin: 0 0 9px; }
+.modal-card p { color: var(--text-main); opacity: 0.82; font-size: 14px; line-height: 1.6; margin: 0 0 21px; }
 
-@keyframes float {
-    0%, 100% { transform: translateY(0) rotate(0); }
-    50% { transform: translateY(-7px) rotate(7deg); }
+.reward-amount {
+    display: inline-block;
+    margin: -5px 0 20px;
+    padding: 7px 13px;
+    border-radius: 100px;
+    background: var(--accent-badge);
+    border: 1px solid var(--accent-border);
+    color: var(--text-heading);
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.modal-card.game-over .victory-symbol { animation: none; }
+
+.confetti {
+    position: absolute;
+    pointer-events: none;
+    color: var(--ornament-color);
+    font-size: 14px;
+    animation: confettiFall 1.8s ease-out forwards;
+}
+.confetti:nth-child(1) { left: 18%; top: 5%; animation-delay: 0s; }
+.confetti:nth-child(2) { left: 32%; top: 2%; animation-delay: 0.12s; }
+.confetti:nth-child(3) { left: 50%; top: 4%; animation-delay: 0.2s; }
+.confetti:nth-child(4) { right: 32%; top: 2%; animation-delay: 0.08s; }
+.confetti:nth-child(5) { right: 17%; top: 6%; animation-delay: 0.18s; }
+
+@keyframes victoryPop {
+    0% { transform: scale(0.88); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes victoryFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+@keyframes confettiFall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+    15% { opacity: 0.8; }
+    100% { transform: translateY(115px) rotate(120deg); opacity: 0; }
 }
 
 @media (max-width: 600px) {
     header { min-height: 66px; padding: 12px 11px; gap: 8px; }
-    .header-left { gap: 8px; }
-    .header-right { gap: 5px; }
-    .nav-link { font-size: 13px; }
-    .cat-btn { padding: 8px 10px; font-size: 11px; }
-    .coin-display { padding: 8px 10px; font-size: 11px; }
-    main { padding: 24px 12px 35px; }
-    .hangman-box { width: 205px; height: 180px; }
-    .letter-tile { width: 34px; height: 43px; font-size: 20px; }
-    .key-btn { width: 35px; height: 40px; }
+    .modal-card { max-width: 340px; padding: 30px 21px 23px; }
 }
 </style>
 </head>
@@ -510,9 +558,26 @@ svg circle {
 </main>
 
 <div id="reward-modal" class="modal-overlay">
-    <div class="modal-card">
+    <div class="modal-card" id="modal-card">
+        <span class="confetti">✦</span>
+        <span class="confetti">✧</span>
+        <span class="confetti">♡</span>
+        <span class="confetti">✦</span>
+        <span class="confetti">✧</span>
+
+        <div class="victory-decoration">
+            <span>✧</span><i></i><span>♡</span><i></i><span>✧</span>
+        </div>
+
+        <div class="victory-symbol" id="modal-symbol">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+        </div>
+
         <h2 id="modal-title">Victory!</h2>
         <p id="modal-desc">You guessed the word and earned 20 Coins.</p>
+        <div class="reward-amount" id="reward-amount">+20 Coins</div>
         <button class="btn" onclick="closeModalAndReset()" style="width: 100%;">Play Again</button>
     </div>
 </div>
@@ -680,23 +745,63 @@ function updateHangman() {
     }
 }
 
+function showVictoryModal(msg, rewardText) {
+    const modal = document.getElementById("reward-modal");
+    const card = document.getElementById("modal-card");
+    const title = document.getElementById("modal-title");
+    const desc = document.getElementById("modal-desc");
+    const amount = document.getElementById("reward-amount");
+    const symbol = document.getElementById("modal-symbol");
+    
+    card.classList.remove("game-over");
+    title.innerText = "Victory!";
+    desc.innerText = msg;
+    symbol.innerHTML = `
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+    `;
+    amount.style.display = "inline-block";
+    amount.innerText = rewardText;
+    modal.style.display = "flex";
+}
+
+function showGameOverModal(headingText, msg) {
+    const modal = document.getElementById("reward-modal");
+    const card = document.getElementById("modal-card");
+    const title = document.getElementById("modal-title");
+    const desc = document.getElementById("modal-desc");
+    const amount = document.getElementById("reward-amount");
+    const symbol = document.getElementById("modal-symbol");
+
+    card.classList.add("game-over");
+    title.innerText = headingText;
+    desc.innerText = msg;
+    symbol.innerHTML = `
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
+            <path d="M16 28l-1.8-1.6C7.6 20.4 3 16.3 3 11.2 3 7 6.3 3.5 10.5 3.5c2.4 0 4.7 1.1 6.2 3 1.5-1.9 3.8-3 6.2-3C25.7 3.5 29 7 29 11.2c0 5.1-4.6 9.2-11.2 15.2L16 28z" fill="none"/>
+            <path d="M16 28l-1.8-1.6C7.6 20.4 3 16.3 3 11.2 3 7 6.3 3.5 10.5 3.5c2.4 0 4.7 1.1 6.2 3V12l-3 3 4 4-5 5 1.6 3z"/>
+            <path d="M16.7 6.5c1.5-1.9 3.8-3 6.2-3C25.7 3.5 29 7 29 11.2c0 5.1-4.6 9.2-11.2 15.2L16 28v-6l3-3-4-4 3-3V6.5z"/>
+        </svg>
+    `;
+    amount.style.display = "none";
+    modal.style.display = "flex";
+}
+
 function checkWin() {
     const isWon = [...currentWord].every(char => guessedLetters.has(char));
     if (isWon) {
         AudioFX.play("win");
         if (typeof addCoins === "function") addCoins(20);
-        document.getElementById("modal-title").innerText = "Victory!";
-        document.getElementById("modal-desc").innerText = `You correctly guessed "${currentWord}" and earned 20 Coins!`;
-        document.getElementById("reward-modal").style.display = "flex";
+        if (typeof updateCoinDisplays === "function") updateCoinDisplays();
+        showVictoryModal(`You correctly guessed "${currentWord}" and earned 20 Coins!`, "+20 Coins");
     }
 }
 
 function checkLoss() {
     if (wrongGuesses >= maxWrong) {
         AudioFX.play("lose");
-        document.getElementById("modal-title").innerText = "Game Over";
-        document.getElementById("modal-desc").innerText = `Out of attempts! The word was "${currentWord}".`;
-        document.getElementById("reward-modal").style.display = "flex";
+        showGameOverModal("Game Over", `Out of attempts! The word was "${currentWord}".`);
     }
 }
 
@@ -705,6 +810,7 @@ function resetGame() {
     currentWord = wordList[Math.floor(Math.random() * wordList.length)];
     guessedLetters.clear();
     wrongGuesses = 0;
+    document.getElementById("reward-modal").style.display = "none";
     updateHangman();
     renderWord();
     buildKeyboard();
