@@ -61,13 +61,12 @@ const jumpImage=new Image();
 
 let processedRunImage=null;
 
-idleImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAA9klEQVR42u1UMQ6EIBAEYmdvjIUlhbVP8AE+1Qf4BGsLSwtj6K25inPv2EU8OGPhdggyzOzMMvbUU0/dtoo81UWe6tj3CtdmJTMGQWM8QlDsKplZ39q[...]";
+idleImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAA9klEQVR42u1UMQ6EIBAEYmdvjIUlhbVP8AE+1Qf4BGsLSwtj6K25inPv2EU8OGPhdggyzOzMMvbUU0/dtoo81UWe6tj3CtdmJTMGQWM8QlDsKplZ39q[...]
 
-jumpImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAkCAYAAACQVDZDAAADgUlEQVR42u2aPXLyMBCGRcYdfYahoKRIzRE4AEflAByBmsKlC4ZxT+2vyCeyiJW0sq0VUd6nIzi8Xu0/2BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA[...]";
+jumpImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAkCAYAAACQVDZDAAADgUlEQVR42u2aPXLyMBCGRcYdfYahoKRIzRE4AEflAByBmsKlC4ZxT+2vyCeyiJW0sq0VUd6nIzi8Xu0/2BgAAAAAAAAAAAAAAAAAAAAAAAAAAAA[...]
 
-/* 11-frame running sprite sheet - now embedded as base64 GIF */
-runImage.src="data:image/gif;base64,R0lGODlhkAAcAwAAAAAAAAAAACAAAABkAABkZAAAkAAA/wAA/yH+DlRoaXMgYXJ0IHdhcyBtYWRlIHdpdGggRWFzeVBhaW50IFNob3AgaHR0cDovL3d3dy5qYXNzYy1zb2Z0d2FyZS5jb20KJAAAAAAAAAAAAAA7";
-
+/* 12-frame running sprite sheet - now embedded as complete base64 PNG */
+runImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA5QAAAA8CAYAAABbpoFxAAAA7klEQVR4nO3RPQqCQBiG4UcLWwuhaWkLaWlqaGgLGlrCpqGxrSEaHByCQRAE7+d5h4/3vd+9zwWjCCIiIiIiIiIiIiIiIiIiIiIiIiIiIiLy/jqdTmq32+p4PCZVVamqKqXTaWm327Tb7aW+71MYhlQUhVIURRqNRnQ6nSiKIrmua8UuA5L/8jgez+NUKhUqFArk+z7FcUyXy4XBYEAymWR4PB7sdjvabrdUq9UoiiJ6vV6V9/s9eZ5HnudRGIZUr9dnP1FmPp+T53nket55XfPfGwwGxHEcxXF8Xff/69fXl7TbbVosFhSGIYVhSLXbbWq326tgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJz2DW8hkZ9iS8PEAAAAAElFTkSuQmCC";
 
 let started=false;
 let dead=false;
@@ -535,7 +534,7 @@ function drawBunny(){
         frameIndex=
             Math.floor(
                 runAnimTime/75
-            )%11;
+            )%12;
     }
 
     if(!image){
