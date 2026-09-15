@@ -2,1294 +2,525 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Bunny Jump</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bunny Hop: Ultimate Edition</title>
     <style>
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        :root {
-            --bg-base: #f2f7fa;
-            --bg-grad-1: #dce8f3;
-            --bg-grad-2: #d3e2ea;
-            --text-main: #3f5260;
-            --text-heading: #46637a;
-            --accent-border: #82a8bd;
-            --accent-soft: #e9f3f9;
-            --accent-badge: #dfe8f8;
-            --ornament-color: #799eb8;
-            --card-bg: rgba(255, 255, 255, 0.88);
-            --header-bg: rgba(255, 255, 255, 0.88);
-        }
-
-        body[data-theme="pink"] {
-            --bg-base: #faf2f5;
-            --bg-grad-1: #f3dce5;
-            --bg-grad-2: #ead3dc;
-            --text-main: #603f4c;
-            --text-heading: #7a4659;
-            --accent-border: #bd8297;
-            --accent-soft: #f9e9f0;
-            --accent-badge: #f8dfe8;
-            --ornament-color: #b87992;
-        }
-
-        body[data-theme="green"] {
-            --bg-base: #f3f7f2;
-            --bg-grad-1: #dce8dc;
-            --bg-grad-2: #d3ead3;
-            --text-main: #3f6043;
-            --text-heading: #467a4c;
-            --accent-border: #82bd8b;
-            --accent-soft: #e9f9eb;
-            --accent-badge: #dff8e2;
-            --ornament-color: #79b882;
-        }
-
-        body[data-theme="lavender"] {
-            --bg-base: #f5f2fa;
-            --bg-grad-1: #e3dcf3;
-            --bg-grad-2: #dad3ea;
-            --text-main: #4a3f60;
-            --text-heading: #59467a;
-            --accent-border: #9882bd;
-            --accent-soft: #f0e9f9;
-            --accent-badge: #e9dff8;
-            --ornament-color: #9379b8;
-        }
-
-        body[data-theme="yellow"] {
-            --bg-base: #faf8f2;
-            --bg-grad-1: #f3edd2;
-            --bg-grad-2: #eae3c5;
-            --text-main: #60573f;
-            --text-heading: #7a6e46;
-            --accent-border: #bdb182;
-            --accent-soft: #f9f5e9;
-            --accent-badge: #f8f3df;
-            --ornament-color: #b8aa79;
-        }
-
         body {
             margin: 0;
-            min-height: 100vh;
-            background:
-                radial-gradient(circle at 20% 10%, var(--bg-grad-1), transparent 35%),
-                radial-gradient(circle at 80% 90%, var(--bg-grad-2), transparent 40%),
-                var(--bg-base);
-            color: var(--text-main);
-            font-family: Georgia, "Times New Roman", serif;
-            user-select: none;
-            overflow-x: hidden;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 14px 24px;
-            min-height: 68px;
-            background: var(--header-bg);
-            border-bottom: 1px solid var(--accent-border);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-left,
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .nav-link {
-            color: var(--text-heading);
-            text-decoration: none;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .nav-link:hover {
-            opacity: 0.7;
-        }
-
-        .coin-display {
-            background: var(--accent-badge);
-            border: 1px solid var(--accent-border);
-            padding: 6px 14px;
-            border-radius: 100px;
-            font-size: 13px;
-            color: var(--text-heading);
-        }
-
-        main {
-            padding: 22px 16px 35px;
+            padding: 0;
+            background: #1a1a1a;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        h1 {
-            color: var(--text-heading);
-            font-weight: normal;
-            font-size: 25px;
-            margin: 0 0 5px;
-        }
-
-        p.subtitle {
-            color: var(--text-main);
-            opacity: 0.72;
-            margin: 0 0 16px;
-            font-size: 14px;
-            text-align: center;
-        }
-
-        .ornament {
-            display: flex;
-            align-items: center;
             justify-content: center;
-            gap: 10px;
-            height: 22px;
-            margin-bottom: 15px;
-            color: var(--ornament-color);
-        }
-
-        .ornament span {
-            font-size: 16px;
-        }
-
-        .ornament i {
-            width: 38px;
-            height: 1px;
-            background: var(--ornament-color);
-            opacity: 0.45;
-        }
-
-        .decorations {
-            position: fixed;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Courier New', Courier, monospace;
             overflow: hidden;
-            z-index: -1;
+            color: #fff;
         }
 
-        .decorations span {
-            position: absolute;
-            color: var(--ornament-color);
-            opacity: 0.35;
-            animation: float 5s ease-in-out infinite;
+        .arcade-cabinet {
+            background: #2b2b2b;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8), inset 0 2px 5px rgba(255,255,255,0.1);
+            border: 3px solid #444;
         }
 
-        .decorations span:nth-child(1) {
-            top: 13%;
-            left: 7%;
-            font-size: 20px;
-        }
-
-        .decorations span:nth-child(2) {
-            top: 28%;
-            right: 8%;
-            font-size: 13px;
-            animation-delay: 1s;
-        }
-
-        .decorations span:nth-child(3) {
-            top: 55%;
-            left: 5%;
-            font-size: 14px;
-            animation-delay: 2s;
-        }
-
-        .decorations span:nth-child(4) {
-            top: 68%;
-            right: 6%;
-            font-size: 21px;
-            animation-delay: 1.5s;
-        }
-
-        .decorations span:nth-child(5) {
-            bottom: 12%;
-            left: 12%;
-            font-size: 12px;
-            animation-delay: 0.5s;
-        }
-
-        .decorations span:nth-child(6) {
-            bottom: 20%;
-            right: 13%;
-            font-size: 16px;
-            animation-delay: 2.5s;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0) rotate(0);
-            }
-
-            50% {
-                transform: translateY(-7px) rotate(7deg);
-            }
-        }
-
-        .game-card {
-            width: 100%;
-            background: var(--card-bg);
-            border: 1px solid var(--accent-border);
-            border-radius: 18px;
-            padding: 18px;
-            box-shadow: 0 12px 35px rgba(60, 70, 80, 0.08);
-        }
-
-        .game-top {
+        .game-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 13px;
+            margin-bottom: 10px;
+            padding: 0 5px;
+            font-size: 14px;
+            color: #aaa;
+            letter-spacing: 1px;
         }
 
-        .score-box {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            color: var(--text-heading);
-            font-size: 13px;
-            font-family: monospace;
-            letter-spacing: 0.5px;
-        }
-
-        .score-value {
-            min-width: 55px;
-            text-align: right;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .high-score {
-            opacity: 0.6;
-        }
-
-        .pixel-game {
-            width: 100%;
-            aspect-ratio: 16 / 7;
-            min-height: 210px;
-            max-height: 430px;
-            display: block;
-            image-rendering: pixelated;
-            image-rendering: crisp-edges;
-            border: 1px solid var(--accent-border);
-            border-radius: 10px;
-            background: #eef4f8;
-            cursor: pointer;
-            touch-action: manipulation;
-        }
-
-        .game-hint {
-            text-align: center;
-            color: var(--text-main);
-            opacity: 0.62;
-            font-size: 12px;
-            margin: 13px 0 0;
-        }
-
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            padding: 20px;
-            background: rgba(30, 25, 25, 0.3);
-            backdrop-filter: blur(5px);
-            z-index: 500;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-card {
+        .game-window {
+            width: 800px;
+            height: 350px;
             position: relative;
-            background: var(--card-bg);
-            border: 1px solid var(--accent-border);
-            border-radius: 18px;
-            padding: 32px 26px 26px;
-            max-width: 360px;
-            width: 100%;
-            text-align: center;
-            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.16);
-            animation: victoryPop 0.35s ease;
             overflow: hidden;
+            border-radius: 6px;
+            border: 3px solid #111;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
         }
 
-        .modal-card::before,
-        .modal-card::after {
-            content: "✦";
-            position: absolute;
-            color: var(--ornament-color);
-            opacity: 0.5;
-            font-size: 20px;
+        canvas {
+            display: block;
         }
 
-        .modal-card::before {
-            top: 13px;
-            left: 18px;
-        }
-
-        .modal-card::after {
-            top: 13px;
-            right: 18px;
-        }        .victory-decoration {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 9px;
-            color: var(--ornament-color);
-            margin-bottom: 13px;
-        }
-
-        .victory-decoration span {
-            font-size: 15px;
-        }
-
-        .victory-decoration i {
-            width: 30px;
-            height: 1px;
-            background: var(--ornament-color);
-            opacity: 0.5;
-        }
-
-        .victory-symbol {
-            width: 66px;
-            height: 66px;
-            margin: 2px auto 14px;
-            border-radius: 50%;
-            background: var(--accent-soft);
-            border: 1px solid var(--accent-border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--ornament-color);
-            animation: victoryFloat 2s ease-in-out infinite;
-        }
-
-        .modal-card h2 {
-            color: var(--text-heading);
-            font-size: 25px;
-            font-weight: normal;
-            margin: 0 0 9px;
-        }
-
-        .modal-card p {
-            color: var(--text-main);
-            opacity: 0.82;
-            font-size: 14px;
-            line-height: 1.6;
-            margin: 0 0 21px;
-        }
-
-        .reward-amount {
-            display: inline-block;
-            margin: -5px 0 20px;
-            padding: 7px 13px;
-            border-radius: 100px;
-            background: var(--accent-badge);
-            border: 1px solid var(--accent-border);
-            color: var(--text-heading);
-            font-size: 13px;
-        }
-
-        .modal-card.game-over .victory-symbol {
-            animation: none;
-        }
-
-        .confetti {
-            position: absolute;
-            pointer-events: none;
-            color: var(--ornament-color);
-            font-size: 14px;
-            animation: confettiFall 1.8s ease-out forwards;
-        }
-
-        .confetti:nth-child(1) {
-            left: 18%;
-            top: 5%;
-            animation-delay: 0s;
-        }
-
-        .confetti:nth-child(2) {
-            left: 32%;
-            top: 2%;
-            animation-delay: 0.12s;
-        }
-
-        .confetti:nth-child(3) {
-            left: 50%;
-            top: 4%;
-            animation-delay: 0.2s;
-        }
-
-        .confetti:nth-child(4) {
-            right: 32%;
-            top: 2%;
-            animation-delay: 0.08s;
-        }
-
-        .confetti:nth-child(5) {
-            right: 17%;
-            top: 6%;
-            animation-delay: 0.18s;
-        }
-
-        @keyframes victoryPop {
-            0% {
-                transform: scale(0.88);
-                opacity: 0;
-            }
-
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        @keyframes victoryFloat {
-            0%, 100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-5px);
-            }
-        }
-
-        @keyframes confettiFall {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 0;
-            }
-
-            15% {
-                opacity: 0.8;
-            }
-
-            100% {
-                transform: translateY(115px) rotate(120deg);
-                opacity: 0;
-            }
-        }
-
-        .btn {
-            width: 100%;
-            padding: 10px 17px;
-            border: 1px solid var(--accent-border);
-            border-radius: 100px;
-            background: var(--card-bg);
-            color: var(--text-heading);
-            font-family: Georgia, "Times New Roman", serif;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn:hover {
-            background: var(--accent-soft);
-            transform: translateY(-1px);
-        }
-
-        @media (max-width: 600px) {
-            header {
-                min-height: 66px;
-                padding: 12px 11px;
-                gap: 8px;
-            }
-
-            main {
-                padding: 20px 11px 30px;
-            }
-
-            .game-card {
-                padding: 13px;
-            }
-
-            .pixel-game {
-                min-height: 190px;
-            }
-
-            .modal-card {
-                max-width: 340px;
-                padding: 30px 21px 23px;
-            }
+        .controls-hint {
+            margin-top: 12px;
+            font-size: 12px;
+            color: #777;
+            text-align: center;
+            letter-spacing: 0.5px;
         }
     </style>
 </head>
 <body>
 
-    <div class="decorations">
-        <span>✦</span>
-        <span>✧</span>
-        <span>♡</span>
-        <span>✦</span>
-        <span>✧</span>
-        <span>♡</span>
+<div class="arcade-cabinet">
+    <div class="game-header">
+        <span>🐰 BUNNY HOP ARCADE</span>
+        <span>CONTROLS: SPACE / UP / CLICK TO JUMP & DUCK</span>
     </div>
-
-    <header>
-        <div class="header-left">
-            <a onclick="goBack()" class="nav-link">← Back to Games</a>
-        </div>
-
-        <div class="header-right">
-            <div class="coin-display">
-                <span class="coin-count">0</span> Coins
-            </div>
-        </div>
-    </header>
-
-    <main>
-        <div class="ornament">
-            <span>✦</span><i></i><span>♡</span><i></i><span>✦</span>
-        </div>
-
-        <h1>Bunny Jump</h1>
-        <p class="subtitle">Hop over the cactuses and see how far you can go.</p>
-
-        <div class="game-card">
-            <div class="game-top">
-                <div class="score-box">
-                    <span>SCORE</span>
-                    <span class="score-value" id="score">00000</span>
-                </div>
-
-                <div class="score-box high-score">
-                    <span>BEST</span>
-                    <span class="score-value" id="high-score">00000</span>
-                </div>
-            </div>
-
-            <canvas id="game" class="pixel-game" width="480" height="210"></canvas>
-
-            <p class="game-hint">Tap, click, or press SPACE to jump</p>
-        </div>
-
-        <div class="ornament" style="margin-top: 30px; margin-bottom: 0;">
-            <span>✧</span><i></i><span>♡</span><i></i><span>✧</span>
-        </div>
-    </main>
-
-    <div id="reward-modal" class="modal-overlay">
-        <div class="modal-card">
-            <span class="confetti">✦</span>
-            <span class="confetti">✧</span>
-            <span class="confetti">♡</span>
-            <span class="confetti">✦</span>
-            <span class="confetti">✧</span>
-
-            <div class="victory-decoration">
-                <span>✦</span>
-                <i></i>
-                <span>♡</span>
-                <i></i>
-                <span>✦</span>
-            </div>
-
-            <div class="victory-symbol" id="victory-symbol">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                </svg>
-            </div>
-
-            <h2 id="modal-title">Run Over</h2>
-            <p id="modal-desc">The cactus got you.</p>
-
-            <div class="reward-amount" id="reward-amount">+10 Coins</div>
-
-            <button class="btn" onclick="restartGame()">Try Again</button>
-        </div>
+    <div class="game-window">
+        <canvas id="gameCanvas" width="800" height="350"></canvas>
     </div>
+    <div class="controls-hint">
+        [ SPACEBAR or UP ARROW ] Jump &nbsp;|&nbsp; [ DOWN ARROW ] Duck / Fast Fall
+    </div>
+</div>
 
-    <script src="../script.js"></script>
-    <script>
-        const AudioFX = {
-            ctx: null,
+<script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
 
-            init() {
-                if (!this.ctx) {
-                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                    if (AudioCtx) this.ctx = new AudioCtx();
-                }
-            },
+    // Game States
+    const STATE = { START: 0, PLAYING: 1, GAMEOVER: 2 };
+    let gameState = STATE.START;
 
-            play(type) {
-                this.init();
-                if (!this.ctx) return;
+    let score = 0;
+    let highScore = 0;
+    let gameSpeed = 5;
+    let frameCount = 0;
+    let particles = [];
+    let clouds = [
+        { x: 100, y: 60, speed: 0.8 },
+        { x: 400, y: 90, speed: 1.2 },
+        { x: 700, y: 50, speed: 1.0 }
+    ];
+    let obstacles = [];
 
-                if (this.ctx.state === 'suspended') {
-                    this.ctx.resume();
-                }
+    // Bunny Character (Sandy Lop-eared Design)
+    let bunny = {
+        x: 80,
+        y: 242,
+        width: 52,
+        height: 44,
+        normalHeight: 44,
+        duckHeight: 26,
+        vy: 0,
+        gravity: 0.7,
+        jumpForce: -12.5,
+        isGrounded: true,
+        isDuck: false
+    };
 
-                const now = this.ctx.currentTime;
-                const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
+    // Input Trackers
+    const keys = {};
 
-                osc.connect(gain);
-                gain.connect(this.ctx.destination);
-
-                if (type === 'jump') {
-                    osc.type = 'square';
-                    osc.frequency.setValueAtTime(420, now);
-                    osc.frequency.exponentialRampToValueAtTime(620, now + 0.09);
-                    gain.gain.setValueAtTime(0.045, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
-                    osc.start(now);
-                    osc.stop(now + 0.09);
-                }
-
-                if (type === 'hit') {
-                    osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(180, now);
-                    osc.frequency.exponentialRampToValueAtTime(70, now + 0.3);
-                    gain.gain.setValueAtTime(0.16, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
-                    osc.start(now);
-                    osc.stop(now + 0.3);
-                }
-
-                if (type === 'score') {
-                    osc.type = 'square';
-                    osc.frequency.setValueAtTime(620, now);
-                    osc.frequency.setValueAtTime(760, now + 0.045);
-                    gain.gain.setValueAtTime(0.035, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
-                    osc.start(now);
-                    osc.stop(now + 0.08);
-                }
-            }
-        };
-
-        const canvas = document.getElementById('game');
-        const ctx = canvas.getContext('2d');
-
-        ctx.imageSmoothingEnabled = false;
-
-        const scoreElement = document.getElementById('score');
-        const highScoreElement = document.getElementById('high-score');
-
-        let bunny;
-        let cactuses = [];
-        let clouds = [];
-        let score = 0;
-        let highScore = Number(localStorage.getItem('bunny_jump_best') || 0);
-        let gameStarted = false;
-        let gameOver = false;
-        let lastTime = 0;
-        let cactusTimer = 0;
-        let cloudTimer = 0;
-        let worldDistance = 0;
-        let rewardGiven = false;
-
-        const groundY = 174;
-        const PIXEL = 3;
-
-        highScoreElement.innerText = String(highScore).padStart(5, '0');        function goBack() {
-            if (window.history.length > 1) {
-                window.history.back();
-            } else {
-                window.location.href = '../index.html';
-            }
+    window.addEventListener("keydown", (e) => {
+        if (["Space", "ArrowUp", "ArrowDown", "KeyW", "KeyS"].includes(e.code)) {
+            e.preventDefault(); // Stop page scrolling
         }
+        keys[e.code] = true;
 
-        function loadSavedTheme() {
-            const savedTheme = localStorage.getItem('arcade_theme');
-
-            if (savedTheme && savedTheme !== 'blue') {
-                document.body.setAttribute('data-theme', savedTheme);
-            } else {
-                document.body.removeAttribute('data-theme');
-            }
+        if (e.code === "Space" || e.code === "ArrowUp" || e.code === "KeyW") {
+            triggerJump();
         }
+    });
 
-        function getTheme() {
-            return localStorage.getItem('arcade_theme') || 'blue';
+    window.addEventListener("keyup", (e) => {
+        keys[e.code] = false;
+    });
+
+    canvas.addEventListener("click", () => {
+        triggerJump();
+    });
+
+    function triggerJump() {
+        if (gameState === STATE.START || gameState === STATE.GAMEOVER) {
+            startGame();
+        } else if (gameState === STATE.PLAYING && bunny.isGrounded && !bunny.isDuck) {
+            bunny.vy = bunny.jumpForce;
+            bunny.isGrounded = false;
+            createJumpDust();
         }
+    }
 
-        function getSkyColors() {
-            const theme = getTheme();
+    function startGame() {
+        gameState = STATE.PLAYING;
+        score = 0;
+        gameSpeed = 5;
+        obstacles = [];
+        particles = [];
+        bunny.y = 242;
+        bunny.vy = 0;
+        bunny.isGrounded = true;
+        frameCount = 0;
+    }
 
-            const skies = {
-                blue: {
-                    top: '#dcecf7',
-                    bottom: '#f4f8fa',
-                    cloud: '#ffffff',
-                    sun: '#f4d9a6',
-                    distant: '#c7dce8',
-                    line: '#718995'
-                },
-
-                pink: {
-                    top: '#f3d9e4',
-                    bottom: '#fcf3f6',
-                    cloud: '#fff8fa',
-                    sun: '#edb9c9',
-                    distant: '#e3bdcb',
-                    line: '#9a6878'
-                },
-
-                green: {
-                    top: '#dcebdc',
-                    bottom: '#f4f8f2',
-                    cloud: '#fbfff9',
-                    sun: '#d9d99d',
-                    distant: '#c4d9c2',
-                    line: '#66836a'
-                },
-
-                lavender: {
-                    top: '#e5ddf2',
-                    bottom: '#f8f5fb',
-                    cloud: '#fffaff',
-                    sun: '#d9c5e7',
-                    distant: '#d0c5e4',
-                    line: '#786b91'
-                },
-
-                yellow: {
-                    top: '#f1e8c8',
-                    bottom: '#fcfaf1',
-                    cloud: '#fffdf4',
-                    sun: '#e5c96e',
-                    distant: '#ddd2a8',
-                    line: '#8c8056'
-                }
-            };
-
-            return skies[theme] || skies.blue;
-        }
-
-        function resetObjects() {
-            bunny = {
-                x: 58,
-                y: groundY - 39,
-                width: 30,
-                height: 39,
-                velocityY: 0,
-                jumping: false,
-                frame: 0
-            };
-
-            cactuses = [];
-            clouds = [];
-            score = 0;
-            cactusTimer = 0;
-            cloudTimer = 0;
-            worldDistance = 0;
-            rewardGiven = false;
-
-            scoreElement.innerText = '00000';
-
-            clouds.push(
-                { x: 75, y: 34, speed: 0.16, size: 1 },
-                { x: 260, y: 59, speed: 0.22, size: 0.8 },
-                { x: 420, y: 29, speed: 0.13, size: 1.15 }
-            );
-        }
-
-        function drawPixelRect(x, y, width, height, color) {
-            ctx.fillStyle = color;
-            ctx.fillRect(
-                Math.round(x / PIXEL) * PIXEL,
-                Math.round(y / PIXEL) * PIXEL,
-                Math.round(width / PIXEL) * PIXEL,
-                Math.round(height / PIXEL) * PIXEL
-            );
-        }
-
-        function drawPixelShape(x, y, pixels, color) {
-            pixels.forEach(pixel => {
-                drawPixelRect(
-                    x + pixel[0] * PIXEL,
-                    y + pixel[1] * PIXEL,
-                    PIXEL,
-                    PIXEL,
-                    color
-                );
+    function createJumpDust() {
+        for (let i = 0; i < 6; i++) {
+            particles.push({
+                x: bunny.x + 20 + (Math.random() * 20 - 10),
+                y: 286,
+                vx: Math.random() * 2 - 1,
+                vy: -Math.random() * 2 - 0.5,
+                radius: Math.random() * 3 + 1,
+                alpha: 0.8
             });
         }
+    }
 
-        function drawCloud(cloud) {
-            const sky = getSkyColors();
-            const s = cloud.size;
+    function spawnObstacle() {
+        const types = [
+            // Single Regular Cactus
+            { type: 'cactus', width: 26, height: 48, y: 240, subtype: 'single' },
+            // Wide Multi-arm Cactus
+            { type: 'cactus', width: 44, height: 56, y: 232, subtype: 'triple' },
+            // Small Cluster
+            { type: 'cactus', width: 34, height: 36, y: 252, subtype: 'cluster' },
+            // High Flying Bird / Pterodactyl style obstacle (requires ducking!)
+            { type: 'bird', width: 40, height: 26, y: 195, anim: 0 }
+        ];
 
-            drawPixelRect(cloud.x + 6 * s, cloud.y + 6 * s, 39 * s, 9 * s, sky.cloud);
-            drawPixelRect(cloud.x + 13 * s, cloud.y + 1 * s, 20 * s, 14 * s, sky.cloud);
-            drawPixelRect(cloud.x + 22 * s, cloud.y - 4 * s, 12 * s, 19 * s, sky.cloud);
-            drawPixelRect(cloud.x, cloud.y + 11 * s, 52 * s, 8 * s, sky.cloud);
+        // Favor cacti early on, introduce birds after score reaches 100
+        let availableTypes = types;
+        if (score < 100) {
+            availableTypes = types.filter(t => t.type === 'cactus');
         }
 
-        function drawSun() {
-            const sky = getSkyColors();
+        const chosen = availableTypes[Math.floor(Math.random() * availableTypes.length)];
+        
+        obstacles.push({
+            x: canvas.width + 50,
+            y: chosen.y,
+            width: chosen.width,
+            height: chosen.height,
+            type: chosen.type,
+            subtype: chosen.subtype || 'none',
+            animFrame: 0
+        });
+    }
 
-            drawPixelRect(392, 29, 18, 18, sky.sun);
-            drawPixelRect(386, 35, 30, 6, sky.sun);
-            drawPixelRect(398, 23, 6, 30, sky.sun);
+    function update() {
+        if (gameState !== STATE.PLAYING) return;
+
+        frameCount++;
+        score += 0.12;
+
+        // Dynamic Difficulty Scaling (Gradually increases speed)
+        gameSpeed = 5 + Math.floor(score / 120) * 0.6;
+        if (gameSpeed > 11) gameSpeed = 11; // Speed cap for playability
+
+        // Ducking mechanics check
+        if (keys["ArrowDown"] || keys["KeyS"]) {
+            if (bunny.isGrounded) {
+                bunny.isDuck = true;
+                bunny.height = bunny.duckHeight;
+            } else {
+                // Fast fall if holding down in mid-air
+                bunny.vy += 1.2;
+            }
+        } else {
+            bunny.isDuck = false;
+            bunny.height = bunny.normalHeight;
         }
 
-        function drawBackground() {
-            const sky = getSkyColors();
+        // Apply Gravity & Physics
+        bunny.vy += bunny.gravity;
+        bunny.y += bunny.vy;
 
-            const gradient = ctx.createLinearGradient(0, 0, 0, groundY);
-            gradient.addColorStop(0, sky.top);
-            gradient.addColorStop(1, sky.bottom);
+        const groundLevel = 286 - bunny.height;
+        if (bunny.y >= groundLevel) {
+            bunny.y = groundLevel;
+            bunny.vy = 0;
+            bunny.isGrounded = true;
+        }
 
-            ctx.fillStyle = gradient;
+        // Background Clouds Update
+        clouds.forEach(cloud => {
+            cloud.x -= cloud.speed;
+            if (cloud.x < -80) {
+                cloud.x = canvas.width + 60;
+                cloud.y = 30 + Math.random() * 90;
+            }
+        });
+
+        // Obstacle Spawning Logic
+        let minSpawnGap = 260 - (gameSpeed * 10);
+        if (minSpawnGap < 140) minSpawnGap = 140;
+
+        if (obstacles.length === 0 || canvas.width - obstacles[obstacles.length - 1].x > minSpawnGap + Math.random() * 120) {
+            if (Math.random() < 0.85) {
+                spawnObstacle();
+            }
+        }
+
+        // Update Obstacles & Check Collisions
+        for (let i = obstacles.length - 1; i >= 0; i--) {
+            let obs = obstacles[i];
+            obs.x -= gameSpeed;
+
+            if (obs.type === 'bird') {
+                obs.animFrame += 0.15; // Wing flap animation cycle
+            }
+
+            // Precise Bounding Box Collision with hitbox buffer
+            const hitBufferX = 8;
+            const hitBufferY = 6;
+            
+            if (
+                bunny.x + hitBufferX < obs.x + obs.width - hitBufferX &&
+                bunny.x + bunny.width - hitBufferX > obs.x + hitBufferX &&
+                bunny.y + hitBufferY < obs.y + obs.height &&
+                bunny.y + bunny.height > obs.y + hitBufferY
+            ) {
+                gameState = STATE.GAMEOVER;
+                if (Math.floor(score) > highScore) {
+                    highScore = Math.floor(score);
+                }
+            }
+
+            // Remove off-screen items
+            if (obs.x + obs.width < -50) {
+                obstacles.splice(i, 1);
+            }
+        }
+
+        // Update Ground Dust Particles
+        particles.forEach((p, index) => {
+            p.x += p.vx - (gameSpeed * 0.4);
+            p.y += p.vy;
+            p.alpha -= 0.03;
+            if (p.alpha <= 0) particles.splice(index, 1);
+        });
+    }
+
+    // --- DRAWING FUNCTIONS ---
+
+    function drawSkyAndBackground() {
+        // Dynamic day/night subtle hue shift based on score milestones
+        let phase = Math.floor(score / 300) % 2;
+        let skyGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        
+        if (phase === 0) {
+            // Day Theme (Blue sky, fluffy pixel clouds)
+            skyGradient.addColorStop(0, "#5b8c9d");
+            skyGradient.addColorStop(1, "#86a9b5");
+        } else {
+            // Sunset / Dusk Theme (Purple-orange arcade atmosphere)
+            skyGradient.addColorStop(0, "#4a3554");
+            skyGradient.addColorStop(1, "#7d5a64");
+        }
+        
+        ctx.fillStyle = skyGradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Draw Clouds
+        clouds.forEach(c => {
+            ctx.fillStyle = "rgba(255, 255, 255, 0.45)";
+            ctx.fillRect(c.x, c.y, 54, 16);
+            ctx.fillRect(c.x + 10, c.y - 8, 34, 10);
+            ctx.fillRect(c.x + 8, c.y + 14, 40, 8);
+        });
+    }
+
+    function drawGround() {
+        // Arid Desert Terrain
+        ctx.fillStyle = "#b58c63";
+        ctx.fillRect(0, 286, canvas.width, 64);
+
+        // Top soil highlight line
+        ctx.fillStyle = "#8a6542";
+        ctx.fillRect(0, 286, canvas.width, 5);
+
+        // Scrolling pixel pebbles & ground cracks
+        ctx.fillStyle = "#63472d";
+        let patternOffset = Math.floor((frameCount * gameSpeed) % 50);
+        for (let i = -50; i < canvas.width + 50; i += 50) {
+            let px = i - patternOffset;
+            ctx.fillRect(px + 12, 302, 5, 3);
+            ctx.fillRect(px + 30, 318, 8, 2);
+            ctx.fillRect(px + 42, 298, 4, 4);
+        }
+
+        // Draw Dust Particles
+        particles.forEach(p => {
+            ctx.fillStyle = `rgba(215, 195, 175, ${p.alpha})`;
+            ctx.fillRect(p.x, p.y, p.radius * 2, p.radius * 2);
+        });
+    }
+
+    function drawBunny(x, y) {
+        // Sandy Cream / Golden-Brown Lop Bunny Styling
+        if (bunny.isDuck) {
+            // Ducking Posture (Sleek low profile)
+            ctx.fillStyle = "#f3e1c6";
+            ctx.fillRect(x + 6, y + 8, 40, 18); // Flattened body
+
+            ctx.fillStyle = "#f9eedc";
+            ctx.fillRect(x + 28, y + 2, 20, 16); // Head tucked forward
+
+            // Floppy ears sweeping back
+            ctx.fillStyle = "#e2caaa";
+            ctx.fillRect(x + 10, y + 4, 20, 7);
+
+            // Eye & nose
+            ctx.fillStyle = "#3c2817";
+            ctx.fillRect(x + 42, y + 6, 3, 3);
+            ctx.fillRect(x + 46, y + 10, 2, 2);
+        } else {
+            // Standard / Jumping Posture
+            // Main Torso
+            ctx.fillStyle = "#f3e1c6";
+            ctx.fillRect(x + 10, y + 12, 32, 24);
+
+            // Head Structure
+            ctx.fillStyle = "#f9eedc";
+            ctx.fillRect(x + 24, y + 2, 22, 20);
+
+            // Characteristic Long Floppy Lop Ears
+            ctx.fillStyle = "#e2caaa";
+            ctx.fillRect(x + 16, y + 6, 8, 24); // Left floppy ear
+            ctx.fillRect(x + 38, y + 8, 9, 22); // Right floppy ear
+
+            // Face Details (Dark brown eyes & tiny twitchy nose)
+            ctx.fillStyle = "#3c2817";
+            ctx.fillRect(x + 37, y + 8, 3, 4);
+            ctx.fillRect(x + 43, y + 13, 2, 2);
+
+            // Soft White Belly Patch & Paws
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(x + 28, y + 22, 12, 14); // Chest tuft
+            ctx.fillRect(x + 12, y + 32, 8, 8);   // Back paw
+            ctx.fillRect(x + 32, y + 34, 8, 6);   // Front paw
+            
+            // Fluffy Cottontail
+            ctx.fillRect(x + 5, y + 18, 6, 6);
+        }
+    }
+
+    function drawObstacle(obs) {
+        if (obs.type === 'cactus') {
+            ctx.fillStyle = "#4c7c50"; // Vibrant desert cactus green
+
+            if (obs.subtype === 'triple') {
+                // Tall multi-arm cactus matching reference assets
+                ctx.fillRect(obs.x + 16, obs.y, 14, 56);
+                // Left arm
+                ctx.fillRect(obs.x, obs.y + 16, 11, 24);
+                ctx.fillRect(obs.x + 6, obs.y + 16, 5, 8);
+                // Right arm
+                ctx.fillRect(obs.x + 33, obs.y + 22, 11, 24);
+                obs.x + 33 && ctx.fillRect(obs.x + 33, obs.y + 22, 5, 8);
+
+                // Spiny highlight details
+                ctx.fillStyle = "#2c462e";
+                ctx.fillRect(obs.x + 21, obs.y + 8, 2, 5);
+                ctx.fillRect(obs.x + 21, obs.y + 30, 2, 5);
+                ctx.fillRect(obs.x + 4, obs.y + 22, 2, 3);
+            } else if (obs.subtype === 'cluster') {
+                // Short multi-cluster cactus
+                ctx.fillRect(obs.x + 4, obs.y + 6, 10, 30);
+                ctx.fillRect(obs.x + 18, obs.y, 12, 36);
+                ctx.fillRect(obs.x + 26, obs.y + 12, 8, 24);
+            } else {
+                // Standard single cactus stalk
+                ctx.fillRect(obs.x + 8, obs.y, 12, 48);
+                ctx.fillRect(obs.x, obs.y + 14, 28, 7); // side branches
+                
+                ctx.fillStyle = "#2c462e";
+                ctx.fillRect(obs.x + 13, obs.y + 6, 2, 5);
+            }
+        } else if (obs.type === 'bird') {
+            // Flying Desert Hawk / Pterodactyl equivalent obstacle
+            ctx.fillStyle = "#705663";
+            ctx.fillRect(obs.x + 10, obs.y + 8, 20, 10); // Body
+            ctx.fillRect(obs.x + 28, obs.y + 10, 8, 6);   // Head/Beak
+
+            // Flapping Wings depending on animation cycle frame
+            ctx.fillStyle = "#8a6d7d";
+            let flapState = Math.floor(obs.animFrame) % 2;
+            if (flapState === 0) {
+                // Wings Up
+                ctx.fillRect(obs.x + 12, obs.y, 14, 8);
+            } else {
+                // Wings Down
+                ctx.fillRect(obs.x + 12, obs.y + 16, 14, 8);
+            }
+        }
+    }
+
+    function drawUI() {
+        // High Score & Current Scoreboard Display
+        ctx.fillStyle = "#666";
+        ctx.font = "bold 16px 'Courier New', monospace";
+        
+        let scoreStr = Math.floor(score).toString().padStart(5, '0');
+        let hiStr = highScore.toString().padStart(5, '0');
+        
+        ctx.fillText(`HI: ${hiStr}  ${scoreStr}`, canvas.width - 215, 30);
+
+        if (gameState === STATE.START) {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.45)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            drawSun();
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "bold 28px 'Courier New', monospace";
+            ctx.textAlign = "center";
+            ctx.fillText("BUNNY HOP ARCADE", canvas.width / 2, 125);
 
-            clouds.forEach(drawCloud);
+            ctx.font = "15px 'Courier New', monospace";
+            ctx.fillText("Press SPACEBAR, UP ARROW, or CLICK to Begin", canvas.width / 2, 170);
+            ctx.fillText("Jump over cacti & duck under flying desert hazards!", canvas.width / 2, 200);
 
-            drawPixelRect(0, groundY - 1, canvas.width, 2, sky.line);
+            // Preview Bunny Badge
+            ctx.fillStyle = "#f3e1c6";
+            ctx.fillRect(canvas.width / 2 - 26, 225, 52, 44);
+            
+            ctx.textAlign = "left"; // reset
+        } else if (gameState === STATE.GAMEOVER) {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.55)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            drawPixelRect(0, groundY + 1, canvas.width, 38, sky.bottom);
+            ctx.fillStyle = "#ff6b6b";
+            ctx.font = "bold 26px 'Courier New', monospace";
+            ctx.textAlign = "center";
+            ctx.fillText("G A M E   O V E R", canvas.width / 2, 130);
 
-            const offset = Math.floor(worldDistance) % 48;
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "15px 'Courier New', monospace";
+            ctx.fillText(`Final Score: ${Math.floor(score)}`, canvas.width / 2, 170);
+            ctx.fillText("Click or Press Space to Restart", canvas.width / 2, 205);
 
-            for (let x = -48 + offset; x < canvas.width + 48; x += 48) {
-                drawPixelRect(x, groundY + 12, 12, 2, sky.distant);
-                drawPixelRect(x + 24, groundY + 25, 6, 2, sky.distant);
-            }
+            ctx.textAlign = "left"; // reset
         }
+    }
 
-        function drawBunny() {
-            const x = bunny.x;
-            const y = bunny.y;
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            const outline = '#58443f';
-            const fur = '#fffaf2';
-            const shadow = '#e6d7c8';
-            const innerEar = '#e9a7a0';
-            const eye = '#493b38';
+        // Draw Environment Layers
+        drawSkyAndBackground();
+        drawGround();
 
-            const bunnyPixels = [
-                [4, 8], [5, 8], [6, 8],
-                [3, 9], [4, 9], [5, 9], [6, 9], [7, 9],
-                [3, 10], [4, 10], [5, 10], [6, 10], [7, 10],
-                [3, 11], [4, 11], [5, 11], [6, 11], [7, 11],
-                [2, 12], [3, 12], [4, 12], [5, 12], [6, 12], [7, 12], [8, 12],
-                [2, 13], [3, 13], [4, 13], [5, 13], [6, 13], [7, 13], [8, 13],
-                [2, 14], [3, 14], [4, 14], [5, 14], [6, 14], [7, 14], [8, 14],
-                [2, 15], [3, 15], [4, 15], [5, 15], [6, 15], [7, 15], [8, 15],
-                [3, 16], [4, 16], [5, 16], [6, 16], [7, 16], [8, 16],
-                [3, 17], [4, 17], [5, 17], [6, 17], [7, 17],
-                [4, 18], [5, 18], [6, 18],
-                [1, 19], [2, 19], [3, 19],
-                [7, 19], [8, 19], [9, 19],
-                [1, 20], [2, 20], [3, 20],
-                [7, 20], [8, 20], [9, 20]
-            ];
+        // Draw Obstacles (Cacti and Birds)
+        obstacles.forEach(obs => drawObstacle(obs));
 
-            drawPixelShape(x, y, bunnyPixels, outline);
+        // Draw Main Player Character (Bunny)
+        drawBunny(bunny.x, bunny.y);
 
-            const furPixels = [
-                [4, 9], [5, 9], [6, 9],
-                [4, 10], [5, 10], [6, 10],
-                [3, 11], [4, 11], [5, 11], [6, 11], [7, 11],
-                [3, 12], [4, 12], [5, 12], [6, 12], [7, 12],
-                [3, 13], [4, 13], [5, 13], [6, 13], [7, 13],
-                [3, 14], [4, 14], [5, 14], [6, 14], [7, 14],
-                [3, 15], [4, 15], [5, 15], [6, 15], [7, 15],
-                [4, 16], [5, 16], [6, 16],
-                [4, 17], [5, 17], [6, 17],
-                [2, 19], [3, 19],
-                [7, 19], [8, 19]
-            ];
+        // Draw UI & Overlays
+        drawUI();
+    }
 
-            drawPixelShape(x, y, furPixels, fur);
+    function mainLoop() {
+        update();
+        draw();
+        requestAnimationFrame(mainLoop);
+    }
 
-            drawPixelRect(x + 12, y + 3, 3, 12, outline);
-            drawPixelRect(x + 18, y + 3, 3, 12, outline);
+    // Start Execution Loop
+    mainLoop();
+</script>
 
-            drawPixelRect(x + 13, y + 5, 1, 7, innerEar);
-            drawPixelRect(x + 19, y + 5, 1, 7, innerEar);
-
-            drawPixelRect(x + 21, y + 14, 3, 3, eye);
-            drawPixelRect(x + 24, y + 17, 2, 2, outline);
-
-            drawPixelRect(x + 9, y + 16, 3, 3, shadow);
-
-            if (!bunny.jumping && bunny.frame % 2 === 0) {
-                drawPixelRect(x + 3, y + 21, 4, 2, outline);
-                drawPixelRect(x + 21, y + 21, 4, 2, outline);
-            }
-                }        function drawCactus(cactus) {
-            const x = cactus.x;
-            const y = groundY - cactus.height;
-
-            const dark = '#3f6650';
-            const green = '#5f8b69';
-            const light = '#8fb28f';
-
-            if (cactus.type === 1) {
-                drawPixelRect(x + 9, y, 12, cactus.height, dark);
-                drawPixelRect(x + 12, y + 3, 9, cactus.height - 6, green);
-                drawPixelRect(x + 15, y + 6, 3, cactus.height - 12, light);
-
-                drawPixelRect(x + 3, y + 14, 7, 6, dark);
-                drawPixelRect(x, y + 11, 6, 12, dark);
-                drawPixelRect(x + 4, y + 16, 6, 4, green);
-                drawPixelRect(x + 3, y + 13, 3, 7, green);
-            }
-
-            if (cactus.type === 2) {
-                drawPixelRect(x + 12, y, 15, cactus.height, dark);
-                drawPixelRect(x + 15, y + 3, 11, cactus.height - 6, green);
-                drawPixelRect(x + 19, y + 6, 3, cactus.height - 12, light);
-
-                drawPixelRect(x + 3, y + 17, 9, 6, dark);
-                drawPixelRect(x, y + 13, 6, 14, dark);
-                drawPixelRect(x + 4, y + 19, 8, 4, green);
-                drawPixelRect(x + 3, y + 15, 3, 9, green);
-
-                drawPixelRect(x + 27, y + 23, 9, 6, dark);
-                drawPixelRect(x + 31, y + 18, 6, 14, dark);
-                drawPixelRect(x + 27, y + 25, 9, 4, green);
-                drawPixelRect(x + 32, y + 20, 3, 8, green);
-            }
-        }
-
-        function spawnCactus() {
-            const type = Math.random() < 0.68 ? 1 : 2;
-
-            cactuses.push({
-                x: canvas.width + 12,
-                height: type === 1 ? 27 : 36,
-                width: type === 1 ? 27 : 37,
-                type,
-                passed: false
-            });
-        }
-
-        function jump() {
-            if (gameOver) return;
-
-            if (!gameStarted) {
-                gameStarted = true;
-
-                if (cactuses.length === 0) {
-                    cactuses.push({
-                        x: canvas.width + 105,
-                        height: 27,
-                        width: 27,
-                        type: 1,
-                        passed: false
-                    });
-                }
-            }
-
-            if (!bunny.jumping) {
-                bunny.velocityY = -8.9;
-                bunny.jumping = true;
-                AudioFX.play('jump');
-            }
-        }
-
-        function checkCollision(cactus) {
-            const bx = bunny.x + 6;
-            const by = bunny.y + 6;
-            const bw = bunny.width - 11;
-            const bh = bunny.height - 8;
-
-            const cx = cactus.x + 5;
-            const cy = groundY - cactus.height + 2;
-            const cw = cactus.width - 10;
-            const ch = cactus.height - 3;
-
-            return (
-                bx < cx + cw &&
-                bx + bw > cx &&
-                by < cy + ch &&
-                by + bh > cy
-            );
-        }
-
-        function getSpeed() {
-            return Math.min(8.2, 4.0 + score / 900);
-        }
-
-        function getSpawnDelay() {
-            return Math.max(850, 1550 - score * 1.7);
-        }
-
-        function updateScore(delta) {
-            score += delta * 0.012;
-
-            const displayedScore = Math.floor(score);
-
-            scoreElement.innerText = String(displayedScore).padStart(5, '0');
-
-            if (displayedScore > highScore) {
-                highScore = displayedScore;
-                highScoreElement.innerText = String(highScore).padStart(5, '0');
-                localStorage.setItem('bunny_jump_best', highScore);
-            }
-        }
-
-        function update(delta) {
-            if (!gameStarted || gameOver) return;
-
-            const speed = getSpeed();
-
-            updateScore(delta);
-
-            bunny.velocityY += 0.48;
-            bunny.y += bunny.velocityY;
-
-            if (bunny.y >= groundY - bunny.height) {
-                bunny.y = groundY - bunny.height;
-                bunny.velocityY = 0;
-                bunny.jumping = false;
-            }
-
-            bunny.frame += 1;
-
-            worldDistance += speed;
-
-            cactusTimer += delta;
-
-            const spawnDelay = getSpawnDelay();
-
-            if (cactuses.length > 0 && cactusTimer >= spawnDelay) {
-                const lastCactus = cactuses[cactuses.length - 1];
-
-                if (lastCactus.x < canvas.width - 170) {
-                    spawnCactus();
-                    cactusTimer = 0;
-                }
-            }
-
-            cactuses.forEach(cactus => {
-                cactus.x -= speed;
-
-                if (!cactus.passed && cactus.x + cactus.width < bunny.x) {
-                    cactus.passed = true;
-                    AudioFX.play('score');
-                }
-
-                if (checkCollision(cactus)) {
-                    endGame();
-                }
-            });
-
-            cactuses = cactuses.filter(cactus => cactus.x > -70);
-
-            cloudTimer += delta;
-
-            if (cloudTimer > 2600) {
-                clouds.push({
-                    x: canvas.width + 20,
-                    y: 27 + Math.random() * 65,
-                    speed: 0.13 + Math.random() * 0.12,
-                    size: 0.75 + Math.random() * 0.45
-                });
-
-                cloudTimer = 0;
-            }
-
-            clouds.forEach(cloud => {
-                cloud.x -= cloud.speed;
-            });
-
-            clouds = clouds.filter(cloud => cloud.x > -90);
-        }
-
-        function drawStartScreen() {
-            drawBackground();
-            drawBunny();
-
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-
-            const sky = getSkyColors();
-
-            ctx.fillStyle = sky.line;
-            ctx.font = 'bold 18px monospace';
-            ctx.fillText('TAP TO START', canvas.width / 2, 73);
-
-            ctx.font = '11px monospace';
-            ctx.fillText('JUMP OVER THE CACTUSES', canvas.width / 2, 94);
-        }
-
-        function drawGameOver() {
-            drawBackground();
-
-            cactuses.forEach(drawCactus);
-            drawBunny();
-
-            const sky = getSkyColors();
-
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.72)';
-            ctx.fillRect(0, 0, canvas.width, groundY);
-
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-
-            ctx.fillStyle = sky.line;
-            ctx.font = 'bold 18px monospace';
-            ctx.fillText('GAME OVER', canvas.width / 2, 70);
-
-            ctx.font = '11px monospace';
-            ctx.fillText('TAP TO TRY AGAIN', canvas.width / 2, 93);
-        }
-
-        function draw() {
-            if (gameOver) {
-                drawGameOver();
-                return;
-            }
-
-            drawBackground();
-
-            cactuses.forEach(drawCactus);
-            drawBunny();
-
-            if (!gameStarted) {
-                drawStartScreen();
-            }
-        }
-
-        function gameLoop(timestamp) {
-            const delta = Math.min(50, timestamp - lastTime);
-            lastTime = timestamp;
-
-            update(delta);
-            draw();
-
-            requestAnimationFrame(gameLoop);
-        }
-
-        function endGame() {
-            if (gameOver) return;
-
-            gameOver = true;
-            AudioFX.play('hit');
-
-            const finalScore = Math.floor(score);
-
-            if (finalScore > highScore) {
-                highScore = finalScore;
-                localStorage.setItem('bunny_jump_best', highScore);
-                highScoreElement.innerText = String(highScore).padStart(5, '0');
-            }
-
-            let reward = 10;
-
-            if (finalScore >= 100) {
-                reward = 15;
-            }
-
-            if (finalScore >= 250) {
-                reward = 20;
-            }
-
-            if (finalScore >= 500) {
-                reward = 25;
-            }
-
-            if (finalScore >= 1000) {
-                reward = 35;
-            }
-
-            if (!rewardGiven) {
-                rewardGiven = true;
-
-                if (typeof addCoins === 'function') {
-                    addCoins(reward);
-                }
-            }
-
-            setTimeout(() => {
-                showGameOverModal(finalScore, reward);
-            }, 300);
-        }
-
-        function showGameOverModal(finalScore, reward) {
-            const modal = document.getElementById('reward-modal');
-            const card = modal.querySelector('.modal-card');
-            const symbol = document.getElementById('victory-symbol');
-            const amount = document.getElementById('reward-amount');
-
-            card.classList.add('game-over');
-
-            symbol.innerHTML = `
-                <svg width="32" height="32" viewBox="0 0 32 32" fill="currentColor">
-                    <path d="M16 28l-1.8-1.6C7.6 20.4 3 16.3 3 11.2 3 7 6.3 3.5 10.5 3.5c2.4 0 4.7 1.1 6.2 3 1.5-1.9 3.8-3 6.2-3C25.7 3.5 29 7 29 11.2c0 5.1-4.6 9.2-11.2 15.2L16 28z" fill="none"/>
-                    <path d="M16 28l-1.8-1.6C7.6 20.4 3 16.3 3 11.2 3 7 6.3 3.5 10.5 3.5c2.4 0 4.7 1.1 6.2 3V12l-3 3 4 4-5 5 1.6 3z"/>
-                    <path d="M16.7 6.5c1.5-1.9 3.8-3 6.2-3C25.7 3.5 29 7 29 11.2c0 5.1-4.6 9.2-11.2 15.2L16 28v-6l3-3-4-4 3-3V6.5z"/>
-                </svg>
-            `;
-
-            document.getElementById('modal-title').innerText = 'Run Over';
-            document.getElementById('modal-desc').innerText =
-                `You made it ${finalScore} points before the cactus got you.`;
-
-            amount.innerText = `+${reward} Coins`;
-            amount.style.display = 'inline-block';
-
-            modal.style.display = 'flex';
-        }
-
-        function restartGame() {
-            document.getElementById('reward-modal').style.display = 'none';
-
-            const card = document.querySelector('.modal-card');
-            card.classList.remove('game-over');
-
-            gameStarted = false;
-            gameOver = false;
-
-            resetObjects();
-            draw();
-        }
-
-        function handleInput(event) {
-            if (event) {
-                event.preventDefault();
-            }
-
-            if (gameOver) {
-                restartGame();
-                setTimeout(jump, 50);
-                return;
-            }
-
-            jump();
-        }
-
-        canvas.addEventListener('pointerdown', handleInput);
-
-        document.addEventListener('keydown', event => {
-            if (
-                event.code === 'Space' ||
-                event.code === 'ArrowUp' ||
-                event.code === 'KeyW'
-            ) {
-                handleInput(event);
-            }
-        });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            loadSavedTheme();
-
-            if (typeof updateCoinDisplays === 'function') {
-                updateCoinDisplays();
-            }
-
-            resetObjects();
-            draw();
-            requestAnimationFrame(gameLoop);
-        });
-    </script>
 </body>
-</html>
+    </html>
+    
