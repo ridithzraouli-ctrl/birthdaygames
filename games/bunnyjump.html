@@ -4,10 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Bunny Run</title>
-
 <style>
 *{box-sizing:border-box}
-
 html,body{
     margin:0;
     width:100%;
@@ -15,31 +13,26 @@ html,body{
     overflow:hidden;
     background:#8a9ca5;
 }
-
 body{
     display:flex;
     align-items:center;
     justify-content:center;
     font-family:Georgia,serif;
 }
-
 #game{
     width:min(960px,100vw);
     height:auto;
     image-rendering:pixelated;
     image-rendering:crisp-edges;
     display:block;
-    touch-action:none;
 }
 </style>
 </head>
-
 <body>
 
 <canvas id="game" width="960" height="540"></canvas>
 
 <script>
-
 const canvas=document.getElementById("game");
 const ctx=canvas.getContext("2d");
 
@@ -53,75 +46,46 @@ const BG="#8a9ca5";
 const DARK="#1a180b";
 const GROUND_COLOR="#6a5c3f";
 
-
-/* =========================
-   BUNNY SPRITES
-========================= */
-
 const idleImage=new Image();
+
 const runImage=new Image();
+
+// Updated running animation sprite for the crouching bunny style
+runImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAcCAYAAAB4fbODAAAEI0lEQVR42u1aPZLTQAxdO85lU1BSbMh1gBOkUblL4AiUCqE5AuUSb3Yg+pGjF1A5s4p3T+h2P2nO74mN1E4m1W+P1Zp2tSZrZlZn5k8EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAsL9jT2W6n02s9iFf5a507v9k6/Y6K1W2iKzVfK5p1oIu9838y24E+2X7W8S+3N6uY2W5kXzS3iK1fC1vV901/71i1jV/2fB29cZ73T4U6f1v9q3G6x86iT15qO3nO5/O9uY8vCg4N0/VqWjJ3tW9c2f6O7e989u6L5m9Nvd0b0e5J2U0a0d9pS45d30v211lPqj5a9x7+U+lVzL9kH8560vF+cZ/8+Z/Vv/5bW53qT/d334y1Xl1+V65a9pT+M7/1k+49XvL5qW1j0238yZ2f1u4v933F67x/4zLftn7Vw/3Xp5b1N31TfvY/xN03W90XfK8Tvd/0z5K4lWj72b/p9+fVlH7/9VevvW//0w+0bW/X5fI7+zef/Oee/Fq7X4yv12G1l4w79vS3v0/Mv2M8Hn5Z5+85b4d7l74rX//o4/a7t35f+L54b9d//T//r3e/71u+/p5N9+8/O+0K8Odf5P6u7f6X/9+W/7e9vS3X0+9vS1t3rTf1tJ3//O9v4j+/W2/m4N7p//7+d/O9u92t/9P+x7dZ5s8f+b3v92N/8X/6X+N0d/s3/5O8v4d3tT/9f9c+vX7f1W9e/6b9fS3rTf2nJ0v9v63v6129uP5b1/L665d9o9d1uP3v9v10d8/qU9pPf1/55b+J0d7t//r/u/d1uv1v2q0n9e8s2357b98d360v34b+/u93+/9b39p79v7uJvf3vXvW039vbf0f9bX/XvW0v5Xq8s/pTfd12t31v9v1+L673Xo+f//3f3fV/9v35bv7pbf2n/96vf316+3b/fvX7+f/+rP791+/n6qrf1rf31bvz1v91v9Wvb3Wb/rX1Krf7b69vPft8vv111r23/v935327//n8X28v/f63+/e8f6Vl7//X9f9qf1vtf3vff01pX2uP27237+d9u+/rfp6v3V024n9v/v359vfdvv9e/+tfr/615Vffv38tq3//+s/v2fv/11vt9//p9ve//v/7vV8n/YQAAAAAElFTkSuQmCC";
+
 const jumpImage=new Image();
 
 idleImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAA9klEQVR42u1UMQ6EIBAEYmdvjIUlhbVP8AE+1Qf4BGsLSwtj6K25inPv2EU8OGPhdggyzOzMMvbUU0/dtoo81UWe6tj3CtdmJTMGQWM8QlDsKplZ39qmZm1TsxBQcXWrSMBxUha7vwEu68bhGoJ1/WDt31pSTpkGkzCUHcowZr+wSkIGg0//nZKa/MmyJH/o+sEy0jTPH852gXIq8Aa06wfmKzEEpkAFlj+YwTMFlaEk566xBi8wr3fJDc9SLBO86Upf6tL9ZQple8R6Xyv9zTLKpDHAwaNtWTduDGTigIGcMdnPwT8C8TYN5thxUu8sYsGnhgNWL5sPiDbAGkWfAAAAAElFTkSuQmCC";
 
-runImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAcCAYAAAB4fbODAAADlElEQVR42u1aPZKzMAw1Gbr0O5kUlBRb5wg5QI7KATgCdQpKip0d+q35im+U1RpjJGMLCNLMFlkIz3rWz5ODMWpqampqampqampqampqampqamr7sevlPFwv50GZoNtJKVCLaZ/lh8FJqEmpCagm1P0+y4/R/x73m3ncb0aTkJmA0pVLK+V78QrJZ4wxVd2Yr++fbM9+pcI7bUlOSOIdqcBI8vpse2OMMZB87yR3XXhJElBaTqwlX965wKzJK06+VN1vK/G5FOuQM+BRCoy0LFxzPyX9wnjJJChIidiAW8E7kqWWhbBfZVEk735ryd1UeM4EtElLTao03hELTCpOfb5IdHfJhE+Bd0gJeoQCo7YPy+eqWlkUu64wW5lR1pyLUu2ha7Z9B7+W4Ln22reuPOWAucZQu7VNtH2TDhoJa7vu5VdVN3+K6ON+M1XdDByFsMU4oRZYuL/tOnRHP0z5mMeu6tyACnFyT3jSfEpjwmyLC4tP1eCkhe9fL+dhj0oH+HP5N+bDnYSZS1L4yKzqZkQqJpO7gXMJsWe8tfiUxMQyFGPC83zrsHF9mBy/lnZaKh5HIUz5mM2RaUuKGGT6nJTGi0UkJzhT4a21h/izPRNS/G67jpyAXL/swkJNxCU8uorPlI8nl6TAi+UYBuQcPPzVy7J4c1VzKZ7NZ2o8yT2EIMVJh3Ht5Gu7zrnXZVGM3hKK5VdZFK/nw1/o3lHiaiqWpwpRFltSUCva1PAa2plC8TjdgYvn4hPwUvApvYfU/YOi41MDoV2Q6xc3Xqh4rk7r4sQ+eMvdOrkXOTb/+v7JwEl8khZCaiiefWoVE8/FJ2Cn5hUwn21vUv1UAIGEE9HV4X8D7v+aQjnmxibmOQSTigcJbceYzQW8eljVzetAJvcPq/0wV7Vc134/97OnW5xg2SOeNJ/uOWcaN1bhgWCjrM91CMTp7Fga+k5Y52Qp/DziWzMklK+z2d0UYgw4h+tV3YwOAPMYldDuXjEqqS8o9oYnzac0Jrco2B0C3iOlzFvPtifJXcr30BgyW9hwMnG6Jy7wkITkBMQPsWclXGWebR8lYDCe/cx3w5Pgk4I7hcmZOUMNeOeOEDS5O57jXPdzurAriX0vU7gkrH1vcAecIy72Bipen/yldCnDBcFXFKa+S5GOvhncloUpJffc9ZyqufGpIfXUi2uKFxcvBJczyy1dD0VSLpG8U/Mw51lT3MXi5x/WB9z8URHs6QAAAABJRU5ErkJggg==";
-
 jumpImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAkCAYAAACQVDZDAAADgUlEQVR42u2aPXLyMBCGRcYdfYahoKRIzRE4AEflAByBmsKlC4ZxT+2vyCeyiJW0sq0VUd6nIzi8Xu0/2BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWNar5bBeLQecBLB84Ah0+dp+GpqESEok4FtU61KBqKW7Xi2Hr+3ny98O+5057HfmtydhzfGSU+vjnap1qe5QQtcmnzHGHE9nc73dF7+9oNUcL5xWtgTUrtalukMJ3UvbG2OMsclXQ0LUHC8hrTl0sAMqdiULTb5c3a/kuKt1jiX0qFbWEdRW6hyi76Cn2ZWsPdvNJnvylQxQze6urZdLi01A10G5g0ZbT7MrhYpJ7m6knRAlfKepl0MLI2jllChmQE4Tq9rbzabKiqZhI7eLaY6bGr6rXc/qUK3Y/cUmvGACau9fJTS19dquezjweDo/FZnDfmeOp/OQMqL/1XN8Vz2adPb6tuvIFf3g82Ez5eamBMsUI6foadto97BQBeXstw68tL1Zr5YDRsf3w8YH579Xf/NJuOBGplCwHE/nl6ChwZIaoLEEzKGnaSMdQ6mm/bzYaEN1Q5opdk3ttNBLn4B8PlzEgsUdmeYIlpCROfVK2UhfuzuhxMFt14kTMNUut7BIAxV6cU234HI+bMaMTKFl1YqnjE10R9LQ07KROtFqXtrecB0x1BV/XvdBvTF28df2orOEHp94vvugRYDtgHOMTNKK7Vtex7b4qV0wh41S++zo5EvMKV0w1a5U/0HP32k5n7vf1jb8nNyrPMR7vd0X1ki3C6YeaqqutZF2pDw6z4nI7Sk/Dvm+p7E2p/qOVuwxmtB7Tmg3pl1f20cBj6fzowOPqgCSJEnpSjRAQzvSXHopdvo0x9on7Zjcl0DSDhirwtyoxJ2pDSCfZu16Er9wXY1bP2xi/k/Ax/Wjf4aYY4cLdYpQ1Zqqp22jtCjQc6AV1D5Hyu0Q3N4iGXcl/0eeH/XuTLXruY1B4gPaPWlDud7uC/c330b6Ie43QLTKXNp+loSgeu5n5tCT2OnTHNttU3CrvXSkl427r5Wauz4U7LXrSZI49AQON8JGvwVNuZnY+3MGqLaeVDff7vhdEEJFwfe/tspKzsMNEndskjylU7NerNPG7iH2fiPZjWjmcz9SS8cA6S6mpTdGV3rwc9yPZOSaMvLy14cr9l/T88XGXP7/B8eoAeUpIH/9AAAAAElFTkSuQmCC";
-
-
-/* =========================
-   GAME STATE
-========================= */
 
 let started=false;
 let dead=false;
+let lastTime=0;
 
 let score=0;
 let speed=6;
 
-let lastTime=0;
+let groundOffset=0;
 
 let runAnimTime=0;
 let jumpTime=0;
 
-let spawnTimer=0;
-let nextSpawn=1200;
-
-let groundOffset=0;
-
-
-/* =========================
-   BUNNY
-========================= */
-
 const bunny={
     x:110,
-
-    /*
-        Raised 10px from the previous version.
-    */
-    y:GROUND-38,
-
+    y:GROUND-28,
     width:28,
     height:28,
-
     velocityY:0,
-
     grounded:true,
-
     gravity:0.72,
-
-    /*
-        This gives enough height to comfortably
-        clear the cactus without making the jump huge.
-    */
     jumpPower:-15.5
 };
 
+const obstacles=[];
 
-/* =========================
-   CACTUS TYPES
-========================= */
+let spawnTimer=0;
+let nextSpawn=1200;
 
 const CACTUS_SMALL=[
     ["O","O","O","O","O"],
@@ -212,233 +176,109 @@ const cactusTypes=[
     CACTUS_WIDE
 ];
 
-const obstacles=[];function createCactus(type,x){
-
+function createCactus(type,x){
     const scale=4;
-
     const rows=type.length;
     const cols=type[0].length;
 
     return {
-        x:x,
-
-        y:GROUND-(rows*scale),
-
+        x,
+        y:GROUND-rows*scale,
         width:cols*scale,
-
         height:rows*scale,
-
-        type:type,
-
-        scale:scale,
-
+        type,
+        scale,
         counted:false
     };
 }
 
-
 function spawnCactus(){
-
     const difficulty=Math.min(score,30);
 
     let count=1;
 
-    if(
-        difficulty>8 &&
-        Math.random()<0.32
-    ){
+    if(difficulty>8 && Math.random()<0.32){
         count=2;
     }
 
-    if(
-        difficulty>18 &&
-        Math.random()<0.16
-    ){
+    if(difficulty>18 && Math.random()<0.16){
         count=3;
     }
 
-
-    const firstType=
-        cactusTypes[
-            Math.floor(
-                Math.random()*cactusTypes.length
-            )
-        ];
-
+    const firstType=cactusTypes[
+        Math.floor(Math.random()*cactusTypes.length)
+    ];
 
     let x=W+30;
 
-
     for(let i=0;i<count;i++){
-
         let type;
 
-
         if(i===0){
-
             type=firstType;
-
         }else{
-
             type=
                 Math.random()<0.5
                 ? CACTUS_SMALL
                 : CACTUS_TALL;
         }
 
+        obstacles.push(createCactus(type,x));
 
-        obstacles.push(
-            createCactus(type,x)
-        );
-
-
-        x+=
-            type[0].length*4+
-            22;
+        x+=type[0].length*4+22;
     }
 
-
-    const minimum=
-        1050-
-        Math.min(score*10,350);
-
-    const maximum=
-        1500-
-        Math.min(score*8,300);
-
+    const minimum=1050-Math.min(score*10,350);
+    const maximum=1500-Math.min(score*8,300);
 
     nextSpawn=
         minimum+
-        Math.random()*
-        (maximum-minimum);
-
+        Math.random()*(maximum-minimum);
 
     spawnTimer=0;
 }
 
-
-/* =========================
-   GROUND
-========================= */
-
 function drawGround(){
-
     ctx.fillStyle=GROUND_COLOR;
-
-    ctx.fillRect(
-        0,
-        GROUND,
-        W,
-        H-GROUND
-    );
-
+    ctx.fillRect(0,GROUND,W,H-GROUND);
 
     ctx.fillStyle=DARK;
+    ctx.fillRect(0,GROUND,W,6);
 
-    ctx.fillRect(
-        0,
-        GROUND,
-        W,
-        6
-    );
-
-
-    /*
-        The ground uses the exact same movement
-        value as the cactus.
-    */
-
-    const movement=
-        speed;
-
+    const movement=speed;
 
     groundOffset-=movement;
-
 
     if(groundOffset<=-80){
         groundOffset+=80;
     }
 
-
     ctx.fillStyle=DARK;
 
-
-    for(
-        let x=groundOffset-80;
-        x<W+80;
-        x+=80
-    ){
-
-        ctx.fillRect(
-            x,
-            GROUND+20,
-            34,
-            4
-        );
-
-        ctx.fillRect(
-            x+47,
-            GROUND+36,
-            18,
-            4
-        );
-
-        ctx.fillRect(
-            x+15,
-            GROUND+54,
-            42,
-            4
-        );
+    for(let x=groundOffset-80;x<W+80;x+=80){
+        ctx.fillRect(x,GROUND+20,34,4);
+        ctx.fillRect(x+47,GROUND+36,18,4);
+        ctx.fillRect(x+15,GROUND+54,42,4);
     }
 }
 
-
-/* =========================
-   CACTUS
-========================= */
-
 function drawCactus(o){
-
     const type=o.type;
     const s=o.scale;
 
+    for(let row=0;row<type.length;row++){
+        for(let col=0;col<type[row].length;col++){
 
-    for(
-        let row=0;
-        row<type.length;
-        row++
-    ){
-
-        for(
-            let col=0;
-            col<type[row].length;
-            col++
-        ){
-
-            const cell=
-                type[row][col];
-
+            const cell=type[row][col];
 
             if(cell==="O"){
                 continue;
             }
 
-
-            const px=
-                o.x+
-                col*s;
-
-            const py=
-                o.y+
-                row*s;
-
-
-            /*
-                Pixel outline.
-            */
+            const px=o.x+col*s;
+            const py=o.y+row*s;
 
             ctx.fillStyle=DARK;
-
             ctx.fillRect(
                 px-1,
                 py-1,
@@ -446,14 +286,7 @@ function drawCactus(o){
                 s+2
             );
 
-
-            /*
-                Same muted pixel-art feeling
-                as the bunny.
-            */
-
             ctx.fillStyle="#59634d";
-
             ctx.fillRect(
                 px,
                 py,
@@ -464,11 +297,6 @@ function drawCactus(o){
     }
 }
 
-
-/* =========================
-   BUNNY
-========================= */
-
 function drawBunny(){
 
     let image;
@@ -476,309 +304,169 @@ function drawBunny(){
     let frameHeight;
     let frameIndex;
 
-
-    /*
-        IDLE:
-        Only exists before the player starts.
-    */
-
     if(!started && !dead){
 
         image=idleImage;
-
         frameWidth=28;
         frameHeight=28;
-
         frameIndex=0;
-    }
 
-
-    /*
-        JUMP:
-        The bunny uses the jump sheet while airborne.
-    */
-
-    else if(!bunny.grounded){
+    }else if(!bunny.grounded){
 
         image=jumpImage;
-
         frameWidth=28;
         frameHeight=36;
 
-
-        /*
-            Play the jump animation during ascent
-            and early descent.
-
-            Once the animation reaches the last
-            frame, keep that frame visible until
-            the bunny lands.
-        */
-
         const jumpAnimationDuration=560;
-
 
         frameIndex=Math.min(
             7,
             Math.floor(
-                jumpTime/
-                jumpAnimationDuration*
-                8
+                (jumpTime/jumpAnimationDuration)*8
             )
         );
-    }
 
-
-    /*
-        RUN:
-        Only the running sheet is used once gameplay
-        has started and the bunny is on the ground.
-    */
-
-    else{
+    }else{
 
         image=runImage;
-
         frameWidth=28;
         frameHeight=28;
 
-
         frameIndex=
-            Math.floor(
-                runAnimTime/70
-            )%8;
+            Math.floor(runAnimTime/70)%8;
     }
 
-
-    if(
-        !image.complete ||
-        !image.naturalWidth
-    ){
+    if(!image.complete || !image.naturalWidth){
         return;
     }
 
-
-    const drawW=
-        frameWidth*3;
-
-    const drawH=
-        frameHeight*3;
-
+    const drawW=frameWidth*3;
+    const drawH=frameHeight*3;
 
     ctx.save();
 
-
-    /*
-        Flip the bunny so it faces right.
-    */
-
     ctx.translate(
         bunny.x+drawW,
-        bunny.y+drawH
+        bunny.y+bunny.height-drawH
     );
 
     ctx.scale(-1,1);
 
-
     ctx.drawImage(
-
         image,
-
         frameIndex*frameWidth,
         0,
-
         frameWidth,
         frameHeight,
-
         0,
         0,
-
         drawW,
         drawH
     );
 
-
     ctx.restore();
-        }/* =========================
-   COLLISION
-========================= */
+}
 
 function getBunnyHitbox(){
 
     return {
-
         x:bunny.x+13,
-
         y:bunny.y+12,
-
-        width:52,
-
-        height:60
+        width:drawCollisionWidth(),
+        height:drawCollisionHeight()
     };
 }
 
+function drawCollisionWidth(){
+    return 52;
+}
+
+function drawCollisionHeight(){
+    return 60;
+}
 
 function checkCollision(){
 
-    const b=
-        getBunnyHitbox();
+    const b=getBunnyHitbox();
 
-
-    for(
-        const o of obstacles
-    ){
+    for(const o of obstacles){
 
         const cactusHit={
-
             x:o.x+4,
-
             y:o.y+3,
-
             width:o.width-8,
-
             height:o.height-5
         };
 
-
         if(
-
-            b.x<
-            cactusHit.x+
-            cactusHit.width
-
-            &&
-
-            b.x+b.width>
-            cactusHit.x
-
-            &&
-
-            b.y<
-            cactusHit.y+
-            cactusHit.height
-
-            &&
-
-            b.y+b.height>
-            cactusHit.y
-
+            b.x < cactusHit.x+cactusHit.width &&
+            b.x+b.width > cactusHit.x &&
+            b.y < cactusHit.y+cactusHit.height &&
+            b.y+b.height > cactusHit.y
         ){
-
             return true;
         }
     }
 
-
     return false;
 }
-
-
-/* =========================
-   JUMP
-========================= */
 
 function jump(){
 
     if(!started){
-
         started=true;
-
         bunny.grounded=true;
-
         runAnimTime=0;
-
-        lastTime=
-            performance.now();
-
+        lastTime=performance.now();
         requestAnimationFrame(loop);
-
         return;
     }
-
 
     if(dead){
-
         restart();
-
         return;
     }
-
 
     if(bunny.grounded){
 
-        bunny.velocityY=
-            bunny.jumpPower;
-
+        bunny.velocityY=bunny.jumpPower;
         bunny.grounded=false;
 
         jumpTime=0;
     }
 }
 
-
-/* =========================
-   RESTART
-========================= */
-
 function restart(){
 
     score=0;
-
     speed=6;
 
     obstacles.length=0;
 
     spawnTimer=0;
-
     nextSpawn=1200;
 
-
-    /*
-        IMPORTANT:
-        The bunny starts 10px higher than before.
-    */
-
-    bunny.y=
-        GROUND-38;
-
+    bunny.y=GROUND-28;
     bunny.velocityY=0;
-
     bunny.grounded=true;
 
-
     runAnimTime=0;
-
     jumpTime=0;
 
     groundOffset=0;
 
     dead=false;
-
     started=true;
 
-    lastTime=
-        performance.now();
-
+    lastTime=performance.now();
 
     requestAnimationFrame(loop);
 }
 
-
-/* =========================
-   GAME OVER
-========================= */
-
 function gameOver(){
-
     dead=true;
-
     bunny.velocityY=0;
 }
-
-
-/* =========================
-   UPDATE
-========================= */
 
 function update(dt){
 
@@ -786,337 +474,173 @@ function update(dt){
         return;
     }
 
-
-    /*
-        Running animation keeps looping
-        independently of the game speed.
-    */
-
     runAnimTime+=dt;
-
-
-    /*
-        AIRBORNE PHYSICS
-    */
 
     if(!bunny.grounded){
 
         jumpTime+=dt;
 
+        bunny.velocityY+=bunny.gravity*(dt/16.6667);
 
-        bunny.velocityY+=
-            bunny.gravity*
-            (dt/16.6667);
+        bunny.y+=bunny.velocityY*(dt/16.6667);
 
+        const groundY=GROUND-28;
 
-        bunny.y+=
-            bunny.velocityY*
-            (dt/16.6667);
-
-
-        /*
-            Because the bunny was raised by 10px,
-            its new ground position is also raised.
-        */
-
-        const groundY=
-            GROUND-38;
-
-
-        if(
-            bunny.y>=groundY
-        ){
+        if(bunny.y>=groundY){
 
             bunny.y=groundY;
-
             bunny.velocityY=0;
-
             bunny.grounded=true;
-
-            /*
-                drawBunny() automatically switches
-                back to the running animation here.
-            */
         }
     }
 
+    speed+=0.00035*dt;
 
-    /*
-        Gradually increase difficulty.
-    */
+    const movement=speed*(dt/16.6667);
 
-    speed+=
-        0.00035*dt;
+    for(let i=obstacles.length-1;i>=0;i--){
 
-
-    const movement=
-        speed*
-        (dt/16.6667);
-
-
-    /*
-        Cactus movement.
-    */
-
-    for(
-        let i=obstacles.length-1;
-        i>=0;
-        i--
-    ){
-
-        const o=
-            obstacles[i];
-
+        const o=obstacles[i];
 
         o.x-=movement;
 
-
-        if(
-            !o.counted &&
-            o.x+o.width<
-            bunny.x
-        ){
+        if(!o.counted && o.x+o.width<bunny.x){
 
             o.counted=true;
-
             score++;
 
-
-            if(
-                score%5===0
-            ){
-
+            if(score%5===0){
                 speed+=0.25;
             }
         }
 
-
-        if(
-            o.x+o.width<
-            -30
-        ){
-
-            obstacles.splice(
-                i,
-                1
-            );
+        if(o.x+o.width<-30){
+            obstacles.splice(i,1);
         }
     }
 
-
-    /*
-        Spawn new cactus groups.
-    */
-
     spawnTimer+=dt;
 
-
-    if(
-        spawnTimer>=nextSpawn
-    ){
-
+    if(spawnTimer>=nextSpawn){
         spawnCactus();
     }
 
-
-    /*
-        Collision.
-    */
-
-    if(
-        checkCollision()
-    ){
-
+    if(checkCollision()){
         gameOver();
     }
 }
 
-
-/* =========================
-   DRAW
-========================= */
-
 function draw(){
 
-    ctx.clearRect(
-        0,
-        0,
-        W,
-        H
-    );
-
+    ctx.clearRect(0,0,W,H);
 
     ctx.fillStyle=BG;
-
-    ctx.fillRect(
-        0,
-        0,
-        W,
-        H
-    );
-
+    ctx.fillRect(0,0,W,H);
 
     drawGround();
 
-
-    for(
-        const o of obstacles
-    ){
-
+    for(const o of obstacles){
         drawCactus(o);
     }
 
-
     drawBunny();
 
-
-    /*
-        Score.
-    */
-
     ctx.fillStyle=DARK;
-
-    ctx.font=
-        "24px Georgia";
-
+    ctx.font="24px Georgia";
     ctx.textAlign="right";
-
     ctx.fillText(
-        String(score)
-        .padStart(5,"0"),
-
+        String(score).padStart(5,"0"),
         W-28,
-
         42
     );
-
-
-    /*
-        Start screen.
-    */
 
     if(!started){
 
         ctx.textAlign="center";
-
-        ctx.font=
-            "26px Georgia";
-
+        ctx.font="26px Georgia";
         ctx.fillText(
             "PRESS SPACE OR TAP",
-
             W/2,
-
             90
         );
     }
 
-
-    /*
-        Game over.
-    */
-
     if(dead){
 
         ctx.textAlign="center";
-
-        ctx.font=
-            "30px Georgia";
-
+        ctx.font="30px Georgia";
         ctx.fillText(
             "PRESS SPACE OR TAP TO RESTART",
-
             W/2,
-
             105
         );
     }
 }
 
+function loop(time){
 
-/* =========================
-   INPUT
-========================= */
+    const dt=Math.min(
+        time-lastTime,
+        32
+    );
+
+    lastTime=time;
+
+    update(dt);
+    draw();
+
+    if(!dead){
+        requestAnimationFrame(loop);
+    }
+}
 
 function handleInput(){
 
     if(dead){
-
         restart();
-
         return;
     }
-
 
     jump();
 }
 
-
 window.addEventListener(
     "keydown",
     e=>{
-
         if(
             e.code==="Space" ||
             e.code==="ArrowUp" ||
             e.code==="KeyW"
         ){
-
             e.preventDefault();
-
             handleInput();
         }
     }
 );
 
-
 canvas.addEventListener(
     "pointerdown",
     e=>{
-
         e.preventDefault();
-
         handleInput();
     }
 );
 
+let loaded=0;
 
-/* =========================
-   LOOP
-========================= */
+function imageLoaded(){
+    loaded++;
 
-function loop(time){
-
-    const dt=
-        Math.min(
-            time-lastTime,
-            32
-        );
-
-
-    lastTime=time;
-
-
-    update(dt);
-
-    draw();
-
-
-    if(!dead){
-
-        requestAnimationFrame(loop);
+    if(loaded===3){
+        draw();
     }
 }
 
-
-/* =========================
-   INITIAL DRAW
-========================= */
+idleImage.onload=imageLoaded;
+runImage.onload=imageLoaded;
+jumpImage.onload=imageLoaded;
 
 draw();
-
-requestAnimationFrame(loop);
-
 </script>
 </body>
-</html>
+    </html>
