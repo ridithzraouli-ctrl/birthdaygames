@@ -6,9 +6,7 @@
 <title>Bunny Run</title>
 
 <style>
-*{
-    box-sizing:border-box
-}
+*{box-sizing:border-box}
 
 html,body{
     margin:0;
@@ -61,12 +59,33 @@ const jumpImage=new Image();
 
 let processedRunImage=null;
 
-idleImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAA9klEQVR42u1UMQ6EIBAEYmdvjIUlhbVP8AE+1Qf4BGsLSwtj6K25inPv2EU8OGPhdggyzOzMMvbUU0/dtoo81UWe6tj3CtdmJTMGQWM8QlDsKplZ39q[...]
 
-jumpImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAkCAYAAACQVDZDAAADgUlEQVR42u2aPXLyMBCGRcYdfYahoKRIzRE4AEflAByBmsKlC4ZxT+2vyCeyiJW0sq0VUd6nIzi8Xu0/2BgAAAAAAAAAAAAAAAAAAAAAAAAAAAA[...]
+/* =========================
+   IDLE
+========================= */
 
-/* 12-frame running sprite sheet - now embedded as complete base64 PNG */
-runImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA5QAAAA8CAYAAABbpoFxAAAA7klEQVR4nO3RPQqCQBiG4UcLWwuhaWkLaWlqaGgLGlrCpqGxrSEaHByCQRAE7+d5h4/3vd+9zwWjCCIiIiIiIiIiIiIiIiIiIiIiIiIiIiLy/jqdTmq32+p4PCZVVamqKqXTaWm327Tb7aW+71MYhlQUhVIURRqNRnQ6nSiKIrmua8UuA5L/8jgez+NUKhUqFArk+z7FcUyXy4XBYEAymWR4PB7sdjvabrdUq9UoiiJ6vV6V9/s9eZ5HnudRGIZUr9dnP1FmPp+T53nket55XfPfGwwGxHEcxXF8Xff/69fXl7TbbVosFhSGIYVhSLXbbWq326tgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJz2DW8hkZ9iS8PEAAAAAElFTkSuQmCC";
+idleImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAA9klEQVR42u1UMQ6EIBAEYmdvjIUlhbVP8AE+1Qf4BGsLSwtj6K25inPv2EU8OGPhdggyzOzMMvbUU0/dtoo81UWe6tj3CtdmJTMGQWM8QlDsKplZ39qmZm1TsxBQcXWrSMBxUha7vwEu68bhGoJ1/WDt31pSTpkGkzCUHcowZr+wSkIGg0//nZKa/MmyJH/o+sEy0jTPH852gXIq8Aa06wfmKzEEpkAFlj+YwTMFlaEk566xBi8wr3fJDc9SLBO86Upf6tL9ZQple8R6Xyv9zTLKpDHAwaNtWTduDGTigIGcMdnPwT8C8TYN5thxUu8sYsGnhgNWL5sPiDbAGkWfAAAAAElFTkSuQmCC";
+
+
+/* =========================
+   JUMP
+========================= */
+
+jumpImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAkCAYAAACQVDZDAAADgUlEQVR42u2aPXLyMBCGRcYdfYahoKRIzRE4AEflAByBmsKlC4ZxT+2vyCeyiJW0sq0VUd6nIzi8Xu0/2BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWNar5bBeLQecBLB84Ah0+dp+GpqESEok4FtU61KBqKW7Xi2Hr+3ny98O+5057HfmtydhzfGSU+vjnap1qe5QQtcmnzHGHE9nc73dF7+9oNUcL5xWtgTUrtalukMJ3UvbG2OMsclXQ0LUHC8hrTl0sAMqdiULTb5c3a/kuKt1jiX0qFbWEdRW6hyi76Cn2ZWsPdvNJnvylQxQze6urZdLi01A10G5g0ZbT7MrhYpJ7m6knRAlfKepl0MLI2jllChmQE4Tq9rbzabKiqZhI7eLaY6bGr6rXc/qUK3Y/cUmvGACau9fJTS19dquezjweDo/FZnDfmeOp/OQMqL/1XN8Vz2adPb6tuvIFf3g82Ez5eamBMsUI6foadto97BQBeXstw68tL1Zr5YDRsf3w8YH579Xf/NJuOBGplCwHE/nl6ChwZIaoLEEzKGnaSMdQ6mm/bzYaEN1Q5opdk3ttNBLn4B8PlzEgsUdmeYIlpCROfVK2UhfuzuhxMFt14kTMNUut7BIAxV6cU234HI+bMaMTKFl1YqnjE10R9LQ07KROtFqXtrecB0x1BV/XvdBvTF28df2orOEHp94vvugRYDtgHOMTNKK7Vtex7b4qV0wh41S++zo5EvMKV0w1a5U/0HP32k5n7vf1jb8nNyrPMR7vd0X1ki3C6YeaqqutZF2pDw6z4nI7Sk/Dvm+p7E2p/qOVuwxmtB7Tmg3pl1f20cBj6fzowOPqgCSJEnpSjRAQzvSXHopdvo0x9on7Zjcl0DSDhirwtyoxJ2pDSCfZu16Er9wXY1bP2xi/k/Ax/Wjf4aYY4cLdYpQ1Zqqp22jtCjQc6AV1D5Hyu0Q3N4iGXcl/0eeH/XuTLXruY1B4gPaPWlDud7uC/c330b6Ie43QLTKXNp+loSgeu5n5tCT2OnTHNttU3CrvXSkl427r5Wauz4U7LXrSZI49AQON8JGvwVNuZnY+3MGqLaeVDff7vhdEEJFwfe/tspKzsMNEndskjylU7NerNPG7iH2fiPZjWjmcz9SS8cA6S6mpTdGV3rwc9yPZOSaMvLy14cr9l/T88XGXP7/B8eoAeUpIH/9AAAAAElFTkSuQmCC";
+
+
+/* =========================
+   RUNNING SPRITE
+   PASTE YOUR BASE64 BETWEEN
+   THE QUOTES BELOW
+========================= */
+
+runImage.src="data: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,";
+
+
+/* =========================
+   GAME VARIABLES
+========================= */
 
 let started=false;
 let dead=false;
@@ -104,92 +123,92 @@ let nextSpawn=1200;
 ========================= */
 
 const CACTUS_SMALL=[
-    ["O","O","O","O","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"]
+["O","O","O","O","O"],
+["O","B","B","B","O"],
+["O","B","B","B","O"],
+["O","B","B","B","O"],
+["O","B","B","B","O"],
+["O","B","B","B","O"],
+["O","B","B","B","O"],
+["O","B","B","B","O"],
+["O","B","B","B","O"],
+["O","B","B","B","O"],
+["O","B","B","B","O"],
+["O","B","B","B","O"]
 ];
 
 const CACTUS_TALL=[
-    ["O","O","O","O","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"]
+["O","O","O","O","O"],
+["O","B","B","B","O"],
+["O","B","B","B","O"],
+["O","B","B","B","O"],
+["O","B","B","B","O"],
+["O","B","B","B","O"],
+["O","B","B","B","O"],
+["O","B","B","B","O"],
+["O","B","B","B","O"],
+["O","B","B","B","O"],
+["O","B","B","B","O"],
+["O","B","B","B","O"],
+["O","B","B","B","O"],
+["O","B","B","B","O"],
+["O","B","B","B","O"],
+["O","B","B","B","O"]
 ];
 
 const CACTUS_LEFT_ARM=[
-    ["O","O","O","O","O","O","O","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","B","B","B","B","O","O"],
-    ["O","B","B","B","B","B","B","O"],
-    ["O","B","B","B","B","B","B","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"]
+["O","O","O","O","O","O","O","O"],
+["O","O","O","B","B","B","O","O"],
+["O","O","O","B","B","B","O","O"],
+["O","O","O","B","B","B","O","O"],
+["O","O","O","B","B","B","O","O"],
+["O","O","O","B","B","B","O","O"],
+["O","O","B","B","B","B","O","O"],
+["O","B","B","B","B","B","B","O"],
+["O","B","B","B","B","B","B","O"],
+["O","O","O","B","B","B","O","O"],
+["O","O","O","B","B","B","O","O"],
+["O","O","O","B","B","B","O","O"],
+["O","O","O","B","B","B","O","O"]
 ];
 
 const CACTUS_RIGHT_ARM=[
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","B","O"],
-    ["O","O","B","B","B","B","B","O"],
-    ["O","B","B","B","B","B","B","O"],
-    ["O","B","B","B","B","B","B","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"]
+["O","O","O","B","B","B","O","O"],
+["O","O","O","B","B","B","O","O"],
+["O","O","O","B","B","B","O","O"],
+["O","O","O","B","B","B","O","O"],
+["O","O","O","B","B","B","O","O"],
+["O","O","O","B","B","B","B","O"],
+["O","O","B","B","B","B","B","O"],
+["O","B","B","B","B","B","B","O"],
+["O","B","B","B","B","B","B","O"],
+["O","O","O","B","B","B","O","O"],
+["O","O","O","B","B","B","O","O"],
+["O","O","O","B","B","B","O","O"],
+["O","O","O","B","B","B","O","O"]
 ];
 
 const CACTUS_WIDE=[
-    ["O","O","O","O","O","O","O","O","O","O"],
-    ["O","O","B","B","B","O","B","B","B","O"],
-    ["O","O","B","B","B","O","B","B","B","O"],
-    ["O","O","B","B","B","B","B","B","B","O"],
-    ["O","B","B","B","B","B","B","B","B","O"],
-    ["O","B","B","B","B","B","B","B","B","O"],
-    ["O","O","O","B","B","B","B","O","O","O"],
-    ["O","O","O","B","B","B","B","O","O","O"],
-    ["O","O","O","B","B","B","B","O","O","O"],
-    ["O","O","O","B","B","B","B","O","O","O"],
-    ["O","O","O","B","B","B","B","O","O","O"],
-    ["O","O","O","B","B","B","B","O","O","O"]
+["O","O","O","O","O","O","O","O","O","O"],
+["O","O","B","B","B","O","B","B","B","O"],
+["O","O","B","B","B","O","B","B","B","O"],
+["O","O","B","B","B","B","B","B","B","O"],
+["O","B","B","B","B","B","B","B","B","O"],
+["O","B","B","B","B","B","B","B","B","O"],
+["O","O","O","B","B","B","B","O","O","O"],
+["O","O","O","B","B","B","B","O","O","O"],
+["O","O","O","B","B","B","B","O","O","O"],
+["O","O","O","B","B","B","B","O","O","O"],
+["O","O","O","B","B","B","B","O","O","O"],
+["O","O","O","B","B","B","B","O","O","O"]
 ];
 
 const cactusTypes=[
-    CACTUS_SMALL,
-    CACTUS_TALL,
-    CACTUS_LEFT_ARM,
-    CACTUS_RIGHT_ARM,
-    CACTUS_WIDE
+CACTUS_SMALL,
+CACTUS_TALL,
+CACTUS_LEFT_ARM,
+CACTUS_RIGHT_ARM,
+CACTUS_WIDE
 ];
 
 
@@ -244,11 +263,8 @@ function spawnCactus(){
         let type;
 
         if(i===0){
-
             type=firstType;
-
         }else{
-
             type=
                 Math.random()<0.5
                 ?CACTUS_SMALL
@@ -363,10 +379,7 @@ function drawCactus(o){
             col++
         ){
 
-            const cell=
-                type[row][col];
-
-            if(cell==="O"){
+            if(type[row][col]==="O"){
                 continue;
             }
 
@@ -396,7 +409,7 @@ function drawCactus(o){
 
 
 /* =========================
-   REMOVE RUNNING SPRITE BACKGROUND
+   REMOVE RUNNING BACKGROUND
 ========================= */
 
 function processRunningSprite(){
@@ -416,8 +429,7 @@ function processRunningSprite(){
     offscreen.width=width;
     offscreen.height=height;
 
-    const offctx=
-        offscreen.getContext("2d");
+    const offctx=offscreen.getContext("2d");
 
     offctx.imageSmoothingEnabled=false;
 
@@ -451,12 +463,11 @@ function processRunningSprite(){
         const g=pixels[i+1];
         const b=pixels[i+2];
 
-        const distance=
-            Math.sqrt(
-                Math.pow(r-bgR,2)+
-                Math.pow(g-bgG,2)+
-                Math.pow(b-bgB,2)
-            );
+        const distance=Math.sqrt(
+            Math.pow(r-bgR,2)+
+            Math.pow(g-bgG,2)+
+            Math.pow(b-bgB,2)
+        );
 
         if(distance<45){
 
@@ -464,11 +475,9 @@ function processRunningSprite(){
 
         }else if(distance<75){
 
-            const alpha=
-                Math.floor(
-                    255*
-                    ((distance-45)/30)
-                );
+            const alpha=Math.floor(
+                255*((distance-45)/30)
+            );
 
             pixels[i+3]=Math.min(
                 pixels[i+3],
@@ -519,8 +528,7 @@ function drawBunny(){
         frameIndex=Math.min(
             7,
             Math.floor(
-                (jumpTime/
-                jumpAnimationDuration)*8
+                (jumpTime/jumpAnimationDuration)*8
             )
         );
 
@@ -534,7 +542,7 @@ function drawBunny(){
         frameIndex=
             Math.floor(
                 runAnimTime/75
-            )%12;
+            )%11;
     }
 
     if(!image){
@@ -555,12 +563,10 @@ function drawBunny(){
 
     ctx.drawImage(
         image,
-
         frameIndex*frameWidth,
         0,
         frameWidth,
         frameHeight,
-
         0,
         0,
         drawW,
@@ -580,19 +586,9 @@ function getBunnyHitbox(){
     return{
         x:bunny.x+13,
         y:bunny.y+12,
-        width:drawCollisionWidth(),
-        height:drawCollisionHeight()
+        width:52,
+        height:60
     };
-}
-
-
-function drawCollisionWidth(){
-    return 52;
-}
-
-
-function drawCollisionHeight(){
-    return 60;
 }
 
 
@@ -653,8 +649,7 @@ function jump(){
 
     if(bunny.grounded){
 
-        bunny.velocityY=
-            bunny.jumpPower;
+        bunny.velocityY=bunny.jumpPower;
 
         bunny.grounded=false;
 
@@ -670,29 +665,23 @@ function jump(){
 function restart(){
 
     score=0;
-
     speed=6;
 
     obstacles.length=0;
 
     spawnTimer=0;
-
     nextSpawn=1200;
 
     bunny.y=GROUND-28;
-
     bunny.velocityY=0;
-
     bunny.grounded=true;
 
     runAnimTime=0;
-
     jumpTime=0;
 
     groundOffset=0;
 
     dead=false;
-
     started=true;
 
     lastTime=performance.now();
@@ -737,8 +726,7 @@ function update(dt){
             bunny.velocityY*
             (dt/16.6667);
 
-        const groundY=
-            GROUND-28;
+        const groundY=GROUND-28;
 
         if(bunny.y>=groundY){
 
@@ -753,8 +741,7 @@ function update(dt){
     speed+=0.00035*dt;
 
     const movement=
-        speed*
-        (dt/16.6667);
+        speed*(dt/16.6667);
 
     for(
         let i=obstacles.length-1;
@@ -781,7 +768,6 @@ function update(dt){
         }
 
         if(o.x+o.width<-30){
-
             obstacles.splice(i,1);
         }
     }
@@ -954,7 +940,6 @@ function imageLoaded(){
         draw();
     }
 }
-
 
 idleImage.onload=imageLoaded;
 
