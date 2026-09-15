@@ -12,7 +12,6 @@
     --text:#4c5961;
     --soft:#dcecf7;
     --accent:#8faebe;
-    --pink:#e8b9c8;
 }
 
 *{box-sizing:border-box}
@@ -26,11 +25,11 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    padding:25px;
+    padding:20px;
 }
 
 .game{
-    width:min(920px,100%);
+    width:min(900px,100%);
     text-align:center;
 }
 
@@ -38,100 +37,69 @@ body{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:16px;
+    margin-bottom:15px;
 }
 
 .back{
     color:var(--text);
     text-decoration:none;
-    font-size:16px;
 }
 
 .coins{
-    background:white;
+    background:#fff;
     border:2px solid var(--soft);
     border-radius:20px;
     padding:7px 14px;
 }
 
 h1{
-    margin:0;
-    font-size:38px;
-    letter-spacing:2px;
-}
-
-.subtitle{
-    margin:6px 0 18px;
-    opacity:.7;
+    margin:0 0 15px;
+    font-size:34px;
 }
 
 .gamebox{
     position:relative;
     background:var(--card);
     border:2px solid var(--soft);
-    border-radius:24px;
-    padding:18px;
-    box-shadow:0 12px 35px rgba(80,100,110,.1);
+    border-radius:22px;
+    padding:16px;
+    box-shadow:0 10px 30px rgba(70,90,100,.1);
 }
 
 .scorebar{
     display:flex;
     justify-content:center;
-    gap:35px;
+    gap:45px;
     margin-bottom:12px;
-    font-size:18px;
-}
-
-.scorebar span{
-    font-weight:bold;
+    font-size:17px;
 }
 
 canvas{
-    width:100%;
-    max-width:820px;
-    height:auto;
     display:block;
-    margin:auto;
+    width:100%;
+    height:auto;
+    border-radius:12px;
     image-rendering:pixelated;
     image-rendering:crisp-edges;
-    border-radius:14px;
     cursor:pointer;
 }
 
-.hint{
-    margin:12px 0 0;
-    opacity:.55;
-    font-size:14px;
-}
-
-.start{
+.startScreen{
     position:absolute;
-    inset:18px;
+    inset:16px;
     display:flex;
     justify-content:center;
     align-items:center;
     background:rgba(255,255,255,.12);
-    pointer-events:none;
 }
 
-.startbox{
-    background:rgba(255,255,255,.95);
-    border:2px solid var(--soft);
-    border-radius:20px;
-    padding:20px 32px;
-    box-shadow:0 8px 25px rgba(70,90,100,.12);
-}
-
-.startbox h2{
-    margin:0 0 7px;
-}
-
-button{
+.startButton,
+.restartButton{
     border:0;
     background:var(--accent);
-    color:white;
-    padding:10px 25px;
-    border-radius:18px;
+    color:#fff;
+    padding:11px 28px;
+    border-radius:20px;
     font-family:Georgia,serif;
     font-size:16px;
     cursor:pointer;
@@ -140,10 +108,10 @@ button{
 .modal{
     position:fixed;
     inset:0;
-    background:rgba(55,65,70,.35);
     display:none;
     justify-content:center;
     align-items:center;
+    background:rgba(40,50,55,.3);
     z-index:10;
 }
 
@@ -151,28 +119,20 @@ button{
     display:flex;
 }
 
-.modalbox{
-    background:white;
+.modalBox{
+    background:#fff;
     border:2px solid var(--soft);
-    border-radius:25px;
-    padding:30px 40px;
-    text-align:center;
-    min-width:280px;
+    border-radius:22px;
+    padding:25px;
+    min-width:260px;
 }
 
-.modalbox h2{
-    margin:0 0 8px;
+.modalBox h2{
+    margin:0 0 15px;
 }
 
-.reward{
-    margin:12px 0 20px;
-    font-size:18px;
-}
-
-.symbols{
-    color:var(--pink);
-    letter-spacing:10px;
-    margin-bottom:12px;
+#finalScore{
+    margin-bottom:18px;
 }
 </style>
 </head>
@@ -182,12 +142,14 @@ button{
 <div class="game">
 
     <div class="top">
-        <a class="back" href="../index.html">← Back to Games</a>
-        <div class="coins">♡ <span id="coinDisplay">0</span></div>
+        <a class="back" href="../index.html">← Back</a>
+
+        <div class="coins">
+            ♡ <span id="coinDisplay">0</span>
+        </div>
     </div>
 
     <h1>Bunny Jump</h1>
-    <div class="subtitle">hop over the cactuses ✦</div>
 
     <div class="gamebox">
 
@@ -198,27 +160,18 @@ button{
 
         <canvas id="game" width="820" height="330"></canvas>
 
-        <div class="hint">SPACE / ↑ / TAP to jump</div>
-
-        <div class="start" id="startScreen">
-            <div class="startbox">
-                <div class="symbols">✦ ✧ ♡</div>
-                <h2>Bunny Jump</h2>
-                <p>ready when you are</p>
-                <button id="startButton">Start</button>
-            </div>
+        <div class="startScreen" id="startScreen">
+            <button class="startButton" id="startButton">Start</button>
         </div>
 
     </div>
 </div>
 
 <div class="modal" id="gameOver">
-    <div class="modalbox">
-        <div class="symbols">✦ ♡ ✧</div>
-        <h2>you fell!</h2>
+    <div class="modalBox">
+        <h2>Game Over</h2>
         <div id="finalScore"></div>
-        <div class="reward" id="rewardText"></div>
-        <button id="againButton">Try Again</button>
+        <button class="restartButton" id="restartButton">Restart</button>
     </div>
 </div>
 
@@ -331,7 +284,9 @@ function drawCloud(x,y,s,color){
 function drawSky(){
     const s=getSky();
 
-    const gradient=ctx.createLinearGradient(0,0,0,groundY);
+    const gradient=ctx.createLinearGradient(
+        0,0,0,groundY
+    );
 
     gradient.addColorStop(0,s.top);
     gradient.addColorStop(1,s.bottom);
@@ -347,8 +302,6 @@ function drawSky(){
     drawCloud(350,105,.8,s.cloud);
     drawCloud(545,54,.65,s.cloud);
 
-    ctx.fillStyle=s.hill;
-
     for(let x=-20;x<W+100;x+=110){
         pixel(x,235,110,32,s.hill);
         pixel(x+18,226,74,9,s.hill);
@@ -359,8 +312,21 @@ function drawSky(){
 function drawGround(){
     const s=getSky();
 
-    pixel(0,groundY,W,H-groundY,s.bottom);
-    pixel(0,groundY,W,5,s.hill);
+    pixel(
+        0,
+        groundY,
+        W,
+        H-groundY,
+        s.bottom
+    );
+
+    pixel(
+        0,
+        groundY,
+        W,
+        5,
+        s.hill
+    );
 
     for(let x=-40;x<W+50;x+=90){
         pixel(x,groundY+22,28,4,s.hill);
@@ -371,80 +337,75 @@ function drawBunny(){
     const x=Math.round(bunny.x);
     let y=Math.round(bunny.y);
 
-    const brown="#8b6642";
+    const outline="#8b6642";
     const fur="#e5caa0";
     const cream="#fff5e4";
     const eye="#3b2211";
 
     if(!running){
-        y+=Math.round(Math.sin(animationTime*.004)*2);
+        y+=Math.round(
+            Math.sin(animationTime*.004)*2
+        );
     }
 
     if(running && bunny.grounded){
-        y+=Math.round(Math.sin(animationTime*.018)*1);
+        y+=Math.round(
+            Math.sin(animationTime*.018)
+        );
     }
 
-    /* ears */
-    pixel(x+12,y+4,12,28,brown);
-    pixel(x+32,y,12,28,brown);
+    pixel(x+12,y+4,12,28,outline);
+    pixel(x+32,y,12,28,outline);
 
     pixel(x+16,y+8,8,20,fur);
     pixel(x+36,y+5,8,19,fur);
 
-    /* body */
-    pixel(x+8,y+27,36,22,brown);
-    pixel(x+12,y+23,28,30,brown);
+    pixel(x+8,y+27,36,22,outline);
+    pixel(x+12,y+23,28,30,outline);
+
     pixel(x+12,y+29,28,19,fur);
     pixel(x+16,y+25,20,25,fur);
 
-    /* head facing RIGHT */
-    pixel(x+27,y+15,22,27,brown);
-    pixel(x+23,y+20,29,22,brown);
+    pixel(x+27,y+15,22,27,outline);
+    pixel(x+23,y+20,29,22,outline);
 
     pixel(x+28,y+18,18,20,fur);
     pixel(x+24,y+24,24,14,fur);
 
-    /* chest */
     pixel(x+29,y+34,10,14,cream);
 
-    /* tail */
-    pixel(x+4,y+27,9,12,brown);
+    pixel(x+4,y+27,9,12,outline);
     pixel(x+2,y+29,9,8,cream);
 
-    /* back foot */
-    pixel(x+8,y+44,14,9,brown);
+    pixel(x+8,y+44,14,9,outline);
     pixel(x+12,y+43,12,7,cream);
 
-    /* front foot */
-    pixel(x+36,y+45,13,8,brown);
+    pixel(x+36,y+45,13,8,outline);
     pixel(x+36,y+43,9,7,cream);
 
-    /* eye */
     pixel(x+42,y+24,4,5,eye);
-
-    /* nose */
     pixel(x+47,y+31,5,4,eye);
 
-    /* cheek */
     pixel(x+38,y+32,4,3,"#d9a98d");
 
     if(running && bunny.grounded){
-        const frame=Math.floor(animationTime/100)%2;
+        const frame=
+            Math.floor(animationTime/100)%2;
 
         if(frame===0){
-            pixel(x+10,y+48,11,6,brown);
-            pixel(x+34,y+47,9,8,brown);
+            pixel(x+10,y+48,11,6,outline);
+            pixel(x+34,y+47,9,8,outline);
             pixel(x+8,y+52,11,4,cream);
         }else{
-            pixel(x+17,y+47,9,8,brown);
-            pixel(x+39,y+46,11,7,brown);
+            pixel(x+17,y+47,9,8,outline);
+            pixel(x+39,y+46,11,7,outline);
             pixel(x+39,y+52,11,4,cream);
         }
     }
 
     if(!bunny.grounded){
-        pixel(x+7,y+46,13,6,brown);
-        pixel(x+39,y+43,13,7,brown);
+        pixel(x+7,y+46,13,6,outline);
+        pixel(x+39,y+43,13,7,outline);
         pixel(x+5,y+50,11,4,cream);
         pixel(x+43,y+48,10,4,cream);
     }
@@ -454,36 +415,48 @@ function drawCactus(c){
     const x=Math.round(c.x);
     const y=Math.round(groundY-c.h);
 
-    const dark="#5f725d";
-    const mid="#79936f";
+    const outline="#5f725d";
+    const body="#79936f";
     const light="#a9bd92";
 
-    pixel(x-4,groundY+7,c.w+8,5,"rgba(75,90,80,.16)");
+    pixel(
+        x-4,
+        groundY+7,
+        c.w+8,
+        5,
+        "rgba(75,90,80,.16)"
+    );
 
-    pixel(x+8,y,16,c.h,dark);
+    pixel(x+8,y,16,c.h,outline);
 
     if(c.type===1){
-        pixel(x,y+14,12,8,dark);
-        pixel(x-4,y+10,8,15,dark);
+        pixel(x,y+14,12,8,outline);
+        pixel(x-4,y+10,8,15,outline);
 
-        pixel(x+24,y+22,10,8,dark);
-        pixel(x+28,y+17,8,16,dark);
+        pixel(x+24,y+22,10,8,outline);
+        pixel(x+28,y+17,8,16,outline);
     }else{
-        pixel(x+3,y+20,10,8,dark);
-        pixel(x-1,y+16,7,17,dark);
+        pixel(x+3,y+20,10,8,outline);
+        pixel(x-1,y+16,7,17,outline);
 
-        pixel(x+23,y+10,10,9,dark);
-        pixel(x+29,y+5,7,19,dark);
+        pixel(x+23,y+10,10,9,outline);
+        pixel(x+29,y+5,7,19,outline);
     }
 
-    pixel(x+12,y+4,8,c.h-8,mid);
+    pixel(
+        x+12,
+        y+4,
+        8,
+        c.h-8,
+        body
+    );
 
     if(c.type===1){
-        pixel(x+3,y+14,5,7,mid);
-        pixel(x+28,y+22,5,6,mid);
+        pixel(x+3,y+14,5,7,body);
+        pixel(x+28,y+22,5,6,body);
     }else{
-        pixel(x+3,y+20,6,6,mid);
-        pixel(x+25,y+10,6,7,mid);
+        pixel(x+3,y+20,6,6,body);
+        pixel(x+25,y+10,6,7,body);
     }
 
     pixel(x+14,y+8,3,8,light);
@@ -494,17 +467,26 @@ function spawnCactus(){
     const easy=score<3;
 
     cactuses.push({
-        x:W+(easy?120:20),
+        x:W+(easy?130:20),
         w:easy?30:32,
-        h:easy?43:(30+Math.floor(Math.random()*28)),
+        h:easy?
+            43:
+            30+Math.floor(Math.random()*28),
         type:Math.random()<.65?1:2
     });
 }
 
-function jump(){
-    if(!running)return;
+function resetBunny(){
+    bunny.y=groundY-bunny.h;
+    bunny.vy=0;
+    bunny.grounded=true;
+}
 
-    if(bunny.grounded){
+function jump(){
+    if(
+        running &&
+        bunny.grounded
+    ){
         bunny.vy=-10.2;
         bunny.grounded=false;
     }
@@ -533,12 +515,6 @@ function rewardForScore(){
     return 10;
 }
 
-function resetBunny(){
-    bunny.y=groundY-bunny.h;
-    bunny.vy=0;
-    bunny.grounded=true;
-}
-
 function startGame(){
     running=true;
     dead=false;
@@ -548,11 +524,16 @@ function startGame(){
 
     resetBunny();
 
-    document.getElementById("startScreen").style.display="none";
-    document.getElementById("gameOver").classList.remove("show");
+    document.getElementById(
+        "startScreen"
+    ).style.display="none";
+
+    document.getElementById(
+        "gameOver"
+    ).classList.remove("show");
 
     last=performance.now();
-            }<script>
+    }<script>
 function endGame(){
     if(dead)return;
 
@@ -569,17 +550,21 @@ function endGame(){
             String(Math.floor(best))
         );
 
-        document.getElementById("best").textContent=
+        document.getElementById(
+            "best"
+        ).textContent=
             String(Math.floor(best)).padStart(5,"0");
     }
 
-    document.getElementById("finalScore").textContent=
-        "Score: "+String(Math.floor(score)).padStart(5,"0");
+    document.getElementById(
+        "finalScore"
+    ).textContent=
+        "Score: "+
+        String(Math.floor(score)).padStart(5,"0");
 
-    document.getElementById("rewardText").textContent=
-        "✦ +"+reward+" coins ✦";
-
-    document.getElementById("gameOver").classList.add("show");
+    document.getElementById(
+        "gameOver"
+    ).classList.add("show");
 
     if(typeof addCoins==="function"){
         addCoins(reward);
@@ -597,7 +582,9 @@ function update(dt){
 
     score+=dt*.012;
 
-    document.getElementById("score").textContent=
+    document.getElementById(
+        "score"
+    ).textContent=
         String(Math.floor(score)).padStart(5,"0");
 
     const speed=Math.min(
@@ -605,8 +592,11 @@ function update(dt){
         4.7+score/420
     );
 
-    bunny.vy+=.55*(dt/16.67);
-    bunny.y+=bunny.vy*(dt/16.67);
+    bunny.vy+=
+        .55*(dt/16.67);
+
+    bunny.y+=
+        bunny.vy*(dt/16.67);
 
     if(bunny.y>=groundY-bunny.h){
         bunny.y=groundY-bunny.h;
@@ -671,21 +661,13 @@ function loop(now){
     requestAnimationFrame(loop);
 }
 
-function handleInput(){
-    if(!running){
-        if(!dead){
-            startGame();
-            jump();
-        }
-        return;
-    }
-
-    jump();
-}
-
 canvas.addEventListener(
     "pointerdown",
-    handleInput
+    function(){
+        if(running){
+            jump();
+        }
+    }
 );
 
 document.addEventListener(
@@ -697,35 +679,37 @@ document.addEventListener(
             e.code==="KeyW"
         ){
             e.preventDefault();
-            handleInput();
+
+            if(running){
+                jump();
+            }
         }
     }
 );
 
-document.getElementById("startButton").addEventListener(
-    "click",
-    function(e){
-        e.stopPropagation();
-        startGame();
-    }
-);
-
-document.getElementById("againButton").addEventListener(
+document.getElementById(
+    "startButton"
+).addEventListener(
     "click",
     function(){
         startGame();
     }
 );
 
-document.addEventListener(
-    "DOMContentLoaded",
+document.getElementById(
+    "restartButton"
+).addEventListener(
+    "click",
     function(){
-        if(typeof updateCoinDisplays==="function"){
-            updateCoinDisplays();
-        }
+        startGame();
     }
 );
 
+if(typeof updateCoinDisplays==="function"){
+    updateCoinDisplays();
+}
+
+draw();
 requestAnimationFrame(loop);
 </script>
 
