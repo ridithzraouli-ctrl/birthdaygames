@@ -12,11 +12,7 @@
     --text:#4c5961;
     --soft:#dcecf7;
     --accent:#8faebe;
-    --dark:#6f8997;
     --pink:#e8b9c8;
-    --brown:#8b6642;
-    --bunny:#e5caa0;
-    --cream:#fff5e4;
 }
 
 *{box-sizing:border-box}
@@ -114,12 +110,12 @@ canvas{
     display:flex;
     justify-content:center;
     align-items:center;
-    background:rgba(255,255,255,.16);
+    background:rgba(255,255,255,.12);
     pointer-events:none;
 }
 
 .startbox{
-    background:rgba(255,255,255,.94);
+    background:rgba(255,255,255,.95);
     border:2px solid var(--soft);
     border-radius:20px;
     padding:20px 32px;
@@ -139,10 +135,6 @@ button{
     font-family:Georgia,serif;
     font-size:16px;
     cursor:pointer;
-}
-
-button:hover{
-    transform:translateY(-1px);
 }
 
 .modal{
@@ -230,10 +222,10 @@ button:hover{
     </div>
 </div>
 
-<script src="../script.js"></script>
-<script>
+<script src="../script.js"></script><script>
 const canvas=document.getElementById("game");
 const ctx=canvas.getContext("2d");
+
 ctx.imageSmoothingEnabled=false;
 
 const W=canvas.width;
@@ -244,10 +236,9 @@ let running=false;
 let dead=false;
 let score=0;
 let best=Number(localStorage.getItem("bunny_jump_best")||0);
-let last=0;
+let last=performance.now();
 let spawnTimer=0;
 let animationTime=0;
-let bunnyFrame=0;
 let cactuses=[];
 
 const bunny={
@@ -259,189 +250,205 @@ const bunny={
     grounded:true
 };
 
-document.getElementById("best").textContent=String(Math.floor(best)).padStart(5,"0");
+document.getElementById("best").textContent=
+    String(Math.floor(best)).padStart(5,"0");
 
-function theme(){
+function getTheme(){
     return localStorage.getItem("arcade_theme")||"blue";
 }
 
-function sky(){
-    const t=theme();
+function getSky(){
+    const t=getTheme();
 
-    if(t==="pink")
-        return ["#f2d5df","#fff3f7","#fff9fb","#e9b6c8","#dcb9c5"];
-    if(t==="green")
-        return ["#d8ead9","#f2f8f0","#fbfff9","#cbdba8","#bdd5bf"];
-    if(t==="lavender")
-        return ["#e1d9ef","#f7f3fb","#fffaff","#d2bde3","#cbc0df"];
-    if(t==="yellow")
-        return ["#eee5c5","#fcfaf0","#fffdf5","#e2c96d","#d8d0a9"];
+    if(t==="pink"){
+        return {
+            top:"#f2d5df",
+            bottom:"#fff3f7",
+            cloud:"#fff9fb",
+            sun:"#e9b6c8",
+            hill:"#dcb9c5"
+        };
+    }
 
-    return ["#d9eaf4","#f3f8fb","#ffffff","#efd5a5","#c4dbe5"];
+    if(t==="green"){
+        return {
+            top:"#d8ead9",
+            bottom:"#f2f8f0",
+            cloud:"#fbfff9",
+            sun:"#cbdba8",
+            hill:"#bdd5bf"
+        };
+    }
+
+    if(t==="lavender"){
+        return {
+            top:"#e1d9ef",
+            bottom:"#f7f3fb",
+            cloud:"#fffaff",
+            sun:"#d2bde3",
+            hill:"#cbc0df"
+        };
+    }
+
+    if(t==="yellow"){
+        return {
+            top:"#eee5c5",
+            bottom:"#fcfaf0",
+            cloud:"#fffdf5",
+            sun:"#e2c96d",
+            hill:"#d8d0a9"
+        };
+    }
+
+    return {
+        top:"#d9eaf4",
+        bottom:"#f3f8fb",
+        cloud:"#ffffff",
+        sun:"#efd5a5",
+        hill:"#c4dbe5"
+    };
+}
+
+function pixel(x,y,w,h,color){
+    ctx.fillStyle=color;
+    ctx.fillRect(
+        Math.round(x),
+        Math.round(y),
+        Math.round(w),
+        Math.round(h)
+    );
+}
+
+function drawCloud(x,y,s,color){
+    const p=8*s;
+
+    pixel(x,y+p*2,p*7,p*2,color);
+    pixel(x+p,y+p,p*5,p*3,color);
+    pixel(x+p*3,y,p*3,p*4,color);
+    pixel(x+p*6,y+p*2,p*2,p*2,color);
 }
 
 function drawSky(){
-    const s=sky();
+    const s=getSky();
 
-    const g=ctx.createLinearGradient(0,0,0,groundY);
-    g.addColorStop(0,s[0]);
-    g.addColorStop(1,s[1]);
+    const gradient=ctx.createLinearGradient(0,0,0,groundY);
 
-    ctx.fillStyle=g;
+    gradient.addColorStop(0,s.top);
+    gradient.addColorStop(1,s.bottom);
+
+    ctx.fillStyle=gradient;
     ctx.fillRect(0,0,W,groundY);
 
-    /* pixel sun */
-    ctx.fillStyle=s[3];
-    ctx.fillRect(650,42,32,32);
-    ctx.fillRect(642,50,48,16);
-    ctx.fillRect(658,34,16,48);
+    pixel(650,42,32,32,s.sun);
+    pixel(642,50,48,16,s.sun);
+    pixel(658,34,16,48,s.sun);
 
-    /* pixel clouds */
-    drawCloud(105,65,1,s[2]);
-    drawCloud(350,105,.8,s[2]);
-    drawCloud(545,54,.65,s[2]);
+    drawCloud(105,65,1,s.cloud);
+    drawCloud(350,105,.8,s.cloud);
+    drawCloud(545,54,.65,s.cloud);
 
-    /* distant pixel hills */
-    ctx.fillStyle=s[4];
+    ctx.fillStyle=s.hill;
 
-    for(let x=-20;x<W;x+=110){
-        ctx.fillRect(x,235,110,32);
-        ctx.fillRect(x+18,226,74,9);
-        ctx.fillRect(x+35,218,40,8);
+    for(let x=-20;x<W+100;x+=110){
+        pixel(x,235,110,32,s.hill);
+        pixel(x+18,226,74,9,s.hill);
+        pixel(x+35,218,40,8,s.hill);
     }
 }
 
-function drawCloud(x,y,scale,color){
-    ctx.fillStyle=color;
-
-    const p=8*scale;
-
-    ctx.fillRect(x,y+p*2,p*7,p*2);
-    ctx.fillRect(x+p,y+p,p*5,p*3);
-    ctx.fillRect(x+p*3,y,p*3,p*4);
-    ctx.fillRect(x+p*6,y+p*2,p*2,p*2);
-}<script>
 function drawGround(){
-    const s=sky();
+    const s=getSky();
 
-    ctx.fillStyle=s[1];
-    ctx.fillRect(0,groundY,W,H-groundY);
+    pixel(0,groundY,W,H-groundY,s.bottom);
+    pixel(0,groundY,W,5,s.hill);
 
-    ctx.fillStyle=s[4];
-    ctx.fillRect(0,groundY,W,5);
-
-    /* clean pixel ground marks */
-    ctx.fillStyle=s[4];
-
-    for(let x=-40;x<W+40;x+=90){
-        ctx.fillRect(x,groundY+22,28,4);
-        ctx.fillRect(x+45,groundY+43,15,4);
+    for(let x=-40;x<W+50;x+=90){
+        pixel(x,groundY+22,28,4,s.hill);
+        pixel(x+45,groundY+43,15,4,s.hill);
     }
-}
-
-function pixelRect(x,y,w,h,color){
-    ctx.fillStyle=color;
-    ctx.fillRect(Math.round(x),Math.round(y),w,h);
-}
-
-/* CUTE RIGHT-FACING BUNNY */
-
+}<script>
 function drawBunny(){
     const x=Math.round(bunny.x);
-    const y=Math.round(bunny.y);
+    let y=Math.round(bunny.y);
 
     const brown="#8b6642";
     const fur="#e5caa0";
     const cream="#fff5e4";
     const eye="#3b2211";
 
-    let bob=0;
-
     if(!running){
-        bob=Math.sin(animationTime*.004)*2;
-    }else if(bunny.grounded){
-        bob=Math.sin(animationTime*.018)*1.5;
+        y+=Math.round(Math.sin(animationTime*.004)*2);
     }
 
-    const Y=Math.round(y+bob);
-
-    /*
-       4px pixel grid.
-       The bunny faces RIGHT.
-    */
+    if(running && bunny.grounded){
+        y+=Math.round(Math.sin(animationTime*.018)*1);
+    }
 
     /* ears */
-    pixelRect(x+12,Y+4,12,28,brown);
-    pixelRect(x+32,Y,12,28,brown);
+    pixel(x+12,y+4,12,28,brown);
+    pixel(x+32,y,12,28,brown);
 
-    pixelRect(x+16,Y+8,8,20,fur);
-    pixelRect(x+36,Y+5,8,19,fur);
-
-    /* body outline */
-    pixelRect(x+8,Y+27,36,22,brown);
-    pixelRect(x+12,Y+23,28,30,brown);
+    pixel(x+16,y+8,8,20,fur);
+    pixel(x+36,y+5,8,19,fur);
 
     /* body */
-    pixelRect(x+12,Y+29,28,19,fur);
-    pixelRect(x+16,Y+25,20,25,fur);
+    pixel(x+8,y+27,36,22,brown);
+    pixel(x+12,y+23,28,30,brown);
+    pixel(x+12,y+29,28,19,fur);
+    pixel(x+16,y+25,20,25,fur);
 
-    /* head outline */
-    pixelRect(x+27,Y+15,22,27,brown);
-    pixelRect(x+23,Y+20,29,22,brown);
+    /* head facing RIGHT */
+    pixel(x+27,y+15,22,27,brown);
+    pixel(x+23,y+20,29,22,brown);
 
-    /* head */
-    pixelRect(x+28,Y+18,18,20,fur);
-    pixelRect(x+24,Y+24,24,14,fur);
+    pixel(x+28,y+18,18,20,fur);
+    pixel(x+24,y+24,24,14,fur);
 
     /* chest */
-    pixelRect(x+29,Y+34,10,14,cream);
-
-    /* back foot */
-    pixelRect(x+8,Y+44,14,9,brown);
-    pixelRect(x+12,Y+43,12,7,cream);
-
-    /* front foot */
-    pixelRect(x+36,Y+45,13,8,brown);
-    pixelRect(x+36,Y+43,9,7,cream);
+    pixel(x+29,y+34,10,14,cream);
 
     /* tail */
-    pixelRect(x+4,Y+27,9,12,brown);
-    pixelRect(x+2,Y+29,9,8,cream);
+    pixel(x+4,y+27,9,12,brown);
+    pixel(x+2,y+29,9,8,cream);
+
+    /* back foot */
+    pixel(x+8,y+44,14,9,brown);
+    pixel(x+12,y+43,12,7,cream);
+
+    /* front foot */
+    pixel(x+36,y+45,13,8,brown);
+    pixel(x+36,y+43,9,7,cream);
 
     /* eye */
-    pixelRect(x+42,Y+24,4,5,eye);
+    pixel(x+42,y+24,4,5,eye);
 
     /* nose */
-    pixelRect(x+47,Y+31,5,4,eye);
+    pixel(x+47,y+31,5,4,eye);
 
-    /* tiny cheek */
-    pixelRect(x+38,Y+32,4,3,"#d9a98d");
+    /* cheek */
+    pixel(x+38,y+32,4,3,"#d9a98d");
 
-    /* RUNNING LEGS */
     if(running && bunny.grounded){
-        const frame=Math.floor(animationTime/90)%2;
+        const frame=Math.floor(animationTime/100)%2;
 
         if(frame===0){
-            pixelRect(x+13,Y+46,8,10,brown);
-            pixelRect(x+34,Y+46,8,6,brown);
-            pixelRect(x+10,Y+52,11,4,cream);
+            pixel(x+10,y+48,11,6,brown);
+            pixel(x+34,y+47,9,8,brown);
+            pixel(x+8,y+52,11,4,cream);
         }else{
-            pixelRect(x+18,Y+46,8,6,brown);
-            pixelRect(x+39,Y+45,8,10,brown);
-            pixelRect(x+39,Y+52,11,4,cream);
+            pixel(x+17,y+47,9,8,brown);
+            pixel(x+39,y+46,11,7,brown);
+            pixel(x+39,y+52,11,4,cream);
         }
     }
 
-    /* JUMPING POSE */
     if(!bunny.grounded){
-        pixelRect(x+9,Y+46,12,6,brown);
-        pixelRect(x+38,Y+43,13,6,brown);
-        pixelRect(x+6,Y+47,10,5,cream);
-        pixelRect(x+42,Y+45,10,5,cream);
+        pixel(x+7,y+46,13,6,brown);
+        pixel(x+39,y+43,13,7,brown);
+        pixel(x+5,y+50,11,4,cream);
+        pixel(x+43,y+48,10,4,cream);
     }
 }
-
-/* PIXEL CACTUS */
 
 function drawCactus(c){
     const x=Math.round(c.x);
@@ -451,57 +458,47 @@ function drawCactus(c){
     const mid="#79936f";
     const light="#a9bd92";
 
-    /* shadow */
-    ctx.fillStyle="rgba(75,90,80,.16)";
-    ctx.fillRect(x-4,groundY+7,c.w+8,5);
+    pixel(x-4,groundY+7,c.w+8,5,"rgba(75,90,80,.16)");
 
-    /* outline */
-    pixelRect(x+8,y,16,c.h,dark);
+    pixel(x+8,y,16,c.h,dark);
 
     if(c.type===1){
-        pixelRect(x,y+14,12,8,dark);
-        pixelRect(x-4,y+10,8,15,dark);
-        pixelRect(x+24,y+22,10,8,dark);
-        pixelRect(x+28,y+17,8,16,dark);
+        pixel(x,y+14,12,8,dark);
+        pixel(x-4,y+10,8,15,dark);
+
+        pixel(x+24,y+22,10,8,dark);
+        pixel(x+28,y+17,8,16,dark);
     }else{
-        pixelRect(x+3,y+20,10,8,dark);
-        pixelRect(x-1,y+16,7,17,dark);
-        pixelRect(x+23,y+10,10,9,dark);
-        pixelRect(x+29,y+5,7,19,dark);
+        pixel(x+3,y+20,10,8,dark);
+        pixel(x-1,y+16,7,17,dark);
+
+        pixel(x+23,y+10,10,9,dark);
+        pixel(x+29,y+5,7,19,dark);
     }
 
-    /* inner cactus */
-    pixelRect(x+12,y+4,8,c.h-8,mid);
+    pixel(x+12,y+4,8,c.h-8,mid);
 
     if(c.type===1){
-        pixelRect(x+3,y+14,5,7,mid);
-        pixelRect(x+28,y+22,5,6,mid);
+        pixel(x+3,y+14,5,7,mid);
+        pixel(x+28,y+22,5,6,mid);
     }else{
-        pixelRect(x+3,y+20,6,6,mid);
-        pixelRect(x+25,y+10,6,7,mid);
+        pixel(x+3,y+20,6,6,mid);
+        pixel(x+25,y+10,6,7,mid);
     }
 
-    /* pixel highlights */
-    pixelRect(x+14,y+8,3,8,light);
-    pixelRect(x+14,y+25,3,7,light);
+    pixel(x+14,y+8,3,8,light);
+    pixel(x+14,y+25,3,7,light);
 }
 
 function spawnCactus(){
-    const first=score<3;
+    const easy=score<3;
 
     cactuses.push({
-        x:W+(first?120:20),
-        w:first?30:32,
-        h:first?43:(30+Math.floor(Math.random()*28)),
-        type:Math.random()<.65?1:2,
-        passed:false
+        x:W+(easy?120:20),
+        w:easy?30:32,
+        h:easy?43:(30+Math.floor(Math.random()*28)),
+        type:Math.random()<.65?1:2
     });
-}
-
-function resetBunny(){
-    bunny.y=groundY-bunny.h;
-    bunny.vy=0;
-    bunny.grounded=true;
 }
 
 function jump(){
@@ -513,12 +510,19 @@ function jump(){
     }
 }
 
-function collision(a,b){
-    return (
-        a.x+12 < b.x+b.w-5 &&
-        a.x+a.w-6 > b.x+5 &&
-        a.y+10 < b.y+b.h-3 &&
-        a.y+a.h-3 > b.y+4
+function collision(a,c){
+    const b={
+        x:c.x,
+        y:groundY-c.h,
+        w:c.w,
+        h:c.h
+    };
+
+    return(
+        a.x+12<b.x+b.w-5 &&
+        a.x+a.w-6>b.x+5 &&
+        a.y+10<b.y+b.h-3 &&
+        a.y+a.h-3>b.y+4
     );
 }
 
@@ -527,21 +531,28 @@ function rewardForScore(){
     if(score>=250)return 20;
     if(score>=100)return 15;
     return 10;
-    }<script>
+}
+
+function resetBunny(){
+    bunny.y=groundY-bunny.h;
+    bunny.vy=0;
+    bunny.grounded=true;
+}
+
 function startGame(){
     running=true;
     dead=false;
     score=0;
     spawnTimer=0;
     cactuses=[];
+
     resetBunny();
 
     document.getElementById("startScreen").style.display="none";
     document.getElementById("gameOver").classList.remove("show");
 
     last=performance.now();
-}
-
+            }<script>
 function endGame(){
     if(dead)return;
 
@@ -552,7 +563,12 @@ function endGame(){
 
     if(score>best){
         best=score;
-        localStorage.setItem("bunny_jump_best",best);
+
+        localStorage.setItem(
+            "bunny_jump_best",
+            String(Math.floor(best))
+        );
+
         document.getElementById("best").textContent=
             String(Math.floor(best)).padStart(5,"0");
     }
@@ -579,13 +595,15 @@ function update(dt){
 
     if(!running)return;
 
-    /* score rises continuously like the Dino game */
     score+=dt*.012;
 
     document.getElementById("score").textContent=
         String(Math.floor(score)).padStart(5,"0");
 
-    const speed=Math.min(9,4.7+score/420);
+    const speed=Math.min(
+        9,
+        4.7+score/420
+    );
 
     bunny.vy+=.55*(dt/16.67);
     bunny.y+=bunny.vy*(dt/16.67);
@@ -600,7 +618,10 @@ function update(dt){
 
     spawnTimer+=dt;
 
-    const delay=Math.max(900,1450-score*1.5);
+    const delay=Math.max(
+        900,
+        1450-score*1.5
+    );
 
     if(spawnTimer>=delay){
         spawnTimer=0;
@@ -612,23 +633,12 @@ function update(dt){
 
         c.x-=speed*(dt/16.67);
 
-        const box={
-            x:c.x,
-            y:groundY-c.h,
-            w:c.w,
-            h:c.h
-        };
-
-        if(collision(bunny,box)){
+        if(collision(bunny,c)){
             endGame();
             return;
         }
 
-        if(!c.passed && c.x+c.w<bunny.x){
-            c.passed=true;
-        }
-
-        if(c.x<-60){
+        if(c.x<-70){
             cactuses.splice(i,1);
         }
     }
@@ -645,16 +655,14 @@ function draw(){
     }
 
     drawBunny();
-
-    if(!running && !dead){
-        /* idle scene */
-        ctx.fillStyle="rgba(255,255,255,.18)";
-        ctx.fillRect(0,0,W,groundY);
-    }
 }
 
 function loop(now){
-    const dt=Math.min(35,now-last||16.67);
+    const dt=Math.min(
+        35,
+        Math.max(1,now-last)
+    );
+
     last=now;
 
     update(dt);
@@ -675,34 +683,51 @@ function handleInput(){
     jump();
 }
 
-canvas.addEventListener("pointerdown",handleInput);
+canvas.addEventListener(
+    "pointerdown",
+    handleInput
+);
 
-document.addEventListener("keydown",e=>{
-    if(
-        e.code==="Space" ||
-        e.code==="ArrowUp" ||
-        e.code==="KeyW"
-    ){
-        e.preventDefault();
-        handleInput();
+document.addEventListener(
+    "keydown",
+    function(e){
+        if(
+            e.code==="Space" ||
+            e.code==="ArrowUp" ||
+            e.code==="KeyW"
+        ){
+            e.preventDefault();
+            handleInput();
+        }
     }
-});
+);
 
-document.getElementById("startButton").addEventListener("click",e=>{
-    e.stopPropagation();
-    startGame();
-});
-
-document.getElementById("againButton").addEventListener("click",()=>{
-    startGame();
-});
-
-document.addEventListener("DOMContentLoaded",()=>{
-    if(typeof updateCoinDisplays==="function"){
-        updateCoinDisplays();
+document.getElementById("startButton").addEventListener(
+    "click",
+    function(e){
+        e.stopPropagation();
+        startGame();
     }
-});
+);
+
+document.getElementById("againButton").addEventListener(
+    "click",
+    function(){
+        startGame();
+    }
+);
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+        if(typeof updateCoinDisplays==="function"){
+            updateCoinDisplays();
+        }
+    }
+);
 
 requestAnimationFrame(loop);
-</script></body>
+</script>
+
+</body>
 </html>
