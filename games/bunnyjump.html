@@ -4,8 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Bunny Run</title>
+
 <style>
 *{box-sizing:border-box}
+
 html,body{
     margin:0;
     width:100%;
@@ -13,12 +15,14 @@ html,body{
     overflow:hidden;
     background:#8a9ca5;
 }
+
 body{
     display:flex;
     align-items:center;
     justify-content:center;
     font-family:Georgia,serif;
 }
+
 #game{
     width:min(960px,100vw);
     height:auto;
@@ -28,11 +32,13 @@ body{
 }
 </style>
 </head>
+
 <body>
 
 <canvas id="game" width="960" height="540"></canvas>
 
 <script>
+
 const canvas=document.getElementById("game");
 const ctx=canvas.getContext("2d");
 
@@ -62,6 +68,11 @@ let groundOffset=0;
 let runAnimTime=0;
 let jumpTime=0;
 
+
+/* =========================
+   BUNNY
+========================= */
+
 const bunny={
     x:110,
     y:GROUND-28,
@@ -73,13 +84,28 @@ const bunny={
     jumpPower:-15.5
 };
 
+
+/* =========================
+   CACTUSES
+========================= */
+
 const obstacles=[];
 
 let spawnTimer=0;
 let nextSpawn=1200;
 
+
+/*
+    The cactus patterns only control
+    what is DRAWN.
+
+    The collision system below reads
+    the actual B cells, so empty spaces
+    between cactus arms are not solid.
+*/
+
 const CACTUS_SMALL=[
-    ["O","O","O","O","O"],
+    ["O","O","B","O","O"],
     ["O","B","B","B","O"],
     ["O","B","B","B","O"],
     ["O","B","B","B","O"],
@@ -94,7 +120,7 @@ const CACTUS_SMALL=[
 ];
 
 const CACTUS_TALL=[
-    ["O","O","O","O","O"],
+    ["O","O","B","O","O"],
     ["O","B","B","B","O"],
     ["O","B","B","B","O"],
     ["O","B","B","B","O"],
@@ -113,7 +139,7 @@ const CACTUS_TALL=[
 ];
 
 const CACTUS_LEFT_ARM=[
-    ["O","O","O","O","O","O","O","O"],
+    ["O","O","O","B","B","B","O","O"],
     ["O","O","O","B","B","B","O","O"],
     ["O","O","O","B","B","B","O","O"],
     ["O","O","O","B","B","B","O","O"],
@@ -145,10 +171,10 @@ const CACTUS_RIGHT_ARM=[
 ];
 
 const CACTUS_WIDE=[
-    ["O","O","O","O","O","O","O","O","O","O"],
-    ["O","O","B","B","B","O","B","B","B","O"],
-    ["O","O","B","B","B","O","B","B","B","O"],
-    ["O","O","B","B","B","B","B","B","B","O"],
+    ["O","O","O","O","B","B","O","O","O","O"],
+    ["O","O","B","B","B","B","B","B","O","O"],
+    ["O","O","B","B","B","B","B","B","O","O"],
+    ["O","O","B","B","B","B","B","B","O","O"],
     ["O","B","B","B","B","B","B","B","B","O"],
     ["O","B","B","B","B","B","B","B","B","O"],
     ["O","O","O","B","B","B","B","O","O","O"],
@@ -167,21 +193,40 @@ const cactusTypes=[
     CACTUS_WIDE
 ];
 
+
+/*
+    Bigger visual scale than the original.
+*/
+
+const CACTUS_SCALE=5;
+
+
+/* =========================
+   CREATE CACTUS
+========================= */
+
 function createCactus(type,x){
-    const scale=4;
+
+    const scale=CACTUS_SCALE;
+
     const rows=type.length;
     const cols=type[0].length;
 
     return {
-        x,
+        x:x,
         y:GROUND-rows*scale,
         width:cols*scale,
         height:rows*scale,
-        type,
-        scale,
+        type:type,
+        scale:scale,
         counted:false
     };
 }
+
+
+/* =========================
+   SPAWN CACTUS
+========================= */
 
 function spawnCactus(){
 
@@ -189,17 +234,26 @@ function spawnCactus(){
 
     let count=1;
 
-    if(difficulty>8 && Math.random()<0.32){
+    if(
+        difficulty>8 &&
+        Math.random()<0.32
+    ){
         count=2;
     }
 
-    if(difficulty>18 && Math.random()<0.16){
+    if(
+        difficulty>18 &&
+        Math.random()<0.16
+    ){
         count=3;
     }
 
-    const firstType=cactusTypes[
-        Math.floor(Math.random()*cactusTypes.length)
-    ];
+    const firstType=
+        cactusTypes[
+            Math.floor(
+                Math.random()*cactusTypes.length
+            )
+        ];
 
     let x=W+30;
 
@@ -208,32 +262,51 @@ function spawnCactus(){
         let type;
 
         if(i===0){
+
             type=firstType;
+
         }else{
+
             type=
                 Math.random()<0.5
-                ? CACTUS_SMALL
-                : CACTUS_TALL;
+                ?CACTUS_SMALL
+                :CACTUS_TALL;
         }
 
-        obstacles.push(createCactus(type,x));
+        const cactus=createCactus(type,x);
 
-        x+=type[0].length*4+22;
+        obstacles.push(cactus);
+
+        x+=
+            type[0].length*CACTUS_SCALE
+            +26;
     }
 
-    const minimum=1050-Math.min(score*10,350);
-    const maximum=1500-Math.min(score*8,300);
+    const minimum=
+        1050-
+        Math.min(score*10,350);
+
+    const maximum=
+        1500-
+        Math.min(score*8,300);
 
     nextSpawn=
         minimum+
-        Math.random()*(maximum-minimum);
+        Math.random()*
+        (maximum-minimum);
 
     spawnTimer=0;
 }
 
+
+/* =========================
+   GROUND
+========================= */
+
 function drawGround(){
 
     ctx.fillStyle=GROUND_COLOR;
+
     ctx.fillRect(
         0,
         GROUND,
@@ -242,6 +315,7 @@ function drawGround(){
     );
 
     ctx.fillStyle=DARK;
+
     ctx.fillRect(
         0,
         GROUND,
@@ -264,6 +338,7 @@ function drawGround(){
         x<W+80;
         x+=80
     ){
+
         ctx.fillRect(
             x,
             GROUND+20,
@@ -287,6 +362,11 @@ function drawGround(){
     }
 }
 
+
+/* =========================
+   CACTUS DRAWING
+========================= */
+
 function drawCactus(o){
 
     const type=o.type;
@@ -304,14 +384,16 @@ function drawCactus(o){
             col++
         ){
 
-            const cell=type[row][col];
-
-            if(cell==="O"){
+            if(type[row][col]!=="B"){
                 continue;
             }
 
             const px=o.x+col*s;
             const py=o.y+row*s;
+
+            /*
+                Dark pixel outline
+            */
 
             ctx.fillStyle=DARK;
 
@@ -322,6 +404,10 @@ function drawCactus(o){
                 s+2
             );
 
+            /*
+                Main cactus body
+            */
+
             ctx.fillStyle="#59634d";
 
             ctx.fillRect(
@@ -329,6 +415,21 @@ function drawCactus(o){
                 py,
                 s,
                 s
+            );
+
+            /*
+                Small highlight gives the
+                cactus more depth without
+                changing its collision.
+            */
+
+            ctx.fillStyle="#778269";
+
+            ctx.fillRect(
+                px+1,
+                py+1,
+                2,
+                Math.max(2,s-2)
             );
         }
     }
@@ -346,10 +447,6 @@ function drawBunny(){
     let frameHeight=28;
     let frameIndex=0;
 
-    /*
-        IDLE
-    */
-
     if(!started && !dead){
 
         image=idleImage;
@@ -357,21 +454,11 @@ function drawBunny(){
 
     }
 
-    /*
-        JUMP
-    */
-
     else if(!bunny.grounded){
 
         image=jumpImage;
         frameWidth=28;
         frameHeight=36;
-
-        /*
-            Play all 8 jump frames during
-            the upward part of the jump,
-            then hold frame 7 while falling.
-        */
 
         const jumpAnimationDuration=560;
 
@@ -384,20 +471,11 @@ function drawBunny(){
 
     }
 
-    /*
-        RUN
-    */
-
     else{
 
         image=runImage;
         frameWidth=28;
         frameHeight=28;
-
-        /*
-            8 running frames.
-            45ms per frame.
-        */
 
         frameIndex=
             Math.floor(runAnimTime/45)%8;
@@ -413,31 +491,15 @@ function drawBunny(){
     const drawW=frameWidth*3;
     const drawH=frameHeight*3;
 
-    /*
-        bunny.y represents the top of
-        the bunny's 28px gameplay body.
-
-        This anchors the bottom of BOTH
-        the 28px running sprite and the
-        36px jump sprite to the bunny's
-        actual feet position.
-
-        On the ground:
-        feet = GROUND = 425
-    */
-
-    const feetY=bunny.y+bunny.height;
+    const feetY=
+        bunny.y+bunny.height;
 
     const drawX=bunny.x;
 
-    const drawY=feetY-drawH;
+    const drawY=
+        feetY-drawH;
 
     ctx.save();
-
-    /*
-        Source bunny faces left.
-        Flip it so it faces right.
-    */
 
     ctx.translate(
         drawX+drawW,
@@ -461,23 +523,34 @@ function drawBunny(){
     ctx.restore();
 }
 
+
+/* =========================
+   BUNNY COLLISION
+========================= */
+
 function getBunnyHitbox(){
 
     return {
         x:bunny.x+13,
         y:bunny.y+12,
-        width:drawCollisionWidth(),
-        height:drawCollisionHeight()
+        width:52,
+        height:60
     };
 }
 
-function drawCollisionWidth(){
-    return 52;
-}
 
-function drawCollisionHeight(){
-    return 60;
-}
+/* =========================
+   CACTUS COLLISION
+========================= */
+
+/*
+    Instead of using one giant rectangle
+    around the whole cactus, this checks
+    each actual B cell.
+
+    Empty spaces between arms are therefore
+    actually empty.
+*/
 
 function checkCollision(){
 
@@ -485,25 +558,60 @@ function checkCollision(){
 
     for(const o of obstacles){
 
-        const cactusHit={
-            x:o.x+4,
-            y:o.y+3,
-            width:o.width-8,
-            height:o.height-5
-        };
+        const type=o.type;
+        const s=o.scale;
 
-        if(
-            b.x<cactusHit.x+cactusHit.width &&
-            b.x+b.width>cactusHit.x &&
-            b.y<cactusHit.y+cactusHit.height &&
-            b.y+b.height>cactusHit.y
+        for(
+            let row=0;
+            row<type.length;
+            row++
         ){
-            return true;
+
+            for(
+                let col=0;
+                col<type[row].length;
+                col++
+            ){
+
+                if(type[row][col]!=="B"){
+                    continue;
+                }
+
+                const cactusHit={
+                    x:o.x+col*s+1,
+                    y:o.y+row*s+1,
+                    width:s-2,
+                    height:s-2
+                };
+
+                if(
+                    b.x<
+                        cactusHit.x+
+                        cactusHit.width &&
+
+                    b.x+b.width>
+                        cactusHit.x &&
+
+                    b.y<
+                        cactusHit.y+
+                        cactusHit.height &&
+
+                    b.y+b.height>
+                        cactusHit.y
+                ){
+                    return true;
+                }
+            }
         }
     }
 
     return false;
 }
+
+
+/* =========================
+   JUMP
+========================= */
 
 function jump(){
 
@@ -535,14 +643,14 @@ function jump(){
         bunny.velocityY=bunny.jumpPower;
         bunny.grounded=false;
 
-        /*
-            Reset jump animation
-            every time a new jump starts.
-        */
-
         jumpTime=0;
     }
 }
+
+
+/* =========================
+   RESTART
+========================= */
 
 function restart(){
 
@@ -571,12 +679,22 @@ function restart(){
     requestAnimationFrame(loop);
 }
 
+
+/* =========================
+   GAME OVER
+========================= */
+
 function gameOver(){
 
     dead=true;
 
     bunny.velocityY=0;
 }
+
+
+/* =========================
+   UPDATE
+========================= */
 
 function update(dt){
 
@@ -585,28 +703,24 @@ function update(dt){
     }
 
     /*
-        Run animation only advances
-        while the bunny is actually running.
+        BUNNY ANIMATION SYSTEM
     */
 
     if(bunny.grounded){
         runAnimTime+=dt;
     }
 
-    /*
-        Jump animation only advances
-        while the bunny is in the air.
-    */
-
     if(!bunny.grounded){
 
         jumpTime+=dt;
 
         bunny.velocityY+=
-            bunny.gravity*(dt/16.6667);
+            bunny.gravity*
+            (dt/16.6667);
 
         bunny.y+=
-            bunny.velocityY*(dt/16.6667);
+            bunny.velocityY*
+            (dt/16.6667);
 
         const groundY=GROUND-28;
 
@@ -616,27 +730,26 @@ function update(dt){
             bunny.velocityY=0;
             bunny.grounded=true;
 
-            /*
-                Start the running animation
-                from frame 0 immediately.
-            */
-
             runAnimTime=0;
             jumpTime=0;
         }
     }
 
+
     /*
-        Slight speed increase over time.
+        GAME SPEED
     */
 
     speed+=0.00035*dt;
 
     const movement=
-        speed*(dt/16.6667);
+        speed*
+        (dt/16.6667);
+
 
     /*
-        Cacti and ground use the same movement.
+        CACTUS MOVEMENT
+        This only changes cactus x.
     */
 
     for(
@@ -655,6 +768,7 @@ function update(dt){
         ){
 
             o.counted=true;
+
             score++;
 
             if(score%5===0){
@@ -667,16 +781,32 @@ function update(dt){
         }
     }
 
+
+    /*
+        CACTUS SPAWNING
+    */
+
     spawnTimer+=dt;
 
     if(spawnTimer>=nextSpawn){
         spawnCactus();
     }
 
+
+    /*
+        THE ONLY PLACE WHERE
+        BUNNY AND CACTUSES INTERACT
+    */
+
     if(checkCollision()){
         gameOver();
     }
 }
+
+
+/* =========================
+   DRAW
+========================= */
 
 function draw(){
 
@@ -704,8 +834,9 @@ function draw(){
 
     drawBunny();
 
+
     /*
-        Score
+        SCORE
     */
 
     ctx.fillStyle=DARK;
@@ -717,6 +848,7 @@ function draw(){
         W-28,
         42
     );
+
 
     if(!started){
 
@@ -730,6 +862,7 @@ function draw(){
         );
     }
 
+
     if(dead){
 
         ctx.textAlign="center";
@@ -742,6 +875,11 @@ function draw(){
         );
     }
 }
+
+
+/* =========================
+   GAME LOOP
+========================= */
 
 function loop(time){
 
@@ -759,6 +897,11 @@ function loop(time){
         requestAnimationFrame(loop);
     }
 }
+
+
+/* =========================
+   INPUT
+========================= */
 
 function handleInput(){
 
@@ -801,18 +944,32 @@ canvas.addEventListener(
 
 
 /* =========================
-   LOAD SPRITES
+   LOAD BUNNY SPRITES
 ========================= */
 
-idleImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAA9klEQVR42u1UMQ6EIBAEYmdvjIUlhbVP8AE+1Qf4BGsLSwtj6K25inPv2EU8OGPhdggyzOzMMvbUU0/dtoo81UWe6tj3CtdmJTMGQWM8QlDsKplZ39qmZm1TsxBQcXWrSMBxUha7vwEu68bhGoJ1/WDt31pSTpkGkzCUHcowZr+wSkIGg0//nZKa/MmyJH/o+sEy0jTPH852gXIq8Aa06wfmKzEEpkAFlj+YwTMFlaEk566xBi8wr3fJDc9SLBO86Upf6tL9ZQple8R6Xyv9zTLKpDHAwaNtWTduDGTigIGcMdnPwT8C8TYN5thxUu8sYsGnhgNWL5sPiDbAGkWfAAAAAElFTkSuQmCC";
+/*
+   PASTE YOUR THREE ORIGINAL
+   image.src LINES HERE.
 
-runImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAcCAYAAAB4fbODAAADlElEQVR42u1aPZKzMAw1Gbr0O5kUlBRb5wg5QI7KATgCdQpKip0d+q35im+U1RpjJGMLCNLMFlkIz3rWz5ODMWpqampqampqampqampqampqamr7sevlPFwv50GZoNtJKVCLaZ/lh8FJqEmpCagm1P0+y4/R/x73m3ncb0aTkJmA0pVLK+V78QrJZ4wxVd2Yr++fbM9+pcI7bUlOSOIdqcBI8vpse2OMMZB87yR3XXhJElBaTqwlX965wKzJK06+VN1vK/G5FOuQM+BRCoy0LFxzPyX9wnjJJChIidiAW8E7kqWWhbBfZVEk735ryd1UeM4EtElLTao03hELTCpOfb5IdHfJhE+Bd0gJeoQCo7YPy+eqWlkUu64wW5lR1pyLUu2ha7Z9B7+W4Ln22reuPOWAucZQu7VNtH2TDhoJa7vu5VdVN3+K6ON+M1XdDByFsMU4oRZYuL/tOnRHP0z5mMeu6tyACnFyT3jSfEpjwmyLC4tP1eCkhe9fL+dhj0oH+HP5N+bDnYSZS1L4yKzqZkQqJpO7gXMJsWe8tfiUxMQyFGPC83zrsHF9mBy/lnZaKh5HIUz5mM2RaUuKGGT6nJTGi0UkJzhT4a21h/izPRNS/G67jpyAXL/swkJNxCU8uorPlI8nl6TAi+UYBuQcPPzVy7J4c1VzKZ7NZ2o8yT2EIMVJh3Ht5Gu7zrnXZVGM3hKK5VdZFK/nw1/o3lHiaiqWpwpRFltSUCva1PAa2plC8TjdgYvn4hPwUvApvYfU/YOi41MDoV2Q6xc3Xqh4rk7r4sQ+eMvdOrkXOTb/+v7JwEl8khZCaiiefWoVE8/FJ2Cn5hUwn21vUv1UAIGEE9HV4X8D7v+aQjnmxibmOQSTigcJbceYzQW8eljVzetAJvcPq/0wV7Vc134/97OnW5xg2SOeNJ/uOWcaN1bhgWCjrM91CMTp7Fga+k5Y52Qp/DziWzMklK+z2d0UYgw4h+tV3YwOAPMYldDuXjEqqS8o9oYnzac0Jrco2B0C3iOlzFvPtifJXcr30BgyW9hwMnG6Jy7wkITkBMQPsWclXGWebR8lYDCe/cx3w5Pgk4I7hcmZOUMNeOeOEDS5O57jXPdzurAriX0vU7gkrH1vcAecIy72Bipen/yldCnDBcFXFKa+S5GOvhncloUpJffc9ZyqufGpIfXUi2uKFxcvBJczyy1dD0VSLpG8U/Mw51lT3MXi5x/WB9z8URHs6QAAAABJRU5ErkJggg==";
+   Do not change anything inside
+   those Base64 strings.
+*/
 
-jumpImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAkCAYAAACQVDZDAAADgUlEQVR42u2aPXLyMBCGRcYdfYahoKRIzRE4AEflAByBmsKlC4ZxT+2vyCeyiJW0sq0VUd6nIzi8Xu0/2BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWNar5bBeLQecBLB84Ah0+dp+GpqESEok4FtU61KBqKW7Xi2Hr+3ny98O+5057HfmtydhzfGSU+vjnap1qe5QQtcmnzHGHE9nc73dF7+9oNUcL5xWtgTUrtalukMJ3UvbG2OMsclXQ0LUHC8hrTl0sAMqdiULTb5c3a/kuKt1jiX0qFbWEdRW6hyi76Cn2ZWsPdvNJnvylQxQze6urZdLi01A10G5g0ZbT7MrhYpJ7m6knRAlfKepl0MLI2jllChmQE4Tq9rbzabKiqZhI7eLaY6bGr6rXc/qUK3Y/cUmvGACau9fJTS19dquezjweDo/FZnDfmeOp/OQMqL/1XN8Vz2adPb6tuvIFf3g82Ez5eamBMsUI6foadto97BQBeXstw68tL1Zr5YDRsf3w8YH579Xf/NJuOBGplCwHE/nl6ChwZIaoLEEzKGnaSMdQ6mm/bzYaEN1Q5opdk3ttNBLn4B8PlzEgsUdmeYIlpCROfVK2UhfuzuhxMFt14kTMNUut7BIAxV6cU234HI+bMaMTKFl1YqnjE10R9LQ07KROtFqXtrecB0x1BV/XvdBvTF28df2orOEHp94vvugRYDtgHOMTNKK7Vtex7b4qV0wh41S++zo5EvMKV0w1a5U/0HP32k5n7vf1jb8nNyrPMR7vd0X1ki3C6YeaqqutZF2pDw6z4nI7Sk/Dvm+p7E2p/qOVuwxmtB7Tmg3pl1f20cBj6fzowOPqgCSJEnpSjRAQzvSXHopdvo0x9on7Zjcl0DSDhirwtyoxJ2pDSCfZu16Er9wXY1bP2xi/k/Ax/Wjf4aYY4cLdYpQ1Zqqp22jtCjQc6AV1D5Hyu0Q3N4iGXcl/0eeH/XuTLXruY1B4gPaPWlDud7uC/c330b6Ie43QLTKXNp+loSgeu5n5tCT2OnTHNttU3CrvXSkl427r5Wauz4U7LXrSZI49AQON8JGvwVNuZnY+3MGqLaeVDff7vhdEEJFwfe/tspKzsMNEndskjylU7NerNPG7iH2fiPZjWjmcz9SS8cA6S6mpTdGV3rwc9yPZOSaMvLy14cr9l/T88XGXP7/B8eoAeUpIH/9AAAAAElFTkSuQmCC";
+idleImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAA9klEQVR42u1UMQ6EIBAEYmdvjIUlhbVP8AE+1Qf4BGsLSwtj6K25inPv2EU8OGPhdggyzOzMMvbUU0/dtoo81UWe6tj3CtdmJTMGQWM8QlDsKplZ39qmZm1TsxBQcXWrSMBxUha7vwEu68bhGoJ1/WDt31pSTpkGkzCUHcowZr+wSkIGg0//nZKa/MmyJH/o+sEy0jTPH852gXIq8Aa06wfmKzEEpkAFlj+YwTMFlaEk566xBi8wr3fJDc9SLBO86Upf6tL9ZQple8R6Xyv9zTLKpDHAwaNtWTduDGTigIGcMdnPwT8C8TYN5thxUu8sYsGnhgNWL5sPiDbAGkWfAAAAAElFTkSuQmCC";  
+  
+runImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAcCAYAAAB4fbODAAADlElEQVR42u1aPZKzMAw1Gbr0O5kUlBRb5wg5QI7KATgCdQpKip0d+q35im+U1RpjJGMLCNLMFlkIz3rWz5ODMWpqampqampqampqampqampqamr7sevlPFwv50GZoNtJKVCLaZ/lh8FJqEmpCagm1P0+y4/R/x73m3ncb0aTkJmA0pVLK+V78QrJZ4wxVd2Yr++fbM9+pcI7bUlOSOIdqcBI8vpse2OMMZB87yR3XXhJElBaTqwlX965wKzJK06+VN1vK/G5FOuQM+BRCoy0LFxzPyX9wnjJJChIidiAW8E7kqWWhbBfZVEk735ryd1UeM4EtElLTao03hELTCpOfb5IdHfJhE+Bd0gJeoQCo7YPy+eqWlkUu64wW5lR1pyLUu2ha7Z9B7+W4Ln22reuPOWAucZQu7VNtH2TDhoJa7vu5VdVN3+K6ON+M1XdDByFsMU4oRZYuL/tOnRHP0z5mMeu6tyACnFyT3jSfEpjwmyLC4tP1eCkhe9fL+dhj0oH+HP5N+bDnYSZS1L4yKzqZkQqJpO7gXMJsWe8tfiUxMQyFGPC83zrsHF9mBy/lnZaKh5HIUz5mM2RaUuKGGT6nJTGi0UkJzhT4a21h/izPRNS/G67jpyAXL/swkJNxCU8uorPlI8nl6TAi+UYBuQcPPzVy7J4c1VzKZ7NZ2o8yT2EIMVJh3Ht5Gu7zrnXZVGM3hKK5VdZFK/nw1/o3lHiaiqWpwpRFltSUCva1PAa2plC8TjdgYvn4hPwUvApvYfU/YOi41MDoV2Q6xc3Xqh4rk7r4sQ+eMvdOrkXOTb/+v7JwEl8khZCaiiefWoVE8/FJ2Cn5hUwn21vUv1UAIGEE9HV4X8D7v+aQjnmxibmOQSTigcJbceYzQW8eljVzetAJvcPq/0wV7Vc134/97OnW5xg2SOeNJ/uOWcaN1bhgWCjrM91CMTp7Fga+k5Y52Qp/DziWzMklK+z2d0UYgw4h+tV3YwOAPMYldDuXjEqqS8o9oYnzac0Jrco2B0C3iOlzFvPtifJXcr30BgyW9hwMnG6Jy7wkITkBMQPsWclXGWebR8lYDCe/cx3w5Pgk4I7hcmZOUMNeOeOEDS5O57jXPdzurAriX0vU7gkrH1vcAecIy72Bipen/yldCnDBcFXFKa+S5GOvhncloUpJffc9ZyqufGpIfXUi2uKFxcvBJczyy1dD0VSLpG8U/Mw51lT3MXi5x/WB9z8URHs6QAAAABJRU5ErkJggg==";  
+  
+jumpImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAkCAYAAACQVDZDAAADgUlEQVR42u2aPXLyMBCGRcYdfYahoKRIzRE4AEflAByBmsKlC4ZxT+2vyCeyiJW0sq0VUd6nIzi8Xu0/2BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWNar5bBeLQecBLB84Ah0+dp+GpqESEok4FtU61KBqKW7Xi2Hr+3ny98O+5057HfmtydhzfGSU+vjnap1qe5QQtcmnzHGHE9nc73dF7+9oNUcL5xWtgTUrtalukMJ3UvbG2OMsclXQ0LUHC8hrTl0sAMqdiULTb5c3a/kuKt1jiX0qFbWEdRW6hyi76Cn2ZWsPdvNJnvylQxQze6urZdLi01A10G5g0ZbT7MrhYpJ7m6knRAlfKepl0MLI2jllChmQE4Tq9rbzabKiqZhI7eLaY6bGr6rXc/qUK3Y/cUmvGACau9fJTS19dquezjweDo/FZnDfmeOp/OQMqL/1XN8Vz2adPb6tuvIFf3g82Ez5eamBMsUI6foadto97BQBeXstw68tL1Zr5YDRsf3w8YH579Xf/NJuOBGplCwHE/nl6ChwZIaoLEEzKGnaSMdQ6mm/bzYaEN1Q5opdk3ttNBLn4B8PlzEgsUdmeYIlpCROfVK2UhfuzuhxMFt14kTMNUut7BIAxV6cU234HI+bMaMTKFl1YqnjE10R9LQ07KROtFqXtrecB0x1BV/XvdBvTF28df2orOEHp94vvugRYDtgHOMTNKK7Vtex7b4qV0wh41S++zo5EvMKV0w1a5U/0HP32k5n7vf1jb8nNyrPMR7vd0X1ki3C6YeaqqutZF2pDw6z4nI7Sk/Dvm+p7E2p/qOVuwxmtB7Tmg3pl1f20cBj6fzowOPqgCSJEnpSjRAQzvSXHopdvo0x9on7Zjcl0DSDhirwtyoxJ2pDSCfZu16Er9wXY1bP2xi/k/Ax/Wjf4aYY4cLdYpQ1Zqqp22jtCjQc6AV1D5Hyu0Q3N4iGXcl/0eeH/XuTLXruY1B4gPaPWlDud7uC/c330b6Ie43QLTKXNp+loSgeu5n5tCT2OnTHNttU3CrvXSkl427r5Wauz4U7LXrSZI49AQON8JGvwVNuZnY+3MGqLaeVDff7vhdEEJFwfe/tspKzsMNEndskjylU7NerNPG7iH2fiPZjWjmcz9SS8cA6S6mpTdGV3rwc9yPZOSaMvLy14cr9l/T88XGXP7/B8eoAeUpIH/9AAAAAElFTkSuQmCC";  
+
+
+/* =========================
+   IMAGE LOADING
+========================= */
 
 let loaded=0;
 
 function imageLoaded(){
+
     loaded++;
 
     if(loaded===3){
@@ -825,6 +982,7 @@ runImage.onload=imageLoaded;
 jumpImage.onload=imageLoaded;
 
 draw();
+
 </script>
 </body>
 </html>
