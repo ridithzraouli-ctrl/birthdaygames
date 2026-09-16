@@ -13,7 +13,7 @@ html,body{
     width:100%;
     height:100%;
     overflow:hidden;
-    background:#8a9ca5;
+    background:#b8cbd1;
 }
 
 body{
@@ -48,9 +48,16 @@ const W=960;
 const H=540;
 const GROUND=425;
 
-const BG="#8a9ca5";
-const DARK="#1a180b";
-const GROUND_COLOR="#6a5c3f";
+const BG="#b8cbd1";
+const SKY_TOP="#a8c7d0";
+const SKY_BOTTOM="#d5e1d9";
+
+const DARK="#29332f";
+
+const GROUND_TOP="#756d59";
+const GROUND_BASE="#625b4b";
+const GROUND_LIGHT="#887f68";
+const GROUND_DARK="#48453b";
 
 const idleImage=new Image();
 const runImage=new Image();
@@ -91,17 +98,12 @@ const bunny={
 
 const obstacles=[];
 
-let spawnTimer=0;
-let nextSpawn=1200;
-
 
 /*
-    The cactus patterns only control
-    what is DRAWN.
+    Each B is an actual solid
+    cactus cell.
 
-    The collision system below reads
-    the actual B cells, so empty spaces
-    between cactus arms are not solid.
+    O = empty space
 */
 
 const CACTUS_SMALL=[
@@ -121,7 +123,7 @@ const CACTUS_SMALL=[
 
 const CACTUS_TALL=[
     ["O","O","B","O","O"],
-    ["O","B","B","B","O"],
+    ["O","O","B","O","O"],
     ["O","B","B","B","O"],
     ["O","B","B","B","O"],
     ["O","B","B","B","O"],
@@ -139,40 +141,40 @@ const CACTUS_TALL=[
 ];
 
 const CACTUS_LEFT_ARM=[
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","B","B","B","B","O","O"],
-    ["O","B","B","B","B","B","B","O"],
-    ["O","B","B","B","B","B","B","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"]
+    ["O","O","O","O","B","O","O","O"],
+    ["O","O","O","O","B","O","O","O"],
+    ["O","O","O","O","B","O","O","O"],
+    ["O","O","O","O","B","O","O","O"],
+    ["O","O","O","B","B","O","O","O"],
+    ["O","O","B","B","B","B","B","O"],
+    ["O","O","B","B","B","B","B","O"],
+    ["O","O","O","B","B","O","O","O"],
+    ["O","O","O","B","B","O","O","O"],
+    ["O","O","O","B","B","O","O","O"],
+    ["O","O","O","B","B","O","O","O"],
+    ["O","O","O","B","B","O","O","O"],
+    ["O","O","O","B","B","O","O","O"]
 ];
 
 const CACTUS_RIGHT_ARM=[
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","B","O"],
-    ["O","O","B","B","B","B","B","O"],
-    ["O","B","B","B","B","B","B","O"],
-    ["O","B","B","B","B","B","B","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"],
-    ["O","O","O","B","B","B","O","O"]
+    ["O","O","O","B","O","O","O","O"],
+    ["O","O","O","B","O","O","O","O"],
+    ["O","O","O","B","O","O","O","O"],
+    ["O","O","O","B","O","O","O","O"],
+    ["O","O","O","B","B","O","O","O"],
+    ["O","B","B","B","B","B","O","O"],
+    ["O","B","B","B","B","B","O","O"],
+    ["O","O","O","B","B","O","O","O"],
+    ["O","O","O","B","B","O","O","O"],
+    ["O","O","O","B","B","O","O","O"],
+    ["O","O","O","B","B","O","O","O"],
+    ["O","O","O","B","B","O","O","O"],
+    ["O","O","O","B","B","O","O","O"]
 ];
 
 const CACTUS_WIDE=[
     ["O","O","O","O","B","B","O","O","O","O"],
-    ["O","O","B","B","B","B","B","B","O","O"],
+    ["O","O","O","B","B","B","B","O","O","O"],
     ["O","O","B","B","B","B","B","B","O","O"],
     ["O","O","B","B","B","B","B","B","O","O"],
     ["O","B","B","B","B","B","B","B","B","O"],
@@ -192,11 +194,6 @@ const cactusTypes=[
     CACTUS_RIGHT_ARM,
     CACTUS_WIDE
 ];
-
-
-/*
-    Bigger visual scale than the original.
-*/
 
 const CACTUS_SCALE=5;
 
@@ -228,22 +225,25 @@ function createCactus(type,x){
    SPAWN CACTUS
 ========================= */
 
+let spawnTimer=0;
+let nextSpawn=1200;
+
 function spawnCactus(){
 
-    const difficulty=Math.min(score,30);
+    const difficulty=Math.min(score/100,30);
 
     let count=1;
 
     if(
         difficulty>8 &&
-        Math.random()<0.32
+        Math.random()<0.25
     ){
         count=2;
     }
 
     if(
         difficulty>18 &&
-        Math.random()<0.16
+        Math.random()<0.12
     ){
         count=3;
     }
@@ -255,7 +255,7 @@ function spawnCactus(){
             )
         ];
 
-    let x=W+30;
+    let x=W+50;
 
     for(let i=0;i<count;i++){
 
@@ -279,16 +279,16 @@ function spawnCactus(){
 
         x+=
             type[0].length*CACTUS_SCALE
-            +26;
+            +28;
     }
 
     const minimum=
         1050-
-        Math.min(score*10,350);
+        Math.min(difficulty*10,350);
 
     const maximum=
         1500-
-        Math.min(score*8,300);
+        Math.min(difficulty*8,300);
 
     nextSpawn=
         minimum+
@@ -300,12 +300,72 @@ function spawnCactus(){
 
 
 /* =========================
+   SKY
+========================= */
+
+function drawSky(){
+
+    const gradient=
+        ctx.createLinearGradient(
+            0,
+            0,
+            0,
+            GROUND
+        );
+
+    gradient.addColorStop(
+        0,
+        SKY_TOP
+    );
+
+    gradient.addColorStop(
+        1,
+        SKY_BOTTOM
+    );
+
+    ctx.fillStyle=gradient;
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        GROUND
+    );
+
+
+    /*
+        Small pixel clouds
+    */
+
+    ctx.fillStyle="#dfe8e4";
+
+    const cloudY=92;
+
+    ctx.fillRect(130,cloudY,70,8);
+    ctx.fillRect(146,cloudY-7,38,7);
+    ctx.fillRect(158,cloudY-12,20,5);
+
+    ctx.fillRect(620,145,86,8);
+    ctx.fillRect(640,138,42,7);
+    ctx.fillRect(655,132,22,6);
+
+    ctx.fillStyle="#cbdcda";
+
+    ctx.fillRect(335,72,45,6);
+    ctx.fillRect(347,66,25,6);
+
+    ctx.fillRect(790,78,58,7);
+    ctx.fillRect(805,71,27,7);
+}
+
+
+/* =========================
    GROUND
 ========================= */
 
 function drawGround(){
 
-    ctx.fillStyle=GROUND_COLOR;
+    ctx.fillStyle=GROUND_BASE;
 
     ctx.fillRect(
         0,
@@ -314,49 +374,125 @@ function drawGround(){
         H-GROUND
     );
 
-    ctx.fillStyle=DARK;
+
+    /*
+        Raised grass/soil edge
+    */
+
+    ctx.fillStyle=GROUND_TOP;
 
     ctx.fillRect(
         0,
         GROUND,
         W,
-        6
+        9
     );
 
-    const movement=speed;
+    ctx.fillStyle=GROUND_LIGHT;
 
-    groundOffset-=movement;
+    ctx.fillRect(
+        0,
+        GROUND,
+        W,
+        3
+    );
 
-    if(groundOffset<=-80){
-        groundOffset+=80;
-    }
 
-    ctx.fillStyle=DARK;
+    /*
+        Moving pixel texture.
+
+        groundOffset is updated in update()
+        using the exact same movement value
+        as the cactuses.
+    */
+
+    const tile=80;
 
     for(
-        let x=groundOffset-80;
-        x<W+80;
-        x+=80
+        let x=groundOffset-tile;
+        x<W+tile;
+        x+=tile
     ){
+
+        ctx.fillStyle=GROUND_DARK;
+
+        ctx.fillRect(
+            x+7,
+            GROUND+22,
+            22,
+            4
+        );
+
+        ctx.fillRect(
+            x+49,
+            GROUND+39,
+            15,
+            4
+        );
+
+        ctx.fillRect(
+            x+19,
+            GROUND+57,
+            30,
+            4
+        );
+
+
+        ctx.fillStyle=GROUND_LIGHT;
+
+        ctx.fillRect(
+            x+32,
+            GROUND+15,
+            8,
+            3
+        );
+
+        ctx.fillRect(
+            x+63,
+            GROUND+28,
+            7,
+            3
+        );
+
+        ctx.fillRect(
+            x+3,
+            GROUND+48,
+            10,
+            3
+        );
+
+        ctx.fillRect(
+            x+56,
+            GROUND+65,
+            16,
+            3
+        );
+    }
+
+
+    /*
+        Tiny pixel grass marks
+    */
+
+    for(
+        let x=groundOffset-40;
+        x<W+80;
+        x+=120
+    ){
+
+        ctx.fillStyle=GROUND_LIGHT;
 
         ctx.fillRect(
             x,
-            GROUND+20,
-            34,
-            4
+            GROUND+12,
+            3,
+            7
         );
 
         ctx.fillRect(
-            x+47,
-            GROUND+36,
-            18,
-            4
-        );
-
-        ctx.fillRect(
-            x+15,
-            GROUND+54,
-            42,
+            x+4,
+            GROUND+15,
+            3,
             4
         );
     }
@@ -371,6 +507,11 @@ function drawCactus(o){
 
     const type=o.type;
     const s=o.scale;
+
+
+    /*
+        Outer shadow/outline
+    */
 
     for(
         let row=0;
@@ -391,10 +532,6 @@ function drawCactus(o){
             const px=o.x+col*s;
             const py=o.y+row*s;
 
-            /*
-                Dark pixel outline
-            */
-
             ctx.fillStyle=DARK;
 
             ctx.fillRect(
@@ -403,12 +540,34 @@ function drawCactus(o){
                 s+2,
                 s+2
             );
+        }
+    }
 
-            /*
-                Main cactus body
-            */
 
-            ctx.fillStyle="#59634d";
+    /*
+        Main cactus body
+    */
+
+    for(
+        let row=0;
+        row<type.length;
+        row++
+    ){
+
+        for(
+            let col=0;
+            col<type[row].length;
+            col++
+        ){
+
+            if(type[row][col]!=="B"){
+                continue;
+            }
+
+            const px=o.x+col*s;
+            const py=o.y+row*s;
+
+            ctx.fillStyle="#63745f";
 
             ctx.fillRect(
                 px,
@@ -417,21 +576,105 @@ function drawCactus(o){
                 s
             );
 
+
             /*
-                Small highlight gives the
-                cactus more depth without
-                changing its collision.
+                Soft center
             */
 
-            ctx.fillStyle="#778269";
+            ctx.fillStyle="#70836b";
 
             ctx.fillRect(
-                px+1,
+                px+2,
                 py+1,
                 2,
-                Math.max(2,s-2)
+                s-2
             );
+
+
+            /*
+                Pixel shine
+            */
+
+            if(
+                row===0 ||
+                type[row-1]?.[col]!=="B"
+            ){
+
+                ctx.fillStyle="#9aaa87";
+
+                ctx.fillRect(
+                    px+1,
+                    py+1,
+                    s-2,
+                    2
+                );
+            }
+
+
+            /*
+                Tiny dark side
+            */
+
+            if(
+                col===0 ||
+                type[row][col-1]!=="B"
+            ){
+
+                ctx.fillStyle="#4e604f";
+
+                ctx.fillRect(
+                    px,
+                    py+2,
+                    2,
+                    s-2
+                );
+            }
         }
+    }
+
+
+    /*
+        Little decorative cactus flowers
+        on some upper sections.
+    */
+
+    if(
+        o.type===CACTUS_TALL ||
+        o.type===CACTUS_SMALL
+    ){
+
+        const flowerX=
+            o.x+
+            Math.floor(
+                o.type[0].length/2
+            )*s;
+
+        const flowerY=o.y-5;
+
+        ctx.fillStyle="#d8a7b5";
+
+        ctx.fillRect(
+            flowerX,
+            flowerY,
+            5,
+            3
+        );
+
+        ctx.fillRect(
+            flowerX+1,
+            flowerY-2,
+            3,
+            2
+        );
+
+        ctx.fillStyle="#f0c9d2";
+
+        ctx.fillRect(
+            flowerX+1,
+            flowerY,
+            2,
+            2
+        );
     }
 }
 
@@ -543,15 +786,6 @@ function getBunnyHitbox(){
    CACTUS COLLISION
 ========================= */
 
-/*
-    Instead of using one giant rectangle
-    around the whole cactus, this checks
-    each actual B cell.
-
-    Empty spaces between arms are therefore
-    actually empty.
-*/
-
 function checkCollision(){
 
     const b=getBunnyHitbox();
@@ -577,6 +811,12 @@ function checkCollision(){
                     continue;
                 }
 
+                /*
+                    Collision is based on the
+                    actual occupied cactus cell,
+                    not the entire cactus image.
+                */
+
                 const cactusHit={
                     x:o.x+col*s+1,
                     y:o.y+row*s+1,
@@ -599,6 +839,7 @@ function checkCollision(){
                     b.y+b.height>
                         cactusHit.y
                 ){
+
                     return true;
                 }
             }
@@ -702,13 +943,19 @@ function update(dt){
         return;
     }
 
+
     /*
-        BUNNY ANIMATION SYSTEM
+        BUNNY ANIMATION
     */
 
     if(bunny.grounded){
         runAnimTime+=dt;
     }
+
+
+    /*
+        BUNNY PHYSICS
+    */
 
     if(!bunny.grounded){
 
@@ -737,7 +984,10 @@ function update(dt){
 
 
     /*
-        GAME SPEED
+        ONE SHARED GAME SPEED
+
+        Cactus movement and ground movement
+        both use this exact value.
     */
 
     speed+=0.00035*dt;
@@ -748,8 +998,31 @@ function update(dt){
 
 
     /*
-        CACTUS MOVEMENT
-        This only changes cactus x.
+        CONTINUOUS SCORE
+
+        Slowly rises just like the Dino game.
+    */
+
+    score+=movement*0.055;
+
+
+    /*
+        MOVE GROUND
+
+        Exact same movement as cactus.
+    */
+
+    groundOffset-=movement;
+
+    if(groundOffset<=-80){
+        groundOffset+=80;
+    }
+
+
+    /*
+        MOVE CACTUSES
+
+        Exact same movement as ground.
     */
 
     for(
@@ -762,6 +1035,12 @@ function update(dt){
 
         o.x-=movement;
 
+
+        /*
+            +100 for successfully passing
+            each individual cactus.
+        */
+
         if(
             !o.counted &&
             o.x+o.width<bunny.x
@@ -769,36 +1048,38 @@ function update(dt){
 
             o.counted=true;
 
-            score++;
-
-            if(score%5===0){
-                speed+=0.25;
-            }
+            score+=100;
         }
 
-        if(o.x+o.width<-30){
-            obstacles.splice(i,1);
+
+        if(o.x+o.width<-40){
+
+            obstacles.splice(
+                i,
+                1
+            );
         }
     }
 
 
     /*
-        CACTUS SPAWNING
+        SPAWN
     */
 
     spawnTimer+=dt;
 
     if(spawnTimer>=nextSpawn){
+
         spawnCactus();
     }
 
 
     /*
-        THE ONLY PLACE WHERE
-        BUNNY AND CACTUSES INTERACT
+        COLLISION
     */
 
     if(checkCollision()){
+
         gameOver();
     }
 }
@@ -817,20 +1098,17 @@ function draw(){
         H
     );
 
-    ctx.fillStyle=BG;
 
-    ctx.fillRect(
-        0,
-        0,
-        W,
-        H
-    );
+    drawSky();
 
     drawGround();
 
+
     for(const o of obstacles){
+
         drawCactus(o);
     }
+
 
     drawBunny();
 
@@ -840,20 +1118,31 @@ function draw(){
     */
 
     ctx.fillStyle=DARK;
+
     ctx.font="24px Georgia";
+
     ctx.textAlign="right";
 
     ctx.fillText(
-        String(score).padStart(5,"0"),
+        String(
+            Math.floor(score)
+        ).padStart(5,"0"),
         W-28,
         42
     );
 
 
+    /*
+        START SCREEN
+    */
+
     if(!started){
 
         ctx.textAlign="center";
+
         ctx.font="26px Georgia";
+
+        ctx.fillStyle=DARK;
 
         ctx.fillText(
             "PRESS SPACE OR TAP",
@@ -863,10 +1152,17 @@ function draw(){
     }
 
 
+    /*
+        GAME OVER
+    */
+
     if(dead){
 
         ctx.textAlign="center";
+
         ctx.font="30px Georgia";
+
+        ctx.fillStyle=DARK;
 
         ctx.fillText(
             "PRESS SPACE OR TAP TO RESTART",
@@ -891,9 +1187,11 @@ function loop(time){
     lastTime=time;
 
     update(dt);
+
     draw();
 
     if(!dead){
+
         requestAnimationFrame(loop);
     }
 }
@@ -915,6 +1213,7 @@ function handleInput(){
     jump();
 }
 
+
 window.addEventListener(
     "keydown",
     e=>{
@@ -931,6 +1230,7 @@ window.addEventListener(
         }
     }
 );
+
 
 canvas.addEventListener(
     "pointerdown",
@@ -951,9 +1251,10 @@ canvas.addEventListener(
    PASTE YOUR THREE ORIGINAL
    image.src LINES HERE.
 
-   Do not change anything inside
-   those Base64 strings.
+   Keep the Base64 strings exactly
+   as you have them.
 */
+
 
 idleImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAA9klEQVR42u1UMQ6EIBAEYmdvjIUlhbVP8AE+1Qf4BGsLSwtj6K25inPv2EU8OGPhdggyzOzMMvbUU0/dtoo81UWe6tj3CtdmJTMGQWM8QlDsKplZ39qmZm1TsxBQcXWrSMBxUha7vwEu68bhGoJ1/WDt31pSTpkGkzCUHcowZr+wSkIGg0//nZKa/MmyJH/o+sEy0jTPH852gXIq8Aa06wfmKzEEpkAFlj+YwTMFlaEk566xBi8wr3fJDc9SLBO86Upf6tL9ZQple8R6Xyv9zTLKpDHAwaNtWTduDGTigIGcMdnPwT8C8TYN5thxUu8sYsGnhgNWL5sPiDbAGkWfAAAAAElFTkSuQmCC";  
   
@@ -973,6 +1274,7 @@ function imageLoaded(){
     loaded++;
 
     if(loaded===3){
+
         draw();
     }
 }
@@ -985,4 +1287,4 @@ draw();
 
 </script>
 </body>
-</html>
+    </html>
