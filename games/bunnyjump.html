@@ -3,44 +3,709 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Bunny Run</title>
+<title>Bunny Run ♡</title>
 
 <style>
-*{box-sizing:border-box}
-
-html,body{
-    margin:0;
-    width:100%;
-    height:100%;
-    overflow:hidden;
-    background:#b8cbd1;
+:root {
+    --bg-base:#f2f7fa;
+    --bg-grad-1:#dce8f3;
+    --bg-grad-2:#d3e2ea;
+    --text-main:#3f5260;
+    --text-heading:#46637a;
+    --accent-border:#82a8bd;
+    --accent-soft:#e9f3f9;
+    --accent-badge:#dfe8f8;
+    --ornament-color:#799eb8;
+    --card-bg:rgba(255,255,255,.88);
+    --header-bg:rgba(255,255,255,.88);
 }
 
-body{
+body[data-theme="pink"] {
+    --bg-base:#faf2f5;
+    --bg-grad-1:#f3dce5;
+    --bg-grad-2:#ead3dc;
+    --text-main:#603f4c;
+    --text-heading:#7a4659;
+    --accent-border:#bd8297;
+    --accent-soft:#f9e9f0;
+    --accent-badge:#f8dfe8;
+    --ornament-color:#b87992;
+}
+
+body[data-theme="green"] {
+    --bg-base:#f3f7f2;
+    --bg-grad-1:#dce8dc;
+    --bg-grad-2:#d3ead3;
+    --text-main:#3f6043;
+    --text-heading:#467a4c;
+    --accent-border:#82bd8b;
+    --accent-soft:#e9f9eb;
+    --accent-badge:#dff8e2;
+    --ornament-color:#79b882;
+}
+
+body[data-theme="lavender"] {
+    --bg-base:#f5f2fa;
+    --bg-grad-1:#e3dcf3;
+    --bg-grad-2:#dad3ea;
+    --text-main:#4a3f60;
+    --text-heading:#59467a;
+    --accent-border:#9882bd;
+    --accent-soft:#f0e9f9;
+    --accent-badge:#e9dff8;
+    --ornament-color:#9379b8;
+}
+
+body[data-theme="yellow"] {
+    --bg-base:#faf8f2;
+    --bg-grad-1:#f3edd2;
+    --bg-grad-2:#eae3c5;
+    --text-main:#60573f;
+    --text-heading:#7a6e46;
+    --accent-border:#bdb182;
+    --accent-soft:#f9f5e9;
+    --accent-badge:#f8f3df;
+    --ornament-color:#b8aa79;
+}
+
+* {
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,
+body {
+    width:100%;
+    min-height:100%;
+    margin:0;
+    overflow-x:hidden;
+}
+
+body {
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 10% 12%,var(--bg-grad-1) 0,transparent 28%),
+        radial-gradient(circle at 90% 85%,var(--bg-grad-2) 0,transparent 30%),
+        var(--bg-base);
+    color:var(--text-main);
+    font-family:Georgia,"Times New Roman",serif;
+    transition:background .3s ease,color .3s ease;
+}
+
+.decorations {
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:-1;
+}
+
+.decorations span {
+    position:absolute;
+    color:var(--ornament-color);
+    opacity:.35;
+    animation:float 5s ease-in-out infinite;
+}
+
+.decorations span:nth-child(1){top:13%;left:7%;font-size:20px}
+.decorations span:nth-child(2){top:28%;right:8%;font-size:13px;animation-delay:1s}
+.decorations span:nth-child(3){top:55%;left:5%;font-size:14px;animation-delay:2s}
+.decorations span:nth-child(4){top:68%;right:6%;font-size:21px;animation-delay:1.5s}
+.decorations span:nth-child(5){bottom:12%;left:12%;font-size:12px;animation-delay:.5s}
+.decorations span:nth-child(6){bottom:20%;right:13%;font-size:16px;animation-delay:2.5s}
+
+@keyframes float {
+    0%,100%{transform:translateY(0) rotate(0)}
+    50%{transform:translateY(-7px) rotate(7deg)}
+}
+
+header {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    width:100%;
+    min-height:70px;
+    padding:12px 16px;
+    background:var(--header-bg);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--bg-grad-2);
+    position:sticky;
+    top:0;
+    z-index:100;
+    gap:8px;
+}
+
+.header-left,
+.header-right {
+    display:flex;
+    align-items:center;
+    min-width:0;
+}
+
+.header-left {
+    gap:8px;
+}
+
+.header-right {
+    justify-content:flex-end;
+    gap:6px;
+}
+
+.nav-link {
+    color:var(--text-heading);
+    text-decoration:none;
+    font-size:13px;
+    cursor:pointer;
+    white-space:nowrap;
+}
+
+.coin-display {
+    background:var(--accent-soft);
+    border:1px solid var(--accent-border);
+    padding:6px 10px;
+    border-radius:100px;
+    font-size:12px;
+    font-weight:bold;
+    color:var(--text-heading);
+    white-space:nowrap;
+}
+
+main {
+    width:100%;
+    max-width:1050px;
+    margin:0 auto;
+    padding:25px 14px 35px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.ornament {
     display:flex;
     align-items:center;
     justify-content:center;
-    font-family:Georgia,serif;
+    gap:10px;
+    height:22px;
+    margin-bottom:12px;
+    color:var(--ornament-color);
 }
 
-#game{
-    width:min(960px,100vw);
+.ornament span {
+    font-size:16px;
+}
+
+.ornament i {
+    width:38px;
+    height:1px;
+    background:var(--ornament-color);
+    opacity:.45;
+}
+
+h1 {
+    color:var(--text-heading);
+    font-weight:normal;
+    font-size:28px;
+    margin:0 0 6px;
+    text-align:center;
+}
+
+.subtitle {
+    color:var(--text-main);
+    opacity:.78;
+    margin:0 0 15px;
+    font-size:14px;
+    text-align:center;
+}
+
+.game-wrap {
+    width:min(960px,100%);
+    background:var(--card-bg);
+    border:1px solid var(--bg-grad-2);
+    border-radius:16px;
+    padding:10px;
+    box-shadow:0 8px 28px rgba(0,0,0,.055);
+}
+
+.canvas-wrap {
+    position:relative;
+    width:100%;
+    overflow:hidden;
+    border-radius:10px;
+}
+
+#game {
+    display:block;
+    width:100%;
     height:auto;
     image-rendering:pixelated;
     image-rendering:crisp-edges;
-    display:block;
+    touch-action:none;
+}
+
+.score-badge {
+    position:absolute;
+    top:13px;
+    right:17px;
+    color:var(--text-heading);
+    background:rgba(255,255,255,.72);
+    border:1px solid var(--accent-border);
+    border-radius:100px;
+    padding:6px 11px;
+    font-size:13px;
+    font-weight:bold;
+    pointer-events:none;
+    backdrop-filter:blur(4px);
+}
+
+.controls {
+    display:flex;
+    justify-content:center;
+    margin-top:14px;
+}
+
+.btn {
+    padding:10px 20px;
+    border:1px solid var(--accent-border);
+    border-radius:100px;
+    background:var(--card-bg);
+    color:var(--text-heading);
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:13px;
+    cursor:pointer;
+    transition:.2s ease;
+}
+
+.btn:hover {
+    background:var(--accent-soft);
+    transform:translateY(-1px);
+}
+
+.modal-overlay {
+    display:none;
+    position:fixed;
+    inset:0;
+    padding:20px;
+    background:rgba(30,25,25,.3);
+    backdrop-filter:blur(5px);
+    z-index:500;
+    align-items:center;
+    justify-content:center;
+}
+
+.modal-card {
+    position:relative;
+    background:var(--card-bg);
+    border:1px solid var(--accent-border);
+    border-radius:18px;
+    padding:32px 26px 26px;
+    max-width:360px;
+    width:100%;
+    text-align:center;
+    box-shadow:0 18px 50px rgba(0,0,0,.16);
+    animation:victoryPop .35s ease;
+    overflow:hidden;
+}
+
+.modal-card::before,
+.modal-card::after {
+    content:"✦";
+    position:absolute;
+    color:var(--ornament-color);
+    opacity:.5;
+    font-size:20px;
+    top:13px;
+}
+
+.modal-card::before {left:18px}
+.modal-card::after {right:18px}
+
+.victory-decoration {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+    color:var(--ornament-color);
+    margin-bottom:13px;
+}
+
+.victory-decoration i {
+    width:30px;
+    height:1px;
+    background:var(--ornament-color);
+    opacity:.5;
+}
+
+.victory-symbol {
+    width:66px;
+    height:66px;
+    margin:2px auto 14px;
+    border-radius:50%;
+    background:var(--accent-soft);
+    border:1px solid var(--accent-border);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--ornament-color);
+    animation:victoryFloat 2s ease-in-out infinite;
+}
+
+.modal-card h2 {
+    color:var(--text-heading);
+    font-size:25px;
+    font-weight:normal;
+    margin:0 0 9px;
+}
+
+.modal-card p {
+    color:var(--text-main);
+    opacity:.82;
+    font-size:14px;
+    line-height:1.6;
+    margin:0 0 21px;
+}
+
+.reward-amount {
+    display:inline-block;
+    margin:-5px 0 20px;
+    padding:7px 13px;
+    border-radius:100px;
+    background:var(--accent-badge);
+    border:1px solid var(--accent-border);
+    color:var(--text-heading);
+    font-size:13px;
+    font-weight:bold;
+}
+
+.modal-card.game-over .victory-symbol {
+    animation:none;
+}
+
+.confetti {
+    position:absolute;
+    pointer-events:none;
+    color:var(--ornament-color);
+    font-size:14px;
+    animation:confettiFall 1.8s ease-out forwards;
+}
+
+.confetti:nth-child(1){left:18%;top:5%;animation-delay:0s}
+.confetti:nth-child(2){left:32%;top:2%;animation-delay:.12s}
+.confetti:nth-child(3){left:50%;top:4%;animation-delay:.2s}
+.confetti:nth-child(4){right:32%;top:2%;animation-delay:.08s}
+.confetti:nth-child(5){right:17%;top:6%;animation-delay:.18s}
+
+@keyframes victoryPop {
+    0%{transform:scale(.88);opacity:0}
+    100%{transform:scale(1);opacity:1}
+}
+
+@keyframes victoryFloat {
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-5px)}
+}
+
+@keyframes confettiFall {
+    0%{transform:translateY(0) rotate(0);opacity:0}
+    15%{opacity:.8}
+    100%{transform:translateY(115px) rotate(120deg);opacity:0}
+}
+
+@media(max-width:600px) {
+    header {
+        min-height:66px;
+        padding:12px 11px;
+    }
+
+    main {
+        padding:20px 8px 30px;
+    }
+
+    .game-wrap {
+        padding:6px;
+        border-radius:12px;
+    }
+
+    .modal-card {
+        max-width:340px;
+        padding:30px 21px 23px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<canvas id="game" width="960" height="540"></canvas>
+<div class="decorations">
+    <span>✦</span>
+    <span>✧</span>
+    <span>♡</span>
+    <span>✦</span>
+    <span>✧</span>
+    <span>♡</span>
+</div>
 
-<script>
+<header>
+    <div class="header-left">
+        <a onclick="goBack()" class="nav-link">← Back to Games</a>
+    </div>
 
-const canvas=document.getElementById("game");
-const ctx=canvas.getContext("2d");
+    <div class="header-right">
+        <div class="coin-display">
+            <span class="coin-count">0</span> Coins
+        </div>
+    </div>
+</header>
+
+<main>
+
+    <div class="ornament">
+        <span>✦</span><i></i><span>♡</span><i></i><span>✦</span>
+    </div>
+
+    <h1>Bunny Run</h1>
+
+    <p class="subtitle">
+        Help the little bunny hop over the cactuses ♡
+    </p>
+
+    <div class="game-wrap">
+        <div class="canvas-wrap">
+
+            <canvas id="game" width="960" height="540"></canvas>
+
+            <div class="score-badge">
+                Score: <span id="score-display">00000</span>
+            </div>
+
+        </div>
+
+        <div class="controls">
+            <button class="btn" onclick="restartGame()">Restart</button>
+        </div>
+    </div>
+
+    <div class="ornament" style="margin-top:25px;margin-bottom:0;">
+        <span>✧</span><i></i><span>♡</span><i></i><span>✧</span>
+    </div>
+
+</main>
+
+<div id="reward-modal" class="modal-overlay">
+
+    <div class="modal-card" id="modal-card">
+
+        <span class="confetti">✦</span>
+        <span class="confetti">✧</span>
+        <span class="confetti">♡</span>
+        <span class="confetti">✦</span>
+        <span class="confetti">✧</span>
+
+        <div class="victory-decoration">
+            <span>✧</span>
+            <i></i>
+            <span>♡</span>
+            <i></i>
+            <span>✧</span>
+        </div>
+
+        <div class="victory-symbol" id="modal-symbol"></div>
+
+        <h2 id="modal-title">Game Over</h2>
+
+        <p id="modal-desc">
+            The bunny bumped into a cactus.
+        </p>
+
+        <div class="reward-amount" id="reward-amount">
+            Score: 00000
+        </div>
+
+        <button
+            class="btn"
+            onclick="closeModalAndRestart()"
+            style="width:100%;"
+        >
+            Play Again
+        </button>
+
+    </div>
+</div>
+
+<script src="../script.js"></script><script>
+
+function loadSavedTheme(){
+
+    const savedTheme=localStorage.getItem("arcade_theme");
+
+    if(
+        ["pink","green","lavender","yellow"].includes(savedTheme)
+    ){
+        document.body.setAttribute(
+            "data-theme",
+            savedTheme
+        );
+    }else{
+        document.body.removeAttribute("data-theme");
+    }
+}
+
+loadSavedTheme();
+
+
+function goBack(){
+
+    if(window.history.length>1){
+        window.history.back();
+    }else{
+        window.location.href="../index.html";
+    }
+}
+
+
+if(typeof updateCoinDisplays==="function"){
+    updateCoinDisplays();
+}
+
+
+/* =========================
+   AUDIO
+========================= */
+
+const AudioFX={
+
+    ctx:null,
+
+    init(){
+
+        if(!this.ctx){
+
+            const AudioCtx=
+                window.AudioContext ||
+                window.webkitAudioContext;
+
+            if(AudioCtx){
+                this.ctx=new AudioCtx();
+            }
+        }
+    },
+
+    play(type){
+
+        this.init();
+
+        if(!this.ctx){
+            return;
+        }
+
+        if(this.ctx.state==="suspended"){
+            this.ctx.resume();
+        }
+
+        const now=this.ctx.currentTime;
+
+        const osc=this.ctx.createOscillator();
+        const gain=this.ctx.createGain();
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+
+        if(type==="jump"){
+
+            osc.type="sine";
+
+            osc.frequency.setValueAtTime(
+                420,
+                now
+            );
+
+            osc.frequency.exponentialRampToValueAtTime(
+                680,
+                now+.12
+            );
+
+            gain.gain.setValueAtTime(
+                .14,
+                now
+            );
+
+            gain.gain.exponentialRampToValueAtTime(
+                .001,
+                now+.16
+            );
+
+            osc.start(now);
+            osc.stop(now+.16);
+
+        }else if(type==="lose"){
+
+            osc.type="triangle";
+
+            osc.frequency.setValueAtTime(
+                330,
+                now
+            );
+
+            osc.frequency.exponentialRampToValueAtTime(
+                100,
+                now+.4
+            );
+
+            gain.gain.setValueAtTime(
+                .22,
+                now
+            );
+
+            gain.gain.exponentialRampToValueAtTime(
+                .001,
+                now+.4
+            );
+
+            osc.start(now);
+            osc.stop(now+.4);
+
+        }else if(type==="start"){
+
+            osc.type="sine";
+
+            osc.frequency.setValueAtTime(
+                523.25,
+                now
+            );
+
+            osc.frequency.setValueAtTime(
+                659.25,
+                now+.08
+            );
+
+            gain.gain.setValueAtTime(
+                .12,
+                now
+            );
+
+            gain.gain.exponentialRampToValueAtTime(
+                .001,
+                now+.2
+            );
+
+            osc.start(now);
+            osc.stop(now+.2);
+        }
+    }
+};
+
+
+/* =========================
+   CANVAS
+========================= */
+
+const canvas=
+    document.getElementById("game");
+
+const ctx=
+    canvas.getContext("2d");
 
 ctx.imageSmoothingEnabled=false;
 
@@ -48,7 +713,11 @@ const W=960;
 const H=540;
 const GROUND=425;
 
-const BG="#b8cbd1";
+
+/* =========================
+   COLORS
+========================= */
+
 const SKY_TOP="#a8c7d0";
 const SKY_BOTTOM="#d5e1d9";
 
@@ -58,34 +727,6 @@ const GROUND_TOP="#756d59";
 const GROUND_BASE="#625b4b";
 const GROUND_LIGHT="#887f68";
 const GROUND_DARK="#48453b";
-
-
-/* =========================
-   BUNNY
-========================= */
-
-const idleImage=new Image();
-const runImage=new Image();
-const jumpImage=new Image();
-
-
-/* =========================
-   CACTUS TEXTURES
-========================= */
-
-const cactusImages={
-    small:new Image(),
-    tall:new Image(),
-    left:new Image(),
-    right:new Image(),
-    cluster:new Image()
-};
-
-cactusImages.small.src="images/cactus-small.png";
-cactusImages.tall.src="images/cactus-tall.png";
-cactusImages.left.src="images/cactus-left.png";
-cactusImages.right.src="images/cactus-right.png";
-cactusImages.cluster.src="images/cactus-cluster.png";
 
 
 /* =========================
@@ -99,22 +740,35 @@ let lastTime=0;
 
 let score=0;
 
-let highScore=
-    Number(
-        localStorage.getItem("bunnyRunHighScore")||0
-    );
+/*
+    This is the actual score value.
+
+    It is NOT based on frame count,
+    so it remains consistent even if
+    the phone drops frames.
+*/
+
+let distanceScore=0;
+let passedBonus=0;
 
 let speed=6;
 
 let groundOffset=0;
 
-let runAnimTime=0;
-let jumpTime=0;
-
 let spawnTimer=0;
 let nextSpawn=1200;
 
-let lastMilestone=0;
+let runAnimTime=0;
+let jumpTime=0;
+
+
+/* =========================
+   BUNNY IMAGES
+========================= */
+
+const idleImage=new Image();
+const runImage=new Image();
+const jumpImage=new Image();
 
 
 /* =========================
@@ -122,7 +776,13 @@ let lastMilestone=0;
 ========================= */
 
 const bunny={
+
     x:110,
+
+    /*
+        Physics hitbox remains manageable,
+        while the sprite itself is drawn 3×.
+    */
 
     y:GROUND-28,
 
@@ -133,56 +793,108 @@ const bunny={
 
     grounded:true,
 
-    gravity:0.72,
+    gravity:.72,
 
-    jumpPower:-21.5
+    jumpPower:-15.5
 };
 
 
 /* =========================
-   CACTUS SIZES
+   CACTUS IMAGE PATHS
 ========================= */
 
-const UNIT=84;
+const cactusImages={
+
+    small:new Image(),
+
+    big:new Image(),
+
+    two:new Image(),
+
+    cluster:new Image()
+};
+
+
+cactusImages.small.src=
+    "games/1000082076-removebg-preview.png";
+
+cactusImages.big.src=
+    "games/1000082078-removebg-preview.png";
+
+cactusImages.two.src=
+    "games/1000082080-removebg-preview.png";
+
+cactusImages.cluster.src=
+    "games/1000082081-removebg-preview.png";
+
+
+/* =========================
+   CACTUS TYPES
+========================= */
+
+/*
+    The important part here is that
+    each cactus has its own deliberate
+    visual size.
+
+    Bunny visual height = 84px.
+
+    SMALL:
+        1 × bunny height
+        1 unit wide
+
+    BIG:
+        3 × bunny height
+        1 unit wide
+
+    TWO:
+        2 × bunny height
+        1.5 units wide
+
+    CLUSTER:
+        2 × bunny height
+        3.5 units wide
+*/
+
+const CACTUS_UNIT=28;
+
+const cactusDefinitions={
+
+    small:{
+        image:cactusImages.small,
+        width:CACTUS_UNIT,
+        height:84
+    },
+
+    big:{
+        image:cactusImages.big,
+        width:CACTUS_UNIT,
+        height:252
+    },
+
+    two:{
+        image:cactusImages.two,
+        width:42,
+        height:168
+    },
+
+    cluster:{
+        image:cactusImages.cluster,
+        width:98,
+        height:168
+    }
+};
+
 
 const cactusTypes=[
-
-    {
-        name:"small",
-        image:cactusImages.small,
-        width:UNIT,
-        height:UNIT
-    },
-
-    {
-        name:"tall",
-        image:cactusImages.tall,
-        width:UNIT,
-        height:UNIT*3
-    },
-
-    {
-        name:"left",
-        image:cactusImages.left,
-        width:UNIT*1.5,
-        height:UNIT*2
-    },
-
-    {
-        name:"right",
-        image:cactusImages.right,
-        width:UNIT*1.5,
-        height:UNIT*2
-    },
-
-    {
-        name:"cluster",
-        image:cactusImages.cluster,
-        width:UNIT*3.5,
-        height:UNIT*2
-    }
-
+    "small",
+    "big",
+    "two",
+    "cluster"
 ];
+
+
+const obstacles=[];
 
 
 /* =========================
@@ -191,20 +903,21 @@ const cactusTypes=[
 
 function createCactus(type,x){
 
-    return{
+    const def=cactusDefinitions[type];
+
+    return {
+
+        type:type,
+
+        image:def.image,
+
         x:x,
 
-        y:
-            GROUND-
-            type.height,
+        y:GROUND-def.height,
 
-        width:type.width,
+        width:def.width,
 
-        height:type.height,
-
-        image:type.image,
-
-        name:type.name,
+        height:def.height,
 
         counted:false
     };
@@ -212,116 +925,98 @@ function createCactus(type,x){
 
 
 /* =========================
-   OBSTACLES
+   RANDOM CACTUS
 ========================= */
 
-const obstacles=[];
+function randomCactusType(){
+
+    return cactusTypes[
+        Math.floor(
+            Math.random()*cactusTypes.length
+        )
+    ];
+}
 
 
 /* =========================
-   SPAWN CACTUS
+   SPAWN
 ========================= */
 
 function spawnCactus(){
 
-    const difficulty=
-        Math.min(
-            score/100,
-            30
+    const firstType=randomCactusType();
+
+    const first=createCactus(
+        firstType,
+        W+60
+    );
+
+    obstacles.push(first);
+
+
+    /*
+        Keep groups possible later,
+        but make sure they have space.
+
+        Only the four requested cactus
+        forms are ever used.
+    */
+
+    const difficulty=Math.min(
+        score/100,
+        30
+    );
+
+    if(
+        difficulty>10 &&
+        Math.random()<.18
+    ){
+
+        const secondType=
+            Math.random()<.65
+                ?"small"
+                :"two";
+
+        const second=createCactus(
+            secondType,
+            first.x+
+            first.width+
+            115
         );
 
-    let count=1;
-
-    if(
-        difficulty>8 &&
-        Math.random()<0.22
-    ){
-        count=2;
+        obstacles.push(second);
     }
 
-    if(
-        difficulty>18 &&
-        Math.random()<0.10
-    ){
-        count=3;
-    }
 
-    const firstType=
-        cactusTypes[
-            Math.floor(
-                Math.random()*
-                cactusTypes.length
-            )
-        ];
-
-    let x=W+60;
-
-    for(
-        let i=0;
-        i<count;
-        i++
-    ){
-
-        let type;
-
-        if(i===0){
-
-            type=firstType;
-
-        }else{
-
-            const extraTypes=[
-                cactusTypes[0],
-                cactusTypes[2],
-                cactusTypes[3]
-            ];
-
-            type=
-                extraTypes[
-                    Math.floor(
-                        Math.random()*
-                        extraTypes.length
-                    )
-                ];
-        }
-
-        const cactus=
-            createCactus(
-                type,
-                x
-            );
-
-        obstacles.push(cactus);
-
-        x+=
-            type.width+
-            45;
-    }
+    /*
+        Spawn distance becomes gradually
+        shorter as the score rises.
+    */
 
     const minimum=
-        Math.max(
-            900,
-            1250-
-            difficulty*12
+        1050-
+        Math.min(
+            difficulty*10,
+            300
         );
 
     const maximum=
-        Math.max(
-            1250,
-            1650-
-            difficulty*10
+        1450-
+        Math.min(
+            difficulty*8,
+            250
         );
 
     nextSpawn=
         minimum+
         Math.random()*
-        (maximum-minimum);
+        Math.max(
+            250,
+            maximum-minimum
+        );
 
     spawnTimer=0;
-}
-
-
-/* =========================
+}/* =========================
    SKY
 ========================= */
 
@@ -354,6 +1049,7 @@ function drawSky(){
         GROUND
     );
 
+
     ctx.fillStyle="#dfe8e4";
 
     const cloudY=92;
@@ -379,6 +1075,7 @@ function drawSky(){
         5
     );
 
+
     ctx.fillRect(
         620,
         145,
@@ -399,6 +1096,7 @@ function drawSky(){
         22,
         6
     );
+
 
     ctx.fillStyle="#cbdcda";
 
@@ -465,6 +1163,7 @@ function drawGround(){
         3
     );
 
+
     const tile=80;
 
     for(
@@ -495,6 +1194,7 @@ function drawGround(){
             30,
             4
         );
+
 
         ctx.fillStyle=GROUND_LIGHT;
 
@@ -527,6 +1227,7 @@ function drawGround(){
         );
     }
 
+
     for(
         let x=groundOffset-40;
         x<W+80;
@@ -549,33 +1250,79 @@ function drawGround(){
             4
         );
     }
-}/* =========================
-   CACTUS DRAWING
+}
+
+
+/* =========================
+   CACTUS DRAW
 ========================= */
 
 function drawCactus(o){
 
+    /*
+        The actual uploaded image is used.
+
+        If the image has not loaded yet,
+        a simple placeholder is drawn so
+        the cactus still exists during testing.
+    */
+
     if(
-        !o.image.complete ||
-        !o.image.naturalWidth
+        o.image &&
+        o.image.complete &&
+        o.image.naturalWidth>0
     ){
+
+        ctx.drawImage(
+            o.image,
+            o.x,
+            o.y,
+            o.width,
+            o.height
+        );
+
         return;
     }
 
-    ctx.drawImage(
-        o.image,
 
-        Math.round(o.x),
-        Math.round(o.y),
+    /*
+        Temporary placeholder.
+        This disappears automatically when
+        your cactus PNG loads.
+    */
 
-        Math.round(o.width),
-        Math.round(o.height)
+    ctx.fillStyle="#63745f";
+
+    ctx.fillRect(
+        o.x,
+        o.y,
+        o.width,
+        o.height
+    );
+
+    ctx.fillStyle="#70836b";
+
+    ctx.fillRect(
+        o.x+Math.min(4,o.width/4),
+        o.y+4,
+        Math.max(2,o.width/5),
+        Math.max(4,o.height-8)
+    );
+
+    ctx.strokeStyle=DARK;
+    ctx.lineWidth=2;
+
+    ctx.strokeRect(
+        o.x,
+        o.y,
+        o.width,
+        o.height
     );
 }
 
 
 /* =========================
-   BUNNY ANIMATION
+   BUNNY DRAW
 ========================= */
 
 function drawBunny(){
@@ -592,32 +1339,23 @@ function drawBunny(){
 
         image=idleImage;
 
-        frameIndex=0;
-
-    }
-
-    else if(!bunny.grounded){
+    }else if(!bunny.grounded){
 
         image=jumpImage;
 
         frameWidth=28;
         frameHeight=36;
 
-        const jumpAnimationDuration=560;
+        const duration=560;
 
         frameIndex=Math.min(
             7,
             Math.floor(
-                (
-                    jumpTime/
-                    jumpAnimationDuration
-                )*8
+                (jumpTime/duration)*8
             )
         );
 
-    }
-
-    else{
+    }else{
 
         image=runImage;
 
@@ -640,22 +1378,19 @@ function drawBunny(){
 
 
     /*
-        Bunny stays at the old
-        3× visual size.
+        This is the larger bunny size
+        from the old working version.
+
+        28 × 3 = 84px.
     */
 
-    const drawW=
-        frameWidth*3;
-
-    const drawH=
-        frameHeight*3;
-
+    const drawW=frameWidth*3;
+    const drawH=frameHeight*3;
 
     const feetY=
         bunny.y+bunny.height;
 
-    const drawX=
-        bunny.x;
+    const drawX=bunny.x;
 
     const drawY=
         feetY-drawH;
@@ -668,10 +1403,7 @@ function drawBunny(){
         drawY
     );
 
-    ctx.scale(
-        -1,
-        1
-    );
+    ctx.scale(-1,1);
 
     ctx.drawImage(
         image,
@@ -694,90 +1426,91 @@ function drawBunny(){
 
 
 /* =========================
-   BUNNY COLLISION
+   BUNNY HITBOX
 ========================= */
 
 function getBunnyHitbox(){
 
-    return{
+    /*
+        Deliberately smaller than the
+        visible bunny so collisions feel
+        fair instead of hitting the ears.
+    */
 
-        x:
-            bunny.x+13,
+    return {
 
-        y:
-            bunny.y+12,
+        x:bunny.x+18,
 
-        width:52,
+        y:bunny.y+9,
 
-        height:60
+        width:48,
+
+        height:65
     };
 }
 
 
 /* =========================
-   CACTUS COLLISION
+   CACTUS HITBOX
 ========================= */
 
 function checkCollision(){
 
-    const b=
-        getBunnyHitbox();
+    const b=getBunnyHitbox();
 
 
-    for(
-        const o of obstacles
-    ){
+    for(const o of obstacles){
 
-        const paddingX=8;
-        const paddingTop=4;
+        /*
+            Slightly shrink the cactus box
+            so transparent edges of the PNG
+            do not cause unfair collisions.
+        */
 
+        const paddingX=
+            Math.min(
+                5,
+                o.width*.12
+            );
+
+        const paddingY=
+            Math.min(
+                3,
+                o.height*.03
+            );
 
         const cactusHit={
 
-            x:
-                o.x+
-                paddingX,
+            x:o.x+paddingX,
 
-            y:
-                o.y+
-                paddingTop,
+            y:o.y+paddingY,
 
-            width:
-                Math.max(
-                    1,
-                    o.width-
-                    paddingX*2
-                ),
+            width:Math.max(
+                1,
+                o.width-paddingX*2
+            ),
 
-            height:
-                Math.max(
-                    1,
-                    o.height-
-                    paddingTop
-                )
+            height:Math.max(
+                1,
+                o.height-paddingY*2
+            )
         };
 
 
         if(
 
-            b.x<
+            b.x <
                 cactusHit.x+
-                cactusHit.width
+                cactusHit.width &&
 
-            &&
+            b.x+b.width >
+                cactusHit.x &&
 
-            b.x+b.width>
-                cactusHit.x
-
-            &&
-
-            b.y<
+            b.y <
                 cactusHit.y+
-                cactusHit.height
+                cactusHit.height &&
 
-            &&
-
-            b.y+b.height>
+            b.y+b.height >
                 cactusHit.y
 
         ){
@@ -786,166 +1519,48 @@ function checkCollision(){
         }
     }
 
-
     return false;
 }
 
 
 /* =========================
-   AUDIO
+   SCORE DISPLAY
 ========================= */
 
-let audioContext=null;
+function updateScoreDisplay(){
+
+    /*
+        Score is ALWAYS converted to an
+        integer here.
+
+        This fixes the old broken counter
+        where the canvas number and actual
+        score could drift apart.
+    */
+
+    score=
+        Math.max(
+            0,
+            Math.floor(
+                distanceScore+
+                passedBonus
+            )
+        );
 
 
-function initAudio(){
-
-    if(!audioContext){
-
-        audioContext=
-            new(
-                window.AudioContext||
-                window.webkitAudioContext
-            )();
-    }
+    const display=
+        document.getElementById(
+            "score-display"
+        );
 
 
-    if(
-        audioContext.state===
-        "suspended"
-    ){
+    if(display){
 
-        audioContext.resume();
-    }
-}
-
-
-function play100Sound(){
-
-    if(!audioContext){
-        return;
-    }
-
-
-    const now=
-        audioContext.currentTime;
-
-
-    const notes=[
-        880,
-        1046.5,
-        1318.5
-    ];
-
-
-    notes.forEach(
-        (frequency,index)=>{
-
-            const oscillator=
-                audioContext.createOscillator();
-
-            const gain=
-                audioContext.createGain();
-
-
-            oscillator.type="square";
-
-            oscillator.frequency.value=
-                frequency;
-
-
-            const start=
-                now+
-                index*0.075;
-
-
-            gain.gain.setValueAtTime(
-                0,
-                start
+        display.textContent=
+            String(score).padStart(
+                5,
+                "0"
             );
-
-
-            gain.gain.linearRampToValueAtTime(
-                0.055,
-                start+0.008
-            );
-
-
-            gain.gain.exponentialRampToValueAtTime(
-                0.001,
-                start+0.07
-            );
-
-
-            oscillator.connect(gain);
-
-            gain.connect(
-                audioContext.destination
-            );
-
-
-            oscillator.start(start);
-
-            oscillator.stop(
-                start+0.075
-            );
-        }
-    );
-}
-
-
-/* =========================
-   SCORE
-========================= */
-
-function passCactus(o){
-
-    if(o.counted){
-        return;
-    }
-
-
-    if(
-        o.x+o.width<
-        bunny.x
-    ){
-
-        o.counted=true;
-
-
-        /*
-            EXACTLY +10 FOR EVERY
-            INDIVIDUAL CACTUS.
-        */
-
-        score+=10;
-
-
-        if(score>highScore){
-
-            highScore=score;
-
-            localStorage.setItem(
-                "bunnyRunHighScore",
-                highScore
-            );
-        }
-
-
-        /*
-            Sound at exactly:
-            100, 200, 300...
-        */
-
-        if(
-            score%100===0 &&
-            score!==lastMilestone
-        ){
-
-            lastMilestone=score;
-
-            play100Sound();
-        }
     }
 }
 
@@ -960,14 +1575,12 @@ function jump(){
 
         started=true;
 
-        bunny.grounded=true;
-
-        runAnimTime=0;
-
-        jumpTime=0;
+        dead=false;
 
         lastTime=
             performance.now();
+
+        AudioFX.play("start");
 
         requestAnimationFrame(loop);
 
@@ -977,7 +1590,7 @@ function jump(){
 
     if(dead){
 
-        restart();
+        restartGame();
 
         return;
     }
@@ -991,6 +1604,8 @@ function jump(){
         bunny.grounded=false;
 
         jumpTime=0;
+
+        AudioFX.play("jump");
     }
 }
 
@@ -999,23 +1614,31 @@ function jump(){
    RESTART
 ========================= */
 
-function restart(){
+function restartGame(){
+
+    started=true;
+
+    dead=false;
 
     score=0;
 
+    distanceScore=0;
+
+    passedBonus=0;
+
     speed=6;
 
-    lastMilestone=0;
-
-    obstacles.length=0;
+    groundOffset=0;
 
     spawnTimer=0;
 
     nextSpawn=1200;
 
+    obstacles.length=0;
+
 
     bunny.y=
-        GROUND-28;
+        GROUND-bunny.height;
 
     bunny.velocityY=0;
 
@@ -1026,12 +1649,13 @@ function restart(){
 
     jumpTime=0;
 
-    groundOffset=0;
+
+    document.getElementById(
+        "reward-modal"
+    ).style.display="none";
 
 
-    dead=false;
-
-    started=true;
+    updateScoreDisplay();
 
 
     lastTime=
@@ -1048,21 +1672,42 @@ function restart(){
 
 function gameOver(){
 
+    if(dead){
+        return;
+    }
+
     dead=true;
 
     bunny.velocityY=0;
-    }/* =========================
+
+    AudioFX.play("lose");
+
+    updateScoreDisplay();
+
+    showGameOverModal();
+}
+
+
+/* =========================
    UPDATE
 ========================= */
 
 function update(dt){
 
-    if(
-        !started||
-        dead
-    ){
+    if(!started || dead){
         return;
     }
+
+
+    /*
+        Prevent giant jumps if the browser
+        pauses for a moment.
+    */
+
+    dt=Math.min(
+        dt,
+        32
+    );
 
 
     /*
@@ -1076,31 +1721,30 @@ function update(dt){
 
 
     /*
-        BUNNY PHYSICS
+        PHYSICS
     */
 
     if(!bunny.grounded){
 
         jumpTime+=dt;
 
+        const frameScale=
+            dt/16.6667;
 
         bunny.velocityY+=
             bunny.gravity*
-            (dt/16.6667);
-
+            frameScale;
 
         bunny.y+=
             bunny.velocityY*
-            (dt/16.6667);
+            frameScale;
 
 
         const groundY=
-            GROUND-28;
+            GROUND-bunny.height;
 
 
-        if(
-            bunny.y>=groundY
-        ){
+        if(bunny.y>=groundY){
 
             bunny.y=groundY;
 
@@ -1116,18 +1760,11 @@ function update(dt){
 
 
     /*
-        SPEED
+        GAME SPEED
     */
 
     speed+=
-        0.00035*dt;
-
-
-    speed=
-        Math.min(
-            speed,
-            12
-        );
+        .00035*dt;
 
 
     const movement=
@@ -1136,15 +1773,29 @@ function update(dt){
 
 
     /*
+        FIXED, RELIABLE SCORE
+
+        Every 10 pixels travelled = 1 point.
+
+        Because distanceScore is based on
+        movement rather than frame count,
+        the score remains stable on mobile.
+    */
+
+    distanceScore+=
+        movement/10;
+
+
+    updateScoreDisplay();
+
+
+    /*
         GROUND
     */
 
     groundOffset-=movement;
 
-
-    if(
-        groundOffset<=-80
-    ){
+    if(groundOffset<=-80){
 
         groundOffset+=80;
     }
@@ -1160,20 +1811,32 @@ function update(dt){
         i--
     ){
 
-        const o=
-            obstacles[i];
-
+        const o=obstacles[i];
 
         o.x-=movement;
 
 
-        passCactus(o);
+        /*
+            +100 when the bunny successfully
+            clears an entire cactus.
+        */
+
+        if(
+            !o.counted &&
+            o.x+o.width<bunny.x
+        ){
+
+            o.counted=true;
+
+            passedBonus+=100;
+
+            updateScoreDisplay();
+        }
 
 
         if(
-            o.x+
-            o.width<
-            -100
+            o.x+o.width<
+            -120
         ){
 
             obstacles.splice(
@@ -1190,7 +1853,6 @@ function update(dt){
 
     spawnTimer+=dt;
 
-
     if(
         spawnTimer>=nextSpawn
     ){
@@ -1203,9 +1865,7 @@ function update(dt){
         COLLISION
     */
 
-    if(
-        checkCollision()
-    ){
+    if(checkCollision()){
 
         gameOver();
     }
@@ -1231,9 +1891,7 @@ function draw(){
     drawGround();
 
 
-    for(
-        const o of obstacles
-    ){
+    for(const o of obstacles){
 
         drawCactus(o);
     }
@@ -1243,69 +1901,17 @@ function draw(){
 
 
     /*
-        SCORE
-    */
-
-    ctx.fillStyle=DARK;
-
-    ctx.font="24px Georgia";
-
-    ctx.textAlign="right";
-
-
-    ctx.fillText(
-
-        String(
-            Math.floor(score)
-        ).padStart(
-            5,
-            "0"
-        ),
-
-        W-28,
-
-        42
-    );
-
-
-    /*
-        HIGH SCORE
-    */
-
-    ctx.font="14px Georgia";
-
-    ctx.fillStyle=
-        "rgba(41,51,47,0.65)";
-
-
-    ctx.fillText(
-
-        "HI "+
-        String(
-            highScore
-        ).padStart(
-            5,
-            "0"
-        ),
-
-        W-28,
-
-        61
-    );
-
-
-    /*
-        START SCREEN
+        Start text is drawn on the
+        actual game canvas.
     */
 
     if(!started){
 
         ctx.textAlign="center";
 
-        ctx.font="26px Georgia";
-
         ctx.fillStyle=DARK;
 
+        ctx.font="26px Georgia";
 
         ctx.fillText(
             "PRESS SPACE OR TAP",
@@ -1315,23 +1921,18 @@ function draw(){
     }
 
 
-    /*
-        GAME OVER
-    */
-
     if(dead){
 
         ctx.textAlign="center";
 
-        ctx.font="30px Georgia";
-
         ctx.fillStyle=DARK;
 
+        ctx.font="25px Georgia";
 
         ctx.fillText(
-            "PRESS SPACE OR TAP TO RESTART",
+            "GAME OVER",
             W/2,
-            105
+            90
         );
     }
 }
@@ -1343,11 +1944,20 @@ function draw(){
 
 function loop(time){
 
-    const dt=
-        Math.min(
-            time-lastTime,
-            32
-        );
+    /*
+        First frame protection.
+    */
+
+    if(!lastTime){
+
+        lastTime=time;
+    }
+
+
+    const dt=Math.min(
+        time-lastTime,
+        32
+    );
 
 
     lastTime=time;
@@ -1362,6 +1972,111 @@ function loop(time){
 
         requestAnimationFrame(loop);
     }
+    }/* =========================
+   MODAL ICONS
+========================= */
+
+function showGameOverModal(){
+
+    const modal=
+        document.getElementById(
+            "reward-modal"
+        );
+
+    const card=
+        document.getElementById(
+            "modal-card"
+        );
+
+    const title=
+        document.getElementById(
+            "modal-title"
+        );
+
+    const desc=
+        document.getElementById(
+            "modal-desc"
+        );
+
+    const amount=
+        document.getElementById(
+            "reward-amount"
+        );
+
+    const symbol=
+        document.getElementById(
+            "modal-symbol"
+        );
+
+
+    card.classList.add("game-over");
+
+
+    title.innerText="Game Over";
+
+
+    desc.innerText=
+        "The bunny bumped into a cactus.";
+
+
+    amount.innerText=
+        "Score: "+
+        String(score).padStart(5,"0");
+
+
+    amount.style.display="inline-block";
+
+
+    /*
+        Broken-heart symbol.
+    */
+
+    symbol.innerHTML=`
+
+        <svg
+            width="34"
+            height="34"
+            viewBox="0 0 32 32"
+            fill="currentColor"
+        >
+
+            <path
+                d="M16 28l-1.8-1.6C7.6 20.4 3 16.3 3 11.2
+                   3 7 6.3 3.5 10.5 3.5
+                   c2.4 0 4.7 1.1 6.2 3
+                   1.5-1.9 3.8-3 6.2-3
+                   C27.1 3.5 29 7 29 11.2
+                   c0 5.1-4.6 9.2-11.2 15.2L16 28z"
+            />
+
+            <path
+                d="M16 6.5
+                   c-1.4-1.8-3.6-3-5.7-3
+                   C6.3 3.5 3 7 3 11.2
+                   c0 5.1 4.6 9.2 11.2 15.2
+                   L16 28v-6l-3-3 4-4-4-4 3-4.5z"
+                fill="var(--card-bg)"
+            />
+
+        </svg>
+    `;
+
+
+    modal.style.display="flex";
+}
+
+
+/* =========================
+   CLOSE + RESTART
+========================= */
+
+function closeModalAndRestart(){
+
+    document.getElementById(
+        "reward-modal"
+    ).style.display="none";
+
+    restartGame();
 }
 
 
@@ -1371,16 +2086,12 @@ function loop(time){
 
 function handleInput(){
 
-    initAudio();
-
-
     if(dead){
 
-        restart();
+        restartGame();
 
         return;
     }
-
 
     jump();
 }
@@ -1388,11 +2099,11 @@ function handleInput(){
 
 window.addEventListener(
     "keydown",
-    e=>{
+    function(e){
 
         if(
-            e.code==="Space"||
-            e.code==="ArrowUp"||
+            e.code==="Space" ||
+            e.code==="ArrowUp" ||
             e.code==="KeyW"
         ){
 
@@ -1406,35 +2117,77 @@ window.addEventListener(
 
 canvas.addEventListener(
     "pointerdown",
-    e=>{
+    function(e){
 
         e.preventDefault();
 
         handleInput();
     }
-);/* =========================
-   BUNNY BASE64
+);
+
+
+/* =========================
+   BUNNY SPRITES
 ========================= */
 
-/*
-   Replace ONLY the three strings
-   below with your final bunny Base64
-   whenever you want to change the
-   bunny texture.
-*/
+idleImage.src=
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAA9klEQVR42u1UMQ6EIBAEYmdvjIUlhbVP8AE+1Qf4BGsLSwtj6K25inPv2EU8OGPhdggyzOzMMvbUU0/dtoo81UWe6tj3CtdmJTMGQWM8QlDsKplZ39qmZm1TsxBQcXWrSMBxUha7vwEu68bhGoJ1/WDt31pSTpkGkzCUHcowZr+wSkIGg0//nZKa/MmyJH/o+sEy0jTPH852gXIq8Aa06wfmKzEEpkAFlj+YwTMFlaEk566xBi8wr3fJDc9SLBO86Upf6tL9ZQple8R6Xyv9zTLKpDHAwaNtWTduDGTigIGcMdnPwT8C8TYN5thxUu8sYsGnhgNWL5sPiDbAGkWfAAAAAElFTkSuQmCC";
+
+
+runImage.src=
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAcCAYAAAB4fbODAAADlElEQVR42u1aPZKzMAw1Gbr0O5kUlBRb5wg5QI7KATgCdQpKip0d+q35im+U1RpjJGMLCNLMFlkIz3rWz5ODMWpqampqampqampqampqampqamr7sevlPFwv50GZoNtJKVCLaZ/lh8FJqEmpCagm1P0+y4/R/x73m3ncb0aTkJmA0pVLK+V78QrJZ4wxVd2Yr++fbM9+pcI7bUlOSOIdqcBI8vpse2OMMZB87yR3XXhJElBaTqwlX965wKzJK06+VN1vK/G5FOuQM+BRCoy0LFxzPyX9wnjJJChIidiAW8E7kqWWhbBfZVEk735ryd1UeM4EtElLTao03hELTCpOfb5IdHfJhE+Bd0gJeoQCo7YPy+eqWlkUu64wW5lR1pyLUu2ha7Z9B7+W4Ln22reuPOWAucZQu7VNtH2TDhoJa7vu5VdVN3+K6ON+M1XdDByFsMU4oRZYuL/tOnRHP0z5mMeu6tyACnFyT3jSfEpjwmyLC4tP1eCkhe9fL+dhj0oH+HP5N+bDnYSZS1L4yKzqZkQqJpO7gXMJsWe8tfiUxMQyFGPC83zrsHF9mBy/lnZaKh5HIUz5mM2RaUuKGGT6nJTGi0UkJzhT4a21h/izPRNS/G67jpyAXL/swkJNxCU8uorPlI8nl6TAi+UYBuQcPPzVy7J4c1VzKZ7NZ2o8yT2EIMVJh3Ht5Gu7zrnXZVGM3hKK5VdZFK/nw1/o3lHiaiqWpwpRFltSUCva1PAa2plC8TjdgYvn4hPwUvApvYfU/YOi41MDoV2Q6xc3Xqh4rk7r4sQ+eMvdOrkXOTb/+v7JwEl8khZCaiiefWoVE8/FJ2Cn5hUwn21vUv1UAIGEE9HV4X8D7v+aQjnmxibmOQSTigcJbceYzQW8eljVzetAJvcPq/0wV7Vc134/97OnW5xg2SOeNJ/uOWcaN1bhgWCjrM91CMTp7Fga+k5Y52Qp/DziWzMklK+z2d0UYgw4h+tV3YwOAPMYldDuXjEqqS8o9oYnzac0Jrco2B0C3iOlzFvPtifJXcr30BgyW9hwMnG6Jy7wkITkBMQPsWclXGWebR8lYDCe/cx3w5Pgk4I7hcmZOUMNeOeOEDS5O57jXPdzurAriX0vU7gkrH1vcAecIy72Bipen/yldCnDBcFXFKa+S5GOvhncloUpJffc9ZyqufGpIfXUi2uKFxcvBJczyy1dD0VSLpG8U/Mw51lT3MXi5x/WB9z8URHs6QAAAABJRU5ErkJggg==";
+
+
+jumpImage.src=
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAkCAYAAACQVDZDAAADgUlEQVR42u2aPXLyMBCGRcYdfYahoKRIzRE4AEflAByBmsKlC4ZxT+2vyCeyiJW0sq0VUd6nIzi8Xu0/2BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWNar5bBeLQecBLB84Ah0+dp+GpqESEok4FtU61KBqKW7Xi2Hr+3ny98O+5057HfmtydhzfGSU+vjnap1qe5QQtcmnzHGHE9nc73dF7+9oNUcL5xWtgTUrtalukMJ3UvbG2OMsclXQ0LUHC8hrTl0sAMqdiULTb5c3a/kuKt1jiX0qFbWEdRW6hyi76Cn2ZWsPdvNJnvylQxQze6urZdLi01A10G5g0ZbT7MrhYpJ7m6knRAlfKepl0MLI2jllChmQE4Tq9rbzabKiqZhI7eLaY6bGr6rXc/qUK3Y/cUmvGACau9fJTS19dquezjweDo/FZnDfmeOp/OQMqL/1XN8Vz2adPb6tuvIFf3g82Ez5eamBMsUI6foadto97BQBeXstw68tL1Zr5YDRsf3w8YH579Xf/NJuOBGplCwHE/nl6ChwZIaoLEEzKGnaSMdQ6mm/bzYaEN1Q5opdk3ttNBLn4B8PlzEgsUdmeYIlpCROfVK2UhfuzuhxMFt14kTMNUut7BIAxV6cU234HI+bMaMTKFl1YqnjE10R9LQ07KROtFqXtrecB0x1BV/XvdBvTF28df2orOEHp94vvugRYDtgHOMTNKK7Vtex7b4qV0wh41S++zo5EvMKV0w1a5U/0HP32k5n7vf1jb8nNyrPMR7vd0X1ki3C6YeaqqutZF2pDw6z4nI7Sk/Dvm+p7E2p/qOVuwxmtB7Tmg3pl1f20cBj6fzowOPqgCSJEnpSjRAQzvSXHopdvo0x9on7Zjcl0DSDhirwtyoxJ2pDSCfZu16Er9wXY1bP2xi/k/Ax/Wjf4aYY4cLdYpQ1Zqqp22jtCjQc6AV1D5Hyu0Q3N4iGXcl/0eeH/XuTLXruY1B4gPaPWlDud7uC/c330b6Ie43QLTKXNp+loSgeu5n5tCT2OnTHNttU3CrvXSkl427r5Wauz4U7LXrSZI49AQON8JGvwVNuZnY+3MGqLaeVDff7vhdEEJFwfe/tspKzsMNEndskjylU7NerNPG7iH2fiPZjWjmcz9SS8cA6S6mpTdGV3rwc9yPZOSaMvLy14cr9l/T88XGXP7/B8eoAeUpIH/9AAAAAElFTkSuQmCC";
+
+
+/* =========================
+   IMAGE LOAD
+========================= */
+
+let bunnyImagesLoaded=0;
+
+function bunnyImageLoaded(){
+
+    bunnyImagesLoaded++;
+
+    if(bunnyImagesLoaded>=3){
+
+        draw();
+    }
+}
 
 idleImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAA9klEQVR42u1UMQ6EIBAEYmdvjIUlhbVP8AE+1Qf4BGsLSwtj6K25inPv2EU8OGPhdggyzOzMMvbUU0/dtoo81UWe6tj3CtdmJTMGQWM8QlDsKplZ39qmZm1TsxBQcXWrSMBxUha7vwEu68bhGoJ1/WDt31pSTpkGkzCUHcowZr+wSkIGg0//nZKa/MmyJH/o+sEy0jTPH852gXIq8Aa06wfmKzEEpkAFlj+YwTMFlaEk566xBi8wr3fJDc9SLBO86Upf6tL9ZQple8R6Xyv9zTLKpDHAwaNtWTduDGTigIGcMdnPwT8C8TYN5thxUu8sYsGnhgNWL5sPiDbAGkWfAAAAAElFTkSuQmCC";  
   
 runImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAcCAYAAAB4fbODAAADlElEQVR42u1aPZKzMAw1Gbr0O5kUlBRb5wg5QI7KATgCdQpKip0d+q35im+U1RpjJGMLCNLMFlkIz3rWz5ODMWpqampqampqampqampqampqamr7sevlPFwv50GZoNtJKVCLaZ/lh8FJqEmpCagm1P0+y4/R/x73m3ncb0aTkJmA0pVLK+V78QrJZ4wxVd2Yr++fbM9+pcI7bUlOSOIdqcBI8vpse2OMMZB87yR3XXhJElBaTqwlX965wKzJK06+VN1vK/G5FOuQM+BRCoy0LFxzPyX9wnjJJChIidiAW8E7kqWWhbBfZVEk735ryd1UeM4EtElLTao03hELTCpOfb5IdHfJhE+Bd0gJeoQCo7YPy+eqWlkUu64wW5lR1pyLUu2ha7Z9B7+W4Ln22reuPOWAucZQu7VNtH2TDhoJa7vu5VdVN3+K6ON+M1XdDByFsMU4oRZYuL/tOnRHP0z5mMeu6tyACnFyT3jSfEpjwmyLC4tP1eCkhe9fL+dhj0oH+HP5N+bDnYSZS1L4yKzqZkQqJpO7gXMJsWe8tfiUxMQyFGPC83zrsHF9mBy/lnZaKh5HIUz5mM2RaUuKGGT6nJTGi0UkJzhT4a21h/izPRNS/G67jpyAXL/swkJNxCU8uorPlI8nl6TAi+UYBuQcPPzVy7J4c1VzKZ7NZ2o8yT2EIMVJh3Ht5Gu7zrnXZVGM3hKK5VdZFK/nw1/o3lHiaiqWpwpRFltSUCva1PAa2plC8TjdgYvn4hPwUvApvYfU/YOi41MDoV2Q6xc3Xqh4rk7r4sQ+eMvdOrkXOTb/+v7JwEl8khZCaiiefWoVE8/FJ2Cn5hUwn21vUv1UAIGEE9HV4X8D7v+aQjnmxibmOQSTigcJbceYzQW8eljVzetAJvcPq/0wV7Vc134/97OnW5xg2SOeNJ/uOWcaN1bhgWCjrM91CMTp7Fga+k5Y52Qp/DziWzMklK+z2d0UYgw4h+tV3YwOAPMYldDuXjEqqS8o9oYnzac0Jrco2B0C3iOlzFvPtifJXcr30BgyW9hwMnG6Jy7wkITkBMQPsWclXGWebR8lYDCe/cx3w5Pgk4I7hcmZOUMNeOeOEDS5O57jXPdzurAriX0vU7gkrH1vcAecIy72Bipen/yldCnDBcFXFKa+S5GOvhncloUpJffc9ZyqufGpIfXUi2uKFxcvBJczyy1dD0VSLpG8U/Mw51lT3MXi5x/WB9z8URHs6QAAAABJRU5ErkJggg==";  
   
 jumpImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAkCAYAAACQVDZDAAADgUlEQVR42u2aPXLyMBCGRcYdfYahoKRIzRE4AEflAByBmsKlC4ZxT+2vyCeyiJW0sq0VUd6nIzi8Xu0/2BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWNar5bBeLQecBLB84Ah0+dp+GpqESEok4FtU61KBqKW7Xi2Hr+3ny98O+5057HfmtydhzfGSU+vjnap1qe5QQtcmnzHGHE9nc73dF7+9oNUcL5xWtgTUrtalukMJ3UvbG2OMsclXQ0LUHC8hrTl0sAMqdiULTb5c3a/kuKt1jiX0qFbWEdRW6hyi76Cn2ZWsPdvNJnvylQxQze6urZdLi01A10G5g0ZbT7MrhYpJ7m6knRAlfKepl0MLI2jllChmQE4Tq9rbzabKiqZhI7eLaY6bGr6rXc/qUK3Y/cUmvGACau9fJTS19dquezjweDo/FZnDfmeOp/OQMqL/1XN8Vz2adPb6tuvIFf3g82Ez5eamBMsUI6foadto97BQBeXstw68tL1Zr5YDRsf3w8YH579Xf/NJuOBGplCwHE/nl6ChwZIaoLEEzKGnaSMdQ6mm/bzYaEN1Q5opdk3ttNBLn4B8PlzEgsUdmeYIlpCROfVK2UhfuzuhxMFt14kTMNUut7BIAxV6cU234HI+bMaMTKFl1YqnjE10R9LQ07KROtFqXtrecB0x1BV/XvdBvTF28df2orOEHp94vvugRYDtgHOMTNKK7Vtex7b4qV0wh41S++zo5EvMKV0w1a5U/0HP32k5n7vf1jb8nNyrPMR7vd0X1ki3C6YeaqqutZF2pDw6z4nI7Sk/Dvm+p7E2p/qOVuwxmtB7Tmg3pl1f20cBj6fzowOPqgCSJEnpSjRAQzvSXHopdvo0x9on7Zjcl0DSDhirwtyoxJ2pDSCfZu16Er9wXY1bP2xi/k/Ax/Wjf4aYY4cLdYpQ1Zqqp22jtCjQc6AV1D5Hyu0Q3N4iGXcl/0eeH/XuTLXruY1B4gPaPWlDud7uC/c330b6Ie43QLTKXNp+loSgeu5n5tCT2OnTHNttU3CrvXSkl427r5Wauz4U7LXrSZI49AQON8JGvwVNuZnY+3MGqLaeVDff7vhdEEJFwfe/tspKzsMNEndskjylU7NerNPG7iH2fiPZjWjmcz9SS8cA6S6mpTdGV3rwc9yPZOSaMvLy14cr9l/T88XGXP7/B8eoAeUpIH/9AAAAAElFTkSuQmCC";  
-    
+
 /* =========================
    INITIAL DRAW
 ========================= */
 
+updateScoreDisplay();
+
 draw();
 
+
+/* =========================
+   START
+========================= */
+
+canvas.addEventListener(
+    "pointerdown",
+    function(){
+
+        AudioFX.init();
+
+    },
+    {once:true}
+);
+
 </script>
+
 </body>
 </html>
