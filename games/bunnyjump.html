@@ -6,7 +6,7 @@
 <title>Bunny Run ♡</title>
 
 <style>
-:root{
+:root {
     --bg-base:#f2f7fa;
     --bg-grad-1:#dce8f3;
     --bg-grad-2:#d3e2ea;
@@ -20,7 +20,7 @@
     --header-bg:rgba(255,255,255,.88);
 }
 
-body[data-theme="pink"]{
+body[data-theme="pink"] {
     --bg-base:#faf2f5;
     --bg-grad-1:#f3dce5;
     --bg-grad-2:#ead3dc;
@@ -34,7 +34,7 @@ body[data-theme="pink"]{
     --header-bg:rgba(255,255,255,.88);
 }
 
-body[data-theme="green"]{
+body[data-theme="green"] {
     --bg-base:#f3f7f2;
     --bg-grad-1:#dce8dc;
     --bg-grad-2:#d3ead3;
@@ -48,7 +48,7 @@ body[data-theme="green"]{
     --header-bg:rgba(255,255,255,.88);
 }
 
-body[data-theme="lavender"]{
+body[data-theme="lavender"] {
     --bg-base:#f5f2fa;
     --bg-grad-1:#e3dcf3;
     --bg-grad-2:#dad3ea;
@@ -62,7 +62,7 @@ body[data-theme="lavender"]{
     --header-bg:rgba(255,255,255,.88);
 }
 
-body[data-theme="yellow"]{
+body[data-theme="yellow"] {
     --bg-base:#faf8f2;
     --bg-grad-1:#f3edd2;
     --bg-grad-2:#eae3c5;
@@ -76,76 +76,137 @@ body[data-theme="yellow"]{
     --header-bg:rgba(255,255,255,.88);
 }
 
-*{
+* {
     box-sizing:border-box;
     -webkit-tap-highlight-color:transparent;
 }
 
-html,body{
+html,body {
     width:100%;
     min-height:100%;
     margin:0;
-    overflow:hidden;
+    overflow-x:hidden;
 }
 
-body{
+body {
+    min-height:100vh;
     background:
-        radial-gradient(circle at 10% 12%,var(--bg-grad-1) 0,transparent 28%),
-        radial-gradient(circle at 90% 85%,var(--bg-grad-2) 0,transparent 30%),
+        radial-gradient(
+            circle at 10% 12%,
+            var(--bg-grad-1) 0,
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 90% 85%,
+            var(--bg-grad-2) 0,
+            transparent 30%
+        ),
         var(--bg-base);
     color:var(--text-main);
     font-family:Georgia,"Times New Roman",serif;
 }
 
-.decorations{
+.decorations {
     position:fixed;
     inset:0;
+    width:100%;
+    height:100%;
     pointer-events:none;
     overflow:hidden;
-    z-index:0;
+    z-index:-1;
 }
 
-.decorations span{
+.decorations span {
     position:absolute;
     color:var(--ornament-color);
     opacity:.35;
     animation:float 5s ease-in-out infinite;
 }
 
-.decorations span:nth-child(1){top:13%;left:7%;font-size:20px}
-.decorations span:nth-child(2){top:28%;right:8%;font-size:13px;animation-delay:1s}
-.decorations span:nth-child(3){top:55%;left:5%;font-size:14px;animation-delay:2s}
-.decorations span:nth-child(4){top:68%;right:6%;font-size:21px;animation-delay:1.5s}
-.decorations span:nth-child(5){bottom:12%;left:12%;font-size:12px;animation-delay:.5s}
-.decorations span:nth-child(6){bottom:20%;right:13%;font-size:16px;animation-delay:2.5s}
-
-@keyframes float{
-    0%,100%{transform:translateY(0) rotate(0)}
-    50%{transform:translateY(-7px) rotate(7deg)}
+.decorations span:nth-child(1) {
+    top:13%;
+    left:7%;
+    font-size:20px;
 }
 
-header{
-    position:relative;
-    z-index:20;
+.decorations span:nth-child(2) {
+    top:28%;
+    right:8%;
+    font-size:13px;
+    animation-delay:1s;
+}
+
+.decorations span:nth-child(3) {
+    top:55%;
+    left:5%;
+    font-size:14px;
+    animation-delay:2s;
+}
+
+.decorations span:nth-child(4) {
+    top:68%;
+    right:6%;
+    font-size:21px;
+    animation-delay:1.5s;
+}
+
+.decorations span:nth-child(5) {
+    bottom:12%;
+    left:12%;
+    font-size:12px;
+    animation-delay:.5s;
+}
+
+.decorations span:nth-child(6) {
+    bottom:20%;
+    right:13%;
+    font-size:16px;
+    animation-delay:2.5s;
+}
+
+@keyframes float {
+    0%,100% {
+        transform:translateY(0) rotate(0);
+    }
+
+    50% {
+        transform:translateY(-7px) rotate(7deg);
+    }
+}
+
+header {
     display:flex;
     align-items:center;
     justify-content:space-between;
     width:100%;
-    min-height:66px;
+    min-height:70px;
     padding:12px 16px;
     background:var(--header-bg);
     backdrop-filter:blur(8px);
     border-bottom:1px solid var(--bg-grad-2);
-}
-
-.header-left,
-.header-right{
-    display:flex;
-    align-items:center;
+    position:sticky;
+    top:0;
+    z-index:100;
     gap:8px;
 }
 
-.nav-link{
+.header-left,
+.header-right {
+    display:flex;
+    align-items:center;
+    min-width:0;
+}
+
+.header-left {
+    gap:8px;
+}
+
+.header-right {
+    justify-content:flex-end;
+    gap:6px;
+}
+
+.nav-link {
     color:var(--text-heading);
     text-decoration:none;
     font-size:13px;
@@ -153,7 +214,7 @@ header{
     white-space:nowrap;
 }
 
-.coin-display{
+.coin-display {
     background:var(--accent-soft);
     border:1px solid var(--accent-border);
     padding:6px 10px;
@@ -164,73 +225,81 @@ header{
     white-space:nowrap;
 }
 
-main{
-    position:relative;
-    z-index:2;
+main {
     width:100%;
-    height:calc(100vh - 66px);
+    max-width:1050px;
+    margin:0 auto;
+    padding:25px 12px 35px;
     display:flex;
     flex-direction:column;
     align-items:center;
-    padding:18px 12px 12px;
 }
 
-.ornament{
+.ornament {
     display:flex;
     align-items:center;
     justify-content:center;
     gap:10px;
     height:22px;
+    margin-bottom:10px;
     color:var(--ornament-color);
-    margin-bottom:6px;
 }
 
-.ornament span{font-size:15px}
+.ornament span {
+    font-size:16px;
+}
 
-.ornament i{
-    width:32px;
+.ornament i {
+    width:38px;
     height:1px;
     background:var(--ornament-color);
     opacity:.45;
 }
 
-h1{
+h1 {
     color:var(--text-heading);
     font-weight:normal;
-    font-size:27px;
-    margin:0 0 3px;
+    font-size:28px;
+    margin:0 0 5px;
+    text-align:center;
 }
 
-.subtitle{
-    margin:0 0 10px;
-    font-size:13px;
-    opacity:.75;
+.subtitle {
+    color:var(--text-main);
+    opacity:.78;
+    margin:0 0 16px;
+    font-size:14px;
+    text-align:center;
 }
 
-.game-wrap{
+.game-card {
     width:min(960px,100%);
-    aspect-ratio:960/540;
-    position:relative;
-    overflow:hidden;
-    border:1px solid var(--accent-border);
-    border-radius:16px;
-    background:#b8cbd1;
-    box-shadow:0 8px 28px rgba(0,0,0,.08);
+    background:var(--card-bg);
+    border:1px solid var(--bg-grad-2);
+    border-radius:18px;
+    padding:10px;
+    box-shadow:0 8px 28px rgba(0,0,0,.06);
 }
 
-#game{
+#game {
     display:block;
     width:100%;
-    height:100%;
+    height:auto;
+    border-radius:12px;
     image-rendering:pixelated;
     image-rendering:crisp-edges;
+    touch-action:none;
 }
 
-.bottom-ornament{
-    margin-top:8px;
+.game-hint {
+    margin-top:12px;
+    color:var(--text-main);
+    opacity:.68;
+    font-size:12px;
+    text-align:center;
 }
 
-.modal-overlay{
+.modal-overlay {
     display:none;
     position:fixed;
     inset:0;
@@ -242,7 +311,7 @@ h1{
     justify-content:center;
 }
 
-.modal-card{
+.modal-card {
     position:relative;
     background:var(--card-bg);
     border:1px solid var(--accent-border);
@@ -257,7 +326,7 @@ h1{
 }
 
 .modal-card::before,
-.modal-card::after{
+.modal-card::after {
     content:"✦";
     position:absolute;
     color:var(--ornament-color);
@@ -265,10 +334,17 @@ h1{
     font-size:20px;
 }
 
-.modal-card::before{top:13px;left:18px}
-.modal-card::after{top:13px;right:18px}
+.modal-card::before {
+    top:13px;
+    left:18px;
+}
 
-.victory-decoration{
+.modal-card::after {
+    top:13px;
+    right:18px;
+}
+
+.victory-decoration {
     display:flex;
     align-items:center;
     justify-content:center;
@@ -277,14 +353,14 @@ h1{
     margin-bottom:13px;
 }
 
-.victory-decoration i{
+.victory-decoration i {
     width:30px;
     height:1px;
     background:var(--ornament-color);
     opacity:.5;
 }
 
-.victory-symbol{
+.victory-symbol {
     width:66px;
     height:66px;
     margin:2px auto 14px;
@@ -298,14 +374,18 @@ h1{
     animation:victoryFloat 2s ease-in-out infinite;
 }
 
-.modal-card h2{
+.modal-card.game-over .victory-symbol {
+    animation:none;
+}
+
+.modal-card h2 {
     color:var(--text-heading);
     font-size:25px;
     font-weight:normal;
     margin:0 0 9px;
 }
 
-.modal-card p{
+.modal-card p {
     color:var(--text-main);
     opacity:.82;
     font-size:14px;
@@ -313,7 +393,7 @@ h1{
     margin:0 0 21px;
 }
 
-.reward-amount{
+.reward-amount {
     display:inline-block;
     margin:-5px 0 20px;
     padding:7px 13px;
@@ -325,7 +405,7 @@ h1{
     font-weight:bold;
 }
 
-.btn{
+.btn {
     padding:11px 20px;
     border:1px solid var(--accent-border);
     border-radius:100px;
@@ -334,9 +414,15 @@ h1{
     font-family:Georgia,"Times New Roman",serif;
     font-size:13px;
     cursor:pointer;
+    transition:.2s ease;
 }
 
-.confetti{
+.btn:hover {
+    background:var(--accent-soft);
+    transform:translateY(-1px);
+}
+
+.confetti {
     position:absolute;
     pointer-events:none;
     color:var(--ornament-color);
@@ -344,36 +430,89 @@ h1{
     animation:confettiFall 1.8s ease-out forwards;
 }
 
-.confetti:nth-child(1){left:18%;top:5%}
-.confetti:nth-child(2){left:32%;top:2%;animation-delay:.12s}
-.confetti:nth-child(3){left:50%;top:4%;animation-delay:.2s}
-.confetti:nth-child(4){right:32%;top:2%;animation-delay:.08s}
-.confetti:nth-child(5){right:17%;top:6%;animation-delay:.18s}
-
-@keyframes victoryPop{
-    0%{transform:scale(.88);opacity:0}
-    100%{transform:scale(1);opacity:1}
+.confetti:nth-child(1) {
+    left:18%;
+    top:5%;
 }
 
-@keyframes victoryFloat{
-    0%,100%{transform:translateY(0)}
-    50%{transform:translateY(-5px)}
+.confetti:nth-child(2) {
+    left:32%;
+    top:2%;
+    animation-delay:.12s;
 }
 
-@keyframes confettiFall{
-    0%{transform:translateY(0) rotate(0);opacity:0}
-    15%{opacity:.8}
-    100%{transform:translateY(115px) rotate(120deg);opacity:0}
+.confetti:nth-child(3) {
+    left:50%;
+    top:4%;
+    animation-delay:.2s;
 }
 
-@media(max-width:600px){
-    header{padding:11px}
-    .game-wrap{
-        border-radius:12px;
+.confetti:nth-child(4) {
+    right:32%;
+    top:2%;
+    animation-delay:.08s;
+}
+
+.confetti:nth-child(5) {
+    right:17%;
+    top:6%;
+    animation-delay:.18s;
+}
+
+@keyframes victoryPop {
+    0% {
+        transform:scale(.88);
+        opacity:0;
     }
-    h1{font-size:24px}
-    .subtitle{font-size:12px}
-    .modal-card{
+
+    100% {
+        transform:scale(1);
+        opacity:1;
+    }
+}
+
+@keyframes victoryFloat {
+    0%,100% {
+        transform:translateY(0);
+    }
+
+    50% {
+        transform:translateY(-5px);
+    }
+}
+
+@keyframes confettiFall {
+    0% {
+        transform:translateY(0) rotate(0);
+        opacity:0;
+    }
+
+    15% {
+        opacity:.8;
+    }
+
+    100% {
+        transform:translateY(115px) rotate(120deg);
+        opacity:0;
+    }
+}
+
+@media(max-width:600px) {
+    header {
+        min-height:66px;
+        padding:12px 11px;
+    }
+
+    main {
+        padding:20px 7px 30px;
+    }
+
+    .game-card {
+        padding:5px;
+        border-radius:14px;
+    }
+
+    .modal-card {
         max-width:340px;
         padding:30px 21px 23px;
     }
@@ -407,19 +546,33 @@ h1{
 <main>
 
     <div class="ornament">
-        <span>✦</span><i></i><span>♡</span><i></i><span>✦</span>
+        <span>✦</span>
+        <i></i>
+        <span>♡</span>
+        <i></i>
+        <span>✦</span>
     </div>
 
     <h1>Bunny Run</h1>
 
-    <p class="subtitle">Jump over the cacti ♡</p>
+    <p class="subtitle" id="status">
+        Run as far as you can ♡
+    </p>
 
-    <div class="game-wrap">
+    <div class="game-card">
         <canvas id="game" width="960" height="540"></canvas>
     </div>
 
-    <div class="ornament bottom-ornament">
-        <span>✧</span><i></i><span>♡</span><i></i><span>✧</span>
+    <div class="game-hint">
+        Space / ↑ / W / Tap to jump
+    </div>
+
+    <div class="ornament" style="margin-top:20px;margin-bottom:0;">
+        <span>✧</span>
+        <i></i>
+        <span>♡</span>
+        <i></i>
+        <span>✧</span>
     </div>
 
 </main>
@@ -435,16 +588,24 @@ h1{
         <span class="confetti">✧</span>
 
         <div class="victory-decoration">
-            <span>✧</span><i></i><span>♡</span><i></i><span>✧</span>
+            <span>✧</span>
+            <i></i>
+            <span>♡</span>
+            <i></i>
+            <span>✧</span>
         </div>
 
         <div class="victory-symbol" id="modal-symbol"></div>
 
         <h2 id="modal-title">Game Over</h2>
 
-        <p id="modal-desc"></p>
+        <p id="modal-desc">
+            You made it pretty far!
+        </p>
 
-        <div class="reward-amount" id="reward-amount"></div>
+        <div class="reward-amount" id="reward-amount">
+            +20 Coins
+        </div>
 
         <button
             class="btn"
@@ -455,196 +616,76 @@ h1{
         </button>
 
     </div>
-
 </div>
 
 <script src="../script.js"></script><script>
 
-function loadSavedTheme(){
-    const savedTheme=localStorage.getItem("arcade_theme");
+function loadSavedTheme() {
+    const savedTheme = localStorage.getItem("arcade_theme");
 
-    if(
+    if (
         ["pink","green","lavender","yellow"].includes(savedTheme)
-    ){
+    ) {
         document.body.setAttribute(
             "data-theme",
             savedTheme
         );
-    }else{
-        document.body.removeAttribute("data-theme");
+    } else {
+        document.body.removeAttribute(
+            "data-theme"
+        );
     }
 }
 
 loadSavedTheme();
 
-function goBack(){
-    if(window.history.length>1){
+if (
+    typeof updateCoinDisplays === "function"
+) {
+    updateCoinDisplays();
+}
+
+
+function goBack() {
+
+    if(window.history.length > 1) {
         window.history.back();
-    }else{
+    } else {
         window.location.href="../index.html";
     }
 }
 
 
 /* =========================
-   AUDIO
-========================= */
-
-const AudioFX={
-
-    ctx:null,
-
-    init(){
-
-        if(!this.ctx){
-
-            const AudioCtx=
-                window.AudioContext ||
-                window.webkitAudioContext;
-
-            if(AudioCtx){
-                this.ctx=new AudioCtx();
-            }
-        }
-    },
-
-    play(type){
-
-        this.init();
-
-        if(!this.ctx)return;
-
-        if(this.ctx.state==="suspended"){
-            this.ctx.resume();
-        }
-
-        const now=this.ctx.currentTime;
-
-        const osc=this.ctx.createOscillator();
-        const gain=this.ctx.createGain();
-
-        osc.connect(gain);
-        gain.connect(this.ctx.destination);
-
-        if(type==="jump"){
-
-            osc.type="sine";
-
-            osc.frequency.setValueAtTime(
-                420,
-                now
-            );
-
-            osc.frequency.exponentialRampToValueAtTime(
-                680,
-                now+.12
-            );
-
-            gain.gain.setValueAtTime(
-                .12,
-                now
-            );
-
-            gain.gain.exponentialRampToValueAtTime(
-                .001,
-                now+.16
-            );
-
-            osc.start(now);
-            osc.stop(now+.16);
-        }
-
-        if(type==="coin"){
-
-            osc.type="sine";
-
-            osc.frequency.setValueAtTime(
-                660,
-                now
-            );
-
-            osc.frequency.setValueAtTime(
-                880,
-                now+.07
-            );
-
-            gain.gain.setValueAtTime(
-                .12,
-                now
-            );
-
-            gain.gain.exponentialRampToValueAtTime(
-                .001,
-                now+.18
-            );
-
-            osc.start(now);
-            osc.stop(now+.18);
-        }
-
-        if(type==="lose"){
-
-            osc.type="triangle";
-
-            osc.frequency.setValueAtTime(
-                300,
-                now
-            );
-
-            osc.frequency.exponentialRampToValueAtTime(
-                120,
-                now+.4
-            );
-
-            gain.gain.setValueAtTime(
-                .2,
-                now
-            );
-
-            gain.gain.exponentialRampToValueAtTime(
-                .001,
-                now+.4
-            );
-
-            osc.start(now);
-            osc.stop(now+.4);
-        }
-    }
-};
-
-
-/* =========================
    CANVAS
 ========================= */
 
-const canvas=
+const canvas =
     document.getElementById("game");
 
-const ctx=
+const ctx =
     canvas.getContext("2d");
 
 ctx.imageSmoothingEnabled=false;
 
 const W=960;
 const H=540;
-
 const GROUND=425;
 
 
 /* =========================
-   GAME COLORS
+   COLORS
 ========================= */
 
-const BG="#b8cbd1";
 const SKY_TOP="#a8c7d0";
 const SKY_BOTTOM="#d5e1d9";
-
-const DARK="#29332f";
 
 const GROUND_TOP="#756d59";
 const GROUND_BASE="#625b4b";
 const GROUND_LIGHT="#887f68";
 const GROUND_DARK="#48453b";
+
+const DARK="#29332f";
 
 
 /* =========================
@@ -653,23 +694,23 @@ const GROUND_DARK="#48453b";
 
 let started=false;
 let dead=false;
+
 let lastTime=0;
 
 let score=0;
 
-/*
-    This is the actual movement
-    speed. It slowly increases.
-*/
 let speed=6;
 
 let groundOffset=0;
 
+let spawnTimer=0;
+
+let nextSpawn=1200;
+
 let runAnimTime=0;
 let jumpTime=0;
 
-let spawnTimer=0;
-let nextSpawn=1200;
+let rewardGiven=false;
 
 
 /* =========================
@@ -677,16 +718,10 @@ let nextSpawn=1200;
 ========================= */
 
 const bunny={
-
     x:110,
 
     y:GROUND-28,
 
-    /*
-        Collision size.
-        The actual sprite is drawn
-        at 3x this size.
-    */
     width:28,
     height:28,
 
@@ -700,6 +735,18 @@ const bunny={
 };
 
 
+/*
+    Bunny sprite size on screen.
+
+    The actual gameplay bunny is 28px high.
+    The sprite is drawn at 84px high,
+    while its feet remain aligned with
+    the 28px gameplay body.
+*/
+
+const BUNNY_DRAW_SCALE=3;
+
+
 /* =========================
    BUNNY IMAGES
 ========================= */
@@ -709,8 +756,20 @@ const runImage=new Image();
 const jumpImage=new Image();
 
 
+/*
+    PASTE YOUR ORIGINAL THREE
+    BASE64 image.src LINES HERE.
+
+    Example:
+
+    idleImage.src="data:image/png;base64,...";
+    runImage.src="data:image/png;base64,...";
+    jumpImage.src="data:image/png;base64,...";
+*/
+
+
 /* =========================
-   CACTUS TEXTURES
+   CACTUS IMAGES
 ========================= */
 
 const cactusImages={
@@ -726,70 +785,88 @@ const cactusImages={
 
 
 /*
-    THESE ARE THE FOUR ACTUAL
-    TEXTURES YOU GAVE ME.
+    YOUR ACTUAL CACTUS FILES
 */
 
-cactusImages.small.src=
+cactusImages.small.src =
     "games/1000082076-removebg-preview.png";
 
-cactusImages.big.src=
+cactusImages.big.src =
     "games/1000082078-removebg-preview.png";
 
-cactusImages.two.src=
+cactusImages.two.src =
     "games/1000082080-removebg-preview.png";
 
-cactusImages.cluster.src=
+cactusImages.cluster.src =
     "games/1000082081-removebg-preview.png";
 
 
 /* =========================
-   CACTUS TYPES
-=========================
+   CACTUS DEFINITIONS
+========================= */
 
-   These are deliberately based
-   on the proportions you liked:
+/*
+    Bunny gameplay height = 28px.
 
-   small   = 1 bunny unit tall
-   big     = 3 bunny units tall
-   two     = 2 bunny units tall
-   cluster = 2 bunny units tall
+    Small:
+        height = 28
+        width  = 28
 
-   Widths:
+    Big:
+        height = 84
+        width  = 28
 
-   small   = 1 unit
-   big     = 1 unit
-   two     = 1.5 units
-   cluster = 3.5 units
+    Two:
+        height = 56
+        width  = 42
+
+    Cluster:
+        height = 56
+        width  = 98
+
+    The IMAGE itself is stretched to
+    exactly these dimensions.
+
+    Therefore:
+        visual size == collision size
 */
 
-const CACTUS_TYPES={
+
+const CACTUS_DEFINITIONS={
 
     small:{
         key:"small",
-        widthUnits:1,
-        heightUnits:1
+        width:28,
+        height:28
     },
 
     big:{
         key:"big",
-        widthUnits:1,
-        heightUnits:3
+        width:28,
+        height:84
     },
 
     two:{
         key:"two",
-        widthUnits:1.5,
-        heightUnits:2
+        width:42,
+        height:56
     },
 
     cluster:{
         key:"cluster",
-        widthUnits:3.5,
-        heightUnits:2
+        width:98,
+        height:56
     }
 
 };
+
+
+const cactusTypes=[
+    CACTUS_DEFINITIONS.small,
+    CACTUS_DEFINITIONS.big,
+    CACTUS_DEFINITIONS.two,
+    CACTUS_DEFINITIONS.cluster
+];
 
 
 /* =========================
@@ -799,37 +876,11 @@ const CACTUS_TYPES={
 const obstacles=[];
 
 
-/*
-    This is the IMPORTANT part:
-
-    The cactus texture itself is resized
-    to exactly match these dimensions.
-
-    So the visual cactus and its collision
-    box stay synchronized.
-*/
-
-const CACTUS_UNIT=28;
-
-function getCactusSize(type){
-
-    return {
-
-        width:
-            type.widthUnits*
-            CACTUS_UNIT,
-
-        height:
-            type.heightUnits*
-            CACTUS_UNIT
-
-    };
-}
-
+/* =========================
+   CREATE CACTUS
+========================= */
 
 function createCactus(type,x){
-
-    const size=getCactusSize(type);
 
     return {
 
@@ -837,125 +888,82 @@ function createCactus(type,x){
 
         y:
             GROUND-
-            size.height,
+            type.height,
 
-        width:size.width,
+        width:
+            type.width,
 
-        height:size.height,
+        height:
+            type.height,
 
-        type:type,
+        key:
+            type.key,
 
         counted:false
-
     };
 }
 
 
 /* =========================
-   SPAWN CACTUS
+   SPAWN
 ========================= */
 
 function spawnCactus(){
 
     /*
-        Only the FOUR cactus forms
-        you specified are used.
+        Keep the original game simple:
+        one cactus at a time.
+
+        This avoids impossible combinations
+        and keeps the game fair.
     */
 
-    const names=[
-        "small",
-        "big",
-        "two",
-        "cluster"
-    ];
-
-    /*
-        Start simple and gradually
-        make the game harder.
-    */
-
-    const difficulty=
-        Math.min(
-            score/100,
-            30
-        );
-
-    let count=1;
-
-    if(
-        difficulty>12 &&
-        Math.random()<.18
-    ){
-        count=2;
-    }
-
-    const firstName=
-        names[
+    const type =
+        cactusTypes[
             Math.floor(
-                Math.random()*names.length
+                Math.random()*
+                cactusTypes.length
             )
         ];
 
-    let x=W+70;
+    const cactus =
+        createCactus(
+            type,
+            W+50
+        );
 
-    for(let i=0;i<count;i++){
-
-        let name;
-
-        if(i===0){
-
-            name=firstName;
-
-        }else{
-
-            name=
-                Math.random()<.5
-                ?"small"
-                :"big";
-        }
-
-        const type=
-            CACTUS_TYPES[name];
-
-        const cactus=
-            createCactus(
-                type,
-                x
-            );
-
-        obstacles.push(cactus);
-
-        /*
-            Gap is measured from the
-            ACTUAL rendered width.
-        */
-
-        x+=
-            cactus.width+
-            70+
-            Math.random()*60;
-    }
+    obstacles.push(cactus);
 
 
     /*
-        Keep cactus spacing comfortable.
+        Distance between obstacles.
+
+        Gets slightly shorter as the game
+        becomes faster, but never becomes
+        ridiculous.
     */
 
-    const minimum=
-        1050-
+    const difficulty =
         Math.min(
-            difficulty*10,
-            300
+            score/500,
+            20
         );
 
-    const maximum=
-        1500-
+    const minimum =
+        900-
         Math.min(
-            difficulty*8,
+            difficulty*15,
             250
         );
 
-    nextSpawn=
+    const maximum =
+        1350-
+        Math.min(
+            difficulty*15,
+            250
+        );
+
+    nextSpawn =
         minimum+
         Math.random()*
         (maximum-minimum);
@@ -965,12 +973,56 @@ function spawnCactus(){
 
 
 /* =========================
+   IMAGE DRAWING
+========================= */
+
+function drawCactus(o){
+
+    const image =
+        cactusImages[o.key];
+
+    /*
+        Do NOT draw a fallback square.
+
+        If the image has not loaded yet,
+        simply don't draw it.
+    */
+
+    if(
+        !image.complete ||
+        !image.naturalWidth
+    ){
+        return;
+    }
+
+    /*
+        The source image is drawn to EXACTLY
+        the collision dimensions.
+    */
+
+    ctx.drawImage(
+        image,
+
+        0,
+        0,
+        image.naturalWidth,
+        image.naturalHeight,
+
+        Math.round(o.x),
+        Math.round(o.y),
+        Math.round(o.width),
+        Math.round(o.height)
+    );
+}
+
+
+/* =========================
    SKY
 ========================= */
 
 function drawSky(){
 
-    const gradient=
+    const gradient =
         ctx.createLinearGradient(
             0,
             0,
@@ -1062,6 +1114,7 @@ function drawSky(){
         6
     );
 
+
     ctx.fillRect(
         790,
         78,
@@ -1084,7 +1137,8 @@ function drawSky(){
 
 function drawGround(){
 
-    ctx.fillStyle=GROUND_BASE;
+    ctx.fillStyle=
+        GROUND_BASE;
 
     ctx.fillRect(
         0,
@@ -1093,7 +1147,9 @@ function drawGround(){
         H-GROUND
     );
 
-    ctx.fillStyle=GROUND_TOP;
+
+    ctx.fillStyle=
+        GROUND_TOP;
 
     ctx.fillRect(
         0,
@@ -1102,7 +1158,9 @@ function drawGround(){
         9
     );
 
-    ctx.fillStyle=GROUND_LIGHT;
+
+    ctx.fillStyle=
+        GROUND_LIGHT;
 
     ctx.fillRect(
         0,
@@ -1111,15 +1169,20 @@ function drawGround(){
         3
     );
 
+
     const tile=80;
 
     for(
-        let x=groundOffset-tile;
+        let x=
+            groundOffset-tile;
+
         x<W+tile;
+
         x+=tile
     ){
 
-        ctx.fillStyle=GROUND_DARK;
+        ctx.fillStyle=
+            GROUND_DARK;
 
         ctx.fillRect(
             x+7,
@@ -1142,7 +1205,9 @@ function drawGround(){
             4
         );
 
-        ctx.fillStyle=GROUND_LIGHT;
+
+        ctx.fillStyle=
+            GROUND_LIGHT;
 
         ctx.fillRect(
             x+32,
@@ -1175,12 +1240,16 @@ function drawGround(){
 
 
     for(
-        let x=groundOffset-40;
+        let x=
+            groundOffset-40;
+
         x<W+80;
+
         x+=120
     ){
 
-        ctx.fillStyle=GROUND_LIGHT;
+        ctx.fillStyle=
+            GROUND_LIGHT;
 
         ctx.fillRect(
             x,
@@ -1199,57 +1268,6 @@ function drawGround(){
 }<script>
 
 /* =========================
-   DRAW TEXTURED CACTUS
-========================= */
-
-function drawCactus(o){
-
-    const image=
-        cactusImages[o.type.key];
-
-    /*
-        If the image has not loaded yet,
-        draw a temporary silhouette.
-
-        Once loaded, this disappears
-        automatically.
-    */
-
-    if(
-        image.complete &&
-        image.naturalWidth>0
-    ){
-
-        ctx.imageSmoothingEnabled=false;
-
-        ctx.drawImage(
-            image,
-            Math.round(o.x),
-            Math.round(o.y),
-            Math.round(o.width),
-            Math.round(o.height)
-        );
-
-    }else{
-
-        /*
-            Temporary placeholder only while
-            the real texture loads.
-        */
-
-        ctx.fillStyle="#63745f";
-
-        ctx.fillRect(
-            Math.round(o.x),
-            Math.round(o.y),
-            Math.round(o.width),
-            Math.round(o.height)
-        );
-    }
-}
-
-
-/* =========================
    BUNNY DRAWING
 ========================= */
 
@@ -1258,12 +1276,16 @@ function drawBunny(){
     let image;
 
     let frameWidth=28;
+
     let frameHeight=28;
 
     let frameIndex=0;
 
 
-    if(!started && !dead){
+    if(
+        !started &&
+        !dead
+    ){
 
         image=idleImage;
 
@@ -1271,20 +1293,27 @@ function drawBunny(){
 
     }
 
-    else if(!bunny.grounded){
+    else if(
+        !bunny.grounded
+    ){
 
         image=jumpImage;
 
         frameWidth=28;
+
         frameHeight=36;
 
-        const duration=560;
+
+        const jumpAnimationDuration=560;
 
         frameIndex=
             Math.min(
                 7,
                 Math.floor(
-                    (jumpTime/duration)*8
+                    (
+                        jumpTime/
+                        jumpAnimationDuration
+                    )*8
                 )
             );
 
@@ -1295,6 +1324,7 @@ function drawBunny(){
         image=runImage;
 
         frameWidth=28;
+
         frameHeight=28;
 
         frameIndex=
@@ -1305,6 +1335,7 @@ function drawBunny(){
 
 
     if(
+        !image ||
         !image.complete ||
         !image.naturalWidth
     ){
@@ -1312,35 +1343,34 @@ function drawBunny(){
     }
 
 
-    /*
-        Bunny is intentionally 3x its
-        collision unit, like the old
-        version you liked.
+    const drawW =
+        frameWidth*
+        BUNNY_DRAW_SCALE;
 
-        This restores the larger bunny.
-    */
-
-    const drawW=
-        frameWidth*3;
-
-    const drawH=
-        frameHeight*3;
+    const drawH =
+        frameHeight*
+        BUNNY_DRAW_SCALE;
 
 
-    const feetY=
-        bunny.y+bunny.height;
+    const feetY =
+        bunny.y+
+        bunny.height;
 
-    const drawX=
+
+    const drawX =
         bunny.x;
 
-    const drawY=
-        feetY-drawH;
+
+    const drawY =
+        feetY-
+        drawH;
 
 
     ctx.save();
 
+
     /*
-        Flip bunny so it faces right.
+        Face right.
     */
 
     ctx.translate(
@@ -1348,24 +1378,34 @@ function drawBunny(){
         drawY
     );
 
-    ctx.scale(-1,1);
+    ctx.scale(
+        -1,
+        1
+    );
 
 
     ctx.drawImage(
+
         image,
 
-        frameIndex*frameWidth,
+        frameIndex*
+        frameWidth,
+
         0,
 
         frameWidth,
+
         frameHeight,
 
         0,
+
         0,
 
         drawW,
+
         drawH
     );
+
 
     ctx.restore();
 }
@@ -1378,46 +1418,48 @@ function drawBunny(){
 function getBunnyHitbox(){
 
     /*
-        The bunny's collision box is kept
-        slightly inside the visible sprite.
-
-        This makes the game feel fair.
+        This is intentionally smaller
+        than the visual bunny so the game
+        doesn't feel unfair.
     */
 
     return {
 
-        x:bunny.x+13,
+        x:
+            bunny.x+8,
 
-        y:bunny.y+12,
+        y:
+            bunny.y+7,
 
-        width:52,
+        width:
+            48,
 
-        height:60
-
+        height:
+            58
     };
 }
 
 
 /* =========================
-   CACTUS COLLISION
+   COLLISION
 ========================= */
 
 function checkCollision(){
 
-    const b=
+    const b =
         getBunnyHitbox();
 
 
-    for(const o of obstacles){
+    for(
+        const o of obstacles
+    ){
 
         /*
-            Because the cactus image is
-            drawn using o.width/o.height,
-            this box is EXACTLY the size
-            of the visible cactus texture.
+            The cactus collision box is
+            EXACTLY its drawn dimensions.
         */
 
-        const cactusHit={
+        const c={
 
             x:o.x+2,
 
@@ -1434,31 +1476,22 @@ function checkCollision(){
                     1,
                     o.height-4
                 )
-
         };
 
 
         if(
 
             b.x <
-                cactusHit.x+
-                cactusHit.width
-
-            &&
+                c.x+c.width &&
 
             b.x+b.width >
-                cactusHit.x
-
-            &&
+                c.x &&
 
             b.y <
-                cactusHit.y+
-                cactusHit.height
-
-            &&
+                c.y+c.height &&
 
             b.y+b.height >
-                cactusHit.y
+                c.y
 
         ){
 
@@ -1477,22 +1510,18 @@ function checkCollision(){
 
 function jump(){
 
-    AudioFX.play("jump");
-
-
     if(!started){
 
         started=true;
 
-        bunny.grounded=true;
-
-        runAnimTime=0;
-        jumpTime=0;
+        dead=false;
 
         lastTime=
             performance.now();
 
-        requestAnimationFrame(loop);
+        requestAnimationFrame(
+            loop
+        );
 
         return;
     }
@@ -1506,7 +1535,9 @@ function jump(){
     }
 
 
-    if(bunny.grounded){
+    if(
+        bunny.grounded
+    ){
 
         bunny.velocityY=
             bunny.jumpPower;
@@ -1534,6 +1565,8 @@ function restart(){
 
     nextSpawn=1200;
 
+    groundOffset=0;
+
     bunny.y=
         GROUND-
         bunny.height;
@@ -1543,22 +1576,33 @@ function restart(){
     bunny.grounded=true;
 
     runAnimTime=0;
-    jumpTime=0;
 
-    groundOffset=0;
+    jumpTime=0;
 
     dead=false;
 
     started=true;
 
-    lastTime=
-        performance.now();
+    rewardGiven=false;
+
+    document.getElementById(
+        "status"
+    ).innerText=
+        "Run as far as you can ♡";
+
 
     document.getElementById(
         "reward-modal"
     ).style.display="none";
 
-    requestAnimationFrame(loop);
+
+    lastTime=
+        performance.now();
+
+
+    requestAnimationFrame(
+        loop
+    );
 }
 
 
@@ -1568,13 +1612,49 @@ function restart(){
 
 function gameOver(){
 
-    if(dead)return;
+    if(dead){
+        return;
+    }
+
 
     dead=true;
 
     bunny.velocityY=0;
 
-    AudioFX.play("lose");
+
+    /*
+        Do NOT award coins every frame.
+    */
+
+    if(!rewardGiven){
+
+        rewardGiven=true;
+
+        /*
+            Bunny Run reward.
+
+            Change 20 here if you want
+            another amount.
+        */
+
+        if(
+            typeof addCoins ===
+            "function"
+        ){
+
+            addCoins(20);
+        }
+
+
+        if(
+            typeof updateCoinDisplays ===
+            "function"
+        ){
+
+            updateCoinDisplays();
+        }
+    }
+
 
     showGameOverModal();
 }
@@ -1586,28 +1666,41 @@ function gameOver(){
 
 function update(dt){
 
-    if(!started || dead){
+    if(
+        !started ||
+        dead
+    ){
         return;
     }
 
 
-    /* RUN ANIMATION */
+    /*
+        RUN ANIMATION
+    */
 
-    if(bunny.grounded){
+    if(
+        bunny.grounded
+    ){
 
         runAnimTime+=dt;
     }
 
 
-    /* BUNNY PHYSICS */
+    /*
+        JUMP PHYSICS
+    */
 
-    if(!bunny.grounded){
+    if(
+        !bunny.grounded
+    ){
 
         jumpTime+=dt;
+
 
         bunny.velocityY+=
             bunny.gravity*
             (dt/16.6667);
+
 
         bunny.y+=
             bunny.velocityY*
@@ -1619,7 +1712,9 @@ function update(dt){
             bunny.height;
 
 
-        if(bunny.y>=groundY){
+        if(
+            bunny.y>=groundY
+        ){
 
             bunny.y=groundY;
 
@@ -1635,7 +1730,10 @@ function update(dt){
 
 
     /*
-        Gradually accelerate.
+        SPEED.
+
+        This stays smooth and gradually
+        gets faster.
     */
 
     speed+=
@@ -1649,13 +1747,12 @@ function update(dt){
 
 
     /*
-        SCORE FIX
+        SCORE.
 
-        Score is now based on actual
-        elapsed movement instead of
-        being tied to obstacle spawning.
+        This is the IMPORTANT fix.
 
-        It cannot randomly stop.
+        score is a real number internally,
+        then displayed with Math.floor().
     */
 
     score+=
@@ -1664,52 +1761,59 @@ function update(dt){
 
 
     /*
-        Ground and cactus movement
-        use the EXACT same movement.
+        GROUND
     */
 
     groundOffset-=movement;
 
-    if(groundOffset<=-80){
+
+    if(
+        groundOffset<=-80
+    ){
 
         groundOffset+=80;
     }
 
 
-    /* MOVE CACTUSES */
+    /*
+        CACTUSES
+    */
 
     for(
-        let i=obstacles.length-1;
+        let i=
+            obstacles.length-1;
+
         i>=0;
+
         i--
     ){
 
         const o=
             obstacles[i];
 
+
         o.x-=movement;
 
 
         /*
-            +100 when the cactus has
-            completely passed the bunny.
+            +100 for every cactus passed.
         */
 
         if(
             !o.counted &&
-            o.x+o.width<bunny.x
+            o.x+o.width<
+                bunny.x
         ){
 
             o.counted=true;
 
             score+=100;
-
-            AudioFX.play("coin");
         }
 
 
         if(
-            o.x+o.width<-50
+            o.x+o.width<
+            -100
         ){
 
             obstacles.splice(
@@ -1720,9 +1824,12 @@ function update(dt){
     }
 
 
-    /* SPAWN */
+    /*
+        SPAWN
+    */
 
     spawnTimer+=dt;
+
 
     if(
         spawnTimer>=nextSpawn
@@ -1732,9 +1839,13 @@ function update(dt){
     }
 
 
-    /* COLLISION */
+    /*
+        COLLISION
+    */
 
-    if(checkCollision()){
+    if(
+        checkCollision()
+    ){
 
         gameOver();
     }
@@ -1748,37 +1859,46 @@ function update(dt){
 function drawScore(){
 
     /*
-        This keeps the score looking like
-        the old pixel/Dino counter.
+        Pixel-style font.
 
-        No rounded pill.
-        No normal UI font.
-        Just the raw padded number.
+        Using a monospace font plus
+        pixelated rendering keeps the
+        Dino-like appearance without
+        needing another font file.
     */
 
     ctx.save();
 
-    ctx.fillStyle=DARK;
-
-    ctx.font=
-        "bold 24px monospace";
-
     ctx.textAlign="right";
 
-    ctx.textBaseline="alphabetic";
+    ctx.textBaseline="top";
 
-    ctx.imageSmoothingEnabled=false;
+    ctx.font=
+        "bold 22px monospace";
 
-    ctx.fillText(
+    ctx.fillStyle=
+        DARK;
 
+    ctx.shadowColor=
+        "rgba(255,255,255,.35)";
+
+    ctx.shadowBlur=0;
+
+    const scoreText=
         String(
             Math.floor(score)
-        ).padStart(5,"0"),
+        ).padStart(
+            5,
+            "0"
+        );
 
-        W-28,
 
-        42
+    ctx.fillText(
+        scoreText,
+        W-25,
+        20
     );
+
 
     ctx.restore();
 }
@@ -1803,7 +1923,14 @@ function draw(){
     drawGround();
 
 
-    for(const o of obstacles){
+    /*
+        Cactus images are drawn
+        directly from your four files.
+    */
+
+    for(
+        const o of obstacles
+    ){
 
         drawCactus(o);
     }
@@ -1814,9 +1941,13 @@ function draw(){
     drawScore();
 
 
-    /* START */
+    /*
+        START MESSAGE
+    */
 
-    if(!started){
+    if(
+        !started
+    ){
 
         ctx.save();
 
@@ -1825,41 +1956,23 @@ function draw(){
         ctx.fillStyle=DARK;
 
         ctx.font=
-            "26px Georgia";
+            "24px monospace";
 
         ctx.fillText(
             "PRESS SPACE OR TAP",
             W/2,
-            90
+            70
         );
 
         ctx.restore();
     }
 
 
-    /* GAME OVER */
-
-    if(dead){
-
-        ctx.save();
-
-        ctx.textAlign="center";
-
-        ctx.fillStyle=DARK;
-
-        ctx.font=
-            "30px Georgia";
-
-        ctx.fillText(
-            "PRESS SPACE OR TAP TO RESTART",
-            W/2,
-            105
-        );
-
-        ctx.restore();
-    }
-}
-
+    /*
+        Game-over message is handled
+        by the pretty HTML modal.
+    */
+    }<script>
 
 /* =========================
    GAME LOOP
@@ -1867,9 +1980,13 @@ function draw(){
 
 function loop(time){
 
-    if(!lastTime){
+    if(
+        !lastTime
+    ){
+
         lastTime=time;
     }
+
 
     const dt=
         Math.min(
@@ -1877,16 +1994,22 @@ function loop(time){
             32
         );
 
+
     lastTime=time;
+
 
     update(dt);
 
     draw();
 
 
-    if(!dead){
+    if(
+        !dead
+    ){
 
-        requestAnimationFrame(loop);
+        requestAnimationFrame(
+            loop
+        );
     }
 }
 
@@ -1895,14 +2018,16 @@ function loop(time){
    INPUT
 ========================= */
 
-function handleInput(){
+function handleInput(e){
 
-    if(dead){
-
-        restart();
-
-        return;
+    if(e){
+        e.preventDefault();
     }
+
+
+    /*
+        If dead, jump() calls restart().
+    */
 
     jump();
 }
@@ -1910,7 +2035,7 @@ function handleInput(){
 
 window.addEventListener(
     "keydown",
-    e=>{
+    function(e){
 
         if(
             e.code==="Space" ||
@@ -1920,7 +2045,7 @@ window.addEventListener(
 
             e.preventDefault();
 
-            handleInput();
+            handleInput(e);
         }
     }
 );
@@ -1928,68 +2053,17 @@ window.addEventListener(
 
 canvas.addEventListener(
     "pointerdown",
-    e=>{
+    function(e){
 
         e.preventDefault();
 
-        handleInput();
+        handleInput(e);
     }
-);<script>
-
-/* =========================
-   BUNNY TEXTURES
-========================= */
-
-/*
-    Your original bunny sprites.
-    Replace these later with your final
-    versions if you want to.
-
-    IMPORTANT:
-    The canvas animation expects:
-
-    idle = 1 frame, 28x28
-    run  = 8 frames, 28x28 each
-    jump = 8 frames, 28x36 each
-*/
-
-idleImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAA9klEQVR42u1UMQ6EIBAEYmdvjIUlhbVP8AE+1Qf4BGsLSwtj6K25inPv2EU8OGPhdggyzOzMMvbUU0/dtoo81UWe6tj3CtdmJTMGQWM8QlDsKplZ39qmZm1TsxBQcXWrSMBxUha7vwEu68bhGoJ1/WDt31pSTpkGkzCUHcowZr+wSkIGg0//nZKa/MmyJH/o+sEy0jTPH852gXIq8Aa06wfmKzEEpkAFlj+YwTMFlaEk566xBi8wr3fJDc9SLBO86Upf6tL9ZQple8R6Xyv9zTLKpDHAwaNtWTduDGTigIGcMdnPwT8C8TYN5thxUu8sYsGnhgNWL5sPiDbAGkWfAAAAAElFTkSuQmCC";  
-  
-runImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAcCAYAAAB4fbODAAADlElEQVR42u1aPZKzMAw1Gbr0O5kUlBRb5wg5QI7KATgCdQpKip0d+q35im+U1RpjJGMLCNLMFlkIz3rWz5ODMWpqampqampqampqampqampqamr7sevlPFwv50GZoNtJKVCLaZ/lh8FJqEmpCagm1P0+y4/R/x73m3ncb0aTkJmA0pVLK+V78QrJZ4wxVd2Yr++fbM9+pcI7bUlOSOIdqcBI8vpse2OMMZB87yR3XXhJElBaTqwlX965wKzJK06+VN1vK/G5FOuQM+BRCoy0LFxzPyX9wnjJJChIidiAW8E7kqWWhbBfZVEk735ryd1UeM4EtElLTao03hELTCpOfb5IdHfJhE+Bd0gJeoQCo7YPy+eqWlkUu64wW5lR1pyLUu2ha7Z9B7+W4Ln22reuPOWAucZQu7VNtH2TDhoJa7vu5VdVN3+K6ON+M1XdDByFsMU4oRZYuL/tOnRHP0z5mMeu6tyACnFyT3jSfEpjwmyLC4tP1eCkhe9fL+dhj0oH+HP5N+bDnYSZS1L4yKzqZkQqJpO7gXMJsWe8tfiUxMQyFGPC83zrsHF9mBy/lnZaKh5HIUz5mM2RaUuKGGT6nJTGi0UkJzhT4a21h/izPRNS/G67jpyAXL/swkJNxCU8uorPlI8nl6TAi+UYBuQcPPzVy7J4c1VzKZ7NZ2o8yT2EIMVJh3Ht5Gu7zrnXZVGM3hKK5VdZFK/nw1/o3lHiaiqWpwpRFltSUCva1PAa2plC8TjdgYvn4hPwUvApvYfU/YOi41MDoV2Q6xc3Xqh4rk7r4sQ+eMvdOrkXOTb/+v7JwEl8khZCaiiefWoVE8/FJ2Cn5hUwn21vUv1UAIGEE9HV4X8D7v+aQjnmxibmOQSTigcJbceYzQW8eljVzetAJvcPq/0wV7Vc134/97OnW5xg2SOeNJ/uOWcaN1bhgWCjrM91CMTp7Fga+k5Y52Qp/DziWzMklK+z2d0UYgw4h+tV3YwOAPMYldDuXjEqqS8o9oYnzac0Jrco2B0C3iOlzFvPtifJXcr30BgyW9hwMnG6Jy7wkITkBMQPsWclXGWebR8lYDCe/cx3w5Pgk4I7hcmZOUMNeOeOEDS5O57jXPdzurAriX0vU7gkrH1vcAecIy72Bipen/yldCnDBcFXFKa+S5GOvhncloUpJffc9ZyqufGpIfXUi2uKFxcvBJczyy1dD0VSLpG8U/Mw51lT3MXi5x/WB9z8URHs6QAAAABJRU5ErkJggg==";  
-  
-jumpImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAkCAYAAACQVDZDAAADgUlEQVR42u2aPXLyMBCGRcYdfYahoKRIzRE4AEflAByBmsKlC4ZxT+2vyCeyiJW0sq0VUd6nIzi8Xu0/2BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWNar5bBeLQecBLB84Ah0+dp+GpqESEok4FtU61KBqKW7Xi2Hr+3ny98O+5057HfmtydhzfGSU+vjnap1qe5QQtcmnzHGHE9nc73dF7+9oNUcL5xWtgTUrtalukMJ3UvbG2OMsclXQ0LUHC8hrTl0sAMqdiULTb5c3a/kuKt1jiX0qFbWEdRW6hyi76Cn2ZWsPdvNJnvylQxQze6urZdLi01A10G5g0ZbT7MrhYpJ7m6knRAlfKepl0MLI2jllChmQE4Tq9rbzabKiqZhI7eLaY6bGr6rXc/qUK3Y/cUmvGACau9fJTS19dquezjweDo/FZnDfmeOp/OQMqL/1XN8Vz2adPb6tuvIFf3g82Ez5eamBMsUI6foadto97BQBeXstw68tL1Zr5YDRsf3w8YH579Xf/NJuOBGplCwHE/nl6ChwZIaoLEEzKGnaSMdQ6mm/bzYaEN1Q5opdk3ttNBLn4B8PlzEgsUdmeYIlpCROfVK2UhfuzuhxMFt14kTMNUut7BIAxV6cU234HI+bMaMTKFl1YqnjE10R9LQ07KROtFqXtrecB0x1BV/XvdBvTF28df2orOEHp94vvugRYDtgHOMTNKK7Vtex7b4qV0wh41S++zo5EvMKV0w1a5U/0HP32k5n7vf1jb8nNyrPMR7vd0X1ki3C6YeaqqutZF2pDw6z4nI7Sk/Dvm+p7E2p/qOVuwxmtB7Tmg3pl1f20cBj6fzowOPqgCSJEnpSjRAQzvSXHopdvo0x9on7Zjcl0DSDhirwtyoxJ2pDSCfZu16Er9wXY1bP2xi/k/Ax/Wjf4aYY4cLdYpQ1Zqqp22jtCjQc6AV1D5Hyu0Q3N4iGXcl/0eeH/XuTLXruY1B4gPaPWlDud7uC/c330b6Ie43QLTKXNp+loSgeu5n5tCT2OnTHNttU3CrvXSkl427r5Wauz4U7LXrSZI49AQON8JGvwVNuZnY+3MGqLaeVDff7vhdEEJFwfe/tspKzsMNEndskjylU7NerNPG7iH2fiPZjWjmcz9SS8cA6S6mpTdGV3rwc9yPZOSaMvLy14cr9l/T88XGXP7/B8eoAeUpIH/9AAAAAElFTkSuQmCC";  
-
-/* =========================
-   ARCADE COIN INTEGRATION
-========================= */
-
-function awardCoins(amount){
-
-    /*
-        Uses the existing Arcade system
-        if script.js is loaded.
-
-        This prevents Bunny Run from
-        creating a separate coin system.
-    */
-
-    if(typeof addCoins==="function"){
-
-        addCoins(amount);
-
-    }
-
-    if(
-        typeof updateCoinDisplays==="function"
-    ){
-
-        updateCoinDisplays();
-    }
-}
+);
 
 
 /* =========================
-   VICTORY / GAME OVER MODALS
+   GAME OVER MODAL
 ========================= */
 
 function showGameOverModal(){
@@ -2025,59 +2099,97 @@ function showGameOverModal(){
         );
 
 
-    card.classList.add("game-over");
+    card.classList.add(
+        "game-over"
+    );
+
 
     title.innerText=
         "Oh no ♡";
 
-    desc.innerText=
-        "The bunny bumped into a cactus!";
 
-    amount.style.display="none";
+    desc.innerText=
+        "The bunny bumped into a cactus! You scored " +
+        Math.floor(score) +
+        " points.";
+
+
+    amount.style.display=
+        "inline-block";
+
+
+    amount.innerText=
+        "+20 Coins";
 
 
     /*
         BROKEN HEART
+
+        This is the heart used by the
+        other Arcade games.
     */
 
     symbol.innerHTML=`
-
         <svg
-            width="38"
-            height="38"
+            width="34"
+            height="34"
             viewBox="0 0 32 32"
             fill="currentColor"
         >
-
-            <path d="
-                M16 28
-                l-2-1.8
-                C7.5 20.7 3 16.6 3 11.4
-                C3 7.1 6.3 3.5 10.5 3.5
-                C13 3.5 15.1 4.8 16 6.8
-                C16.9 4.8 19 3.5 21.5 3.5
-                C25.7 3.5 29 7.1 29 11.4
-                C29 16.6 24.5 20.7 18 26.2
-                L16 28Z
-            "/>
-
             <path
-                d="M16 7 L14 12 L18 16 L15 21"
+                d="M16 28
+                   l-1.8-1.6
+                   C7.6 20.4 3 16.3 3 11.2
+                   C3 7 6.3 3.5 10.5 3.5
+                   c2.4 0 4.7 1.1 6.2 3
+                   c1.5-1.9 3.8-3 6.2-3
+                   C25.7 3.5 29 7 29 11.2
+                   c0 5.1-4.6 9.2-11.2 15.2
+                   L16 28z"
                 fill="none"
-                stroke="var(--card-bg)"
+                stroke="currentColor"
                 stroke-width="2"
             />
 
+            <path
+                d="M16 6.5
+                   v6
+                   l-3 3
+                   l4 4
+                   l-5 5
+                   l1.6 3"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+
+            <path
+                d="M16.7 6.5
+                   c1.5-1.9 3.8-3 6.2-3
+                   C25.7 3.5 29 7 29 11.2
+                   c0 5.1-4.6 9.2-11.2 15.2
+                   L16 28
+                   v-6
+                   l3-3
+                   l-4-4
+                   l3-3
+                   V6.5z"
+                fill="currentColor"
+                opacity=".28"
+            />
         </svg>
     `;
 
 
-    modal.style.display="flex";
+    modal.style.display=
+        "flex";
 }
 
 
 /* =========================
-   CLOSE + RESTART
+   CLOSE MODAL
 ========================= */
 
 function closeGameModal(){
@@ -2086,8 +2198,34 @@ function closeGameModal(){
         "reward-modal"
     ).style.display="none";
 
+
     restart();
 }
+
+
+/* =========================
+   PREVENT MODAL CLICK
+   FROM CLOSING GAME
+========================= */
+
+document
+    .getElementById("reward-modal")
+    .addEventListener(
+        "click",
+        function(e){
+
+            if(
+                e.target===
+                this
+            ){
+
+                this.style.display=
+                    "none";
+
+                restart();
+            }
+        }
+    );
 
 
 /* =========================
@@ -2097,38 +2235,34 @@ function closeGameModal(){
 draw();
 
 
-/*
-    Force the Arcade coin counter
-    to show the current balance.
-*/
+/* =========================
+   IMAGE LOAD REDRAW
+========================= */
 
-if(
-    typeof updateCoinDisplays==="function"
+const allGameImages=[
+
+idleImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAA9klEQVR42u1UMQ6EIBAEYmdvjIUlhbVP8AE+1Qf4BGsLSwtj6K25inPv2EU8OGPhdggyzOzMMvbUU0/dtoo81UWe6tj3CtdmJTMGQWM8QlDsKplZ39qmZm1TsxBQcXWrSMBxUha7vwEu68bhGoJ1/WDt31pSTpkGkzCUHcowZr+wSkIGg0//nZKa/MmyJH/o+sEy0jTPH852gXIq8Aa06wfmKzEEpkAFlj+YwTMFlaEk566xBi8wr3fJDc9SLBO86Upf6tL9ZQple8R6Xyv9zTLKpDHAwaNtWTduDGTigIGcMdnPwT8C8TYN5thxUu8sYsGnhgNWL5sPiDbAGkWfAAAAAElFTkSuQmCC";  
+  
+runImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAcCAYAAAB4fbODAAADlElEQVR42u1aPZKzMAw1Gbr0O5kUlBRb5wg5QI7KATgCdQpKip0d+q35im+U1RpjJGMLCNLMFlkIz3rWz5ODMWpqampqampqampqampqampqamr7sevlPFwv50GZoNtJKVCLaZ/lh8FJqEmpCagm1P0+y4/R/x73m3ncb0aTkJmA0pVLK+V78QrJZ4wxVd2Yr++fbM9+pcI7bUlOSOIdqcBI8vpse2OMMZB87yR3XXhJElBaTqwlX965wKzJK06+VN1vK/G5FOuQM+BRCoy0LFxzPyX9wnjJJChIidiAW8E7kqWWhbBfZVEk735ryd1UeM4EtElLTao03hELTCpOfb5IdHfJhE+Bd0gJeoQCo7YPy+eqWlkUu64wW5lR1pyLUu2ha7Z9B7+W4Ln22reuPOWAucZQu7VNtH2TDhoJa7vu5VdVN3+K6ON+M1XdDByFsMU4oRZYuL/tOnRHP0z5mMeu6tyACnFyT3jSfEpjwmyLC4tP1eCkhe9fL+dhj0oH+HP5N+bDnYSZS1L4yKzqZkQqJpO7gXMJsWe8tfiUxMQyFGPC83zrsHF9mBy/lnZaKh5HIUz5mM2RaUuKGGT6nJTGi0UkJzhT4a21h/izPRNS/G67jpyAXL/swkJNxCU8uorPlI8nl6TAi+UYBuQcPPzVy7J4c1VzKZ7NZ2o8yT2EIMVJh3Ht5Gu7zrnXZVGM3hKK5VdZFK/nw1/o3lHiaiqWpwpRFltSUCva1PAa2plC8TjdgYvn4hPwUvApvYfU/YOi41MDoV2Q6xc3Xqh4rk7r4sQ+eMvdOrkXOTb/+v7JwEl8khZCaiiefWoVE8/FJ2Cn5hUwn21vUv1UAIGEE9HV4X8D7v+aQjnmxibmOQSTigcJbceYzQW8eljVzetAJvcPq/0wV7Vc134/97OnW5xg2SOeNJ/uOWcaN1bhgWCjrM91CMTp7Fga+k5Y52Qp/DziWzMklK+z2d0UYgw4h+tV3YwOAPMYldDuXjEqqS8o9oYnzac0Jrco2B0C3iOlzFvPtifJXcr30BgyW9hwMnG6Jy7wkITkBMQPsWclXGWebR8lYDCe/cx3w5Pgk4I7hcmZOUMNeOeOEDS5O57jXPdzurAriX0vU7gkrH1vcAecIy72Bipen/yldCnDBcFXFKa+S5GOvhncloUpJffc9ZyqufGpIfXUi2uKFxcvBJczyy1dD0VSLpG8U/Mw51lT3MXi5x/WB9z8URHs6QAAAABJRU5ErkJggg==";  
+  
+jumpImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAkCAYAAACQVDZDAAADgUlEQVR42u2aPXLyMBCGRcYdfYahoKRIzRE4AEflAByBmsKlC4ZxT+2vyCeyiJW0sq0VUd6nIzi8Xu0/2BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWNar5bBeLQecBLB84Ah0+dp+GpqESEok4FtU61KBqKW7Xi2Hr+3ny98O+5057HfmtydhzfGSU+vjnap1qe5QQtcmnzHGHE9nc73dF7+9oNUcL5xWtgTUrtalukMJ3UvbG2OMsclXQ0LUHC8hrTl0sAMqdiULTb5c3a/kuKt1jiX0qFbWEdRW6hyi76Cn2ZWsPdvNJnvylQxQze6urZdLi01A10G5g0ZbT7MrhYpJ7m6knRAlfKepl0MLI2jllChmQE4Tq9rbzabKiqZhI7eLaY6bGr6rXc/qUK3Y/cUmvGACau9fJTS19dquezjweDo/FZnDfmeOp/OQMqL/1XN8Vz2adPb6tuvIFf3g82Ez5eamBMsUI6foadto97BQBeXstw68tL1Zr5YDRsf3w8YH579Xf/NJuOBGplCwHE/nl6ChwZIaoLEEzKGnaSMdQ6mm/bzYaEN1Q5opdk3ttNBLn4B8PlzEgsUdmeYIlpCROfVK2UhfuzuhxMFt14kTMNUut7BIAxV6cU234HI+bMaMTKFl1YqnjE10R9LQ07KROtFqXtrecB0x1BV/XvdBvTF28df2orOEHp94vvugRYDtgHOMTNKK7Vtex7b4qV0wh41S++zo5EvMKV0w1a5U/0HP32k5n7vf1jb8nNyrPMR7vd0X1ki3C6YeaqqutZF2pDw6z4nI7Sk/Dvm+p7E2p/qOVuwxmtB7Tmg3pl1f20cBj6fzowOPqgCSJEnpSjRAQzvSXHopdvo0x9on7Zjcl0DSDhirwtyoxJ2pDSCfZu16Er9wXY1bP2xi/k/Ax/Wjf4aYY4cLdYpQ1Zqqp22jtCjQc6AV1D5Hyu0Q3N4iGXcl/0eeH/XuTLXruY1B4gPaPWlDud7uC/c330b6Ie43QLTKXNp+loSgeu5n5tCT2OnTHNttU3CrvXSkl427r5Wauz4U7LXrSZI49AQON8JGvwVNuZnY+3MGqLaeVDff7vhdEEJFwfe/tspKzsMNEndskjylU7NerNPG7iH2fiPZjWjmcz9SS8cA6S6mpTdGV3rwc9yPZOSaMvLy14cr9l/T88XGXP7/B8eoAeUpIH/9AAAAAElFTkSuQmCC";  
+
+    cactusImages.small,
+    cactusImages.big,
+    cactusImages.two,
+    cactusImages.cluster
+];
+
+
+for(
+    const image of allGameImages
 ){
 
-    updateCoinDisplays();
-}
-
-
-/*
-    Start screen is drawn immediately.
-*/
-
-window.addEventListener(
-    "load",
-    function(){
+    image.onload=function(){
 
         draw();
-
-        if(
-            typeof updateCoinDisplays==="function"
-        ){
-
-            updateCoinDisplays();
-        }
-
-    }
-);
+    };
+}
 
 </script>
 
