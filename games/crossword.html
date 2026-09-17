@@ -16,8 +16,8 @@
     --accent-soft: #e9f3f9;
     --accent-badge: #dfe8f8;
     --ornament-color: #799eb8;
-    --card-bg: rgba(255,255,255,0.88);
-    --header-bg: rgba(255,255,255,0.88);
+    --card-bg: rgba(255,255,255,.88);
+    --cell-bg: rgba(255,255,255,.94);
 }
 
 body[data-theme="pink"] {
@@ -30,8 +30,8 @@ body[data-theme="pink"] {
     --accent-soft:#f9e9f0;
     --accent-badge:#f8dfe8;
     --ornament-color:#b87992;
-    --card-bg:rgba(255,255,255,0.88);
-    --header-bg:rgba(255,255,255,0.88);
+    --card-bg:rgba(255,255,255,.88);
+    --cell-bg:rgba(255,255,255,.94);
 }
 
 body[data-theme="green"] {
@@ -44,8 +44,8 @@ body[data-theme="green"] {
     --accent-soft:#e9f9eb;
     --accent-badge:#dff8e2;
     --ornament-color:#79b882;
-    --card-bg:rgba(255,255,255,0.88);
-    --header-bg:rgba(255,255,255,0.88);
+    --card-bg:rgba(255,255,255,.88);
+    --cell-bg:rgba(255,255,255,.94);
 }
 
 body[data-theme="lavender"] {
@@ -58,8 +58,8 @@ body[data-theme="lavender"] {
     --accent-soft:#f0e9f9;
     --accent-badge:#e9dff8;
     --ornament-color:#9379b8;
-    --card-bg:rgba(255,255,255,0.88);
-    --header-bg:rgba(255,255,255,0.88);
+    --card-bg:rgba(255,255,255,.88);
+    --cell-bg:rgba(255,255,255,.94);
 }
 
 body[data-theme="yellow"] {
@@ -72,8 +72,8 @@ body[data-theme="yellow"] {
     --accent-soft:#f9f5e9;
     --accent-badge:#f8f3df;
     --ornament-color:#b8aa79;
-    --card-bg:rgba(255,255,255,0.88);
-    --header-bg:rgba(255,255,255,0.88);
+    --card-bg:rgba(255,255,255,.88);
+    --cell-bg:rgba(255,255,255,.94);
 }
 
 * {
@@ -83,20 +83,19 @@ body[data-theme="yellow"] {
 
 html, body {
     width:100%;
-    max-width:100%;
+    min-height:100%;
+    margin:0;
     overflow-x:hidden;
 }
 
 body {
     min-height:100vh;
-    margin:0;
     background:
         radial-gradient(circle at 10% 12%,var(--bg-grad-1) 0,transparent 28%),
         radial-gradient(circle at 90% 85%,var(--bg-grad-2) 0,transparent 30%),
         var(--bg-base);
     color:var(--text-main);
     font-family:Georgia,"Times New Roman",serif;
-    transition:background .3s ease,color .3s ease;
 }
 
 .decorations {
@@ -122,8 +121,8 @@ body {
 .decorations span:nth-child(6){bottom:20%;right:13%;font-size:16px;animation-delay:2.5s}
 
 @keyframes float {
-    0%,100% {transform:translateY(0) rotate(0)}
-    50% {transform:translateY(-7px) rotate(7deg)}
+    0%,100%{transform:translateY(0) rotate(0)}
+    50%{transform:translateY(-7px) rotate(7deg)}
 }
 
 header {
@@ -132,8 +131,8 @@ header {
     justify-content:space-between;
     width:100%;
     min-height:66px;
-    padding:12px 16px;
-    background:var(--header-bg);
+    padding:11px 15px;
+    background:var(--card-bg);
     backdrop-filter:blur(8px);
     border-bottom:1px solid var(--bg-grad-2);
     position:sticky;
@@ -146,18 +145,10 @@ header {
 .header-right {
     display:flex;
     align-items:center;
-    min-width:0;
-}
-
-.header-left {
-    gap:8px;
-    flex-shrink:1;
 }
 
 .header-right {
-    justify-content:flex-end;
     gap:6px;
-    flex-shrink:0;
 }
 
 .nav-link {
@@ -183,7 +174,7 @@ main {
     width:100%;
     max-width:650px;
     margin:0 auto;
-    padding:25px 14px 40px;
+    padding:20px 12px 35px;
     display:flex;
     flex-direction:column;
     align-items:center;
@@ -193,18 +184,18 @@ main {
     display:flex;
     align-items:center;
     justify-content:center;
-    gap:10px;
-    height:22px;
-    margin-bottom:12px;
+    gap:9px;
+    height:20px;
+    margin-bottom:10px;
     color:var(--ornament-color);
 }
 
 .ornament span {
-    font-size:16px;
+    font-size:15px;
 }
 
 .ornament i {
-    width:38px;
+    width:35px;
     height:1px;
     background:var(--ornament-color);
     opacity:.45;
@@ -213,54 +204,60 @@ main {
 h1 {
     color:var(--text-heading);
     font-weight:normal;
-    font-size:28px;
-    margin:0 0 7px;
+    font-size:27px;
+    margin:0 0 5px;
     text-align:center;
 }
 
 .subtitle {
-    color:var(--text-main);
-    opacity:.78;
-    margin:0 0 18px;
-    font-size:14px;
+    margin:0 0 16px;
+    font-size:13px;
+    opacity:.75;
     text-align:center;
 }
 
 .crossword-card {
     width:100%;
-    background:var(--card-bg);
-    border:1px solid var(--bg-grad-2);
-    border-radius:16px;
-    padding:16px 12px 18px;
-    box-shadow:0 6px 22px rgba(0,0,0,.045);
-}
-
-.grid-wrap {
-    width:100%;
     display:flex;
     justify-content:center;
-    overflow:hidden;
+    padding:12px 8px 15px;
+    background:var(--card-bg);
+    border:1px solid var(--bg-grad-2);
+    border-radius:15px;
+    box-shadow:0 7px 25px rgba(0,0,0,.045);
 }
 
 .crossword-grid {
     display:grid;
-    gap:0;
+    grid-template-columns:repeat(17, 1fr);
+    width:min(100%, 578px);
+    aspect-ratio:17 / 16;
     border:1px solid var(--accent-border);
     background:var(--accent-border);
-    flex-shrink:0;
+    gap:1px;
 }
 
 .cell {
     position:relative;
-    width:25px;
-    height:25px;
+    min-width:0;
+    min-height:0;
+    background:var(--cell-bg);
+}
+
+.cell.black {
     background:transparent;
 }
 
-.cell.active {
-    background:var(--card-bg);
-    border-right:1px solid var(--accent-border);
-    border-bottom:1px solid var(--accent-border);
+.cell-number {
+    position:absolute;
+    top:1px;
+    left:2px;
+    font-size:7px;
+    line-height:1;
+    color:var(--text-heading);
+    font-weight:bold;
+    z-index:2;
+    pointer-events:none;
 }
 
 .cell input {
@@ -268,99 +265,62 @@ h1 {
     inset:0;
     width:100%;
     height:100%;
+    min-width:0;
+    min-height:0;
+    padding:5px 2px 1px;
+    margin:0;
     border:0;
     outline:0;
-    padding:0;
-    margin:0;
     background:transparent;
     color:var(--text-heading);
     font-family:Georgia,"Times New Roman",serif;
-    font-size:15px;
+    font-size:clamp(11px,2.5vw,19px);
     font-weight:bold;
     text-align:center;
     text-transform:uppercase;
-    line-height:25px;
+    line-height:1;
     caret-color:var(--text-heading);
 }
 
 .cell input:focus {
     background:var(--accent-soft);
+    box-shadow:inset 0 0 0 1px var(--accent-border);
 }
 
-.cell.correct input {
-    color:#67956f;
-    background:#e8f4ea;
+.cell.correct {
+    animation:correctFade 2s ease forwards;
 }
 
-.cell.wrong input {
-    color:#b56f78;
-    background:#f8e5e8;
-}
-
-.cell.correct,
 .cell.wrong {
-    animation:answerFade 2.8s ease forwards;
+    animation:wrongFade 2s ease forwards;
 }
 
-@keyframes answerFade {
-    0% { opacity:1; }
-    70% { opacity:.8; }
-    100% { opacity:1; }
+@keyframes correctFade {
+    0% {
+        background:#bfe8c8;
+    }
+    100% {
+        background:var(--cell-bg);
+    }
 }
 
-.clues {
-    margin-top:18px;
-    width:100%;
-    display:flex;
-    flex-direction:column;
-    gap:7px;
+@keyframes wrongFade {
+    0% {
+        background:#f1bcbc;
+    }
+    100% {
+        background:var(--cell-bg);
+    }
 }
 
-.clues-title {
-    text-align:center;
-    color:var(--text-heading);
-    font-size:15px;
-    margin-bottom:5px;
-}
-
-.clue {
-    display:flex;
-    align-items:flex-start;
-    gap:8px;
-    padding:7px 9px;
-    border-radius:9px;
-    background:var(--accent-soft);
-    border:1px solid var(--bg-grad-2);
-    font-size:13px;
-    line-height:1.4;
-}
-
-.clue-number {
-    min-width:21px;
-    height:21px;
-    border-radius:50%;
-    background:var(--accent-badge);
-    border:1px solid var(--accent-border);
-    color:var(--text-heading);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:11px;
-    font-weight:bold;
-}
-
-.clue-text {
-    color:var(--text-main);
-}
-
-.controls {
+.check-area {
+    margin:16px 0 22px;
     display:flex;
     justify-content:center;
-    margin-top:17px;
 }
 
 .btn {
-    padding:10px 21px;
+    padding:10px 22px;
     border:1px solid var(--accent-border);
     border-radius:100px;
     background:var(--card-bg);
@@ -376,13 +336,58 @@ h1 {
     transform:translateY(-1px);
 }
 
-.check-message {
-    min-height:18px;
-    margin-top:9px;
-    font-size:12px;
-    color:var(--text-heading);
+.clues {
+    width:100%;
+    background:var(--card-bg);
+    border:1px solid var(--bg-grad-2);
+    border-radius:15px;
+    padding:18px 18px 16px;
+    box-shadow:0 7px 25px rgba(0,0,0,.04);
+}
+
+.clues-title {
     text-align:center;
-    opacity:.8;
+    color:var(--text-heading);
+    font-size:17px;
+    margin:0 0 13px;
+    font-weight:normal;
+}
+
+.clue-list {
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.clue {
+    display:flex;
+    align-items:flex-start;
+    gap:9px;
+    font-size:13px;
+    line-height:1.4;
+}
+
+.clue-number {
+    flex:0 0 23px;
+    width:23px;
+    height:23px;
+    border:1px solid var(--accent-border);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:var(--accent-soft);
+    color:var(--text-heading);
+    font-size:11px;
+    font-weight:bold;
+}
+
+.clue-text {
+    padding-top:2px;
+}
+
+.controls-bottom {
+    margin-top:18px;
 }
 
 .modal-overlay {
@@ -418,32 +423,32 @@ h1 {
     color:var(--ornament-color);
     opacity:.5;
     font-size:20px;
-    top:13px;
+    top:12px;
 }
 
-.modal-card::before {left:18px}
-.modal-card::after {right:18px}
+.modal-card::before{left:18px}
+.modal-card::after{right:18px}
 
 .victory-decoration {
     display:flex;
     align-items:center;
     justify-content:center;
-    gap:9px;
+    gap:8px;
     color:var(--ornament-color);
-    margin-bottom:13px;
+    margin-bottom:12px;
 }
 
 .victory-decoration i {
-    width:30px;
+    width:28px;
     height:1px;
     background:var(--ornament-color);
     opacity:.5;
 }
 
 .victory-symbol {
-    width:66px;
-    height:66px;
-    margin:2px auto 14px;
+    width:64px;
+    height:64px;
+    margin:3px auto 14px;
     border-radius:50%;
     background:var(--accent-soft);
     border:1px solid var(--accent-border);
@@ -458,7 +463,7 @@ h1 {
     color:var(--text-heading);
     font-size:25px;
     font-weight:normal;
-    margin:0 0 9px;
+    margin:0 0 8px;
 }
 
 .modal-card p {
@@ -466,12 +471,12 @@ h1 {
     opacity:.82;
     font-size:14px;
     line-height:1.6;
-    margin:0 0 20px;
+    margin:0 0 19px;
 }
 
 .reward-amount {
     display:inline-block;
-    margin:-4px 0 19px;
+    margin:-3px 0 18px;
     padding:7px 13px;
     border-radius:100px;
     background:var(--accent-badge);
@@ -496,58 +501,59 @@ h1 {
 .confetti:nth-child(5){right:17%;top:6%;animation-delay:.18s}
 
 @keyframes victoryPop {
-    0% {transform:scale(.88);opacity:0}
-    100% {transform:scale(1);opacity:1}
+    0%{transform:scale(.88);opacity:0}
+    100%{transform:scale(1);opacity:1}
 }
 
 @keyframes victoryFloat {
-    0%,100% {transform:translateY(0)}
-    50% {transform:translateY(-5px)}
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-5px)}
 }
 
 @keyframes confettiFall {
-    0% {transform:translateY(0) rotate(0);opacity:0}
-    15% {opacity:.8}
-    100% {transform:translateY(115px) rotate(120deg);opacity:0}
+    0%{transform:translateY(0) rotate(0);opacity:0}
+    15%{opacity:.8}
+    100%{transform:translateY(115px) rotate(120deg);opacity:0}
 }
 
-@media (max-width:600px) {
+@media(max-width:500px) {
     main {
-        padding:20px 8px 35px;
+        padding-left:7px;
+        padding-right:7px;
+        padding-top:17px;
     }
 
     .crossword-card {
-        padding:12px 7px 15px;
+        padding:8px 4px 10px;
+        border-radius:12px;
     }
 
-    .cell {
-        width:21px;
-        height:21px;
+    .crossword-grid {
+        width:100%;
     }
 
     .cell input {
-        font-size:13px;
-        line-height:21px;
+        font-size:clamp(9px,3.3vw,16px);
+        padding-top:4px;
+    }
+
+    .cell-number {
+        font-size:6px;
+        top:1px;
+        left:1px;
+    }
+
+    .clues {
+        padding:15px 13px;
     }
 
     .clue {
         font-size:12px;
     }
-}
 
-@media (max-width:390px) {
-    .cell {
-        width:19px;
-        height:19px;
-    }
-
-    .cell input {
-        font-size:12px;
-        line-height:19px;
-    }
-
-    h1 {
-        font-size:25px;
+    header {
+        padding-left:11px;
+        padding-right:11px;
     }
 }
 </style>
@@ -579,102 +585,135 @@ h1 {
 <main>
 
     <div class="ornament">
-        <span>✦</span><i></i><span>♡</span><i></i><span>✦</span>
+        <span>✦</span>
+        <i></i>
+        <span>♡</span>
+        <i></i>
+        <span>✦</span>
     </div>
 
     <h1>Crossword</h1>
 
     <p class="subtitle">
-        Fill in the words ♡
+        A little puzzle made just for you ♡
     </p>
 
     <div class="crossword-card">
+        <div class="crossword-grid" id="crossword-grid"></div>
+    </div>
 
-        <div class="grid-wrap">
-            <div class="crossword-grid" id="crossword-grid"></div>
-        </div>
+    <div class="check-area">
+        <button class="btn" onclick="checkAnswers()">Check ♡</button>
+    </div>
 
-        <div class="clues">
+    <section class="clues">
 
-            <div class="clues-title">Clues</div>
+        <h2 class="clues-title">Clues</h2>
+
+        <div class="clue-list">
 
             <div class="clue">
                 <span class="clue-number">1</span>
-                <span class="clue-text">the animal that reminds me most of you</span>
+                <span class="clue-text">
+                    the animal that reminds me most of you
+                </span>
             </div>
 
             <div class="clue">
                 <span class="clue-number">2</span>
-                <span class="clue-text">the character that is most like you</span>
+                <span class="clue-text">
+                    the character that is most like you
+                </span>
             </div>
 
             <div class="clue">
                 <span class="clue-number">3</span>
-                <span class="clue-text">your favorite pattern</span>
+                <span class="clue-text">
+                    your favorite pattern
+                </span>
             </div>
 
             <div class="clue">
                 <span class="clue-number">4</span>
-                <span class="clue-text">your favorite nickname</span>
+                <span class="clue-text">
+                    your favorite nickname
+                </span>
             </div>
 
             <div class="clue">
                 <span class="clue-number">5</span>
-                <span class="clue-text">your favorite flower</span>
+                <span class="clue-text">
+                    your favorite flower
+                </span>
             </div>
 
             <div class="clue">
                 <span class="clue-number">6</span>
-                <span class="clue-text">strawberry fields in Italy</span>
+                <span class="clue-text">
+                    strawberry fields in Italy
+                </span>
             </div>
 
             <div class="clue">
                 <span class="clue-number">7</span>
-                <span class="clue-text">when we got together</span>
+                <span class="clue-text">
+                    when we got together
+                </span>
             </div>
 
             <div class="clue">
                 <span class="clue-number">8</span>
-                <span class="clue-text">your nickname for me</span>
+                <span class="clue-text">
+                    your nickname for me
+                </span>
             </div>
 
             <div class="clue">
                 <span class="clue-number">9</span>
-                <span class="clue-text">your favorite place</span>
+                <span class="clue-text">
+                    your favorite place
+                </span>
             </div>
 
             <div class="clue">
                 <span class="clue-number">10</span>
-                <span class="clue-text">your favorite gf</span>
+                <span class="clue-text">
+                    your favorite gf
+                </span>
             </div>
 
             <div class="clue">
                 <span class="clue-number">11</span>
-                <span class="clue-text">the sickest most controversial thing you like</span>
+                <span class="clue-text">
+                    the sickest most controversial thing you like
+                </span>
             </div>
 
             <div class="clue">
                 <span class="clue-number">12</span>
-                <span class="clue-text">a word from my favorite way to say i love you</span>
+                <span class="clue-text">
+                    a word from my favorite way to say i love you
+                </span>
             </div>
 
         </div>
+    </section>
 
-        <div class="controls">
-            <button class="btn" onclick="checkAnswers()">Check</button>
-        </div>
-
-        <div class="check-message" id="check-message"></div>
-
+    <div class="controls-bottom">
+        <button class="btn" onclick="clearPuzzle()">Clear ♡</button>
     </div>
 
     <div class="ornament" style="margin-top:25px;margin-bottom:0;">
-        <span>✧</span><i></i><span>♡</span><i></i><span>✧</span>
+        <span>✧</span>
+        <i></i>
+        <span>♡</span>
+        <i></i>
+        <span>✧</span>
     </div>
 
 </main>
 
-<div class="modal-overlay" id="reward-modal">
+<div id="reward-modal" class="modal-overlay">
 
     <div class="modal-card">
 
@@ -694,34 +733,38 @@ h1 {
 
         <div class="victory-symbol">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
+                2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09
+                C13.09 3.81 14.76 3 16.5 3
+                19.58 3 22 5.42 22 8.5
+                c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
             </svg>
         </div>
 
-        <h2>Perfect! ♡</h2>
+        <h2>You did it ♡</h2>
 
         <p>
-            You completed the crossword!
+            You solved the whole crossword!
         </p>
 
         <div class="reward-amount">
             +50 Coins
         </div>
 
-        <button class="btn" onclick="closeVictory()" style="width:100%;">
-            Continue
+        <button class="btn" onclick="closeVictory()">
+            Continue ♡
         </button>
 
     </div>
 
-    </div><script src="../script.js"></script>
+</div><script src="../script.js"></script>
 
 <script>
 function loadSavedTheme() {
     const savedTheme = localStorage.getItem("arcade_theme");
 
     if (["pink","green","lavender","yellow"].includes(savedTheme)) {
-        document.body.setAttribute("data-theme",savedTheme);
+        document.body.setAttribute("data-theme", savedTheme);
     } else {
         document.body.removeAttribute("data-theme");
     }
@@ -729,6 +772,13 @@ function loadSavedTheme() {
 
 loadSavedTheme();
 
+function goBack() {
+    if (window.history.length > 1) {
+        window.history.back();
+    } else {
+        window.location.href = "../index.html";
+    }
+}
 
 const rawGrid = [
     "............s....",
@@ -749,133 +799,207 @@ const rawGrid = [
     "......r.........."
 ];
 
+const words = {
+    bunny: {
+        number: 1,
+        row: 5,
+        col: 12,
+        direction: "across"
+    },
 
-const answers = [
-    {
-        number:1,
-        word:"BUNNY"
+    bakugo: {
+        number: 2,
+        row: 3,
+        col: 11,
+        direction: "across"
     },
-    {
-        number:2,
-        word:"BAKUGO"
+
+    polkadots: {
+        number: 3,
+        row: 9,
+        col: 0,
+        direction: "across"
     },
-    {
-        number:3,
-        word:"POLKADOTS"
+
+    angel: {
+        number: 4,
+        row: 3,
+        col: 4,
+        direction: "across"
     },
-    {
-        number:4,
-        word:"ANGEL"
+
+    lillies: {
+        number: 5,
+        row: 6,
+        col: 2,
+        direction: "down"
     },
-    {
-        number:5,
-        word:"LILLIES"
+
+    strawberry: {
+        number: 6,
+        row: 0,
+        col: 12,
+        direction: "down"
     },
-    {
-        number:6,
-        word:"STRAWBERRY"
+
+    november: {
+        number: 7,
+        row: 8,
+        col: 6,
+        direction: "down"
     },
-    {
-        number:7,
-        word:"NOVEMBER"
+
+    rin: {
+        number: 8,
+        row: 7,
+        col: 12,
+        direction: "across"
     },
-    {
-        number:8,
-        word:"RIN"
+
+    beach: {
+        number: 9,
+        row: 2,
+        col: 7,
+        direction: "down"
     },
-    {
-        number:9,
-        word:"BEACH"
+
+    luna: {
+        number: 10,
+        row: 6,
+        col: 4,
+        direction: "down"
     },
-    {
-        number:10,
-        word:"LUNA"
+
+    lightmode: {
+        number: 11,
+        row: 6,
+        col: 4,
+        direction: "across"
     },
-    {
-        number:11,
-        word:"LIGHTMODE"
-    },
-    {
-        number:12,
-        word:"MOON"
+
+    moon: {
+        number: 12,
+        row: 5,
+        col: 10,
+        direction: "down"
     }
-];
+};
 
+const gridRows = rawGrid.length;
+const gridCols = rawGrid[0].length;
 
-const grid = document.getElementById("crossword-grid");
+const numberMap = {};
 
-const rows = rawGrid.length;
-const cols = Math.max(...rawGrid.map(row => row.length));
+Object.values(words).forEach(function(word) {
+    const key = word.row + "-" + word.col;
 
-grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+    if (!numberMap[key]) {
+        numberMap[key] = [];
+    }
 
+    numberMap[key].push(word.number);
+});
 
-const cells = {};
+const inputs = [];
 
-for (let r = 0; r < rows; r++) {
+function buildGrid() {
 
-    const row = rawGrid[r];
+    const grid = document.getElementById("crossword-grid");
+    grid.innerHTML = "";
 
-    for (let c = 0; c < cols; c++) {
+    for (let row = 0; row < gridRows; row++) {
 
-        const char = row[c] || ".";
+        for (let col = 0; col < gridCols; col++) {
 
-        const cell = document.createElement("div");
+            const cell = document.createElement("div");
+            cell.className = "cell";
 
-        cell.className = "cell";
+            const letter = rawGrid[row][col];
 
-        if (char !== ".") {
+            if (letter === ".") {
 
-            cell.classList.add("active");
+                cell.classList.add("black");
 
-            const input = document.createElement("input");
+            } else {
 
-            input.type = "text";
-            input.maxLength = 1;
-            input.autocomplete = "off";
-            input.autocapitalize = "characters";
-            input.spellcheck = false;
+                const numberKey = row + "-" + col;
 
-            input.dataset.answer = char.toUpperCase();
+                if (numberMap[numberKey]) {
 
-            input.addEventListener("input", function() {
+                    const number = document.createElement("span");
+                    number.className = "cell-number";
+                    number.innerText = numberMap[numberKey].join("/");
+                    cell.appendChild(number);
+                }
 
-                this.value = this.value
-                    .replace(/[^a-zA-Z]/g,"")
-                    .toUpperCase()
-                    .slice(0,1);
+                const input = document.createElement("input");
 
-                this.parentElement.classList.remove("correct");
-                this.parentElement.classList.remove("wrong");
+                input.type = "text";
+                input.maxLength = 1;
+                input.autocomplete = "off";
+                input.spellcheck = false;
 
-                document.getElementById("check-message").textContent = "";
+                input.dataset.row = row;
+                input.dataset.col = col;
+                input.dataset.answer = letter.toUpperCase();
 
-            });
+                input.addEventListener("input", function() {
 
-            cell.appendChild(input);
+                    let value = this.value
+                        .replace(/[^a-zA-Z]/g, "")
+                        .toUpperCase();
 
-            cells[`${r}-${c}`] = input;
+                    this.value = value;
+
+                    this.parentElement.classList.remove(
+                        "correct",
+                        "wrong"
+                    );
+
+                });
+
+                input.addEventListener("keydown", function(e) {
+
+                    if (e.key === "Backspace") {
+                        this.value = "";
+                        e.preventDefault();
+                        return;
+                    }
+
+                    if (
+                        e.key.length === 1 &&
+                        !/[a-zA-Z]/.test(e.key)
+                    ) {
+                        e.preventDefault();
+                    }
+
+                    if (e.key === "Enter") {
+                        e.preventDefault();
+                        checkAnswers();
+                    }
+                });
+
+                cell.appendChild(input);
+                inputs.push(input);
+            }
+
+            grid.appendChild(cell);
         }
-
-        grid.appendChild(cell);
     }
 }
 
-
 function checkAnswers() {
 
-    let allCorrect = true;
-    let hasWrong = false;
+    let complete = true;
 
-    Object.values(cells).forEach(function(input) {
+    inputs.forEach(function(input) {
 
         const cell = input.parentElement;
 
+        cell.classList.remove("correct", "wrong");
+
         const answer = input.dataset.answer;
         const value = input.value.toUpperCase();
-
-        cell.classList.remove("correct");
-        cell.classList.remove("wrong");
 
         if (value === answer) {
 
@@ -883,93 +1007,70 @@ function checkAnswers() {
 
         } else {
 
-            allCorrect = false;
+            complete = false;
 
             if (value !== "") {
                 cell.classList.add("wrong");
-                hasWrong = true;
             }
         }
     });
 
-
-    if (allCorrect) {
-
-        document.getElementById("check-message").textContent = "";
-
-        if (typeof addCoins === "function") {
-            addCoins(50);
-        }
-
-        if (typeof updateCoinDisplays === "function") {
-            updateCoinDisplays();
-        }
-
+    if (complete) {
         setTimeout(function() {
-            document.getElementById("reward-modal").style.display = "flex";
-        },500);
-
-        return;
+            showVictory();
+        }, 250);
     }
-
-
-    if (hasWrong) {
-        document.getElementById("check-message").textContent =
-            "Some letters need a little fixing ♡";
-    } else {
-        document.getElementById("check-message").textContent =
-            "Keep going ♡";
-    }
-
-
-    setTimeout(function() {
-
-        document.querySelectorAll(".cell.correct,.cell.wrong")
-            .forEach(function(cell) {
-
-                cell.classList.remove("correct");
-                cell.classList.remove("wrong");
-
-            });
-
-    },2800);
 }
 
+function clearPuzzle() {
+
+    inputs.forEach(function(input) {
+
+        input.value = "";
+
+        input.parentElement.classList.remove(
+            "correct",
+            "wrong"
+        );
+    });
+}
+
+function showVictory() {
+
+    const modal = document.getElementById("reward-modal");
+
+    modal.style.display = "flex";
+
+    if (
+        typeof addCoins === "function"
+    ) {
+        addCoins(50);
+    }
+
+    if (
+        typeof updateCoinDisplays === "function"
+    ) {
+        updateCoinDisplays();
+    }
+}
 
 function closeVictory() {
 
     document.getElementById("reward-modal").style.display = "none";
-
-    document.querySelectorAll(".cell input").forEach(function(input) {
-        input.value = "";
-        input.parentElement.classList.remove("correct");
-        input.parentElement.classList.remove("wrong");
-    });
-
-    document.getElementById("check-message").textContent = "";
 }
 
-
-document.addEventListener("DOMContentLoaded",function() {
+document.addEventListener("DOMContentLoaded", function() {
 
     loadSavedTheme();
 
-    if (typeof updateCoinDisplays === "function") {
+    if (
+        typeof updateCoinDisplays === "function"
+    ) {
         updateCoinDisplays();
     }
 
+    buildGrid();
 });
-
-
-function goBack() {
-
-    if (window.history.length > 1) {
-        window.history.back();
-    } else {
-        window.location.href = "../index.html";
-    }
-
-}
 </script>
 
 </body>
