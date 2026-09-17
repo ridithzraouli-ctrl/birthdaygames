@@ -7,611 +7,522 @@
 
 <style>
 :root {
---bg-base:#f2f7fa;--bg-grad-1:#dce8f3;--bg-grad-2:#d3e2ea;
---text-main:#3f5260;--text-heading:#46637a;--accent-border:#82a8bd;
---accent-soft:#e9f3f9;--accent-badge:#dfe8f8;--ornament-color:#799eb8;
---cell-bg:rgba(255,255,255,.88);--cell-selected:#dcecf5;
---cell-number:#46637a;--cell-error:#f2d7dd;--cell-correct:#dceede;
-}
-
-body[data-theme="pink"]{
---bg-base:#faf2f5;--bg-grad-1:#f3dce5;--bg-grad-2:#ead3dc;
---text-main:#603f4c;--text-heading:#7a4659;--accent-border:#bd8297;
---accent-soft:#f9e9f0;--accent-badge:#f8dfe8;--ornament-color:#b87992;
---cell-bg:rgba(255,255,255,.88);--cell-selected:#f4dce6;
---cell-number:#7a4659;--cell-error:#f2d1da;--cell-correct:#dceedd
-}
-
-body[data-theme="green"]{
---bg-base:#f3f7f2;--bg-grad-1:#dce8dc;--bg-grad-2:#d3ead3;
---text-main:#3f6043;--text-heading:#467a4c;--accent-border:#82bd8b;
---accent-soft:#e9f9eb;--accent-badge:#dff8e2;--ornament-color:#79b882;
---cell-bg:rgba(255,255,255,.88);--cell-selected:#dcefdc;
---cell-number:#467a4c;--cell-error:#f2d1d1;--cell-correct:#dcefdc
-}
-
-body[data-theme="lavender"]{
---bg-base:#f5f2fa;--bg-grad-1:#e3dcf3;--bg-grad-2:#dad3ea;
---text-main:#4a3f60;--text-heading:#59467a;--accent-border:#9882bd;
---accent-soft:#f0e9f9;--accent-badge:#e9dff8;--ornament-color:#9379b8;
---cell-bg:rgba(255,255,255,.88);--cell-selected:#e8def5;
---cell-number:#59467a;--cell-error:#f0d5df;--cell-correct:#dcefdc
-}
-
-body[data-theme="yellow"]{
---bg-base:#faf8f2;--bg-grad-1:#f3edd2;--bg-grad-2:#eae3c5;
---text-main:#60573f;--text-heading:#7a6e46;--accent-border:#bdb182;
---accent-soft:#f9f5e9;--accent-badge:#f8f3df;--ornament-color:#b8aa79;
---cell-bg:rgba(255,255,255,.88);--cell-selected:#f2ebd0;
---cell-number:#7a6e46;--cell-error:#f0d7d7;--cell-correct:#dfedd8
-}
-
-*{
-box-sizing:border-box;
--webkit-tap-highlight-color:transparent
-}
-
-html,body{
-width:100%;
-min-height:100%;
-margin:0;
-padding:0;
-overflow-x:hidden
-}
-
-body{
-min-height:100vh;
-background:
-radial-gradient(circle at 10% 12%,var(--bg-grad-1) 0,transparent 28%),
-radial-gradient(circle at 90% 85%,var(--bg-grad-2) 0,transparent 30%),
-var(--bg-base);
-color:var(--text-main);
-font-family:Georgia,"Times New Roman",serif;
-transition:background .3s ease,color .3s ease
-}
-
-.decorations{
-position:fixed;
-inset:0;
-width:100%;
-height:100%;
-z-index:-1;
-pointer-events:none;
-overflow:hidden
-}
-
-.decorations span{
-position:absolute;
-color:var(--ornament-color);
-opacity:.4;
-animation:float 5s ease-in-out infinite
-}
-
-.decorations span:nth-child(1){
-top:10%;
-left:7%;
-font-size:20px
-}
-
-.decorations span:nth-child(2){
-top:25%;
-right:8%;
-font-size:13px;
-animation-delay:1s
-}
-
-.decorations span:nth-child(3){
-top:52%;
-left:5%;
-font-size:14px;
-animation-delay:2s
-}
-
-.decorations span:nth-child(4){
-top:68%;
-right:6%;
-font-size:21px;
-animation-delay:1.5s
-}
-
-.decorations span:nth-child(5){
-bottom:12%;
-left:12%;
-font-size:12px;
-animation-delay:.5s
-}
-
-.decorations span:nth-child(6){
-bottom:20%;
-right:13%;
-font-size:16px;
-animation-delay:2.5s
-}
-
-header{
-display:flex;
-align-items:center;
-justify-content:space-between;
-width:100%;
-min-height:70px;
-padding:15px 22px;
-background:rgba(255,255,255,.88);
-backdrop-filter:blur(8px);
-border-bottom:1px solid var(--bg-grad-2);
-position:sticky;
-top:0;
-z-index:100
-}
-
-.nav-link{
-color:var(--text-heading);
-text-decoration:none;
-font-size:15px;
-cursor:pointer;
-white-space:nowrap
-}
-
-.nav-link:hover{
-opacity:.7
-}
-
-.coin-display{
-background:var(--accent-soft);
-border:1px solid var(--accent-border);
-padding:9px 15px;
-border-radius:100px;
-font-size:13px;
-font-weight:bold;
-color:var(--text-heading);
-white-space:nowrap
-}
-
-main{
-width:100%;
-max-width:700px;
-margin:0 auto;
-padding:28px 18px 40px;
-display:flex;
-flex-direction:column;
-align-items:center
-}
-
-.ornament{
-display:flex;
-align-items:center;
-justify-content:center;
-gap:10px;
-height:22px;
-margin-bottom:15px;
-color:var(--ornament-color)
-}
-
-.ornament span{
-font-size:16px
-}
-
-.ornament i{
-width:38px;
-height:1px;
-background:var(--ornament-color);
-opacity:.45
-}
-
-.ornament.bottom{
-margin-top:30px;
-margin-bottom:0
-}
-
-h1{
-color:var(--text-heading);
-font-weight:normal;
-font-size:28px;
-margin:0 0 22px;
-text-align:center
-}
-
-.board-wrap{
-width:100%;
-padding:8px;
-background:rgba(255,255,255,.55);
-border:1px solid var(--bg-grad-2);
-border-radius:13px;
-box-shadow:0 6px 20px rgba(0,0,0,.045);
-overflow-x:auto;
--webkit-overflow-scrolling:touch
-}
-
-#crossword{
-display:grid;
-min-width:600px;
-width:100%;
-aspect-ratio:1.05/1;
-overflow:hidden;
-border:2px solid var(--accent-border);
-border-radius:7px;
-background:var(--cell-bg)
-}
-
-.cell{
-position:relative;
-display:flex;
-align-items:center;
-justify-content:center;
-min-width:0;
-min-height:0;
-background:var(--cell-bg);
-border-right:1px solid var(--bg-grad-2);
-border-bottom:1px solid var(--bg-grad-2)
-}
-
-.blocked{
-background:transparent
-}
-
-.cell .number{
-position:absolute;
-top:2px;
-left:3px;
-color:var(--cell-number);
-font-size:9px;
-line-height:1;
-font-weight:bold;
-pointer-events:none;
-z-index:2
-}
-
-.cell input{
-width:100%;
-height:100%;
-margin:0;
-padding:0;
-border:0;
-outline:0;
-background:transparent;
-text-align:center;
-color:var(--text-heading);
-caret-color:var(--ornament-color);
-font-family:Georgia,"Times New Roman",serif;
-font-size:clamp(15px,3vw,23px);
-font-weight:bold;
-text-transform:uppercase
-}
-
-.cell input:focus{
-background:var(--cell-selected);
-box-shadow:inset 0 0 0 2px var(--accent-border)
-}
-
-.cell.correct{
-background:var(--cell-correct);
-animation:feedbackGreen 4s ease forwards
-}
-
-.cell.wrong{
-background:var(--cell-error);
-animation:feedbackRed 4s ease forwards
-}
-
-@keyframes feedbackGreen{
-0%{background:var(--cell-correct)}
-55%{background:var(--cell-correct)}
-100%{background:var(--cell-bg)}
-}
-
-@keyframes feedbackRed{
-0%{background:var(--cell-error)}
-55%{background:var(--cell-error)}
-100%{background:var(--cell-bg)}
-}
-
-.clues-container{
-display:flex;
-gap:38px;
-margin-top:23px;
-width:100%;
-max-width:650px;
-color:var(--text-main)
-}
-
-.clues-column{
-flex:1;
-min-width:0
-}
-
-.clues-column h3{
-margin:0 0 10px;
-padding-bottom:7px;
-border-bottom:1px solid var(--bg-grad-2);
-color:var(--text-heading);
-font-size:16px;
-font-weight:normal;
-letter-spacing:1.5px;
-text-transform:uppercase
-}
-
-.clues-column ol{
-margin:0;
-padding-left:24px;
-font-size:14px;
-line-height:1.55
-}
-
-.clues-column li{
-margin-bottom:6px;
-padding-left:3px
-}
-
-.clues-column li::marker{
-color:var(--ornament-color);
-font-weight:bold
-}
-
-/* VICTORY SCREEN */
-
-.modal{
-position:fixed;
-inset:0;
-display:none;
-align-items:center;
-justify-content:center;
-padding:20px;
-background:rgba(45,55,65,.28);
-backdrop-filter:blur(5px);
-z-index:500
-}
-
-.modal.show{
-display:flex
-}
-
-.modal-box{
-position:relative;
-width:min(360px,100%);
-padding:28px 24px;
-background:rgba(255,255,255,.96);
-border:1px solid var(--accent-border);
-border-radius:15px;
-text-align:center;
-box-shadow:0 15px 45px rgba(0,0,0,.12);
-overflow:visible
-}
-
-.modal-box h2{
-margin:8px 0 18px;
-color:var(--text-heading);
-font-weight:normal;
-font-size:23px
-}
-
-.modal-box button{
-border:1px solid var(--accent-border);
-background:var(--accent-soft);
-color:var(--text-heading);
-font-family:Georgia,"Times New Roman",serif;
-padding:10px 20px;
-border-radius:100px;
-cursor:pointer
-}
-
-.heart-art{
-width:90px;
-height:82px;
-margin:0 auto 2px;
-position:relative;
-display:flex;
-align-items:center;
-justify-content:center;
-animation:heartFloat 2.4s ease-in-out infinite
-}
-
-.heart-svg{
-width:76px;
-height:76px;
-overflow:visible
-}
-
-.heart-outline{
-fill:none;
-stroke:var(--text-heading);
-stroke-width:1.7;
-stroke-linecap:round;
-stroke-linejoin:round;
-stroke-dasharray:180;
-stroke-dashoffset:180;
-animation:drawHeart 1.2s ease forwards
-}
-
-.heart-fill{
-fill:var(--accent-soft);
-stroke:var(--text-heading);
-stroke-width:1.2;
-opacity:0;
-transform-origin:center;
-animation:heartAppear .5s ease .85s forwards
-}
-
-.heart-shine{
-fill:none;
-stroke:var(--text-heading);
-stroke-width:1.3;
-stroke-linecap:round;
-opacity:0;
-animation:shineAppear .45s ease 1.25s forwards
-}
-
-.heart-spark{
-position:absolute;
-color:var(--ornament-color);
-font-size:13px;
-opacity:0;
-animation:sparkAppear .6s ease forwards
-}
-
-.heart-spark.one{
-top:7px;
-left:7px;
-animation-delay:1.25s
-}
-
-.heart-spark.two{
-top:16px;
-right:4px;
-animation-delay:1.45s
-}
-
-.heart-spark.three{
-bottom:9px;
-left:13px;
-animation-delay:1.6s
-}
-
-.confetti{
-position:absolute;
-inset:-35px;
-pointer-events:none;
-overflow:visible
-}
-
-.confetti span{
-position:absolute;
-left:50%;
-top:35px;
-width:4px;
-height:9px;
-background:var(--ornament-color);
-opacity:0;
-animation:confettiFall 1.5s ease-out forwards
-}
-
-.confetti span:nth-child(1){
-margin-left:-70px;
-animation-delay:.1s;
-transform:rotate(20deg)
-}
-
-.confetti span:nth-child(2){
-margin-left:-45px;
-animation-delay:.2s;
-transform:rotate(-25deg)
-}
-
-.confetti span:nth-child(3){
-margin-left:-20px;
-animation-delay:.05s;
-transform:rotate(40deg)
-}
-
-.confetti span:nth-child(4){
-margin-left:20px;
-animation-delay:.18s;
-transform:rotate(-35deg)
-}
-
-.confetti span:nth-child(5){
-margin-left:47px;
-animation-delay:.08s;
-transform:rotate(25deg)
-}
-
-.confetti span:nth-child(6){
-margin-left:72px;
-animation-delay:.24s;
-transform:rotate(-15deg)
-}
-
-@keyframes drawHeart{
-to{stroke-dashoffset:0}
-}
-
-@keyframes heartAppear{
-0%{opacity:0;transform:scale(.65)}
-70%{opacity:1;transform:scale(1.08)}
-100%{opacity:1;transform:scale(1)}
-}
-
-@keyframes shineAppear{
-to{opacity:.65}
-}
-
-@keyframes heartFloat{
-0%,100%{transform:translateY(0)}
-50%{transform:translateY(-5px)}
-}
-
-@keyframes sparkAppear{
-0%{opacity:0;transform:scale(.3) rotate(-20deg)}
-60%{opacity:1;transform:scale(1.15) rotate(5deg)}
-100%{opacity:.7;transform:scale(1) rotate(0)}
-}
-
-@keyframes confettiFall{
-0%{opacity:0;transform:translateY(0) rotate(0)}
-15%{opacity:.8}
-100%{opacity:0;transform:translateY(70px) rotate(180deg)}
-}
-
-@keyframes float{
-0%,100%{transform:translateY(0) rotate(0)}
-50%{transform:translateY(-7px) rotate(7deg)}
-}
-
-@media(max-width:600px){
-
-header{
-padding:15px 14px
-}
-
-.nav-link{
-font-size:13px
-}
-
-.coin-display{
-padding:8px 12px;
-font-size:12px
-}
-
-main{
-padding:22px 10px 35px
-}
-
-h1{
-font-size:25px
-}
-
-.board-wrap{
-padding:5px
-}
-
-#crossword{
-min-width:520px
-}
-
-.cell .number{
-font-size:7px;
-top:1px;
-left:2px
+    --bg-base:#f2f7fa;
+    --bg-grad-1:#dce8f3;
+    --bg-grad-2:#d3e2ea;
+    --text-main:#3f5260;
+    --text-heading:#46637a;
+    --accent-border:#82a8bd;
+    --accent-soft:#e9f3f9;
+    --accent-badge:#dfe8f8;
+    --ornament-color:#799eb8;
+    --card-bg:rgba(255,255,255,.88);
+    --header-bg:rgba(255,255,255,.88);
+}
+
+body[data-theme="pink"] {
+    --bg-base:#faf2f5;
+    --bg-grad-1:#f3dce5;
+    --bg-grad-2:#ead3dc;
+    --text-main:#603f4c;
+    --text-heading:#7a4659;
+    --accent-border:#bd8297;
+    --accent-soft:#f9e9f0;
+    --accent-badge:#f8dfe8;
+    --ornament-color:#b87992;
+    --card-bg:rgba(255,255,255,.88);
+    --header-bg:rgba(255,255,255,.88);
+}
+
+body[data-theme="green"] {
+    --bg-base:#f3f7f2;
+    --bg-grad-1:#dce8dc;
+    --bg-grad-2:#d3ead3;
+    --text-main:#3f6043;
+    --text-heading:#467a4c;
+    --accent-border:#82bd8b;
+    --accent-soft:#e9f9eb;
+    --accent-badge:#dff8e2;
+    --ornament-color:#79b882;
+    --card-bg:rgba(255,255,255,.88);
+    --header-bg:rgba(255,255,255,.88);
+}
+
+body[data-theme="lavender"] {
+    --bg-base:#f5f2fa;
+    --bg-grad-1:#e3dcf3;
+    --bg-grad-2:#dad3ea;
+    --text-main:#4a3f60;
+    --text-heading:#59467a;
+    --accent-border:#9882bd;
+    --accent-soft:#f0e9f9;
+    --accent-badge:#e9dff8;
+    --ornament-color:#9379b8;
+    --card-bg:rgba(255,255,255,.88);
+    --header-bg:rgba(255,255,255,.88);
+}
+
+body[data-theme="yellow"] {
+    --bg-base:#faf8f2;
+    --bg-grad-1:#f3edd2;
+    --bg-grad-2:#eae3c5;
+    --text-main:#60573f;
+    --text-heading:#7a6e46;
+    --accent-border:#bdb182;
+    --accent-soft:#f9f5e9;
+    --accent-badge:#f8f3df;
+    --ornament-color:#b8aa79;
+    --card-bg:rgba(255,255,255,.88);
+    --header-bg:rgba(255,255,255,.88);
+}
+
+* {
+    box-sizing:border-box;
+    min-width:0;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,body {
+    width:100%;
+    max-width:100%;
+    overflow-x:hidden;
+}
+
+body {
+    min-height:100vh;
+    margin:0;
+    background:
+        radial-gradient(circle at 10% 12%,var(--bg-grad-1) 0,transparent 28%),
+        radial-gradient(circle at 90% 85%,var(--bg-grad-2) 0,transparent 30%),
+        var(--bg-base);
+    color:var(--text-main);
+    font-family:Georgia,"Times New Roman",serif;
+    transition:background .3s ease,color .3s ease;
+}
+
+.decorations {
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:-1;
+}
+
+.decorations span {
+    position:absolute;
+    color:var(--ornament-color);
+    opacity:.3;
+    animation:float 5s ease-in-out infinite;
+}
+
+.decorations span:nth-child(1){top:13%;left:7%;font-size:20px}
+.decorations span:nth-child(2){top:28%;right:8%;font-size:13px;animation-delay:1s}
+.decorations span:nth-child(3){top:55%;left:5%;font-size:14px;animation-delay:2s}
+.decorations span:nth-child(4){top:68%;right:6%;font-size:21px;animation-delay:1.5s}
+.decorations span:nth-child(5){bottom:12%;left:12%;font-size:12px;animation-delay:.5s}
+.decorations span:nth-child(6){bottom:20%;right:13%;font-size:16px;animation-delay:2.5s}
+
+@keyframes float {
+    0%,100%{transform:translateY(0) rotate(0)}
+    50%{transform:translateY(-7px) rotate(7deg)}
+}
+
+header {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    width:100%;
+    min-height:66px;
+    padding:10px 13px;
+    background:var(--header-bg);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--bg-grad-2);
+    position:sticky;
+    top:0;
+    z-index:100;
+    gap:8px;
+}
+
+.header-left,
+.header-right {
+    display:flex;
+    align-items:center;
+    min-width:0;
+}
+
+.header-left{flex-shrink:1}
+.header-right{gap:6px;flex-shrink:0}
+
+.nav-link {
+    color:var(--text-heading);
+    text-decoration:none;
+    font-size:13px;
+    cursor:pointer;
+    white-space:nowrap;
+}
+
+.coin-display {
+    background:var(--accent-soft);
+    border:1px solid var(--accent-border);
+    padding:6px 10px;
+    border-radius:100px;
+    font-size:12px;
+    font-weight:bold;
+    color:var(--text-heading);
+    white-space:nowrap;
+}
+
+main {
+    width:100%;
+    max-width:650px;
+    margin:0 auto;
+    padding:18px 12px 28px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.ornament {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    height:18px;
+    margin-bottom:8px;
+    color:var(--ornament-color);
+}
+
+.ornament span{font-size:14px}
+.ornament i {
+    width:28px;
+    height:1px;
+    background:var(--ornament-color);
+    opacity:.45;
+}
+
+h1 {
+    color:var(--text-heading);
+    font-weight:normal;
+    font-size:25px;
+    margin:0 0 12px;
+    text-align:center;
+}
+
+.clues {
+    width:100%;
+    max-width:570px;
+    margin-bottom:15px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:5px 18px;
+}
+
+.clue {
+    font-size:12px;
+    line-height:1.35;
+    color:var(--text-main);
+}
+
+.clue-number {
+    color:var(--text-heading);
+    font-weight:bold;
+    margin-right:3px;
 }
-
-.clues-container{
-gap:16px;
-max-width:100%;
-margin-top:18px
-}
-
-.clues-column h3{
-font-size:13px
+
+.board-wrap {
+    width:100%;
+    display:flex;
+    justify-content:center;
+    overflow:hidden;
+    margin-bottom:15px;
 }
-
-.clues-column ol{
-padding-left:20px;
-font-size:12px;
-line-height:1.5
-}
-
-.clues-column li{
-margin-bottom:5px
+
+.crossword {
+    display:grid;
+    grid-template-columns:repeat(17,22px);
+    grid-template-rows:repeat(16,22px);
+    gap:2px;
+    padding:6px;
+    background:rgba(255,255,255,.35);
+    border:1px solid var(--bg-grad-2);
+    border-radius:12px;
+    box-shadow:0 5px 18px rgba(0,0,0,.05);
+}
+
+.cell {
+    width:22px;
+    height:22px;
+    position:relative;
+}
+
+.cell.empty {
+    background:transparent;
 }
 
+.cell.active {
+    background:var(--card-bg);
+    border:1px solid var(--accent-border);
+    border-radius:4px;
+    transition:
+        background .8s ease,
+        border-color .8s ease,
+        color .8s ease,
+        opacity .8s ease;
+}
+
+.cell input {
+    width:100%;
+    height:100%;
+    padding:0;
+    border:0;
+    outline:none;
+    background:transparent;
+    text-align:center;
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:13px;
+    font-weight:bold;
+    color:var(--text-heading);
+    text-transform:uppercase;
+    caret-color:var(--text-heading);
+}
+
+.cell-number {
+    position:absolute;
+    top:0;
+    left:2px;
+    font-family:Arial,sans-serif;
+    font-size:5px;
+    line-height:6px;
+    color:var(--ornament-color);
+    pointer-events:none;
+    z-index:2;
+}
+
+.cell.correct {
+    background:#dcefdc;
+    border-color:#82b982;
+}
+
+.cell.correct input {
+    color:#467a4c;
+}
+
+.cell.wrong {
+    background:#f3dddd;
+    border-color:#c58b8b;
+}
+
+.cell.wrong input {
+    color:#a34d4d;
+}
+
+.cell.correct.fade,
+.cell.wrong.fade {
+    background:var(--card-bg);
+    border-color:var(--accent-border);
+}
+
+.cell.correct.fade input,
+.cell.wrong.fade input {
+    color:var(--text-heading);
+}
+
+.controls {
+    display:flex;
+    justify-content:center;
+    gap:9px;
+    margin-bottom:8px;
+}
+
+.btn {
+    padding:9px 18px;
+    border:1px solid var(--accent-border);
+    border-radius:100px;
+    background:var(--card-bg);
+    color:var(--text-heading);
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:13px;
+    cursor:pointer;
+    transition:.2s ease;
+}
+
+.btn:hover {
+    background:var(--accent-soft);
+    transform:translateY(-1px);
+}
+
+@keyframes feedbackFade {
+    0% { opacity:1; }
+    100% { opacity:1; }
+}
+
+.modal-overlay {
+    display:none;
+    position:fixed;
+    inset:0;
+    padding:20px;
+    background:rgba(30,25,25,.3);
+    backdrop-filter:blur(5px);
+    z-index:500;
+    align-items:center;
+    justify-content:center;
+}
+
+.modal-card {
+    position:relative;
+    background:var(--card-bg);
+    border:1px solid var(--accent-border);
+    border-radius:18px;
+    padding:30px 24px 24px;
+    max-width:350px;
+    width:100%;
+    text-align:center;
+    box-shadow:0 18px 50px rgba(0,0,0,.16);
+    animation:victoryPop .35s ease;
+}
+
+.modal-card::before,
+.modal-card::after {
+    content:"✦";
+    position:absolute;
+    color:var(--ornament-color);
+    opacity:.5;
+    font-size:20px;
+    top:13px;
+}
+
+.modal-card::before{left:18px}
+.modal-card::after{right:18px}
+
+.victory-decoration {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    color:var(--ornament-color);
+    margin-bottom:12px;
+}
+
+.victory-decoration span{font-size:15px}
+.victory-decoration i {
+    width:28px;
+    height:1px;
+    background:var(--ornament-color);
+    opacity:.5;
+}
+
+.victory-symbol {
+    width:62px;
+    height:62px;
+    margin:2px auto 13px;
+    border-radius:50%;
+    background:var(--accent-soft);
+    border:1px solid var(--accent-border);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--ornament-color);
+    animation:victoryFloat 2s ease-in-out infinite;
+}
+
+.modal-card h2 {
+    color:var(--text-heading);
+    font-size:24px;
+    font-weight:normal;
+    margin:0 0 8px;
+}
+
+.modal-card p {
+    color:var(--text-main);
+    opacity:.82;
+    font-size:13px;
+    line-height:1.5;
+    margin:0 0 17px;
+}
+
+.reward-amount {
+    display:inline-block;
+    margin:-2px 0 18px;
+    padding:6px 12px;
+    border-radius:100px;
+    background:var(--accent-badge);
+    border:1px solid var(--accent-border);
+    color:var(--text-heading);
+    font-size:13px;
+    font-weight:bold;
+}
+
+.confetti {
+    position:absolute;
+    pointer-events:none;
+    color:var(--ornament-color);
+    font-size:14px;
+    animation:confettiFall 1.8s ease-out forwards;
+}
+
+.confetti:nth-child(1){left:18%;top:5%}
+.confetti:nth-child(2){left:32%;top:2%;animation-delay:.12s}
+.confetti:nth-child(3){left:50%;top:4%;animation-delay:.2s}
+.confetti:nth-child(4){right:32%;top:2%;animation-delay:.08s}
+.confetti:nth-child(5){right:17%;top:6%;animation-delay:.18s}
+
+@keyframes victoryPop {
+    0%{transform:scale(.88);opacity:0}
+    100%{transform:scale(1);opacity:1}
+}
+
+@keyframes victoryFloat {
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-5px)}
+}
+
+@keyframes confettiFall {
+    0%{transform:translateY(0) rotate(0);opacity:0}
+    15%{opacity:.8}
+    100%{transform:translateY(110px) rotate(120deg);opacity:0}
+}
+
+@media(max-width:520px) {
+    main{padding-left:8px;padding-right:8px}
+
+    .crossword {
+        grid-template-columns:repeat(17,19px);
+        grid-template-rows:repeat(16,19px);
+        gap:1.5px;
+        padding:5px;
+    }
+
+    .cell,
+    .cell.active {
+        width:19px;
+        height:19px;
+    }
+
+    .cell input{font-size:11px}
+    .cell-number{font-size:4.5px;line-height:5px}
+
+    .clues {
+        gap:4px 10px;
+    }
+
+    .clue {
+        font-size:11px;
+    }
+}
+
+@media(max-width:370px) {
+    .crossword {
+        grid-template-columns:repeat(17,17px);
+        grid-template-rows:repeat(16,17px);
+    }
+
+    .cell,
+    .cell.active {
+        width:17px;
+        height:17px;
+    }
+
+    .cell input{font-size:10px}
 }
 </style>
 </head>
@@ -619,726 +530,437 @@ margin-bottom:5px
 <body>
 
 <div class="decorations">
-<span>✦</span>
-<span>✧</span>
-<span>♡</span>
-<span>✦</span>
-<span>✧</span>
-<span>♡</span>
+    <span>✦</span>
+    <span>✧</span>
+    <span>♡</span>
+    <span>✦</span>
+    <span>✧</span>
+    <span>♡</span>
 </div>
 
 <header>
-<a onclick="goBack()" class="nav-link">← Back to Games</a>
-<div class="coin-display"><span class="coin-count">0</span> Coins</div>
+    <div class="header-left">
+        <a onclick="goBack()" class="nav-link">← Back to Games</a>
+    </div>
+
+    <div class="header-right">
+        <div class="coin-display">
+            <span class="coin-count">0</span> Coins
+        </div>
+    </div>
 </header>
 
 <main>
 
-<div class="ornament">
-<span>✦</span>
-<i></i>
-<span>♡</span>
-<i></i>
-<span>✦</span>
-</div>
+    <div class="ornament">
+        <span>✦</span><i></i><span>♡</span><i></i><span>✦</span>
+    </div>
 
-<h1>Crossword</h1>
+    <h1>Crossword</h1>
 
-<div class="board-wrap">
-<div id="crossword"></div>
-</div>
+    <div class="clues">
+        <div class="clue"><span class="clue-number">1.</span>the animal that reminds me most of you</div>
+        <div class="clue"><span class="clue-number">2.</span>the character that is most like you</div>
+        <div class="clue"><span class="clue-number">3.</span>your favorite pattern</div>
+        <div class="clue"><span class="clue-number">4.</span>your favorite nickname</div>
+        <div class="clue"><span class="clue-number">5.</span>your favorite flower</div>
+        <div class="clue"><span class="clue-number">6.</span>strawberry fields in italy</div>
+        <div class="clue"><span class="clue-number">7.</span>when we got together</div>
+        <div class="clue"><span class="clue-number">8.</span>your nickname for me</div>
+        <div class="clue"><span class="clue-number">9.</span>your favorite place</div>
+        <div class="clue"><span class="clue-number">10.</span>your favorite gf</div>
+        <div class="clue"><span class="clue-number">11.</span>the sickest most controversial thing you like</div>
+        <div class="clue"><span class="clue-number">12.</span>a word from my favorite way to say i love you</div>
+    </div>
 
-<div class="clues-container">
+    <div class="board-wrap">
+        <div class="crossword" id="crossword"></div>
+    </div>
 
-<div class="clues-column">
-<h3>Across</h3>
-<ol id="across-clues"></ol>
-</div>
+    <div class="controls">
+        <button class="btn" onclick="checkAnswers()">Check</button>
+    </div>
 
-<div class="clues-column">
-<h3>Down</h3>
-<ol id="down-clues"></ol>
-</div>
-
-</div>
-
-<div class="ornament bottom">
-<span>✧</span>
-<i></i>
-<span>♡</span>
-<i></i>
-<span>✧</span>
-</div>
-
-<div class="actions">
-<button class="action-btn" onclick="checkCrossword()">Check</button>
-</div>
+    <div class="ornament" style="margin-top:12px;margin-bottom:0">
+        <span>✧</span><i></i><span>♡</span><i></i><span>✧</span>
+    </div>
 
 </main>
 
-<div class="modal" id="win-modal">
+<div id="reward-modal" class="modal-overlay">
+    <div class="modal-card">
 
-<div class="modal-box">
+        <span class="confetti">✦</span>
+        <span class="confetti">✧</span>
+        <span class="confetti">♡</span>
+        <span class="confetti">✦</span>
+        <span class="confetti">✧</span>
 
-<div class="heart-art">
+        <div class="victory-decoration">
+            <span>✧</span><i></i><span>♡</span><i></i><span>✧</span>
+        </div>
 
-<div class="confetti">
-<span></span>
-<span></span>
-<span></span>
-<span></span>
-<span></span>
-<span></span>
-</div>
+        <div class="victory-symbol">
+            <svg width="31" height="31" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+        </div>
 
-<svg class="heart-svg" viewBox="0 0 80 76">
+        <h2>YAY ♡</h2>
+        <p>You solved the crossword!</p>
 
-<path
-class="heart-fill"
-d="M40 68C35 63 10 48 7 29C5 17 12 9 22 9C30 9 36 14 40 21C44 14 50 9 58 9C68 9 75 17 73 29C70 48 45 63 40 68Z"
-/>
+        <div class="reward-amount">+60 Coins</div>
 
-<path
-class="heart-outline"
-d="M40 68C35 63 10 48 7 29C5 17 12 9 22 9C30 9 36 14 40 21C44 14 50 9 58 9C68 9 75 17 73 29C70 48 45 63 40 68Z"
-/>
+        <button class="btn" onclick="closeModal()" style="width:100%;">
+            Continue
+        </button>
 
-<path
-class="heart-shine"
-d="M19 20C16 22 15 25 15 28"
-/>
-
-</svg>
-
-<span class="heart-spark one">✦</span>
-<span class="heart-spark two">✧</span>
-<span class="heart-spark three">✦</span>
-
-</div>
-
-<h2>✦ You solved it ♡</h2>
-
-<button onclick="newGame()">New Game</button>
-
-</div>
-</div>
-
-<script src="../script.js"></script>
+    </div>
+            </div><script src="../script.js"></script>
 
 <script>
+function loadSavedTheme() {
+    const savedTheme = localStorage.getItem("arcade_theme");
 
-const rawGrid = const rawGrid = [
-    “............s....”,
-    “............t....”,
-    “.......b....r....”,
-    “....angel..bakugo”,
-    “.......a....w....”,
-    “.......c..m.bunny”,
-    “..l.lightmode....”,
-    “..i.u.....o.rin..”,
-    “..l.n.n...n.r....”,
-    “Polkadots...y....”,
-    “..i...v..........”,
-    “..e...e..........”,
-    “..s...m..........”,
-    “......b..........”,
-    “......e..........”,
-    “......r..........”
-];
-
-const clues = [
-{
-word:"BUNNY",
-clue:"the animal that reminds me most of you"
-},
-{
-word:"BAKUGO",
-clue:"the character that is most like you"
-},
-{
-word:"POLKADOTS",
-clue:"your favorite pattern"
-},
-{
-word:"ANGEL",
-clue:"your favorite nickname"
-},
-{
-word:"LILLIES",
-clue:"you favorite flower"
-},
-{
-word:"STRAWBERRY",
-clue:"fields in italy"
-},
-{
-word:"NOVEMBER",
-clue:"when we got together"
-},
-{
-word:"RIN",
-clue:"your nickname for me"
-},
-{
-word:"BEACH",
-clue:"your favorite place"
-},
-{
-word:"LUNA",
-clue:"your favorite gf"
-},
-{
-word:"LIGHTMODE",
-clue:"the sickest most controversial thing you like"
-},
-{
-word:"MOON",
-clue:"a word from my favorite way to say i love you"
+    if (["pink","green","lavender","yellow"].includes(savedTheme)) {
+        document.body.setAttribute("data-theme",savedTheme);
+    } else {
+        document.body.removeAttribute("data-theme");
+    }
 }
-];
-
-let inputs=[];
-let solved=false;
-let feedbackTimer=null;
-let cellMap=[];
-
-function loadSavedTheme(){
-
-const theme=localStorage.getItem("arcade_theme");
-
-if(["pink","green","lavender","yellow"].includes(theme)){
-document.body.setAttribute("data-theme",theme);
-}else{
-document.body.removeAttribute("data-theme");
-}
-
-}
-
-const AudioFX={
-
-ctx:null,
-
-init(){
-
-if(!this.ctx){
-
-const AudioContext=
-window.AudioContext||
-window.webkitAudioContext;
-
-if(AudioContext){
-this.ctx=new AudioContext();
-}
-
-}
-
-},
-
-play(type){
-
-this.init();
-
-if(!this.ctx)return;
-
-if(this.ctx.state==="suspended"){
-this.ctx.resume();
-}
-
-const now=this.ctx.currentTime;
-
-if(type==="click"){
-
-this.tone(520,.07,"sine",.08,now);
-
-return;
-
-}
-
-if(type==="correct"){
-
-this.tone(523.25,.1,"sine",.11,now);
-this.tone(659.25,.14,"sine",.09,now+.07);
-
-return;
-
-}
-
-if(type==="wrong"){
-
-this.tone(220,.12,"triangle",.11,now);
-this.tone(165,.16,"triangle",.08,now+.08);
-
-return;
-
-}
-
-if(type==="win"){
-
-this.tone(523.25,.12,"sine",.12,now);
-this.tone(659.25,.12,"sine",.12,now+.1);
-this.tone(783.99,.2,"sine",.14,now+.2);
-
-}
-
-},
-
-tone(freq,duration,type,volume,start){
-
-const osc=this.ctx.createOscillator();
-const gain=this.ctx.createGain();
-
-osc.type=type;
-osc.frequency.setValueAtTime(freq,start);
-
-gain.gain.setValueAtTime(volume,start);
-
-gain.gain.exponentialRampToValueAtTime(
-.001,
-start+duration
-);
-
-osc.connect(gain);
-gain.connect(this.ctx.destination);
-
-osc.start(start);
-osc.stop(start+duration);
-
-}
-
-};
-
-function goBack(){
-
-if(window.history.length>1){
-window.history.back();
-}else{
-window.location.href="../index.html";
-}
-
-}
-
-function findWord(word){
-
-const rows=rawGrid.length;
-const cols=rawGrid[0].length;
-
-word=word.toUpperCase();
-
-for(let r=0;r<rows;r++){
-
-for(let c=0;c<cols;c++){
-
-let fits=true;
-
-for(let i=0;i<word.length;i++){
-
-if(
-c+i>=cols||
-rawGrid[r][c+i].toUpperCase()!==word[i]
-){
-
-fits=false;
-break;
-
-}
-
-}
-
-if(fits){
-
-return{
-row:r,
-col:c,
-direction:"across"
-};
-
-}
-
-}
-
-}
-
-for(let r=0;r<rows;r++){
-
-for(let c=0;c<cols;c++){
-
-let fits=true;
-
-for(let i=0;i<word.length;i++){
-
-if(
-r+i>=rows||
-rawGrid[r+i][c].toUpperCase()!==word[i]
-){
-
-fits=false;
-break;
-
-}
-
-}
-
-if(fits){
-
-return{
-row:r,
-col:c,
-direction:"down"
-};
-
-}
-
-}
-
-}
-
-return null;
-
-}
-
-function getNumberMap(){
-
-const rows=rawGrid.length;
-const cols=rawGrid[0].length;
-
-const numbers={};
-let number=1;
-
-for(let r=0;r<rows;r++){
-
-for(let c=0;c<cols;c++){
-
-if(rawGrid[r][c]===".")continue;
-
-const startsAcross=
-(c===0||rawGrid[r][c-1]===".")&&
-c+1<cols;
-
-const startsDown=
-(r===0||rawGrid[r-1][c]===".")&&
-r+1<rows;
-
-if(startsAcross||startsDown){
-
-numbers[`${r},${c}`]=number++;
-
-}
-
-}
-
-}
-
-return numbers;
-
-}
-
-function buildClues(){
-
-const across=document.getElementById("across-clues");
-const down=document.getElementById("down-clues");
-
-across.innerHTML="";
-down.innerHTML="";
-
-const numberMap=getNumberMap();
-
-clues.forEach(item=>{
-
-const position=findWord(item.word);
-
-if(!position)return;
-
-const number=
-numberMap[
-`${position.row},${position.col}`
-];
-
-const li=document.createElement("li");
-
-li.textContent=item.clue;
-li.value=number;
-
-if(position.direction==="across"){
-across.appendChild(li);
-}else{
-down.appendChild(li);
-}
-
-});
-
-}function buildCrossword(){
-
-const crossword=document.getElementById("crossword");
-
-crossword.innerHTML="";
-inputs=[];
-cellMap=[];
-
-const rows=rawGrid.length;
-const cols=rawGrid[0].length;
-
-crossword.style.gridTemplateColumns=
-`repeat(${cols},1fr)`;
-
-crossword.style.gridTemplateRows=
-`repeat(${rows},1fr)`;
-
-const numberMap=getNumberMap();
-
-for(let r=0;r<rows;r++){
-
-for(let c=0;c<cols;c++){
-
-const char=
-rawGrid[r][c].toUpperCase();
-
-const cell=document.createElement("div");
-
-cellMap.push(cell);
-
-if(char==="."){
-
-cell.className="blocked";
-
-}else{
-
-cell.className="cell";
-
-const number=
-numberMap[`${r},${c}`];
-
-if(number){
-
-const numSpan=
-document.createElement("span");
-
-numSpan.className="number";
-numSpan.textContent=number;
-
-cell.appendChild(numSpan);
-
-}
-
-const input=
-document.createElement("input");
-
-input.type="text";
-input.maxLength=1;
-input.autocomplete="off";
-input.autocapitalize="characters";
-
-input.dataset.answer=char;
-
-input.addEventListener("input",()=>{
-
-input.value=
-input.value
-.replace(/[^a-zA-Z]/g,"")
-.toUpperCase();
-
-AudioFX.play("click");
-
-});
-
-input.addEventListener("keydown",(event)=>{
-
-if(event.key==="ArrowRight"){
-
-event.preventDefault();
-
-moveInput(input,1);
-
-}
-
-if(event.key==="ArrowLeft"){
-
-event.preventDefault();
-
-moveInput(input,-1);
-
-}
-
-if(event.key==="ArrowDown"){
-
-event.preventDefault();
-
-moveInput(input,cols);
-
-}
-
-if(event.key==="ArrowUp"){
-
-event.preventDefault();
-
-moveInput(input,-cols);
-
-}
-
-});
-
-inputs.push(input);
-
-cell.appendChild(input);
-
-}
-
-crossword.appendChild(cell);
-
-}
-
-}
-
-buildClues();
-
-}
-
-function moveInput(current,direction){
-
-const index=inputs.indexOf(current);
-
-if(index===-1)return;
-
-let next=index+direction;
-
-if(next<0){
-next=inputs.length-1;
-}
-
-if(next>=inputs.length){
-next=0;
-}
-
-inputs[next].focus();
-
-}
-
-function checkCrossword(){
-
-if(solved)return;
-
-let complete=true;
-let incorrect=false;
-
-inputs.forEach(input=>{
-
-const value=input.value.toUpperCase();
-
-input.parentElement.classList.remove(
-"correct",
-"wrong"
-);
-
-if(value===""){
-
-complete=false;
-incorrect=true;
-
-}else if(value===input.dataset.answer){
-
-input.parentElement.classList.add("correct");
-
-}else{
-
-input.parentElement.classList.add("wrong");
-
-incorrect=true;
-
-}
-
-});
-
-if(feedbackTimer){
-clearTimeout(feedbackTimer);
-}
-
-feedbackTimer=setTimeout(()=>{
-
-document
-.querySelectorAll(".cell")
-.forEach(cell=>{
-
-cell.classList.remove(
-"correct",
-"wrong"
-);
-
-});
-
-feedbackTimer=null;
-
-},4000);
-
-if(complete&&!incorrect){
-
-solved=true;
-
-AudioFX.play("win");
-
-if(typeof addCoins==="function"){
-addCoins(50);
-}
-
-document
-.getElementById("win-modal")
-.classList.add("show");
-
-return;
-
-}
-
-if(incorrect){
-
-AudioFX.play("wrong");
-
-}else{
-
-AudioFX.play("correct");
-
-}
-
-}
-
-function newGame(){
-
-AudioFX.play("click");
-
-solved=false;
-
-if(feedbackTimer){
-clearTimeout(feedbackTimer);
-feedbackTimer=null;
-}
-
-document
-.getElementById("win-modal")
-.classList.remove("show");
-
-buildCrossword();
-
-}
-
-document.addEventListener("DOMContentLoaded",()=>{
 
 loadSavedTheme();
 
-buildCrossword();
+const rawGrid = [
+    "............s....",
+    "............t....",
+    ".......b....r....",
+    "....angel..bakugo",
+    ".......a....w....",
+    ".......c..m.bunny",
+    "..l.lightmode....",
+    "..i.u.....o.rin..",
+    "..l.n.n...n.r....",
+    "Polkadots...y....",
+    "..i...v..........",
+    "..e...e..........",
+    "..s...m..........",
+    "......b..........",
+    "......e..........",
+    "......r.........."
+];
 
-if(typeof updateCoinDisplays==="function"){
-updateCoinDisplays();
+const answers = [
+    {
+        number:1,
+        word:"BUNNY",
+        row:5,
+        col:12,
+        direction:"across"
+    },
+    {
+        number:2,
+        word:"BAKUGO",
+        row:3,
+        col:11,
+        direction:"across"
+    },
+    {
+        number:3,
+        word:"POLKADOTS",
+        row:9,
+        col:0,
+        direction:"across"
+    },
+    {
+        number:4,
+        word:"ANGEL",
+        row:3,
+        col:4,
+        direction:"across"
+    },
+    {
+        number:5,
+        word:"LILIES",
+        row:6,
+        col:2,
+        direction:"down"
+    },
+    {
+        number:6,
+        word:"STRAWBERRY",
+        row:0,
+        col:12,
+        direction:"down"
+    },
+    {
+        number:7,
+        word:"NOVEMBER",
+        row:8,
+        col:6,
+        direction:"down"
+    },
+    {
+        number:8,
+        word:"RIN",
+        row:7,
+        col:12,
+        direction:"across"
+    },
+    {
+        number:9,
+        word:"BEACH",
+        row:2,
+        col:7,
+        direction:"down"
+    },
+    {
+        number:10,
+        word:"LUNA",
+        row:6,
+        col:4,
+        direction:"down"
+    },
+    {
+        number:11,
+        word:"LIGHTMODE",
+        row:6,
+        col:4,
+        direction:"across"
+    },
+    {
+        number:12,
+        word:"MOON",
+        row:5,
+        col:10,
+        direction:"down"
+    }
+];
+
+const cellMap = {};
+
+function key(row,col) {
+    return row + "-" + col;
 }
 
-});
+function buildCellMap() {
+    answers.forEach(answer => {
+        for(let i=0;i<answer.word.length;i++) {
+            const row = answer.direction === "down"
+                ? answer.row + i
+                : answer.row;
 
-window.addEventListener("pageshow",()=>{
+            const col = answer.direction === "across"
+                ? answer.col + i
+                : answer.col;
 
-loadSavedTheme();
+            const id = key(row,col);
 
-if(typeof updateCoinDisplays==="function"){
-updateCoinDisplays();
+            if(!cellMap[id]) {
+                cellMap[id] = {
+                    row,
+                    col,
+                    answers:[]
+                };
+            }
+
+            cellMap[id].answers.push({
+                number:answer.number,
+                letter:answer.word[i]
+            });
+        }
+    });
 }
 
-});
+function buildBoard() {
+    const board = document.getElementById("crossword");
+    board.innerHTML = "";
 
+    for(let row=0;row<16;row++) {
+        for(let col=0;col<17;col++) {
+
+            const id = key(row,col);
+            const cell = document.createElement("div");
+
+            if(!cellMap[id]) {
+                cell.className = "cell empty";
+                board.appendChild(cell);
+                continue;
+            }
+
+            cell.className = "cell active";
+            cell.dataset.row = row;
+            cell.dataset.col = col;
+
+            const starts = answers.filter(answer =>
+                answer.row === row && answer.col === col
+            );
+
+            if(starts.length) {
+                const number = document.createElement("span");
+                number.className = "cell-number";
+                number.textContent = starts.map(a => a.number).join("/");
+                cell.appendChild(number);
+            }
+
+            const input = document.createElement("input");
+            input.type = "text";
+            input.maxLength = 1;
+            input.autocomplete = "off";
+            input.autocapitalize = "characters";
+            input.spellcheck = false;
+
+            input.dataset.row = row;
+            input.dataset.col = col;
+
+            input.addEventListener("input",function() {
+                this.value = this.value
+                    .replace(/[^a-zA-Z]/g,"")
+                    .toUpperCase()
+                    .slice(0,1);
+
+                clearFeedback(cell);
+            });
+
+            input.addEventListener("keydown",function(e) {
+                handleArrowKeys(e,row,col);
+            });
+
+            input.addEventListener("focus",function() {
+                document.querySelectorAll(".cell.active").forEach(c => {
+                    c.classList.remove("selected");
+                });
+                cell.classList.add("selected");
+            });
+
+            cell.appendChild(input);
+            board.appendChild(cell);
+        }
+    }
+}
+
+function handleArrowKeys(e,row,col) {
+    let targetRow = row;
+    let targetCol = col;
+
+    if(e.key === "ArrowLeft") targetCol--;
+    else if(e.key === "ArrowRight") targetCol++;
+    else if(e.key === "ArrowUp") targetRow--;
+    else if(e.key === "ArrowDown") targetRow++;
+    else return;
+
+    e.preventDefault();
+
+    const target = document.querySelector(
+        `.cell.active[data-row="${targetRow}"][data-col="${targetCol}"] input`
+    );
+
+    if(target) {
+        target.focus();
+    }
+}
+
+function clearFeedback(cell) {
+    cell.classList.remove("correct","wrong","fade");
+}
+
+function getExpectedLetter(row,col) {
+    const data = cellMap[key(row,col)];
+
+    if(!data) return "";
+
+    const across = data.answers.find(a => {
+        const answer = answers.find(x => x.number === a.number);
+        return answer && answer.direction === "across";
+    });
+
+    if(across) return across.letter;
+
+    return data.answers[0].letter;
+}
+
+function checkAnswers() {
+    let allCorrect = true;
+    let filledCorrectly = true;
+
+    document.querySelectorAll(".cell.active").forEach(cell => {
+        const input = cell.querySelector("input");
+        const row = Number(cell.dataset.row);
+        const col = Number(cell.dataset.col);
+
+        const value = input.value.toUpperCase();
+        const expected = getExpectedLetter(row,col);
+
+        clearFeedback(cell);
+
+        if(value === expected && value !== "") {
+            cell.classList.add("correct");
+        } else {
+            cell.classList.add("wrong");
+            allCorrect = false;
+
+            if(value === "") {
+                filledCorrectly = false;
+            }
+        }
+    });
+
+    setTimeout(() => {
+        document.querySelectorAll(".cell.correct,.cell.wrong").forEach(cell => {
+            cell.classList.add("fade");
+        });
+    },500);
+
+    setTimeout(() => {
+        document.querySelectorAll(".cell.correct,.cell.wrong").forEach(cell => {
+            cell.classList.remove("correct","wrong","fade");
+        });
+    },1400);
+
+    if(allCorrect && filledCorrectly) {
+        setTimeout(winGame,700);
+    }
+}
+
+let completed = false;
+
+function winGame() {
+    if(completed) return;
+    completed = true;
+
+    if(typeof addCoins === "function") {
+        addCoins(60);
+    }
+
+    if(typeof updateCoinDisplays === "function") {
+        updateCoinDisplays();
+    }
+
+    document.getElementById("reward-modal").style.display = "flex";
+}
+
+function closeModal() {
+    document.getElementById("reward-modal").style.display = "none";
+}
+
+function goBack() {
+    if(window.history.length > 1) {
+        window.history.back();
+    } else {
+        window.location.href = "../index.html";
+    }
+}
+
+document.addEventListener("DOMContentLoaded",function() {
+    loadSavedTheme();
+
+    if(typeof updateCoinDisplays === "function") {
+        updateCoinDisplays();
+    }
+
+    buildCellMap();
+    buildBoard();
+});
 </script>
 
 </body>
