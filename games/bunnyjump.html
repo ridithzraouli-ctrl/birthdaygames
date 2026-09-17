@@ -59,21 +59,62 @@ const GROUND_BASE="#625b4b";
 const GROUND_LIGHT="#887f68";
 const GROUND_DARK="#48453b";
 
+
+/* =========================
+   BUNNY
+========================= */
+
 const idleImage=new Image();
 const runImage=new Image();
 const jumpImage=new Image();
 
+
+/* =========================
+   CACTUS TEXTURES
+========================= */
+
+const cactusImages={
+    small:new Image(),
+    tall:new Image(),
+    left:new Image(),
+    right:new Image(),
+    cluster:new Image()
+};
+
+cactusImages.small.src="images/cactus-small.png";
+cactusImages.tall.src="images/cactus-tall.png";
+cactusImages.left.src="images/cactus-left.png";
+cactusImages.right.src="images/cactus-right.png";
+cactusImages.cluster.src="images/cactus-cluster.png";
+
+
+/* =========================
+   GAME STATE
+========================= */
+
 let started=false;
 let dead=false;
+
 let lastTime=0;
 
 let score=0;
+
+let highScore=
+    Number(
+        localStorage.getItem("bunnyRunHighScore")||0
+    );
+
 let speed=6;
 
 let groundOffset=0;
 
 let runAnimTime=0;
 let jumpTime=0;
+
+let spawnTimer=0;
+let nextSpawn=1200;
+
+let lastMilestone=0;
 
 
 /* =========================
@@ -82,120 +123,66 @@ let jumpTime=0;
 
 const bunny={
     x:110,
+
     y:GROUND-28,
+
     width:28,
     height:28,
+
     velocityY:0,
+
     grounded:true,
+
     gravity:0.72,
-    jumpPower:-15.5
+
+    jumpPower:-21.5
 };
 
 
 /* =========================
-   CACTUSES
+   CACTUS SIZES
 ========================= */
 
-const obstacles=[];
-
-
-/*
-    Each B is an actual solid
-    cactus cell.
-
-    O = empty space
-*/
-
-const CACTUS_SMALL=[
-    ["O","O","B","O","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"]
-];
-
-const CACTUS_TALL=[
-    ["O","O","B","O","O"],
-    ["O","O","B","O","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"],
-    ["O","B","B","B","O"]
-];
-
-const CACTUS_LEFT_ARM=[
-    ["O","O","O","O","B","O","O","O"],
-    ["O","O","O","O","B","O","O","O"],
-    ["O","O","O","O","B","O","O","O"],
-    ["O","O","O","O","B","O","O","O"],
-    ["O","O","O","B","B","O","O","O"],
-    ["O","O","B","B","B","B","B","O"],
-    ["O","O","B","B","B","B","B","O"],
-    ["O","O","O","B","B","O","O","O"],
-    ["O","O","O","B","B","O","O","O"],
-    ["O","O","O","B","B","O","O","O"],
-    ["O","O","O","B","B","O","O","O"],
-    ["O","O","O","B","B","O","O","O"],
-    ["O","O","O","B","B","O","O","O"]
-];
-
-const CACTUS_RIGHT_ARM=[
-    ["O","O","O","B","O","O","O","O"],
-    ["O","O","O","B","O","O","O","O"],
-    ["O","O","O","B","O","O","O","O"],
-    ["O","O","O","B","O","O","O","O"],
-    ["O","O","O","B","B","O","O","O"],
-    ["O","B","B","B","B","B","O","O"],
-    ["O","B","B","B","B","B","O","O"],
-    ["O","O","O","B","B","O","O","O"],
-    ["O","O","O","B","B","O","O","O"],
-    ["O","O","O","B","B","O","O","O"],
-    ["O","O","O","B","B","O","O","O"],
-    ["O","O","O","B","B","O","O","O"],
-    ["O","O","O","B","B","O","O","O"]
-];
-
-const CACTUS_WIDE=[
-    ["O","O","O","O","B","B","O","O","O","O"],
-    ["O","O","O","B","B","B","B","O","O","O"],
-    ["O","O","B","B","B","B","B","B","O","O"],
-    ["O","O","B","B","B","B","B","B","O","O"],
-    ["O","B","B","B","B","B","B","B","B","O"],
-    ["O","B","B","B","B","B","B","B","B","O"],
-    ["O","O","O","B","B","B","B","O","O","O"],
-    ["O","O","O","B","B","B","B","O","O","O"],
-    ["O","O","O","B","B","B","B","O","O","O"],
-    ["O","O","O","B","B","B","B","O","O","O"],
-    ["O","O","O","B","B","B","B","O","O","O"],
-    ["O","O","O","B","B","B","B","O","O","O"]
-];
+const UNIT=84;
 
 const cactusTypes=[
-    CACTUS_SMALL,
-    CACTUS_TALL,
-    CACTUS_LEFT_ARM,
-    CACTUS_RIGHT_ARM,
-    CACTUS_WIDE
-];
 
-const CACTUS_SCALE=5;
+    {
+        name:"small",
+        image:cactusImages.small,
+        width:UNIT,
+        height:UNIT
+    },
+
+    {
+        name:"tall",
+        image:cactusImages.tall,
+        width:UNIT,
+        height:UNIT*3
+    },
+
+    {
+        name:"left",
+        image:cactusImages.left,
+        width:UNIT*1.5,
+        height:UNIT*2
+    },
+
+    {
+        name:"right",
+        image:cactusImages.right,
+        width:UNIT*1.5,
+        height:UNIT*2
+    },
+
+    {
+        name:"cluster",
+        image:cactusImages.cluster,
+        width:UNIT*3.5,
+        height:UNIT*2
+    }
+
+];
 
 
 /* =========================
@@ -204,46 +191,57 @@ const CACTUS_SCALE=5;
 
 function createCactus(type,x){
 
-    const scale=CACTUS_SCALE;
-
-    const rows=type.length;
-    const cols=type[0].length;
-
-    return {
+    return{
         x:x,
-        y:GROUND-rows*scale,
-        width:cols*scale,
-        height:rows*scale,
-        type:type,
-        scale:scale,
+
+        y:
+            GROUND-
+            type.height,
+
+        width:type.width,
+
+        height:type.height,
+
+        image:type.image,
+
+        name:type.name,
+
         counted:false
     };
 }
 
 
 /* =========================
+   OBSTACLES
+========================= */
+
+const obstacles=[];
+
+
+/* =========================
    SPAWN CACTUS
 ========================= */
 
-let spawnTimer=0;
-let nextSpawn=1200;
-
 function spawnCactus(){
 
-    const difficulty=Math.min(score/100,30);
+    const difficulty=
+        Math.min(
+            score/100,
+            30
+        );
 
     let count=1;
 
     if(
         difficulty>8 &&
-        Math.random()<0.25
+        Math.random()<0.22
     ){
         count=2;
     }
 
     if(
         difficulty>18 &&
-        Math.random()<0.12
+        Math.random()<0.10
     ){
         count=3;
     }
@@ -251,13 +249,18 @@ function spawnCactus(){
     const firstType=
         cactusTypes[
             Math.floor(
-                Math.random()*cactusTypes.length
+                Math.random()*
+                cactusTypes.length
             )
         ];
 
-    let x=W+50;
+    let x=W+60;
 
-    for(let i=0;i<count;i++){
+    for(
+        let i=0;
+        i<count;
+        i++
+    ){
 
         let type;
 
@@ -267,28 +270,47 @@ function spawnCactus(){
 
         }else{
 
+            const extraTypes=[
+                cactusTypes[0],
+                cactusTypes[2],
+                cactusTypes[3]
+            ];
+
             type=
-                Math.random()<0.5
-                ?CACTUS_SMALL
-                :CACTUS_TALL;
+                extraTypes[
+                    Math.floor(
+                        Math.random()*
+                        extraTypes.length
+                    )
+                ];
         }
 
-        const cactus=createCactus(type,x);
+        const cactus=
+            createCactus(
+                type,
+                x
+            );
 
         obstacles.push(cactus);
 
         x+=
-            type[0].length*CACTUS_SCALE
-            +28;
+            type.width+
+            45;
     }
 
     const minimum=
-        1050-
-        Math.min(difficulty*10,350);
+        Math.max(
+            900,
+            1250-
+            difficulty*12
+        );
 
     const maximum=
-        1500-
-        Math.min(difficulty*8,300);
+        Math.max(
+            1250,
+            1650-
+            difficulty*10
+        );
 
     nextSpawn=
         minimum+
@@ -332,30 +354,81 @@ function drawSky(){
         GROUND
     );
 
-
-    /*
-        Small pixel clouds
-    */
-
     ctx.fillStyle="#dfe8e4";
 
     const cloudY=92;
 
-    ctx.fillRect(130,cloudY,70,8);
-    ctx.fillRect(146,cloudY-7,38,7);
-    ctx.fillRect(158,cloudY-12,20,5);
+    ctx.fillRect(
+        130,
+        cloudY,
+        70,
+        8
+    );
 
-    ctx.fillRect(620,145,86,8);
-    ctx.fillRect(640,138,42,7);
-    ctx.fillRect(655,132,22,6);
+    ctx.fillRect(
+        146,
+        cloudY-7,
+        38,
+        7
+    );
+
+    ctx.fillRect(
+        158,
+        cloudY-12,
+        20,
+        5
+    );
+
+    ctx.fillRect(
+        620,
+        145,
+        86,
+        8
+    );
+
+    ctx.fillRect(
+        640,
+        138,
+        42,
+        7
+    );
+
+    ctx.fillRect(
+        655,
+        132,
+        22,
+        6
+    );
 
     ctx.fillStyle="#cbdcda";
 
-    ctx.fillRect(335,72,45,6);
-    ctx.fillRect(347,66,25,6);
+    ctx.fillRect(
+        335,
+        72,
+        45,
+        6
+    );
 
-    ctx.fillRect(790,78,58,7);
-    ctx.fillRect(805,71,27,7);
+    ctx.fillRect(
+        347,
+        66,
+        25,
+        6
+    );
+
+    ctx.fillRect(
+        790,
+        78,
+        58,
+        7
+    );
+
+    ctx.fillRect(
+        805,
+        71,
+        27,
+        7
+    );
 }
 
 
@@ -374,11 +447,6 @@ function drawGround(){
         H-GROUND
     );
 
-
-    /*
-        Raised grass/soil edge
-    */
-
     ctx.fillStyle=GROUND_TOP;
 
     ctx.fillRect(
@@ -396,15 +464,6 @@ function drawGround(){
         W,
         3
     );
-
-
-    /*
-        Moving pixel texture.
-
-        groundOffset is updated in update()
-        using the exact same movement value
-        as the cactuses.
-    */
 
     const tile=80;
 
@@ -437,7 +496,6 @@ function drawGround(){
             4
         );
 
-
         ctx.fillStyle=GROUND_LIGHT;
 
         ctx.fillRect(
@@ -469,11 +527,6 @@ function drawGround(){
         );
     }
 
-
-    /*
-        Tiny pixel grass marks
-    */
-
     for(
         let x=groundOffset-40;
         x<W+80;
@@ -496,186 +549,28 @@ function drawGround(){
             4
         );
     }
-}
-
-
-/* =========================
+}/* =========================
    CACTUS DRAWING
 ========================= */
 
 function drawCactus(o){
 
-    const type=o.type;
-    const s=o.scale;
-
-
-    /*
-        Outer shadow/outline
-    */
-
-    for(
-        let row=0;
-        row<type.length;
-        row++
-    ){
-
-        for(
-            let col=0;
-            col<type[row].length;
-            col++
-        ){
-
-            if(type[row][col]!=="B"){
-                continue;
-            }
-
-            const px=o.x+col*s;
-            const py=o.y+row*s;
-
-            ctx.fillStyle=DARK;
-
-            ctx.fillRect(
-                px-1,
-                py-1,
-                s+2,
-                s+2
-            );
-        }
-    }
-
-
-    /*
-        Main cactus body
-    */
-
-    for(
-        let row=0;
-        row<type.length;
-        row++
-    ){
-
-        for(
-            let col=0;
-            col<type[row].length;
-            col++
-        ){
-
-            if(type[row][col]!=="B"){
-                continue;
-            }
-
-            const px=o.x+col*s;
-            const py=o.y+row*s;
-
-            ctx.fillStyle="#63745f";
-
-            ctx.fillRect(
-                px,
-                py,
-                s,
-                s
-            );
-
-
-            /*
-                Soft center
-            */
-
-            ctx.fillStyle="#70836b";
-
-            ctx.fillRect(
-                px+2,
-                py+1,
-                2,
-                s-2
-            );
-
-
-            /*
-                Pixel shine
-            */
-
-            if(
-                row===0 ||
-                type[row-1]?.[col]!=="B"
-            ){
-
-                ctx.fillStyle="#9aaa87";
-
-                ctx.fillRect(
-                    px+1,
-                    py+1,
-                    s-2,
-                    2
-                );
-            }
-
-
-            /*
-                Tiny dark side
-            */
-
-            if(
-                col===0 ||
-                type[row][col-1]!=="B"
-            ){
-
-                ctx.fillStyle="#4e604f";
-
-                ctx.fillRect(
-                    px,
-                    py+2,
-                    2,
-                    s-2
-                );
-            }
-        }
-    }
-
-
-    /*
-        Little decorative cactus flowers
-        on some upper sections.
-    */
-
     if(
-        o.type===CACTUS_TALL ||
-        o.type===CACTUS_SMALL
+        !o.image.complete ||
+        !o.image.naturalWidth
     ){
-
-        const flowerX=
-            o.x+
-            Math.floor(
-                o.type[0].length/2
-            )*s;
-
-        const flowerY=o.y-5;
-
-        ctx.fillStyle="#d8a7b5";
-
-        ctx.fillRect(
-            flowerX,
-            flowerY,
-            5,
-            3
-        );
-
-        ctx.fillRect(
-            flowerX+1,
-            flowerY-2,
-            3,
-            2
-        );
-
-        ctx.fillStyle="#f0c9d2";
-
-        ctx.fillRect(
-            flowerX+1,
-            flowerY,
-            2,
-            2
-        );
+        return;
     }
+
+    ctx.drawImage(
+        o.image,
+
+        Math.round(o.x),
+        Math.round(o.y),
+
+        Math.round(o.width),
+        Math.round(o.height)
+    );
 }
 
 
@@ -686,13 +581,17 @@ function drawCactus(o){
 function drawBunny(){
 
     let image;
+
     let frameWidth=28;
     let frameHeight=28;
+
     let frameIndex=0;
+
 
     if(!started && !dead){
 
         image=idleImage;
+
         frameIndex=0;
 
     }
@@ -700,6 +599,7 @@ function drawBunny(){
     else if(!bunny.grounded){
 
         image=jumpImage;
+
         frameWidth=28;
         frameHeight=36;
 
@@ -708,7 +608,10 @@ function drawBunny(){
         frameIndex=Math.min(
             7,
             Math.floor(
-                (jumpTime/jumpAnimationDuration)*8
+                (
+                    jumpTime/
+                    jumpAnimationDuration
+                )*8
             )
         );
 
@@ -717,12 +620,16 @@ function drawBunny(){
     else{
 
         image=runImage;
+
         frameWidth=28;
         frameHeight=28;
 
         frameIndex=
-            Math.floor(runAnimTime/45)%8;
+            Math.floor(
+                runAnimTime/45
+            )%8;
     }
+
 
     if(
         !image.complete ||
@@ -731,16 +638,28 @@ function drawBunny(){
         return;
     }
 
-    const drawW=frameWidth*3;
-    const drawH=frameHeight*3;
+
+    /*
+        Bunny stays at the old
+        3× visual size.
+    */
+
+    const drawW=
+        frameWidth*3;
+
+    const drawH=
+        frameHeight*3;
+
 
     const feetY=
         bunny.y+bunny.height;
 
-    const drawX=bunny.x;
+    const drawX=
+        bunny.x;
 
     const drawY=
         feetY-drawH;
+
 
     ctx.save();
 
@@ -749,16 +668,23 @@ function drawBunny(){
         drawY
     );
 
-    ctx.scale(-1,1);
+    ctx.scale(
+        -1,
+        1
+    );
 
     ctx.drawImage(
         image,
+
         frameIndex*frameWidth,
         0,
+
         frameWidth,
         frameHeight,
+
         0,
         0,
+
         drawW,
         drawH
     );
@@ -773,10 +699,16 @@ function drawBunny(){
 
 function getBunnyHitbox(){
 
-    return {
-        x:bunny.x+13,
-        y:bunny.y+12,
+    return{
+
+        x:
+            bunny.x+13,
+
+        y:
+            bunny.y+12,
+
         width:52,
+
         height:60
     };
 }
@@ -788,65 +720,233 @@ function getBunnyHitbox(){
 
 function checkCollision(){
 
-    const b=getBunnyHitbox();
+    const b=
+        getBunnyHitbox();
 
-    for(const o of obstacles){
 
-        const type=o.type;
-        const s=o.scale;
+    for(
+        const o of obstacles
+    ){
 
-        for(
-            let row=0;
-            row<type.length;
-            row++
+        const paddingX=8;
+        const paddingTop=4;
+
+
+        const cactusHit={
+
+            x:
+                o.x+
+                paddingX,
+
+            y:
+                o.y+
+                paddingTop,
+
+            width:
+                Math.max(
+                    1,
+                    o.width-
+                    paddingX*2
+                ),
+
+            height:
+                Math.max(
+                    1,
+                    o.height-
+                    paddingTop
+                )
+        };
+
+
+        if(
+
+            b.x<
+                cactusHit.x+
+                cactusHit.width
+
+            &&
+
+            b.x+b.width>
+                cactusHit.x
+
+            &&
+
+            b.y<
+                cactusHit.y+
+                cactusHit.height
+
+            &&
+
+            b.y+b.height>
+                cactusHit.y
+
         ){
 
-            for(
-                let col=0;
-                col<type[row].length;
-                col++
-            ){
-
-                if(type[row][col]!=="B"){
-                    continue;
-                }
-
-                /*
-                    Collision is based on the
-                    actual occupied cactus cell,
-                    not the entire cactus image.
-                */
-
-                const cactusHit={
-                    x:o.x+col*s+1,
-                    y:o.y+row*s+1,
-                    width:s-2,
-                    height:s-2
-                };
-
-                if(
-                    b.x<
-                        cactusHit.x+
-                        cactusHit.width &&
-
-                    b.x+b.width>
-                        cactusHit.x &&
-
-                    b.y<
-                        cactusHit.y+
-                        cactusHit.height &&
-
-                    b.y+b.height>
-                        cactusHit.y
-                ){
-
-                    return true;
-                }
-            }
+            return true;
         }
     }
 
+
     return false;
+}
+
+
+/* =========================
+   AUDIO
+========================= */
+
+let audioContext=null;
+
+
+function initAudio(){
+
+    if(!audioContext){
+
+        audioContext=
+            new(
+                window.AudioContext||
+                window.webkitAudioContext
+            )();
+    }
+
+
+    if(
+        audioContext.state===
+        "suspended"
+    ){
+
+        audioContext.resume();
+    }
+}
+
+
+function play100Sound(){
+
+    if(!audioContext){
+        return;
+    }
+
+
+    const now=
+        audioContext.currentTime;
+
+
+    const notes=[
+        880,
+        1046.5,
+        1318.5
+    ];
+
+
+    notes.forEach(
+        (frequency,index)=>{
+
+            const oscillator=
+                audioContext.createOscillator();
+
+            const gain=
+                audioContext.createGain();
+
+
+            oscillator.type="square";
+
+            oscillator.frequency.value=
+                frequency;
+
+
+            const start=
+                now+
+                index*0.075;
+
+
+            gain.gain.setValueAtTime(
+                0,
+                start
+            );
+
+
+            gain.gain.linearRampToValueAtTime(
+                0.055,
+                start+0.008
+            );
+
+
+            gain.gain.exponentialRampToValueAtTime(
+                0.001,
+                start+0.07
+            );
+
+
+            oscillator.connect(gain);
+
+            gain.connect(
+                audioContext.destination
+            );
+
+
+            oscillator.start(start);
+
+            oscillator.stop(
+                start+0.075
+            );
+        }
+    );
+}
+
+
+/* =========================
+   SCORE
+========================= */
+
+function passCactus(o){
+
+    if(o.counted){
+        return;
+    }
+
+
+    if(
+        o.x+o.width<
+        bunny.x
+    ){
+
+        o.counted=true;
+
+
+        /*
+            EXACTLY +10 FOR EVERY
+            INDIVIDUAL CACTUS.
+        */
+
+        score+=10;
+
+
+        if(score>highScore){
+
+            highScore=score;
+
+            localStorage.setItem(
+                "bunnyRunHighScore",
+                highScore
+            );
+        }
+
+
+        /*
+            Sound at exactly:
+            100, 200, 300...
+        */
+
+        if(
+            score%100===0 &&
+            score!==lastMilestone
+        ){
+
+            lastMilestone=score;
+
+            play100Sound();
+        }
+    }
 }
 
 
@@ -863,14 +963,17 @@ function jump(){
         bunny.grounded=true;
 
         runAnimTime=0;
+
         jumpTime=0;
 
-        lastTime=performance.now();
+        lastTime=
+            performance.now();
 
         requestAnimationFrame(loop);
 
         return;
     }
+
 
     if(dead){
 
@@ -879,9 +982,12 @@ function jump(){
         return;
     }
 
+
     if(bunny.grounded){
 
-        bunny.velocityY=bunny.jumpPower;
+        bunny.velocityY=
+            bunny.jumpPower;
+
         bunny.grounded=false;
 
         jumpTime=0;
@@ -896,26 +1002,41 @@ function jump(){
 function restart(){
 
     score=0;
+
     speed=6;
+
+    lastMilestone=0;
 
     obstacles.length=0;
 
     spawnTimer=0;
+
     nextSpawn=1200;
 
-    bunny.y=GROUND-28;
+
+    bunny.y=
+        GROUND-28;
+
     bunny.velocityY=0;
+
     bunny.grounded=true;
 
+
     runAnimTime=0;
+
     jumpTime=0;
 
     groundOffset=0;
 
+
     dead=false;
+
     started=true;
 
-    lastTime=performance.now();
+
+    lastTime=
+        performance.now();
+
 
     requestAnimationFrame(loop);
 }
@@ -930,25 +1051,26 @@ function gameOver(){
     dead=true;
 
     bunny.velocityY=0;
-}
-
-
-/* =========================
+    }/* =========================
    UPDATE
 ========================= */
 
 function update(dt){
 
-    if(!started || dead){
+    if(
+        !started||
+        dead
+    ){
         return;
     }
 
 
     /*
-        BUNNY ANIMATION
+        RUN ANIMATION
     */
 
     if(bunny.grounded){
+
         runAnimTime+=dt;
     }
 
@@ -961,36 +1083,52 @@ function update(dt){
 
         jumpTime+=dt;
 
+
         bunny.velocityY+=
             bunny.gravity*
             (dt/16.6667);
+
 
         bunny.y+=
             bunny.velocityY*
             (dt/16.6667);
 
-        const groundY=GROUND-28;
 
-        if(bunny.y>=groundY){
+        const groundY=
+            GROUND-28;
+
+
+        if(
+            bunny.y>=groundY
+        ){
 
             bunny.y=groundY;
+
             bunny.velocityY=0;
+
             bunny.grounded=true;
 
             runAnimTime=0;
+
             jumpTime=0;
         }
     }
 
 
     /*
-        ONE SHARED GAME SPEED
-
-        Cactus movement and ground movement
-        both use this exact value.
+        SPEED
     */
 
-    speed+=0.00035*dt;
+    speed+=
+        0.00035*dt;
+
+
+    speed=
+        Math.min(
+            speed,
+            12
+        );
+
 
     const movement=
         speed*
@@ -998,31 +1136,22 @@ function update(dt){
 
 
     /*
-        CONTINUOUS SCORE
-
-        Slowly rises just like the Dino game.
-    */
-
-    score+=movement*0.055;
-
-
-    /*
-        MOVE GROUND
-
-        Exact same movement as cactus.
+        GROUND
     */
 
     groundOffset-=movement;
 
-    if(groundOffset<=-80){
+
+    if(
+        groundOffset<=-80
+    ){
+
         groundOffset+=80;
     }
 
 
     /*
-        MOVE CACTUSES
-
-        Exact same movement as ground.
+        CACTUSES
     */
 
     for(
@@ -1031,28 +1160,21 @@ function update(dt){
         i--
     ){
 
-        const o=obstacles[i];
+        const o=
+            obstacles[i];
+
 
         o.x-=movement;
 
 
-        /*
-            +100 for successfully passing
-            each individual cactus.
-        */
+        passCactus(o);
+
 
         if(
-            !o.counted &&
-            o.x+o.width<bunny.x
+            o.x+
+            o.width<
+            -100
         ){
-
-            o.counted=true;
-
-            score+=100;
-        }
-
-
-        if(o.x+o.width<-40){
 
             obstacles.splice(
                 i,
@@ -1068,7 +1190,10 @@ function update(dt){
 
     spawnTimer+=dt;
 
-    if(spawnTimer>=nextSpawn){
+
+    if(
+        spawnTimer>=nextSpawn
+    ){
 
         spawnCactus();
     }
@@ -1078,7 +1203,9 @@ function update(dt){
         COLLISION
     */
 
-    if(checkCollision()){
+    if(
+        checkCollision()
+    ){
 
         gameOver();
     }
@@ -1104,7 +1231,9 @@ function draw(){
     drawGround();
 
 
-    for(const o of obstacles){
+    for(
+        const o of obstacles
+    ){
 
         drawCactus(o);
     }
@@ -1123,12 +1252,45 @@ function draw(){
 
     ctx.textAlign="right";
 
+
     ctx.fillText(
+
         String(
             Math.floor(score)
-        ).padStart(5,"0"),
+        ).padStart(
+            5,
+            "0"
+        ),
+
         W-28,
+
         42
+    );
+
+
+    /*
+        HIGH SCORE
+    */
+
+    ctx.font="14px Georgia";
+
+    ctx.fillStyle=
+        "rgba(41,51,47,0.65)";
+
+
+    ctx.fillText(
+
+        "HI "+
+        String(
+            highScore
+        ).padStart(
+            5,
+            "0"
+        ),
+
+        W-28,
+
+        61
     );
 
 
@@ -1143,6 +1305,7 @@ function draw(){
         ctx.font="26px Georgia";
 
         ctx.fillStyle=DARK;
+
 
         ctx.fillText(
             "PRESS SPACE OR TAP",
@@ -1164,6 +1327,7 @@ function draw(){
 
         ctx.fillStyle=DARK;
 
+
         ctx.fillText(
             "PRESS SPACE OR TAP TO RESTART",
             W/2,
@@ -1179,16 +1343,20 @@ function draw(){
 
 function loop(time){
 
-    const dt=Math.min(
-        time-lastTime,
-        32
-    );
+    const dt=
+        Math.min(
+            time-lastTime,
+            32
+        );
+
 
     lastTime=time;
+
 
     update(dt);
 
     draw();
+
 
     if(!dead){
 
@@ -1203,12 +1371,16 @@ function loop(time){
 
 function handleInput(){
 
+    initAudio();
+
+
     if(dead){
 
         restart();
 
         return;
     }
+
 
     jump();
 }
@@ -1219,8 +1391,8 @@ window.addEventListener(
     e=>{
 
         if(
-            e.code==="Space" ||
-            e.code==="ArrowUp" ||
+            e.code==="Space"||
+            e.code==="ArrowUp"||
             e.code==="KeyW"
         ){
 
@@ -1240,51 +1412,29 @@ canvas.addEventListener(
 
         handleInput();
     }
-);
-
-
-/* =========================
-   LOAD BUNNY SPRITES
+);/* =========================
+   BUNNY BASE64
 ========================= */
 
 /*
-   PASTE YOUR THREE ORIGINAL
-   image.src LINES HERE.
-
-   Keep the Base64 strings exactly
-   as you have them.
+   Replace ONLY the three strings
+   below with your final bunny Base64
+   whenever you want to change the
+   bunny texture.
 */
-
 
 idleImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAA9klEQVR42u1UMQ6EIBAEYmdvjIUlhbVP8AE+1Qf4BGsLSwtj6K25inPv2EU8OGPhdggyzOzMMvbUU0/dtoo81UWe6tj3CtdmJTMGQWM8QlDsKplZ39qmZm1TsxBQcXWrSMBxUha7vwEu68bhGoJ1/WDt31pSTpkGkzCUHcowZr+wSkIGg0//nZKa/MmyJH/o+sEy0jTPH852gXIq8Aa06wfmKzEEpkAFlj+YwTMFlaEk566xBi8wr3fJDc9SLBO86Upf6tL9ZQple8R6Xyv9zTLKpDHAwaNtWTduDGTigIGcMdnPwT8C8TYN5thxUu8sYsGnhgNWL5sPiDbAGkWfAAAAAElFTkSuQmCC";  
   
 runImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAcCAYAAAB4fbODAAADlElEQVR42u1aPZKzMAw1Gbr0O5kUlBRb5wg5QI7KATgCdQpKip0d+q35im+U1RpjJGMLCNLMFlkIz3rWz5ODMWpqampqampqampqampqampqamr7sevlPFwv50GZoNtJKVCLaZ/lh8FJqEmpCagm1P0+y4/R/x73m3ncb0aTkJmA0pVLK+V78QrJZ4wxVd2Yr++fbM9+pcI7bUlOSOIdqcBI8vpse2OMMZB87yR3XXhJElBaTqwlX965wKzJK06+VN1vK/G5FOuQM+BRCoy0LFxzPyX9wnjJJChIidiAW8E7kqWWhbBfZVEk735ryd1UeM4EtElLTao03hELTCpOfb5IdHfJhE+Bd0gJeoQCo7YPy+eqWlkUu64wW5lR1pyLUu2ha7Z9B7+W4Ln22reuPOWAucZQu7VNtH2TDhoJa7vu5VdVN3+K6ON+M1XdDByFsMU4oRZYuL/tOnRHP0z5mMeu6tyACnFyT3jSfEpjwmyLC4tP1eCkhe9fL+dhj0oH+HP5N+bDnYSZS1L4yKzqZkQqJpO7gXMJsWe8tfiUxMQyFGPC83zrsHF9mBy/lnZaKh5HIUz5mM2RaUuKGGT6nJTGi0UkJzhT4a21h/izPRNS/G67jpyAXL/swkJNxCU8uorPlI8nl6TAi+UYBuQcPPzVy7J4c1VzKZ7NZ2o8yT2EIMVJh3Ht5Gu7zrnXZVGM3hKK5VdZFK/nw1/o3lHiaiqWpwpRFltSUCva1PAa2plC8TjdgYvn4hPwUvApvYfU/YOi41MDoV2Q6xc3Xqh4rk7r4sQ+eMvdOrkXOTb/+v7JwEl8khZCaiiefWoVE8/FJ2Cn5hUwn21vUv1UAIGEE9HV4X8D7v+aQjnmxibmOQSTigcJbceYzQW8eljVzetAJvcPq/0wV7Vc134/97OnW5xg2SOeNJ/uOWcaN1bhgWCjrM91CMTp7Fga+k5Y52Qp/DziWzMklK+z2d0UYgw4h+tV3YwOAPMYldDuXjEqqS8o9oYnzac0Jrco2B0C3iOlzFvPtifJXcr30BgyW9hwMnG6Jy7wkITkBMQPsWclXGWebR8lYDCe/cx3w5Pgk4I7hcmZOUMNeOeOEDS5O57jXPdzurAriX0vU7gkrH1vcAecIy72Bipen/yldCnDBcFXFKa+S5GOvhncloUpJffc9ZyqufGpIfXUi2uKFxcvBJczyy1dD0VSLpG8U/Mw51lT3MXi5x/WB9z8URHs6QAAAABJRU5ErkJggg==";  
   
 jumpImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAkCAYAAACQVDZDAAADgUlEQVR42u2aPXLyMBCGRcYdfYahoKRIzRE4AEflAByBmsKlC4ZxT+2vyCeyiJW0sq0VUd6nIzi8Xu0/2BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWNar5bBeLQecBLB84Ah0+dp+GpqESEok4FtU61KBqKW7Xi2Hr+3ny98O+5057HfmtydhzfGSU+vjnap1qe5QQtcmnzHGHE9nc73dF7+9oNUcL5xWtgTUrtalukMJ3UvbG2OMsclXQ0LUHC8hrTl0sAMqdiULTb5c3a/kuKt1jiX0qFbWEdRW6hyi76Cn2ZWsPdvNJnvylQxQze6urZdLi01A10G5g0ZbT7MrhYpJ7m6knRAlfKepl0MLI2jllChmQE4Tq9rbzabKiqZhI7eLaY6bGr6rXc/qUK3Y/cUmvGACau9fJTS19dquezjweDo/FZnDfmeOp/OQMqL/1XN8Vz2adPb6tuvIFf3g82Ez5eamBMsUI6foadto97BQBeXstw68tL1Zr5YDRsf3w8YH579Xf/NJuOBGplCwHE/nl6ChwZIaoLEEzKGnaSMdQ6mm/bzYaEN1Q5opdk3ttNBLn4B8PlzEgsUdmeYIlpCROfVK2UhfuzuhxMFt14kTMNUut7BIAxV6cU234HI+bMaMTKFl1YqnjE10R9LQ07KROtFqXtrecB0x1BV/XvdBvTF28df2orOEHp94vvugRYDtgHOMTNKK7Vtex7b4qV0wh41S++zo5EvMKV0w1a5U/0HP32k5n7vf1jb8nNyrPMR7vd0X1ki3C6YeaqqutZF2pDw6z4nI7Sk/Dvm+p7E2p/qOVuwxmtB7Tmg3pl1f20cBj6fzowOPqgCSJEnpSjRAQzvSXHopdvo0x9on7Zjcl0DSDhirwtyoxJ2pDSCfZu16Er9wXY1bP2xi/k/Ax/Wjf4aYY4cLdYpQ1Zqqp22jtCjQc6AV1D5Hyu0Q3N4iGXcl/0eeH/XuTLXruY1B4gPaPWlDud7uC/c330b6Ie43QLTKXNp+loSgeu5n5tCT2OnTHNttU3CrvXSkl427r5Wauz4U7LXrSZI49AQON8JGvwVNuZnY+3MGqLaeVDff7vhdEEJFwfe/tspKzsMNEndskjylU7NerNPG7iH2fiPZjWjmcz9SS8cA6S6mpTdGV3rwc9yPZOSaMvLy14cr9l/T88XGXP7/B8eoAeUpIH/9AAAAAElFTkSuQmCC";  
-
-
+    
 /* =========================
-   IMAGE LOADING
+   INITIAL DRAW
 ========================= */
-
-let loaded=0;
-
-function imageLoaded(){
-
-    loaded++;
-
-    if(loaded===3){
-
-        draw();
-    }
-}
-
-idleImage.onload=imageLoaded;
-runImage.onload=imageLoaded;
-jumpImage.onload=imageLoaded;
 
 draw();
 
 </script>
 </body>
-    </html>
+</html>
