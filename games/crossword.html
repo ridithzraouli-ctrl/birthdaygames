@@ -383,24 +383,24 @@ grid.appendChild(cell);
 }
 
 function buildClues(){
-const box=document.getElementById("clues");
-box.innerHTML="";
+    const box = document.getElementById("clues");
+    box.innerHTML = "";
 
-[...answers]
-.sort((a,b)=>a[5]-b[5])
-.forEach(a=>{
+    [...answers]
+    .sort((a,b) => a[5] - b[5])
+    .forEach(a => {
 
-const clue=document.createElement("div");
-clue.className="clue";
+        const clue = document.createElement("div");
+        clue.className = "clue";
 
-clue.innerHTML=
-`<span class="clue-number">${a[5]}</span>
-<div><span class="clue-word">${a[0].toLowerCase()}</span>${a[1]}</div>`;
+        clue.innerHTML = `
+            <span class="clue-number">${a[5]}</span>
+            <div>${a[1]}</div>
+        `;
 
-box.appendChild(clue);
-});
+        box.appendChild(clue);
+    });
 }
-
 function checkPuzzle(){
 
 if(solved)return;
