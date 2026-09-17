@@ -6,7 +6,7 @@
 <title>Bunny Run ♡</title>
 
 <style>
-:root {
+:root{
     --bg-base:#f2f7fa;
     --bg-grad-1:#dce8f3;
     --bg-grad-2:#d3e2ea;
@@ -20,7 +20,7 @@
     --header-bg:rgba(255,255,255,.88);
 }
 
-body[data-theme="pink"] {
+body[data-theme="pink"]{
     --bg-base:#faf2f5;
     --bg-grad-1:#f3dce5;
     --bg-grad-2:#ead3dc;
@@ -30,9 +30,11 @@ body[data-theme="pink"] {
     --accent-soft:#f9e9f0;
     --accent-badge:#f8dfe8;
     --ornament-color:#b87992;
+    --card-bg:rgba(255,255,255,.88);
+    --header-bg:rgba(255,255,255,.88);
 }
 
-body[data-theme="green"] {
+body[data-theme="green"]{
     --bg-base:#f3f7f2;
     --bg-grad-1:#dce8dc;
     --bg-grad-2:#d3ead3;
@@ -42,9 +44,11 @@ body[data-theme="green"] {
     --accent-soft:#e9f9eb;
     --accent-badge:#dff8e2;
     --ornament-color:#79b882;
+    --card-bg:rgba(255,255,255,.88);
+    --header-bg:rgba(255,255,255,.88);
 }
 
-body[data-theme="lavender"] {
+body[data-theme="lavender"]{
     --bg-base:#f5f2fa;
     --bg-grad-1:#e3dcf3;
     --bg-grad-2:#dad3ea;
@@ -54,9 +58,11 @@ body[data-theme="lavender"] {
     --accent-soft:#f0e9f9;
     --accent-badge:#e9dff8;
     --ornament-color:#9379b8;
+    --card-bg:rgba(255,255,255,.88);
+    --header-bg:rgba(255,255,255,.88);
 }
 
-body[data-theme="yellow"] {
+body[data-theme="yellow"]{
     --bg-base:#faf8f2;
     --bg-grad-1:#f3edd2;
     --bg-grad-2:#eae3c5;
@@ -66,43 +72,40 @@ body[data-theme="yellow"] {
     --accent-soft:#f9f5e9;
     --accent-badge:#f8f3df;
     --ornament-color:#b8aa79;
+    --card-bg:rgba(255,255,255,.88);
+    --header-bg:rgba(255,255,255,.88);
 }
 
-* {
+*{
     box-sizing:border-box;
     -webkit-tap-highlight-color:transparent;
 }
 
-html,
-body {
+html,body{
     width:100%;
     min-height:100%;
     margin:0;
-    overflow-x:hidden;
+    overflow:hidden;
 }
 
-body {
-    min-height:100vh;
+body{
     background:
         radial-gradient(circle at 10% 12%,var(--bg-grad-1) 0,transparent 28%),
         radial-gradient(circle at 90% 85%,var(--bg-grad-2) 0,transparent 30%),
         var(--bg-base);
     color:var(--text-main);
     font-family:Georgia,"Times New Roman",serif;
-    transition:background .3s ease,color .3s ease;
 }
 
-.decorations {
+.decorations{
     position:fixed;
     inset:0;
-    width:100%;
-    height:100%;
     pointer-events:none;
     overflow:hidden;
-    z-index:-1;
+    z-index:0;
 }
 
-.decorations span {
+.decorations span{
     position:absolute;
     color:var(--ornament-color);
     opacity:.35;
@@ -116,44 +119,33 @@ body {
 .decorations span:nth-child(5){bottom:12%;left:12%;font-size:12px;animation-delay:.5s}
 .decorations span:nth-child(6){bottom:20%;right:13%;font-size:16px;animation-delay:2.5s}
 
-@keyframes float {
+@keyframes float{
     0%,100%{transform:translateY(0) rotate(0)}
     50%{transform:translateY(-7px) rotate(7deg)}
 }
 
-header {
+header{
+    position:relative;
+    z-index:20;
     display:flex;
     align-items:center;
     justify-content:space-between;
     width:100%;
-    min-height:70px;
+    min-height:66px;
     padding:12px 16px;
     background:var(--header-bg);
     backdrop-filter:blur(8px);
     border-bottom:1px solid var(--bg-grad-2);
-    position:sticky;
-    top:0;
-    z-index:100;
-    gap:8px;
 }
 
 .header-left,
-.header-right {
+.header-right{
     display:flex;
     align-items:center;
-    min-width:0;
-}
-
-.header-left {
     gap:8px;
 }
 
-.header-right {
-    justify-content:flex-end;
-    gap:6px;
-}
-
-.nav-link {
+.nav-link{
     color:var(--text-heading);
     text-decoration:none;
     font-size:13px;
@@ -161,7 +153,7 @@ header {
     white-space:nowrap;
 }
 
-.coin-display {
+.coin-display{
     background:var(--accent-soft);
     border:1px solid var(--accent-border);
     padding:6px 10px;
@@ -172,117 +164,73 @@ header {
     white-space:nowrap;
 }
 
-main {
+main{
+    position:relative;
+    z-index:2;
     width:100%;
-    max-width:1050px;
-    margin:0 auto;
-    padding:25px 14px 35px;
+    height:calc(100vh - 66px);
     display:flex;
     flex-direction:column;
     align-items:center;
+    padding:18px 12px 12px;
 }
 
-.ornament {
+.ornament{
     display:flex;
     align-items:center;
     justify-content:center;
     gap:10px;
     height:22px;
-    margin-bottom:12px;
     color:var(--ornament-color);
+    margin-bottom:6px;
 }
 
-.ornament span {
-    font-size:16px;
-}
+.ornament span{font-size:15px}
 
-.ornament i {
-    width:38px;
+.ornament i{
+    width:32px;
     height:1px;
     background:var(--ornament-color);
     opacity:.45;
 }
 
-h1 {
+h1{
     color:var(--text-heading);
     font-weight:normal;
-    font-size:28px;
-    margin:0 0 6px;
-    text-align:center;
+    font-size:27px;
+    margin:0 0 3px;
 }
 
-.subtitle {
-    color:var(--text-main);
-    opacity:.78;
-    margin:0 0 15px;
-    font-size:14px;
-    text-align:center;
+.subtitle{
+    margin:0 0 10px;
+    font-size:13px;
+    opacity:.75;
 }
 
-.game-wrap {
+.game-wrap{
     width:min(960px,100%);
-    background:var(--card-bg);
-    border:1px solid var(--bg-grad-2);
-    border-radius:16px;
-    padding:10px;
-    box-shadow:0 8px 28px rgba(0,0,0,.055);
-}
-
-.canvas-wrap {
+    aspect-ratio:960/540;
     position:relative;
-    width:100%;
     overflow:hidden;
-    border-radius:10px;
+    border:1px solid var(--accent-border);
+    border-radius:16px;
+    background:#b8cbd1;
+    box-shadow:0 8px 28px rgba(0,0,0,.08);
 }
 
-#game {
+#game{
     display:block;
     width:100%;
-    height:auto;
+    height:100%;
     image-rendering:pixelated;
     image-rendering:crisp-edges;
-    touch-action:none;
 }
 
-.score-badge {
-    position:absolute;
-    top:13px;
-    right:17px;
-    color:var(--text-heading);
-    background:rgba(255,255,255,.72);
-    border:1px solid var(--accent-border);
-    border-radius:100px;
-    padding:6px 11px;
-    font-size:13px;
-    font-weight:bold;
-    pointer-events:none;
-    backdrop-filter:blur(4px);
+.bottom-ornament{
+    margin-top:8px;
 }
 
-.controls {
-    display:flex;
-    justify-content:center;
-    margin-top:14px;
-}
-
-.btn {
-    padding:10px 20px;
-    border:1px solid var(--accent-border);
-    border-radius:100px;
-    background:var(--card-bg);
-    color:var(--text-heading);
-    font-family:Georgia,"Times New Roman",serif;
-    font-size:13px;
-    cursor:pointer;
-    transition:.2s ease;
-}
-
-.btn:hover {
-    background:var(--accent-soft);
-    transform:translateY(-1px);
-}
-
-.modal-overlay {
+.modal-overlay{
     display:none;
     position:fixed;
     inset:0;
@@ -294,7 +242,7 @@ h1 {
     justify-content:center;
 }
 
-.modal-card {
+.modal-card{
     position:relative;
     background:var(--card-bg);
     border:1px solid var(--accent-border);
@@ -309,19 +257,18 @@ h1 {
 }
 
 .modal-card::before,
-.modal-card::after {
+.modal-card::after{
     content:"✦";
     position:absolute;
     color:var(--ornament-color);
     opacity:.5;
     font-size:20px;
-    top:13px;
 }
 
-.modal-card::before {left:18px}
-.modal-card::after {right:18px}
+.modal-card::before{top:13px;left:18px}
+.modal-card::after{top:13px;right:18px}
 
-.victory-decoration {
+.victory-decoration{
     display:flex;
     align-items:center;
     justify-content:center;
@@ -330,14 +277,14 @@ h1 {
     margin-bottom:13px;
 }
 
-.victory-decoration i {
+.victory-decoration i{
     width:30px;
     height:1px;
     background:var(--ornament-color);
     opacity:.5;
 }
 
-.victory-symbol {
+.victory-symbol{
     width:66px;
     height:66px;
     margin:2px auto 14px;
@@ -351,14 +298,14 @@ h1 {
     animation:victoryFloat 2s ease-in-out infinite;
 }
 
-.modal-card h2 {
+.modal-card h2{
     color:var(--text-heading);
     font-size:25px;
     font-weight:normal;
     margin:0 0 9px;
 }
 
-.modal-card p {
+.modal-card p{
     color:var(--text-main);
     opacity:.82;
     font-size:14px;
@@ -366,7 +313,7 @@ h1 {
     margin:0 0 21px;
 }
 
-.reward-amount {
+.reward-amount{
     display:inline-block;
     margin:-5px 0 20px;
     padding:7px 13px;
@@ -378,11 +325,18 @@ h1 {
     font-weight:bold;
 }
 
-.modal-card.game-over .victory-symbol {
-    animation:none;
+.btn{
+    padding:11px 20px;
+    border:1px solid var(--accent-border);
+    border-radius:100px;
+    background:var(--card-bg);
+    color:var(--text-heading);
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:13px;
+    cursor:pointer;
 }
 
-.confetti {
+.confetti{
     position:absolute;
     pointer-events:none;
     color:var(--ornament-color);
@@ -390,44 +344,36 @@ h1 {
     animation:confettiFall 1.8s ease-out forwards;
 }
 
-.confetti:nth-child(1){left:18%;top:5%;animation-delay:0s}
+.confetti:nth-child(1){left:18%;top:5%}
 .confetti:nth-child(2){left:32%;top:2%;animation-delay:.12s}
 .confetti:nth-child(3){left:50%;top:4%;animation-delay:.2s}
 .confetti:nth-child(4){right:32%;top:2%;animation-delay:.08s}
 .confetti:nth-child(5){right:17%;top:6%;animation-delay:.18s}
 
-@keyframes victoryPop {
+@keyframes victoryPop{
     0%{transform:scale(.88);opacity:0}
     100%{transform:scale(1);opacity:1}
 }
 
-@keyframes victoryFloat {
+@keyframes victoryFloat{
     0%,100%{transform:translateY(0)}
     50%{transform:translateY(-5px)}
 }
 
-@keyframes confettiFall {
+@keyframes confettiFall{
     0%{transform:translateY(0) rotate(0);opacity:0}
     15%{opacity:.8}
     100%{transform:translateY(115px) rotate(120deg);opacity:0}
 }
 
-@media(max-width:600px) {
-    header {
-        min-height:66px;
-        padding:12px 11px;
-    }
-
-    main {
-        padding:20px 8px 30px;
-    }
-
-    .game-wrap {
-        padding:6px;
+@media(max-width:600px){
+    header{padding:11px}
+    .game-wrap{
         border-radius:12px;
     }
-
-    .modal-card {
+    h1{font-size:24px}
+    .subtitle{font-size:12px}
+    .modal-card{
         max-width:340px;
         padding:30px 21px 23px;
     }
@@ -466,27 +412,13 @@ h1 {
 
     <h1>Bunny Run</h1>
 
-    <p class="subtitle">
-        Help the little bunny hop over the cactuses ♡
-    </p>
+    <p class="subtitle">Jump over the cacti ♡</p>
 
     <div class="game-wrap">
-        <div class="canvas-wrap">
-
-            <canvas id="game" width="960" height="540"></canvas>
-
-            <div class="score-badge">
-                Score: <span id="score-display">00000</span>
-            </div>
-
-        </div>
-
-        <div class="controls">
-            <button class="btn" onclick="restartGame()">Restart</button>
-        </div>
+        <canvas id="game" width="960" height="540"></canvas>
     </div>
 
-    <div class="ornament" style="margin-top:25px;margin-bottom:0;">
+    <div class="ornament bottom-ornament">
         <span>✧</span><i></i><span>♡</span><i></i><span>✧</span>
     </div>
 
@@ -503,40 +435,32 @@ h1 {
         <span class="confetti">✧</span>
 
         <div class="victory-decoration">
-            <span>✧</span>
-            <i></i>
-            <span>♡</span>
-            <i></i>
-            <span>✧</span>
+            <span>✧</span><i></i><span>♡</span><i></i><span>✧</span>
         </div>
 
         <div class="victory-symbol" id="modal-symbol"></div>
 
         <h2 id="modal-title">Game Over</h2>
 
-        <p id="modal-desc">
-            The bunny bumped into a cactus.
-        </p>
+        <p id="modal-desc"></p>
 
-        <div class="reward-amount" id="reward-amount">
-            Score: 00000
-        </div>
+        <div class="reward-amount" id="reward-amount"></div>
 
         <button
             class="btn"
-            onclick="closeModalAndRestart()"
+            onclick="closeGameModal()"
             style="width:100%;"
         >
             Play Again
         </button>
 
     </div>
+
 </div>
 
 <script src="../script.js"></script><script>
 
 function loadSavedTheme(){
-
     const savedTheme=localStorage.getItem("arcade_theme");
 
     if(
@@ -553,19 +477,12 @@ function loadSavedTheme(){
 
 loadSavedTheme();
 
-
 function goBack(){
-
     if(window.history.length>1){
         window.history.back();
     }else{
         window.location.href="../index.html";
     }
-}
-
-
-if(typeof updateCoinDisplays==="function"){
-    updateCoinDisplays();
 }
 
 
@@ -595,9 +512,7 @@ const AudioFX={
 
         this.init();
 
-        if(!this.ctx){
-            return;
-        }
+        if(!this.ctx)return;
 
         if(this.ctx.state==="suspended"){
             this.ctx.resume();
@@ -610,7 +525,6 @@ const AudioFX={
 
         osc.connect(gain);
         gain.connect(this.ctx.destination);
-
 
         if(type==="jump"){
 
@@ -627,7 +541,7 @@ const AudioFX={
             );
 
             gain.gain.setValueAtTime(
-                .14,
+                .12,
                 now
             );
 
@@ -638,23 +552,52 @@ const AudioFX={
 
             osc.start(now);
             osc.stop(now+.16);
+        }
 
-        }else if(type==="lose"){
+        if(type==="coin"){
+
+            osc.type="sine";
+
+            osc.frequency.setValueAtTime(
+                660,
+                now
+            );
+
+            osc.frequency.setValueAtTime(
+                880,
+                now+.07
+            );
+
+            gain.gain.setValueAtTime(
+                .12,
+                now
+            );
+
+            gain.gain.exponentialRampToValueAtTime(
+                .001,
+                now+.18
+            );
+
+            osc.start(now);
+            osc.stop(now+.18);
+        }
+
+        if(type==="lose"){
 
             osc.type="triangle";
 
             osc.frequency.setValueAtTime(
-                330,
+                300,
                 now
             );
 
             osc.frequency.exponentialRampToValueAtTime(
-                100,
+                120,
                 now+.4
             );
 
             gain.gain.setValueAtTime(
-                .22,
+                .2,
                 now
             );
 
@@ -665,33 +608,6 @@ const AudioFX={
 
             osc.start(now);
             osc.stop(now+.4);
-
-        }else if(type==="start"){
-
-            osc.type="sine";
-
-            osc.frequency.setValueAtTime(
-                523.25,
-                now
-            );
-
-            osc.frequency.setValueAtTime(
-                659.25,
-                now+.08
-            );
-
-            gain.gain.setValueAtTime(
-                .12,
-                now
-            );
-
-            gain.gain.exponentialRampToValueAtTime(
-                .001,
-                now+.2
-            );
-
-            osc.start(now);
-            osc.stop(now+.2);
         }
     }
 };
@@ -711,13 +627,15 @@ ctx.imageSmoothingEnabled=false;
 
 const W=960;
 const H=540;
+
 const GROUND=425;
 
 
 /* =========================
-   COLORS
+   GAME COLORS
 ========================= */
 
+const BG="#b8cbd1";
 const SKY_TOP="#a8c7d0";
 const SKY_BOTTOM="#d5e1d9";
 
@@ -735,40 +653,23 @@ const GROUND_DARK="#48453b";
 
 let started=false;
 let dead=false;
-
 let lastTime=0;
 
 let score=0;
 
 /*
-    This is the actual score value.
-
-    It is NOT based on frame count,
-    so it remains consistent even if
-    the phone drops frames.
+    This is the actual movement
+    speed. It slowly increases.
 */
-
-let distanceScore=0;
-let passedBonus=0;
-
 let speed=6;
 
 let groundOffset=0;
 
-let spawnTimer=0;
-let nextSpawn=1200;
-
 let runAnimTime=0;
 let jumpTime=0;
 
-
-/* =========================
-   BUNNY IMAGES
-========================= */
-
-const idleImage=new Image();
-const runImage=new Image();
-const jumpImage=new Image();
+let spawnTimer=0;
+let nextSpawn=1200;
 
 
 /* =========================
@@ -779,13 +680,13 @@ const bunny={
 
     x:110,
 
-    /*
-        Physics hitbox remains manageable,
-        while the sprite itself is drawn 3×.
-    */
-
     y:GROUND-28,
 
+    /*
+        Collision size.
+        The actual sprite is drawn
+        at 3x this size.
+    */
     width:28,
     height:28,
 
@@ -800,7 +701,16 @@ const bunny={
 
 
 /* =========================
-   CACTUS IMAGE PATHS
+   BUNNY IMAGES
+========================= */
+
+const idleImage=new Image();
+const runImage=new Image();
+const jumpImage=new Image();
+
+
+/* =========================
+   CACTUS TEXTURES
 ========================= */
 
 const cactusImages={
@@ -814,6 +724,11 @@ const cactusImages={
     cluster:new Image()
 };
 
+
+/*
+    THESE ARE THE FOUR ACTUAL
+    TEXTURES YOU GAVE ME.
+*/
 
 cactusImages.small.src=
     "games/1000082076-removebg-preview.png";
@@ -830,167 +745,200 @@ cactusImages.cluster.src=
 
 /* =========================
    CACTUS TYPES
-========================= */
+=========================
 
-/*
-    The important part here is that
-    each cactus has its own deliberate
-    visual size.
+   These are deliberately based
+   on the proportions you liked:
 
-    Bunny visual height = 84px.
+   small   = 1 bunny unit tall
+   big     = 3 bunny units tall
+   two     = 2 bunny units tall
+   cluster = 2 bunny units tall
 
-    SMALL:
-        1 × bunny height
-        1 unit wide
+   Widths:
 
-    BIG:
-        3 × bunny height
-        1 unit wide
-
-    TWO:
-        2 × bunny height
-        1.5 units wide
-
-    CLUSTER:
-        2 × bunny height
-        3.5 units wide
+   small   = 1 unit
+   big     = 1 unit
+   two     = 1.5 units
+   cluster = 3.5 units
 */
 
-const CACTUS_UNIT=28;
-
-const cactusDefinitions={
+const CACTUS_TYPES={
 
     small:{
-        image:cactusImages.small,
-        width:CACTUS_UNIT,
-        height:84
+        key:"small",
+        widthUnits:1,
+        heightUnits:1
     },
 
     big:{
-        image:cactusImages.big,
-        width:CACTUS_UNIT,
-        height:252
+        key:"big",
+        widthUnits:1,
+        heightUnits:3
     },
 
     two:{
-        image:cactusImages.two,
-        width:42,
-        height:168
+        key:"two",
+        widthUnits:1.5,
+        heightUnits:2
     },
 
     cluster:{
-        image:cactusImages.cluster,
-        width:98,
-        height:168
+        key:"cluster",
+        widthUnits:3.5,
+        heightUnits:2
     }
+
 };
 
 
-const cactusTypes=[
-    "small",
-    "big",
-    "two",
-    "cluster"
-];
-
+/* =========================
+   OBSTACLES
+========================= */
 
 const obstacles=[];
 
 
-/* =========================
-   CREATE CACTUS
-========================= */
+/*
+    This is the IMPORTANT part:
 
-function createCactus(type,x){
+    The cactus texture itself is resized
+    to exactly match these dimensions.
 
-    const def=cactusDefinitions[type];
+    So the visual cactus and its collision
+    box stay synchronized.
+*/
+
+const CACTUS_UNIT=28;
+
+function getCactusSize(type){
 
     return {
 
-        type:type,
+        width:
+            type.widthUnits*
+            CACTUS_UNIT,
 
-        image:def.image,
+        height:
+            type.heightUnits*
+            CACTUS_UNIT
+
+    };
+}
+
+
+function createCactus(type,x){
+
+    const size=getCactusSize(type);
+
+    return {
 
         x:x,
 
-        y:GROUND-def.height,
+        y:
+            GROUND-
+            size.height,
 
-        width:def.width,
+        width:size.width,
 
-        height:def.height,
+        height:size.height,
+
+        type:type,
 
         counted:false
+
     };
 }
 
 
 /* =========================
-   RANDOM CACTUS
-========================= */
-
-function randomCactusType(){
-
-    return cactusTypes[
-        Math.floor(
-            Math.random()*cactusTypes.length
-        )
-    ];
-}
-
-
-/* =========================
-   SPAWN
+   SPAWN CACTUS
 ========================= */
 
 function spawnCactus(){
 
-    const firstType=randomCactusType();
-
-    const first=createCactus(
-        firstType,
-        W+60
-    );
-
-    obstacles.push(first);
-
-
     /*
-        Keep groups possible later,
-        but make sure they have space.
-
-        Only the four requested cactus
-        forms are ever used.
+        Only the FOUR cactus forms
+        you specified are used.
     */
 
-    const difficulty=Math.min(
-        score/100,
-        30
-    );
+    const names=[
+        "small",
+        "big",
+        "two",
+        "cluster"
+    ];
 
-    if(
-        difficulty>10 &&
-        Math.random()<.18
-    ){
+    /*
+        Start simple and gradually
+        make the game harder.
+    */
 
-        const secondType=
-            Math.random()<.65
-                ?"small"
-                :"two";
-
-        const second=createCactus(
-            secondType,
-            first.x+
-            first.width+
-            115
+    const difficulty=
+        Math.min(
+            score/100,
+            30
         );
 
-        obstacles.push(second);
+    let count=1;
+
+    if(
+        difficulty>12 &&
+        Math.random()<.18
+    ){
+        count=2;
+    }
+
+    const firstName=
+        names[
+            Math.floor(
+                Math.random()*names.length
+            )
+        ];
+
+    let x=W+70;
+
+    for(let i=0;i<count;i++){
+
+        let name;
+
+        if(i===0){
+
+            name=firstName;
+
+        }else{
+
+            name=
+                Math.random()<.5
+                ?"small"
+                :"big";
+        }
+
+        const type=
+            CACTUS_TYPES[name];
+
+        const cactus=
+            createCactus(
+                type,
+                x
+            );
+
+        obstacles.push(cactus);
+
+        /*
+            Gap is measured from the
+            ACTUAL rendered width.
+        */
+
+        x+=
+            cactus.width+
+            70+
+            Math.random()*60;
     }
 
 
     /*
-        Spawn distance becomes gradually
-        shorter as the score rises.
+        Keep cactus spacing comfortable.
     */
 
     const minimum=
@@ -1001,7 +949,7 @@ function spawnCactus(){
         );
 
     const maximum=
-        1450-
+        1500-
         Math.min(
             difficulty*8,
             250
@@ -1010,13 +958,13 @@ function spawnCactus(){
     nextSpawn=
         minimum+
         Math.random()*
-        Math.max(
-            250,
-            maximum-minimum
-        );
+        (maximum-minimum);
 
     spawnTimer=0;
-}/* =========================
+}
+
+
+/* =========================
    SKY
 ========================= */
 
@@ -1163,7 +1111,6 @@ function drawGround(){
         3
     );
 
-
     const tile=80;
 
     for(
@@ -1194,7 +1141,6 @@ function drawGround(){
             30,
             4
         );
-
 
         ctx.fillStyle=GROUND_LIGHT;
 
@@ -1250,79 +1196,61 @@ function drawGround(){
             4
         );
     }
-}
-
+}<script>
 
 /* =========================
-   CACTUS DRAW
+   DRAW TEXTURED CACTUS
 ========================= */
 
 function drawCactus(o){
 
-    /*
-        The actual uploaded image is used.
+    const image=
+        cactusImages[o.type.key];
 
+    /*
         If the image has not loaded yet,
-        a simple placeholder is drawn so
-        the cactus still exists during testing.
+        draw a temporary silhouette.
+
+        Once loaded, this disappears
+        automatically.
     */
 
     if(
-        o.image &&
-        o.image.complete &&
-        o.image.naturalWidth>0
+        image.complete &&
+        image.naturalWidth>0
     ){
 
+        ctx.imageSmoothingEnabled=false;
+
         ctx.drawImage(
-            o.image,
-            o.x,
-            o.y,
-            o.width,
-            o.height
+            image,
+            Math.round(o.x),
+            Math.round(o.y),
+            Math.round(o.width),
+            Math.round(o.height)
         );
 
-        return;
+    }else{
+
+        /*
+            Temporary placeholder only while
+            the real texture loads.
+        */
+
+        ctx.fillStyle="#63745f";
+
+        ctx.fillRect(
+            Math.round(o.x),
+            Math.round(o.y),
+            Math.round(o.width),
+            Math.round(o.height)
+        );
     }
-
-
-    /*
-        Temporary placeholder.
-        This disappears automatically when
-        your cactus PNG loads.
-    */
-
-    ctx.fillStyle="#63745f";
-
-    ctx.fillRect(
-        o.x,
-        o.y,
-        o.width,
-        o.height
-    );
-
-    ctx.fillStyle="#70836b";
-
-    ctx.fillRect(
-        o.x+Math.min(4,o.width/4),
-        o.y+4,
-        Math.max(2,o.width/5),
-        Math.max(4,o.height-8)
-    );
-
-    ctx.strokeStyle=DARK;
-    ctx.lineWidth=2;
-
-    ctx.strokeRect(
-        o.x,
-        o.y,
-        o.width,
-        o.height
-    );
 }
 
 
 /* =========================
-   BUNNY DRAW
+   BUNNY DRAWING
 ========================= */
 
 function drawBunny(){
@@ -1339,7 +1267,11 @@ function drawBunny(){
 
         image=idleImage;
 
-    }else if(!bunny.grounded){
+        frameIndex=0;
+
+    }
+
+    else if(!bunny.grounded){
 
         image=jumpImage;
 
@@ -1348,14 +1280,17 @@ function drawBunny(){
 
         const duration=560;
 
-        frameIndex=Math.min(
-            7,
-            Math.floor(
-                (jumpTime/duration)*8
-            )
-        );
+        frameIndex=
+            Math.min(
+                7,
+                Math.floor(
+                    (jumpTime/duration)*8
+                )
+            );
 
-    }else{
+    }
+
+    else{
 
         image=runImage;
 
@@ -1378,19 +1313,25 @@ function drawBunny(){
 
 
     /*
-        This is the larger bunny size
-        from the old working version.
+        Bunny is intentionally 3x its
+        collision unit, like the old
+        version you liked.
 
-        28 × 3 = 84px.
+        This restores the larger bunny.
     */
 
-    const drawW=frameWidth*3;
-    const drawH=frameHeight*3;
+    const drawW=
+        frameWidth*3;
+
+    const drawH=
+        frameHeight*3;
+
 
     const feetY=
         bunny.y+bunny.height;
 
-    const drawX=bunny.x;
+    const drawX=
+        bunny.x;
 
     const drawY=
         feetY-drawH;
@@ -1398,12 +1339,17 @@ function drawBunny(){
 
     ctx.save();
 
+    /*
+        Flip bunny so it faces right.
+    */
+
     ctx.translate(
         drawX+drawW,
         drawY
     );
 
     ctx.scale(-1,1);
+
 
     ctx.drawImage(
         image,
@@ -1432,68 +1378,63 @@ function drawBunny(){
 function getBunnyHitbox(){
 
     /*
-        Deliberately smaller than the
-        visible bunny so collisions feel
-        fair instead of hitting the ears.
+        The bunny's collision box is kept
+        slightly inside the visible sprite.
+
+        This makes the game feel fair.
     */
 
     return {
 
-        x:bunny.x+18,
+        x:bunny.x+13,
 
-        y:bunny.y+9,
+        y:bunny.y+12,
 
-        width:48,
+        width:52,
 
-        height:65
+        height:60
+
     };
 }
 
 
 /* =========================
-   CACTUS HITBOX
+   CACTUS COLLISION
 ========================= */
 
 function checkCollision(){
 
-    const b=getBunnyHitbox();
+    const b=
+        getBunnyHitbox();
 
 
     for(const o of obstacles){
 
         /*
-            Slightly shrink the cactus box
-            so transparent edges of the PNG
-            do not cause unfair collisions.
+            Because the cactus image is
+            drawn using o.width/o.height,
+            this box is EXACTLY the size
+            of the visible cactus texture.
         */
-
-        const paddingX=
-            Math.min(
-                5,
-                o.width*.12
-            );
-
-        const paddingY=
-            Math.min(
-                3,
-                o.height*.03
-            );
 
         const cactusHit={
 
-            x:o.x+paddingX,
+            x:o.x+2,
 
-            y:o.y+paddingY,
+            y:o.y+2,
 
-            width:Math.max(
-                1,
-                o.width-paddingX*2
-            ),
+            width:
+                Math.max(
+                    1,
+                    o.width-4
+                ),
 
-            height:Math.max(
-                1,
-                o.height-paddingY*2
-            )
+            height:
+                Math.max(
+                    1,
+                    o.height-4
+                )
+
         };
 
 
@@ -1501,14 +1442,20 @@ function checkCollision(){
 
             b.x <
                 cactusHit.x+
-                cactusHit.width &&
+                cactusHit.width
+
+            &&
 
             b.x+b.width >
-                cactusHit.x &&
+                cactusHit.x
+
+            &&
 
             b.y <
                 cactusHit.y+
-                cactusHit.height &&
+                cactusHit.height
+
+            &&
 
             b.y+b.height >
                 cactusHit.y
@@ -1519,49 +1466,8 @@ function checkCollision(){
         }
     }
 
+
     return false;
-}
-
-
-/* =========================
-   SCORE DISPLAY
-========================= */
-
-function updateScoreDisplay(){
-
-    /*
-        Score is ALWAYS converted to an
-        integer here.
-
-        This fixes the old broken counter
-        where the canvas number and actual
-        score could drift apart.
-    */
-
-    score=
-        Math.max(
-            0,
-            Math.floor(
-                distanceScore+
-                passedBonus
-            )
-        );
-
-
-    const display=
-        document.getElementById(
-            "score-display"
-        );
-
-
-    if(display){
-
-        display.textContent=
-            String(score).padStart(
-                5,
-                "0"
-            );
-    }
 }
 
 
@@ -1571,16 +1477,20 @@ function updateScoreDisplay(){
 
 function jump(){
 
+    AudioFX.play("jump");
+
+
     if(!started){
 
         started=true;
 
-        dead=false;
+        bunny.grounded=true;
+
+        runAnimTime=0;
+        jumpTime=0;
 
         lastTime=
             performance.now();
-
-        AudioFX.play("start");
 
         requestAnimationFrame(loop);
 
@@ -1590,7 +1500,7 @@ function jump(){
 
     if(dead){
 
-        restartGame();
+        restart();
 
         return;
     }
@@ -1604,8 +1514,6 @@ function jump(){
         bunny.grounded=false;
 
         jumpTime=0;
-
-        AudioFX.play("jump");
     }
 }
 
@@ -1614,53 +1522,41 @@ function jump(){
    RESTART
 ========================= */
 
-function restartGame(){
-
-    started=true;
-
-    dead=false;
+function restart(){
 
     score=0;
 
-    distanceScore=0;
-
-    passedBonus=0;
-
     speed=6;
 
-    groundOffset=0;
+    obstacles.length=0;
 
     spawnTimer=0;
 
     nextSpawn=1200;
 
-    obstacles.length=0;
-
-
     bunny.y=
-        GROUND-bunny.height;
+        GROUND-
+        bunny.height;
 
     bunny.velocityY=0;
 
     bunny.grounded=true;
 
-
     runAnimTime=0;
-
     jumpTime=0;
 
+    groundOffset=0;
 
-    document.getElementById(
-        "reward-modal"
-    ).style.display="none";
+    dead=false;
 
-
-    updateScoreDisplay();
-
+    started=true;
 
     lastTime=
         performance.now();
 
+    document.getElementById(
+        "reward-modal"
+    ).style.display="none";
 
     requestAnimationFrame(loop);
 }
@@ -1672,17 +1568,13 @@ function restartGame(){
 
 function gameOver(){
 
-    if(dead){
-        return;
-    }
+    if(dead)return;
 
     dead=true;
 
     bunny.velocityY=0;
 
     AudioFX.play("lose");
-
-    updateScoreDisplay();
 
     showGameOverModal();
 }
@@ -1699,20 +1591,7 @@ function update(dt){
     }
 
 
-    /*
-        Prevent giant jumps if the browser
-        pauses for a moment.
-    */
-
-    dt=Math.min(
-        dt,
-        32
-    );
-
-
-    /*
-        RUN ANIMATION
-    */
+    /* RUN ANIMATION */
 
     if(bunny.grounded){
 
@@ -1720,28 +1599,24 @@ function update(dt){
     }
 
 
-    /*
-        PHYSICS
-    */
+    /* BUNNY PHYSICS */
 
     if(!bunny.grounded){
 
         jumpTime+=dt;
 
-        const frameScale=
-            dt/16.6667;
-
         bunny.velocityY+=
             bunny.gravity*
-            frameScale;
+            (dt/16.6667);
 
         bunny.y+=
             bunny.velocityY*
-            frameScale;
+            (dt/16.6667);
 
 
         const groundY=
-            GROUND-bunny.height;
+            GROUND-
+            bunny.height;
 
 
         if(bunny.y>=groundY){
@@ -1760,11 +1635,12 @@ function update(dt){
 
 
     /*
-        GAME SPEED
+        Gradually accelerate.
     */
 
     speed+=
-        .00035*dt;
+        .00035*
+        dt;
 
 
     const movement=
@@ -1773,24 +1649,23 @@ function update(dt){
 
 
     /*
-        FIXED, RELIABLE SCORE
+        SCORE FIX
 
-        Every 10 pixels travelled = 1 point.
+        Score is now based on actual
+        elapsed movement instead of
+        being tied to obstacle spawning.
 
-        Because distanceScore is based on
-        movement rather than frame count,
-        the score remains stable on mobile.
+        It cannot randomly stop.
     */
 
-    distanceScore+=
-        movement/10;
-
-
-    updateScoreDisplay();
+    score+=
+        movement*
+        .055;
 
 
     /*
-        GROUND
+        Ground and cactus movement
+        use the EXACT same movement.
     */
 
     groundOffset-=movement;
@@ -1801,9 +1676,7 @@ function update(dt){
     }
 
 
-    /*
-        CACTUSES
-    */
+    /* MOVE CACTUSES */
 
     for(
         let i=obstacles.length-1;
@@ -1811,14 +1684,15 @@ function update(dt){
         i--
     ){
 
-        const o=obstacles[i];
+        const o=
+            obstacles[i];
 
         o.x-=movement;
 
 
         /*
-            +100 when the bunny successfully
-            clears an entire cactus.
+            +100 when the cactus has
+            completely passed the bunny.
         */
 
         if(
@@ -1828,15 +1702,14 @@ function update(dt){
 
             o.counted=true;
 
-            passedBonus+=100;
+            score+=100;
 
-            updateScoreDisplay();
+            AudioFX.play("coin");
         }
 
 
         if(
-            o.x+o.width<
-            -120
+            o.x+o.width<-50
         ){
 
             obstacles.splice(
@@ -1847,9 +1720,7 @@ function update(dt){
     }
 
 
-    /*
-        SPAWN
-    */
+    /* SPAWN */
 
     spawnTimer+=dt;
 
@@ -1861,14 +1732,55 @@ function update(dt){
     }
 
 
-    /*
-        COLLISION
-    */
+    /* COLLISION */
 
     if(checkCollision()){
 
         gameOver();
     }
+}
+
+
+/* =========================
+   PIXEL SCORE
+========================= */
+
+function drawScore(){
+
+    /*
+        This keeps the score looking like
+        the old pixel/Dino counter.
+
+        No rounded pill.
+        No normal UI font.
+        Just the raw padded number.
+    */
+
+    ctx.save();
+
+    ctx.fillStyle=DARK;
+
+    ctx.font=
+        "bold 24px monospace";
+
+    ctx.textAlign="right";
+
+    ctx.textBaseline="alphabetic";
+
+    ctx.imageSmoothingEnabled=false;
+
+    ctx.fillText(
+
+        String(
+            Math.floor(score)
+        ).padStart(5,"0"),
+
+        W-28,
+
+        42
+    );
+
+    ctx.restore();
 }
 
 
@@ -1899,41 +1811,52 @@ function draw(){
 
     drawBunny();
 
+    drawScore();
 
-    /*
-        Start text is drawn on the
-        actual game canvas.
-    */
+
+    /* START */
 
     if(!started){
+
+        ctx.save();
 
         ctx.textAlign="center";
 
         ctx.fillStyle=DARK;
 
-        ctx.font="26px Georgia";
+        ctx.font=
+            "26px Georgia";
 
         ctx.fillText(
             "PRESS SPACE OR TAP",
             W/2,
             90
         );
+
+        ctx.restore();
     }
 
 
+    /* GAME OVER */
+
     if(dead){
+
+        ctx.save();
 
         ctx.textAlign="center";
 
         ctx.fillStyle=DARK;
 
-        ctx.font="25px Georgia";
+        ctx.font=
+            "30px Georgia";
 
         ctx.fillText(
-            "GAME OVER",
+            "PRESS SPACE OR TAP TO RESTART",
             W/2,
-            90
+            105
         );
+
+        ctx.restore();
     }
 }
 
@@ -1944,24 +1867,17 @@ function draw(){
 
 function loop(time){
 
-    /*
-        First frame protection.
-    */
-
     if(!lastTime){
-
         lastTime=time;
     }
 
-
-    const dt=Math.min(
-        time-lastTime,
-        32
-    );
-
+    const dt=
+        Math.min(
+            time-lastTime,
+            32
+        );
 
     lastTime=time;
-
 
     update(dt);
 
@@ -1972,8 +1888,108 @@ function loop(time){
 
         requestAnimationFrame(loop);
     }
-    }/* =========================
-   MODAL ICONS
+}
+
+
+/* =========================
+   INPUT
+========================= */
+
+function handleInput(){
+
+    if(dead){
+
+        restart();
+
+        return;
+    }
+
+    jump();
+}
+
+
+window.addEventListener(
+    "keydown",
+    e=>{
+
+        if(
+            e.code==="Space" ||
+            e.code==="ArrowUp" ||
+            e.code==="KeyW"
+        ){
+
+            e.preventDefault();
+
+            handleInput();
+        }
+    }
+);
+
+
+canvas.addEventListener(
+    "pointerdown",
+    e=>{
+
+        e.preventDefault();
+
+        handleInput();
+    }
+);<script>
+
+/* =========================
+   BUNNY TEXTURES
+========================= */
+
+/*
+    Your original bunny sprites.
+    Replace these later with your final
+    versions if you want to.
+
+    IMPORTANT:
+    The canvas animation expects:
+
+    idle = 1 frame, 28x28
+    run  = 8 frames, 28x28 each
+    jump = 8 frames, 28x36 each
+*/
+
+idleImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAA9klEQVR42u1UMQ6EIBAEYmdvjIUlhbVP8AE+1Qf4BGsLSwtj6K25inPv2EU8OGPhdggyzOzMMvbUU0/dtoo81UWe6tj3CtdmJTMGQWM8QlDsKplZ39qmZm1TsxBQcXWrSMBxUha7vwEu68bhGoJ1/WDt31pSTpkGkzCUHcowZr+wSkIGg0//nZKa/MmyJH/o+sEy0jTPH852gXIq8Aa06wfmKzEEpkAFlj+YwTMFlaEk566xBi8wr3fJDc9SLBO86Upf6tL9ZQple8R6Xyv9zTLKpDHAwaNtWTduDGTigIGcMdnPwT8C8TYN5thxUu8sYsGnhgNWL5sPiDbAGkWfAAAAAElFTkSuQmCC";  
+  
+runImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAcCAYAAAB4fbODAAADlElEQVR42u1aPZKzMAw1Gbr0O5kUlBRb5wg5QI7KATgCdQpKip0d+q35im+U1RpjJGMLCNLMFlkIz3rWz5ODMWpqampqampqampqampqampqamr7sevlPFwv50GZoNtJKVCLaZ/lh8FJqEmpCagm1P0+y4/R/x73m3ncb0aTkJmA0pVLK+V78QrJZ4wxVd2Yr++fbM9+pcI7bUlOSOIdqcBI8vpse2OMMZB87yR3XXhJElBaTqwlX965wKzJK06+VN1vK/G5FOuQM+BRCoy0LFxzPyX9wnjJJChIidiAW8E7kqWWhbBfZVEk735ryd1UeM4EtElLTao03hELTCpOfb5IdHfJhE+Bd0gJeoQCo7YPy+eqWlkUu64wW5lR1pyLUu2ha7Z9B7+W4Ln22reuPOWAucZQu7VNtH2TDhoJa7vu5VdVN3+K6ON+M1XdDByFsMU4oRZYuL/tOnRHP0z5mMeu6tyACnFyT3jSfEpjwmyLC4tP1eCkhe9fL+dhj0oH+HP5N+bDnYSZS1L4yKzqZkQqJpO7gXMJsWe8tfiUxMQyFGPC83zrsHF9mBy/lnZaKh5HIUz5mM2RaUuKGGT6nJTGi0UkJzhT4a21h/izPRNS/G67jpyAXL/swkJNxCU8uorPlI8nl6TAi+UYBuQcPPzVy7J4c1VzKZ7NZ2o8yT2EIMVJh3Ht5Gu7zrnXZVGM3hKK5VdZFK/nw1/o3lHiaiqWpwpRFltSUCva1PAa2plC8TjdgYvn4hPwUvApvYfU/YOi41MDoV2Q6xc3Xqh4rk7r4sQ+eMvdOrkXOTb/+v7JwEl8khZCaiiefWoVE8/FJ2Cn5hUwn21vUv1UAIGEE9HV4X8D7v+aQjnmxibmOQSTigcJbceYzQW8eljVzetAJvcPq/0wV7Vc134/97OnW5xg2SOeNJ/uOWcaN1bhgWCjrM91CMTp7Fga+k5Y52Qp/DziWzMklK+z2d0UYgw4h+tV3YwOAPMYldDuXjEqqS8o9oYnzac0Jrco2B0C3iOlzFvPtifJXcr30BgyW9hwMnG6Jy7wkITkBMQPsWclXGWebR8lYDCe/cx3w5Pgk4I7hcmZOUMNeOeOEDS5O57jXPdzurAriX0vU7gkrH1vcAecIy72Bipen/yldCnDBcFXFKa+S5GOvhncloUpJffc9ZyqufGpIfXUi2uKFxcvBJczyy1dD0VSLpG8U/Mw51lT3MXi5x/WB9z8URHs6QAAAABJRU5ErkJggg==";  
+  
+jumpImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAkCAYAAACQVDZDAAADgUlEQVR42u2aPXLyMBCGRcYdfYahoKRIzRE4AEflAByBmsKlC4ZxT+2vyCeyiJW0sq0VUd6nIzi8Xu0/2BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWNar5bBeLQecBLB84Ah0+dp+GpqESEok4FtU61KBqKW7Xi2Hr+3ny98O+5057HfmtydhzfGSU+vjnap1qe5QQtcmnzHGHE9nc73dF7+9oNUcL5xWtgTUrtalukMJ3UvbG2OMsclXQ0LUHC8hrTl0sAMqdiULTb5c3a/kuKt1jiX0qFbWEdRW6hyi76Cn2ZWsPdvNJnvylQxQze6urZdLi01A10G5g0ZbT7MrhYpJ7m6knRAlfKepl0MLI2jllChmQE4Tq9rbzabKiqZhI7eLaY6bGr6rXc/qUK3Y/cUmvGACau9fJTS19dquezjweDo/FZnDfmeOp/OQMqL/1XN8Vz2adPb6tuvIFf3g82Ez5eamBMsUI6foadto97BQBeXstw68tL1Zr5YDRsf3w8YH579Xf/NJuOBGplCwHE/nl6ChwZIaoLEEzKGnaSMdQ6mm/bzYaEN1Q5opdk3ttNBLn4B8PlzEgsUdmeYIlpCROfVK2UhfuzuhxMFt14kTMNUut7BIAxV6cU234HI+bMaMTKFl1YqnjE10R9LQ07KROtFqXtrecB0x1BV/XvdBvTF28df2orOEHp94vvugRYDtgHOMTNKK7Vtex7b4qV0wh41S++zo5EvMKV0w1a5U/0HP32k5n7vf1jb8nNyrPMR7vd0X1ki3C6YeaqqutZF2pDw6z4nI7Sk/Dvm+p7E2p/qOVuwxmtB7Tmg3pl1f20cBj6fzowOPqgCSJEnpSjRAQzvSXHopdvo0x9on7Zjcl0DSDhirwtyoxJ2pDSCfZu16Er9wXY1bP2xi/k/Ax/Wjf4aYY4cLdYpQ1Zqqp22jtCjQc6AV1D5Hyu0Q3N4iGXcl/0eeH/XuTLXruY1B4gPaPWlDud7uC/c330b6Ie43QLTKXNp+loSgeu5n5tCT2OnTHNttU3CrvXSkl427r5Wauz4U7LXrSZI49AQON8JGvwVNuZnY+3MGqLaeVDff7vhdEEJFwfe/tspKzsMNEndskjylU7NerNPG7iH2fiPZjWjmcz9SS8cA6S6mpTdGV3rwc9yPZOSaMvLy14cr9l/T88XGXP7/B8eoAeUpIH/9AAAAAElFTkSuQmCC";  
+
+/* =========================
+   ARCADE COIN INTEGRATION
+========================= */
+
+function awardCoins(amount){
+
+    /*
+        Uses the existing Arcade system
+        if script.js is loaded.
+
+        This prevents Bunny Run from
+        creating a separate coin system.
+    */
+
+    if(typeof addCoins==="function"){
+
+        addCoins(amount);
+
+    }
+
+    if(
+        typeof updateCoinDisplays==="function"
+    ){
+
+        updateCoinDisplays();
+    }
+}
+
+
+/* =========================
+   VICTORY / GAME OVER MODALS
 ========================= */
 
 function showGameOverModal(){
@@ -2011,51 +2027,45 @@ function showGameOverModal(){
 
     card.classList.add("game-over");
 
-
-    title.innerText="Game Over";
-
+    title.innerText=
+        "Oh no ♡";
 
     desc.innerText=
-        "The bunny bumped into a cactus.";
+        "The bunny bumped into a cactus!";
 
-
-    amount.innerText=
-        "Score: "+
-        String(score).padStart(5,"0");
-
-
-    amount.style.display="inline-block";
+    amount.style.display="none";
 
 
     /*
-        Broken-heart symbol.
+        BROKEN HEART
     */
 
     symbol.innerHTML=`
 
         <svg
-            width="34"
-            height="34"
+            width="38"
+            height="38"
             viewBox="0 0 32 32"
             fill="currentColor"
         >
 
-            <path
-                d="M16 28l-1.8-1.6C7.6 20.4 3 16.3 3 11.2
-                   3 7 6.3 3.5 10.5 3.5
-                   c2.4 0 4.7 1.1 6.2 3
-                   1.5-1.9 3.8-3 6.2-3
-                   C27.1 3.5 29 7 29 11.2
-                   c0 5.1-4.6 9.2-11.2 15.2L16 28z"
-            />
+            <path d="
+                M16 28
+                l-2-1.8
+                C7.5 20.7 3 16.6 3 11.4
+                C3 7.1 6.3 3.5 10.5 3.5
+                C13 3.5 15.1 4.8 16 6.8
+                C16.9 4.8 19 3.5 21.5 3.5
+                C25.7 3.5 29 7.1 29 11.4
+                C29 16.6 24.5 20.7 18 26.2
+                L16 28Z
+            "/>
 
             <path
-                d="M16 6.5
-                   c-1.4-1.8-3.6-3-5.7-3
-                   C6.3 3.5 3 7 3 11.2
-                   c0 5.1 4.6 9.2 11.2 15.2
-                   L16 28v-6l-3-3 4-4-4-4 3-4.5z"
-                fill="var(--card-bg)"
+                d="M16 7 L14 12 L18 16 L15 21"
+                fill="none"
+                stroke="var(--card-bg)"
+                stroke-width="2"
             />
 
         </svg>
@@ -2070,121 +2080,54 @@ function showGameOverModal(){
    CLOSE + RESTART
 ========================= */
 
-function closeModalAndRestart(){
+function closeGameModal(){
 
     document.getElementById(
         "reward-modal"
     ).style.display="none";
 
-    restartGame();
+    restart();
 }
 
-
-/* =========================
-   INPUT
-========================= */
-
-function handleInput(){
-
-    if(dead){
-
-        restartGame();
-
-        return;
-    }
-
-    jump();
-}
-
-
-window.addEventListener(
-    "keydown",
-    function(e){
-
-        if(
-            e.code==="Space" ||
-            e.code==="ArrowUp" ||
-            e.code==="KeyW"
-        ){
-
-            e.preventDefault();
-
-            handleInput();
-        }
-    }
-);
-
-
-canvas.addEventListener(
-    "pointerdown",
-    function(e){
-
-        e.preventDefault();
-
-        handleInput();
-    }
-);
-
-
-/* =========================
-   BUNNY SPRITES
-========================= */
-
-idleImage.src=
-"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAA9klEQVR42u1UMQ6EIBAEYmdvjIUlhbVP8AE+1Qf4BGsLSwtj6K25inPv2EU8OGPhdggyzOzMMvbUU0/dtoo81UWe6tj3CtdmJTMGQWM8QlDsKplZ39qmZm1TsxBQcXWrSMBxUha7vwEu68bhGoJ1/WDt31pSTpkGkzCUHcowZr+wSkIGg0//nZKa/MmyJH/o+sEy0jTPH852gXIq8Aa06wfmKzEEpkAFlj+YwTMFlaEk566xBi8wr3fJDc9SLBO86Upf6tL9ZQple8R6Xyv9zTLKpDHAwaNtWTduDGTigIGcMdnPwT8C8TYN5thxUu8sYsGnhgNWL5sPiDbAGkWfAAAAAElFTkSuQmCC";
-
-
-runImage.src=
-"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAcCAYAAAB4fbODAAADlElEQVR42u1aPZKzMAw1Gbr0O5kUlBRb5wg5QI7KATgCdQpKip0d+q35im+U1RpjJGMLCNLMFlkIz3rWz5ODMWpqampqampqampqampqampqamr7sevlPFwv50GZoNtJKVCLaZ/lh8FJqEmpCagm1P0+y4/R/x73m3ncb0aTkJmA0pVLK+V78QrJZ4wxVd2Yr++fbM9+pcI7bUlOSOIdqcBI8vpse2OMMZB87yR3XXhJElBaTqwlX965wKzJK06+VN1vK/G5FOuQM+BRCoy0LFxzPyX9wnjJJChIidiAW8E7kqWWhbBfZVEk735ryd1UeM4EtElLTao03hELTCpOfb5IdHfJhE+Bd0gJeoQCo7YPy+eqWlkUu64wW5lR1pyLUu2ha7Z9B7+W4Ln22reuPOWAucZQu7VNtH2TDhoJa7vu5VdVN3+K6ON+M1XdDByFsMU4oRZYuL/tOnRHP0z5mMeu6tyACnFyT3jSfEpjwmyLC4tP1eCkhe9fL+dhj0oH+HP5N+bDnYSZS1L4yKzqZkQqJpO7gXMJsWe8tfiUxMQyFGPC83zrsHF9mBy/lnZaKh5HIUz5mM2RaUuKGGT6nJTGi0UkJzhT4a21h/izPRNS/G67jpyAXL/swkJNxCU8uorPlI8nl6TAi+UYBuQcPPzVy7J4c1VzKZ7NZ2o8yT2EIMVJh3Ht5Gu7zrnXZVGM3hKK5VdZFK/nw1/o3lHiaiqWpwpRFltSUCva1PAa2plC8TjdgYvn4hPwUvApvYfU/YOi41MDoV2Q6xc3Xqh4rk7r4sQ+eMvdOrkXOTb/+v7JwEl8khZCaiiefWoVE8/FJ2Cn5hUwn21vUv1UAIGEE9HV4X8D7v+aQjnmxibmOQSTigcJbceYzQW8eljVzetAJvcPq/0wV7Vc134/97OnW5xg2SOeNJ/uOWcaN1bhgWCjrM91CMTp7Fga+k5Y52Qp/DziWzMklK+z2d0UYgw4h+tV3YwOAPMYldDuXjEqqS8o9oYnzac0Jrco2B0C3iOlzFvPtifJXcr30BgyW9hwMnG6Jy7wkITkBMQPsWclXGWebR8lYDCe/cx3w5Pgk4I7hcmZOUMNeOeOEDS5O57jXPdzurAriX0vU7gkrH1vcAecIy72Bipen/yldCnDBcFXFKa+S5GOvhncloUpJffc9ZyqufGpIfXUi2uKFxcvBJczyy1dD0VSLpG8U/Mw51lT3MXi5x/WB9z8URHs6QAAAABJRU5ErkJggg==";
-
-
-jumpImage.src=
-"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAkCAYAAACQVDZDAAADgUlEQVR42u2aPXLyMBCGRcYdfYahoKRIzRE4AEflAByBmsKlC4ZxT+2vyCeyiJW0sq0VUd6nIzi8Xu0/2BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWNar5bBeLQecBLB84Ah0+dp+GpqESEok4FtU61KBqKW7Xi2Hr+3ny98O+5057HfmtydhzfGSU+vjnap1qe5QQtcmnzHGHE9nc73dF7+9oNUcL5xWtgTUrtalukMJ3UvbG2OMsclXQ0LUHC8hrTl0sAMqdiULTb5c3a/kuKt1jiX0qFbWEdRW6hyi76Cn2ZWsPdvNJnvylQxQze6urZdLi01A10G5g0ZbT7MrhYpJ7m6knRAlfKepl0MLI2jllChmQE4Tq9rbzabKiqZhI7eLaY6bGr6rXc/qUK3Y/cUmvGACau9fJTS19dquezjweDo/FZnDfmeOp/OQMqL/1XN8Vz2adPb6tuvIFf3g82Ez5eamBMsUI6foadto97BQBeXstw68tL1Zr5YDRsf3w8YH579Xf/NJuOBGplCwHE/nl6ChwZIaoLEEzKGnaSMdQ6mm/bzYaEN1Q5opdk3ttNBLn4B8PlzEgsUdmeYIlpCROfVK2UhfuzuhxMFt14kTMNUut7BIAxV6cU234HI+bMaMTKFl1YqnjE10R9LQ07KROtFqXtrecB0x1BV/XvdBvTF28df2orOEHp94vvugRYDtgHOMTNKK7Vtex7b4qV0wh41S++zo5EvMKV0w1a5U/0HP32k5n7vf1jb8nNyrPMR7vd0X1ki3C6YeaqqutZF2pDw6z4nI7Sk/Dvm+p7E2p/qOVuwxmtB7Tmg3pl1f20cBj6fzowOPqgCSJEnpSjRAQzvSXHopdvo0x9on7Zjcl0DSDhirwtyoxJ2pDSCfZu16Er9wXY1bP2xi/k/Ax/Wjf4aYY4cLdYpQ1Zqqp22jtCjQc6AV1D5Hyu0Q3N4iGXcl/0eeH/XuTLXruY1B4gPaPWlDud7uC/c330b6Ie43QLTKXNp+loSgeu5n5tCT2OnTHNttU3CrvXSkl427r5Wauz4U7LXrSZI49AQON8JGvwVNuZnY+3MGqLaeVDff7vhdEEJFwfe/tspKzsMNEndskjylU7NerNPG7iH2fiPZjWjmcz9SS8cA6S6mpTdGV3rwc9yPZOSaMvLy14cr9l/T88XGXP7/B8eoAeUpIH/9AAAAAElFTkSuQmCC";
-
-
-/* =========================
-   IMAGE LOAD
-========================= */
-
-let bunnyImagesLoaded=0;
-
-function bunnyImageLoaded(){
-
-    bunnyImagesLoaded++;
-
-    if(bunnyImagesLoaded>=3){
-
-        draw();
-    }
-}
-
-idleImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAA9klEQVR42u1UMQ6EIBAEYmdvjIUlhbVP8AE+1Qf4BGsLSwtj6K25inPv2EU8OGPhdggyzOzMMvbUU0/dtoo81UWe6tj3CtdmJTMGQWM8QlDsKplZ39qmZm1TsxBQcXWrSMBxUha7vwEu68bhGoJ1/WDt31pSTpkGkzCUHcowZr+wSkIGg0//nZKa/MmyJH/o+sEy0jTPH852gXIq8Aa06wfmKzEEpkAFlj+YwTMFlaEk566xBi8wr3fJDc9SLBO86Upf6tL9ZQple8R6Xyv9zTLKpDHAwaNtWTduDGTigIGcMdnPwT8C8TYN5thxUu8sYsGnhgNWL5sPiDbAGkWfAAAAAElFTkSuQmCC";  
-  
-runImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAcCAYAAAB4fbODAAADlElEQVR42u1aPZKzMAw1Gbr0O5kUlBRb5wg5QI7KATgCdQpKip0d+q35im+U1RpjJGMLCNLMFlkIz3rWz5ODMWpqampqampqampqampqampqamr7sevlPFwv50GZoNtJKVCLaZ/lh8FJqEmpCagm1P0+y4/R/x73m3ncb0aTkJmA0pVLK+V78QrJZ4wxVd2Yr++fbM9+pcI7bUlOSOIdqcBI8vpse2OMMZB87yR3XXhJElBaTqwlX965wKzJK06+VN1vK/G5FOuQM+BRCoy0LFxzPyX9wnjJJChIidiAW8E7kqWWhbBfZVEk735ryd1UeM4EtElLTao03hELTCpOfb5IdHfJhE+Bd0gJeoQCo7YPy+eqWlkUu64wW5lR1pyLUu2ha7Z9B7+W4Ln22reuPOWAucZQu7VNtH2TDhoJa7vu5VdVN3+K6ON+M1XdDByFsMU4oRZYuL/tOnRHP0z5mMeu6tyACnFyT3jSfEpjwmyLC4tP1eCkhe9fL+dhj0oH+HP5N+bDnYSZS1L4yKzqZkQqJpO7gXMJsWe8tfiUxMQyFGPC83zrsHF9mBy/lnZaKh5HIUz5mM2RaUuKGGT6nJTGi0UkJzhT4a21h/izPRNS/G67jpyAXL/swkJNxCU8uorPlI8nl6TAi+UYBuQcPPzVy7J4c1VzKZ7NZ2o8yT2EIMVJh3Ht5Gu7zrnXZVGM3hKK5VdZFK/nw1/o3lHiaiqWpwpRFltSUCva1PAa2plC8TjdgYvn4hPwUvApvYfU/YOi41MDoV2Q6xc3Xqh4rk7r4sQ+eMvdOrkXOTb/+v7JwEl8khZCaiiefWoVE8/FJ2Cn5hUwn21vUv1UAIGEE9HV4X8D7v+aQjnmxibmOQSTigcJbceYzQW8eljVzetAJvcPq/0wV7Vc134/97OnW5xg2SOeNJ/uOWcaN1bhgWCjrM91CMTp7Fga+k5Y52Qp/DziWzMklK+z2d0UYgw4h+tV3YwOAPMYldDuXjEqqS8o9oYnzac0Jrco2B0C3iOlzFvPtifJXcr30BgyW9hwMnG6Jy7wkITkBMQPsWclXGWebR8lYDCe/cx3w5Pgk4I7hcmZOUMNeOeOEDS5O57jXPdzurAriX0vU7gkrH1vcAecIy72Bipen/yldCnDBcFXFKa+S5GOvhncloUpJffc9ZyqufGpIfXUi2uKFxcvBJczyy1dD0VSLpG8U/Mw51lT3MXi5x/WB9z8URHs6QAAAABJRU5ErkJggg==";  
-  
-jumpImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAkCAYAAACQVDZDAAADgUlEQVR42u2aPXLyMBCGRcYdfYahoKRIzRE4AEflAByBmsKlC4ZxT+2vyCeyiJW0sq0VUd6nIzi8Xu0/2BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWNar5bBeLQecBLB84Ah0+dp+GpqESEok4FtU61KBqKW7Xi2Hr+3ny98O+5057HfmtydhzfGSU+vjnap1qe5QQtcmnzHGHE9nc73dF7+9oNUcL5xWtgTUrtalukMJ3UvbG2OMsclXQ0LUHC8hrTl0sAMqdiULTb5c3a/kuKt1jiX0qFbWEdRW6hyi76Cn2ZWsPdvNJnvylQxQze6urZdLi01A10G5g0ZbT7MrhYpJ7m6knRAlfKepl0MLI2jllChmQE4Tq9rbzabKiqZhI7eLaY6bGr6rXc/qUK3Y/cUmvGACau9fJTS19dquezjweDo/FZnDfmeOp/OQMqL/1XN8Vz2adPb6tuvIFf3g82Ez5eamBMsUI6foadto97BQBeXstw68tL1Zr5YDRsf3w8YH579Xf/NJuOBGplCwHE/nl6ChwZIaoLEEzKGnaSMdQ6mm/bzYaEN1Q5opdk3ttNBLn4B8PlzEgsUdmeYIlpCROfVK2UhfuzuhxMFt14kTMNUut7BIAxV6cU234HI+bMaMTKFl1YqnjE10R9LQ07KROtFqXtrecB0x1BV/XvdBvTF28df2orOEHp94vvugRYDtgHOMTNKK7Vtex7b4qV0wh41S++zo5EvMKV0w1a5U/0HP32k5n7vf1jb8nNyrPMR7vd0X1ki3C6YeaqqutZF2pDw6z4nI7Sk/Dvm+p7E2p/qOVuwxmtB7Tmg3pl1f20cBj6fzowOPqgCSJEnpSjRAQzvSXHopdvo0x9on7Zjcl0DSDhirwtyoxJ2pDSCfZu16Er9wXY1bP2xi/k/Ax/Wjf4aYY4cLdYpQ1Zqqp22jtCjQc6AV1D5Hyu0Q3N4iGXcl/0eeH/XuTLXruY1B4gPaPWlDud7uC/c330b6Ie43QLTKXNp+loSgeu5n5tCT2OnTHNttU3CrvXSkl427r5Wauz4U7LXrSZI49AQON8JGvwVNuZnY+3MGqLaeVDff7vhdEEJFwfe/tspKzsMNEndskjylU7NerNPG7iH2fiPZjWjmcz9SS8cA6S6mpTdGV3rwc9yPZOSaMvLy14cr9l/T88XGXP7/B8eoAeUpIH/9AAAAAElFTkSuQmCC";  
 
 /* =========================
    INITIAL DRAW
 ========================= */
 
-updateScoreDisplay();
-
 draw();
 
 
-/* =========================
-   START
-========================= */
+/*
+    Force the Arcade coin counter
+    to show the current balance.
+*/
 
-canvas.addEventListener(
-    "pointerdown",
+if(
+    typeof updateCoinDisplays==="function"
+){
+
+    updateCoinDisplays();
+}
+
+
+/*
+    Start screen is drawn immediately.
+*/
+
+window.addEventListener(
+    "load",
     function(){
 
-        AudioFX.init();
+        draw();
 
-    },
-    {once:true}
+        if(
+            typeof updateCoinDisplays==="function"
+        ){
+
+            updateCoinDisplays();
+        }
+
+    }
 );
 
 </script>
