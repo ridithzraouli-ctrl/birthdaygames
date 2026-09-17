@@ -2,430 +2,199 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Crossword ♡</title>
-
 <style>
-:root {
-    --bg-base: #f2f7fa;
-    --bg-grad-1: #dce8f3;
-    --bg-grad-2: #d3e2ea;
-    --text-main: #3f5260;
-    --text-heading: #46637a;
-    --accent-border: #82a8bd;
-    --accent-soft: #e9f3f9;
-    --accent-badge: #dfe8f8;
-    --ornament-color: #799eb8;
-    --card-bg: rgba(255,255,255,.88);
-    --header-bg: rgba(255,255,255,.88);
+:root{
+--bg-base:#f2f7fa;--bg-grad-1:#dce8f3;--bg-grad-2:#d3e2ea;
+--text-main:#3f5260;--text-heading:#46637a;--accent-border:#82a8bd;
+--accent-soft:#e9f3f9;--accent-badge:#dfe8f8;--ornament-color:#799eb8;
+--card-bg:rgba(255,255,255,.88);--header-bg:rgba(255,255,255,.88)
+}
+body[data-theme="pink"]{--bg-base:#faf2f5;--bg-grad-1:#f3dce5;--bg-grad-2:#ead3dc;--text-main:#603f4c;--text-heading:#7a4659;--accent-border:#bd8297;--accent-soft:#f9e9f0;--accent-badge:#f8dfe8;--ornament-color:#b87992}
+body[data-theme="green"]{--bg-base:#f3f7f2;--bg-grad-1:#dce8dc;--bg-grad-2:#d3ead3;--text-main:#3f6043;--text-heading:#467a4c;--accent-border:#82bd8b;--accent-soft:#e9f9eb;--accent-badge:#dff8e2;--ornament-color:#79b882}
+body[data-theme="lavender"]{--bg-base:#f5f2fa;--bg-grad-1:#e3dcf3;--bg-grad-2:#dad3ea;--text-main:#4a3f60;--text-heading:#59467a;--accent-border:#9882bd;--accent-soft:#f0e9f9;--accent-badge:#e9dff8;--ornament-color:#9379b8}
+body[data-theme="yellow"]{--bg-base:#faf8f2;--bg-grad-1:#f3edd2;--bg-grad-2:#eae3c5;--text-main:#60573f;--text-heading:#7a6e46;--accent-border:#bdb182;--accent-soft:#f9f5e9;--accent-badge:#f8f3df;--ornament-color:#b8aa79}
+
+*{box-sizing:border-box;min-width:0;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;max-width:100%;overflow-x:hidden}
+body{
+min-height:100vh;margin:0;
+background:
+radial-gradient(circle at 10% 12%,var(--bg-grad-1) 0,transparent 28%),
+radial-gradient(circle at 90% 85%,var(--bg-grad-2) 0,transparent 30%),
+var(--bg-base);
+color:var(--text-main);
+font-family:Georgia,"Times New Roman",serif
 }
 
-body[data-theme="pink"] {
-    --bg-base:#faf2f5;
-    --bg-grad-1:#f3dce5;
-    --bg-grad-2:#ead3dc;
-    --text-main:#603f4c;
-    --text-heading:#7a4659;
-    --accent-border:#bd8297;
-    --accent-soft:#f9e9f0;
-    --accent-badge:#f8dfe8;
-    --ornament-color:#b87992;
-}
-
-body[data-theme="green"] {
-    --bg-base:#f3f7f2;
-    --bg-grad-1:#dce8dc;
-    --bg-grad-2:#d3ead3;
-    --text-main:#3f6043;
-    --text-heading:#467a4c;
-    --accent-border:#82bd8b;
-    --accent-soft:#e9f9eb;
-    --accent-badge:#dff8e2;
-    --ornament-color:#79b882;
-}
-
-body[data-theme="lavender"] {
-    --bg-base:#f5f2fa;
-    --bg-grad-1:#e3dcf3;
-    --bg-grad-2:#dad3ea;
-    --text-main:#4a3f60;
-    --text-heading:#59467a;
-    --accent-border:#9882bd;
-    --accent-soft:#f0e9f9;
-    --accent-badge:#e9dff8;
-    --ornament-color:#9379b8;
-}
-
-body[data-theme="yellow"] {
-    --bg-base:#faf8f2;
-    --bg-grad-1:#f3edd2;
-    --bg-grad-2:#eae3c5;
-    --text-main:#60573f;
-    --text-heading:#7a6e46;
-    --accent-border:#bdb182;
-    --accent-soft:#f9f5e9;
-    --accent-badge:#f8f3df;
-    --ornament-color:#b8aa79;
-}
-
-* {
-    box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
-}
-
-html,
-body {
-    width:100%;
-    max-width:100%;
-    overflow-x:hidden;
-}
-
-body {
-    margin:0;
-    min-height:100vh;
-    background:
-        radial-gradient(circle at 10% 12%,var(--bg-grad-1) 0,transparent 28%),
-        radial-gradient(circle at 90% 85%,var(--bg-grad-2) 0,transparent 30%),
-        var(--bg-base);
-    color:var(--text-main);
-    font-family:Georgia,"Times New Roman",serif;
-}
-
-.decorations {
-    position:fixed;
-    inset:0;
-    pointer-events:none;
-    overflow:hidden;
-    z-index:-1;
-}
-
-.decorations span {
-    position:absolute;
-    color:var(--ornament-color);
-    opacity:.35;
-    animation:float 5s ease-in-out infinite;
-}
-
+.decorations{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:-1}
+.decorations span{position:absolute;color:var(--ornament-color);opacity:.35;animation:float 5s ease-in-out infinite}
 .decorations span:nth-child(1){top:13%;left:7%;font-size:20px}
 .decorations span:nth-child(2){top:28%;right:8%;font-size:13px;animation-delay:1s}
 .decorations span:nth-child(3){top:55%;left:5%;font-size:14px;animation-delay:2s}
 .decorations span:nth-child(4){top:68%;right:6%;font-size:21px;animation-delay:1.5s}
 .decorations span:nth-child(5){bottom:12%;left:12%;font-size:12px;animation-delay:.5s}
 .decorations span:nth-child(6){bottom:20%;right:13%;font-size:16px;animation-delay:2.5s}
+@keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-7px) rotate(7deg)}}
 
-@keyframes float {
-    0%,100% {
-        transform:translateY(0) rotate(0);
-    }
-    50% {
-        transform:translateY(-7px) rotate(7deg);
-    }
+header{
+display:flex;align-items:center;justify-content:space-between;
+width:100%;min-height:64px;padding:10px 16px;
+background:var(--header-bg);backdrop-filter:blur(8px);
+border-bottom:1px solid var(--bg-grad-2);
+position:sticky;top:0;z-index:100
+}
+.nav-link{color:var(--text-heading);font-size:13px;cursor:pointer;text-decoration:none}
+.coin-display{
+background:var(--accent-soft);border:1px solid var(--accent-border);
+padding:6px 10px;border-radius:100px;font-size:12px;font-weight:bold;
+color:var(--text-heading)
 }
 
-header {
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    width:100%;
-    min-height:66px;
-    padding:12px 16px;
-    background:var(--header-bg);
-    backdrop-filter:blur(8px);
-    border-bottom:1px solid var(--bg-grad-2);
-    position:sticky;
-    top:0;
-    z-index:100;
+main{
+width:100%;max-width:620px;margin:auto;
+padding:18px 10px 30px;display:flex;flex-direction:column;align-items:center
+}
+.ornament{display:flex;align-items:center;justify-content:center;gap:9px;height:18px;margin-bottom:8px;color:var(--ornament-color)}
+.ornament span{font-size:14px}
+.ornament i{width:32px;height:1px;background:var(--ornament-color);opacity:.45}
+h1{color:var(--text-heading);font-weight:normal;font-size:27px;margin:0 0 13px;text-align:center}
+
+.crossword-card{
+width:100%;background:var(--card-bg);border:1px solid var(--bg-grad-2);
+border-radius:14px;padding:10px;
+box-shadow:0 7px 22px rgba(0,0,0,.045)
 }
 
-.nav-link {
-    color:var(--text-heading);
-    text-decoration:none;
-    font-size:13px;
-    cursor:pointer;
+.crossword-grid{
+width:100%;
+display:grid;
+grid-template-columns:repeat(17,1fr);
+grid-template-rows:repeat(16,1fr);
+aspect-ratio:17/16;
+gap:2px;
+background:transparent;
 }
 
-.header-right {
-    display:flex;
-    align-items:center;
-    gap:7px;
+.cell{
+position:relative;
+min-width:0;min-height:0;
+background:rgba(255,255,255,.72);
+border:1px solid var(--accent-border);
+border-radius:5px;
+display:flex;align-items:center;justify-content:center;
+overflow:hidden;
+transition:background-color .8s ease,opacity .8s ease
 }
 
-.coin-display {
-    background:var(--accent-soft);
-    border:1px solid var(--accent-border);
-    padding:6px 10px;
-    border-radius:100px;
-    font-size:12px;
-    font-weight:bold;
-    color:var(--text-heading);
+.cell.block{
+background:transparent;
+border-color:transparent
 }
 
-main {
-    width:100%;
-    max-width:620px;
-    margin:0 auto;
-    padding:24px 14px 35px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
+.cell input{
+width:100%;height:100%;
+border:0;outline:0;padding:0;margin:0;
+background:transparent;
+color:var(--text-heading);
+text-align:center;
+font-family:Georgia,"Times New Roman",serif;
+font-size:clamp(10px,3.3vw,20px);
+font-weight:bold;
+text-transform:uppercase;
+caret-color:var(--accent-border)
 }
 
-.ornament {
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:10px;
-    height:20px;
-    margin-bottom:12px;
-    color:var(--ornament-color);
+.cell-number{
+position:absolute;top:1px;left:2px;
+font-size:clamp(5px,1.25vw,8px);
+line-height:1;color:var(--text-heading);
+opacity:.8;pointer-events:none;z-index:2
 }
 
-.ornament span {
-    font-size:15px;
+.cell.correct{background:#cfe9d2}
+.cell.wrong{background:#f0cccc}
+
+.check-area{display:flex;justify-content:center;margin-top:12px}
+.btn{
+padding:9px 22px;border:1px solid var(--accent-border);
+border-radius:100px;background:var(--card-bg);
+color:var(--text-heading);
+font-family:Georgia,"Times New Roman",serif;font-size:13px;
+cursor:pointer;transition:.2s ease
 }
+.btn:hover{background:var(--accent-soft);transform:translateY(-1px)}
 
-.ornament i {
-    width:34px;
-    height:1px;
-    background:var(--ornament-color);
-    opacity:.45;
+.clues{
+width:100%;margin-top:18px;
+display:flex;flex-direction:column;gap:7px
 }
-
-h1 {
-    color:var(--text-heading);
-    font-weight:normal;
-    font-size:28px;
-    margin:0 0 20px;
-    text-align:center;
+.clue{
+display:flex;align-items:flex-start;gap:8px;
+padding:7px 9px;border:1px solid var(--bg-grad-2);
+border-radius:8px;background:rgba(255,255,255,.45);
+font-size:13px;line-height:1.35
 }
-
-/* CROSSWORD */
-
-.crossword-card {
-    width:100%;
-    background:var(--card-bg);
-    border:1px solid var(--bg-grad-2);
-    border-radius:16px;
-    padding:14px;
-    box-shadow:0 7px 25px rgba(0,0,0,.055);
-    display:flex;
-    justify-content:center;
+.clue-number{
+flex:0 0 auto;width:21px;height:21px;
+display:flex;align-items:center;justify-content:center;
+border-radius:50%;background:var(--accent-badge);
+border:1px solid var(--accent-border);
+color:var(--text-heading);font-size:10px;font-weight:bold
 }
+.clue-word{color:var(--text-heading);font-weight:bold;margin-right:4px}
 
-.crossword {
-    display:grid;
-    grid-template-columns:repeat(17, minmax(0,1fr));
-    grid-template-rows:repeat(16, minmax(0,1fr));
-    width:min(100%,510px);
-    aspect-ratio:17 / 16;
-    gap:2px;
+.modal-overlay{
+display:none;position:fixed;inset:0;padding:20px;
+background:rgba(30,25,25,.3);backdrop-filter:blur(5px);
+z-index:500;align-items:center;justify-content:center
 }
-
-.cell {
-    position:relative;
-    min-width:0;
-    min-height:0;
-    background:rgba(255,255,255,.72);
-    border:1px solid var(--accent-border);
-    border-radius:2px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
+.modal-card{
+position:relative;background:var(--card-bg);
+border:1px solid var(--accent-border);border-radius:18px;
+padding:28px 23px 23px;max-width:350px;width:100%;
+text-align:center;box-shadow:0 18px 50px rgba(0,0,0,.16);
+animation:victoryPop .35s ease
 }
-
-.cell.black {
-    background:transparent;
-    border:none;
+.modal-card:before,.modal-card:after{
+content:"✦";position:absolute;color:var(--ornament-color);
+opacity:.5;font-size:19px;top:12px
 }
-
-.cell input {
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-    border:0;
-    outline:none;
-    padding:0;
-    margin:0;
-    background:transparent;
-    color:var(--text-heading);
-    font-family:Georgia,"Times New Roman",serif;
-    font-size:clamp(10px,2.7vw,18px);
-    font-weight:bold;
-    text-align:center;
-    text-transform:uppercase;
-    caret-color:var(--accent-border);
-    line-height:1;
-    z-index:2;
+.modal-card:before{left:17px}.modal-card:after{right:17px}
+.victory-symbol{
+width:62px;height:62px;margin:2px auto 13px;border-radius:50%;
+background:var(--accent-soft);border:1px solid var(--accent-border);
+display:flex;align-items:center;justify-content:center;
+color:var(--ornament-color);animation:victoryFloat 2s ease-in-out infinite
 }
-
-.cell-number {
-    position:absolute;
-    top:1px;
-    left:2px;
-    z-index:3;
-    font-size:clamp(5px,1.15vw,8px);
-    line-height:1;
-    color:var(--text-heading);
-    font-weight:bold;
-    pointer-events:none;
+.modal-card h2{color:var(--text-heading);font-size:24px;font-weight:normal;margin:0 0 8px}
+.modal-card p{font-size:14px;line-height:1.55;margin:0 0 18px}
+.reward-amount{
+display:inline-block;margin:-2px 0 18px;padding:7px 13px;
+border-radius:100px;background:var(--accent-badge);
+border:1px solid var(--accent-border);
+color:var(--text-heading);font-size:13px;font-weight:bold
 }
-
-.cell.correct {
-    background:#d9efdd;
-    border-color:#75b981;
-    animation:feedbackFade 2.8s ease forwards;
+.confetti{
+position:absolute;pointer-events:none;color:var(--ornament-color);
+font-size:14px;animation:confettiFall 1.8s ease-out forwards
 }
+.confetti:nth-child(1){left:18%;top:5%}
+.confetti:nth-child(2){left:32%;top:2%;animation-delay:.12s}
+.confetti:nth-child(3){left:50%;top:4%;animation-delay:.2s}
+.confetti:nth-child(4){right:32%;top:2%;animation-delay:.08s}
+.confetti:nth-child(5){right:17%;top:6%;animation-delay:.18s}
 
-.cell.correct input {
-    color:#43804c;
-}
+@keyframes victoryPop{0%{transform:scale(.88);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes victoryFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0);opacity:0}15%{opacity:.8}100%{transform:translateY(115px) rotate(120deg);opacity:0}}
 
-.cell.incorrect {
-    background:#f5dddd;
-    border-color:#c98080;
-    animation:feedbackFade 2.8s ease forwards;
-}
-
-.cell.incorrect input {
-    color:#a64d4d;
-}
-
-@keyframes feedbackFade {
-    0% {
-        background:rgba(255,255,255,0);
-        border-color:var(--accent-border);
-    }
-
-    15% {
-        opacity:1;
-    }
-
-    100% {
-        opacity:1;
-    }
-}
-
-.check-area {
-    margin-top:17px;
-    display:flex;
-    justify-content:center;
-}
-
-.btn {
-    padding:10px 22px;
-    border:1px solid var(--accent-border);
-    border-radius:100px;
-    background:var(--card-bg);
-    color:var(--text-heading);
-    font-family:Georgia,"Times New Roman",serif;
-    font-size:13px;
-    cursor:pointer;
-    transition:.2s ease;
-}
-
-.btn:hover {
-    background:var(--accent-soft);
-    transform:translateY(-1px);
-}
-
-/* CLUES */
-
-.clues {
-    width:100%;
-    margin-top:24px;
-    display:flex;
-    flex-direction:column;
-    gap:9px;
-}
-
-.clues-title {
-    color:var(--text-heading);
-    font-size:18px;
-    text-align:center;
-    font-weight:normal;
-    margin:0 0 5px;
-}
-
-.clue {
-    display:flex;
-    align-items:flex-start;
-    gap:9px;
-    padding:9px 11px;
-    background:var(--card-bg);
-    border:1px solid var(--bg-grad-2);
-    border-radius:9px;
-    font-size:13px;
-    line-height:1.4;
-}
-
-.clue-number {
-    flex:none;
-    width:21px;
-    height:21px;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:var(--accent-soft);
-    border:1px solid var(--accent-border);
-    color:var(--text-heading);
-    font-size:11px;
-    font-weight:bold;
-}
-
-.clue-text {
-    color:var(--text-main);
-    padding-top:1px;
-}
-
-.success-message {
-    display:none;
-    margin-top:18px;
-    text-align:center;
-    color:var(--text-heading);
-    font-size:17px;
-}
-
-.success-message.show {
-    display:block;
-    animation:heartPop .4s ease;
-}
-
-@keyframes heartPop {
-    0% {
-        transform:scale(.7);
-        opacity:0;
-    }
-    100% {
-        transform:scale(1);
-        opacity:1;
-    }
-}
-
-@media(max-width:500px) {
-    main {
-        padding-left:9px;
-        padding-right:9px;
-    }
-
-    .crossword-card {
-        padding:9px;
-    }
-
-    .crossword {
-        gap:1px;
-    }
-
-    .cell-number {
-        top:1px;
-        left:1px;
-    }
-
-    .clue {
-        font-size:12px;
-    }
+@media(max-width:500px){
+header{padding:9px 10px}
+main{padding:15px 7px 25px}
+.crossword-card{padding:7px}
+.clue{font-size:12px}
 }
 </style>
 </head>
@@ -433,409 +202,267 @@ h1 {
 <body>
 
 <div class="decorations">
-    <span>✦</span>
-    <span>✧</span>
-    <span>♡</span>
-    <span>✦</span>
-    <span>✧</span>
-    <span>♡</span>
+<span>✦</span><span>✧</span><span>♡</span>
+<span>✦</span><span>✧</span><span>♡</span>
 </div>
 
 <header>
-    <a onclick="goBack()" class="nav-link">← Back to Games</a>
-
-    <div class="header-right">
-        <div class="coin-display">
-            <span class="coin-count">0</span> Coins
-        </div>
-    </div>
+<div>
+<a onclick="goBack()" class="nav-link">← Back to Games</a>
+</div>
+<div class="coin-display">
+<span class="coin-count">0</span> Coins
+</div>
 </header>
 
 <main>
 
-    <div class="ornament">
-        <span>✦</span>
-        <i></i>
-        <span>♡</span>
-        <i></i>
-        <span>✦</span>
-    </div>
+<div class="ornament">
+<span>✦</span><i></i><span>♡</span><i></i><span>✦</span>
+</div>
 
-    <h1>Crossword</h1>
+<h1>Crossword</h1>
 
-    <div class="crossword-card">
-        <div class="crossword" id="crossword"></div>
-    </div>
+<div class="crossword-card">
 
-    <div class="check-area">
-        <button class="btn" onclick="checkAnswers()">Check ♡</button>
-    </div>
+<div class="crossword-grid" id="crossword-grid"></div>
 
-    <div class="success-message" id="success-message">
-        ♡ You solved it! ♡
-    </div>
+<div class="check-area">
+<button class="btn" id="check-btn" onclick="checkPuzzle()">Check</button>
+</div>
 
-    <div class="clues">
+<div class="clues" id="clues"></div>
 
-        <h2 class="clues-title">Clues</h2>
-
-        <div class="clue">
-            <div class="clue-number">1</div>
-            <div class="clue-text">the animal that reminds me most of you</div>
-        </div>
-
-        <div class="clue">
-            <div class="clue-number">2</div>
-            <div class="clue-text">the character that is most like you</div>
-        </div>
-
-        <div class="clue">
-            <div class="clue-number">3</div>
-            <div class="clue-text">your favorite pattern</div>
-        </div>
-
-        <div class="clue">
-            <div class="clue-number">4</div>
-            <div class="clue-text">your favorite nickname</div>
-        </div>
-
-        <div class="clue">
-            <div class="clue-number">5</div>
-            <div class="clue-text">your favorite flower</div>
-        </div>
-
-        <div class="clue">
-            <div class="clue-number">6</div>
-            <div class="clue-text">strawberry fields in Italy</div>
-        </div>
-
-        <div class="clue">
-            <div class="clue-number">7</div>
-            <div class="clue-text">when we got together</div>
-        </div>
-
-        <div class="clue">
-            <div class="clue-number">8</div>
-            <div class="clue-text">your nickname for me</div>
-        </div>
-
-        <div class="clue">
-            <div class="clue-number">9</div>
-            <div class="clue-text">your favorite place</div>
-        </div>
-
-        <div class="clue">
-            <div class="clue-number">10</div>
-            <div class="clue-text">your favorite gf</div>
-        </div>
-
-        <div class="clue">
-            <div class="clue-number">11</div>
-            <div class="clue-text">the sickest most controversial thing you like</div>
-        </div>
-
-        <div class="clue">
-            <div class="clue-number">12</div>
-            <div class="clue-text">a word from my favorite way to say i love you</div>
-        </div>
-
-    </div>
-
-    <div class="ornament" style="margin-top:28px;margin-bottom:0;">
-        <span>✧</span>
-        <i></i>
-        <span>♡</span>
-        <i></i>
-        <span>✧</span>
-    </div>
-
+</div>
 </main>
 
-<script src="../script.js"></script>
-<script>function loadSavedTheme() {
-    const savedTheme = localStorage.getItem("arcade_theme");
+<div id="reward-modal" class="modal-overlay">
+<div class="modal-card">
 
-    if (["pink","green","lavender","yellow"].includes(savedTheme)) {
-        document.body.setAttribute("data-theme", savedTheme);
-    } else {
-        document.body.removeAttribute("data-theme");
-    }
+<span class="confetti">✦</span>
+<span class="confetti">✧</span>
+<span class="confetti">♡</span>
+<span class="confetti">✦</span>
+<span class="confetti">✧</span>
+
+<div class="victory-symbol">
+<svg width="31" height="31" viewBox="0 0 24 24" fill="currentColor">
+<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+</svg>
+</div>
+
+<h2>You did it ♡</h2>
+<p>You solved the whole crossword!</p>
+<div class="reward-amount">+50 Coins</div>
+
+<button class="btn" onclick="goBack()" style="width:100%">
+Back to Games
+</button>
+
+</div>
+</div>
+
+<script src="../script.js"></script>
+<script>
+function loadSavedTheme(){
+const t=localStorage.getItem("arcade_theme");
+if(["pink","green","lavender","yellow"].includes(t))
+document.body.setAttribute("data-theme",t);
 }
 
 loadSavedTheme();
 
-function goBack() {
-    if (window.history.length > 1) {
-        window.history.back();
-    } else {
-        window.location.href = "../index.html";
-    }
-}
-
-const rawGrid = [
-    "............s....",
-    "............t....",
-    ".......b....r....",
-    "....angel..bakugo",
-    ".......a....w....",
-    ".......c..m.bunny",
-    "..l.lightmode....",
-    "..i.u.....o.rin..",
-    "..l.n.n...n.r....",
-    "..Polkadots...y....",
-    "..i...v..........",
-    "..e...e..........",
-    "..s...m..........",
-    "......b..........",
-    "......e..........",
-    "......r.........."
+const rawGrid=[
+"............s....",
+"............t....",
+".......b....r....",
+"....angel..bakugo",
+".......a....w....",
+".......c..m.bunny",
+"..l.lightmode....",
+"..i.u.....o.rin..",
+"..l.n.n...n.r....",
+"Polkadots...y....",
+"..i...v..........",
+"..e...e..........",
+"..s...m..........",
+"......b..........",
+"......e..........",
+"......r.........."
 ];
 
-const answers = [
-    {
-        number: 1,
-        word: "BUNNY",
-        clue: "the animal that reminds me most of you",
-        row: 5,
-        col: 12,
-        direction: "across"
-    },
-    {
-        number: 2,
-        word: "BAKUGO",
-        clue: "the character that is most like you",
-        row: 3,
-        col: 11,
-        direction: "across"
-    },
-    {
-        number: 3,
-        word: "POLKADOTS",
-        clue: "your favorite pattern",
-        row: 9,
-        col: 0,
-        direction: "across"
-    },
-    {
-        number: 4,
-        word: "ANGEL",
-        clue: "your favorite nickname",
-        row: 3,
-        col: 4,
-        direction: "across"
-    },
-    {
-        number: 5,
-        word: "LILLIES",
-        clue: "your favorite flower",
-        row: 6,
-        col: 2,
-        direction: "down"
-    },
-    {
-        number: 6,
-        word: "STRAWBERRY",
-        clue: "strawberry fields in Italy",
-        row: 0,
-        col: 12,
-        direction: "down"
-    },
-    {
-        number: 7,
-        word: "NOVEMBER",
-        clue: "when we got together",
-        row: 8,
-        col: 6,
-        direction: "down"
-    },
-    {
-        number: 8,
-        word: "RIN",
-        clue: "your nickname for me",
-        row: 7,
-        col: 12,
-        direction: "across"
-    },
-    {
-        number: 9,
-        word: "BEACH",
-        clue: "your favorite place",
-        row: 2,
-        col: 7,
-        direction: "down"
-    },
-    {
-        number: 10,
-        word: "LUNA",
-        clue: "your favorite gf",
-        row: 6,
-        col: 4,
-        direction: "down"
-    },
-    {
-        number: 11,
-        word: "LIGHTMODE",
-        clue: "the sickest most controversial thing you like",
-        row: 6,
-        col: 4,
-        direction: "across"
-    },
-    {
-        number: 12,
-        word: "MOON",
-        clue: "a word from my favorite way to say i love you",
-        row: 5,
-        col: 10,
-        direction: "down"
-    }
+const answers=[
+["STRAWBERRY","fields in italy",0,12,"down"],
+["BEACH","your favorite place",2,7,"down"],
+["ANGEL","your favorite nickname",3,4,"across"],
+["BAKUGO","the character that is most like you",3,11,"across"],
+["MOON","a word from my favorite way to say i love you",5,10,"down"],
+["BUNNY","the animal that reminds me most of you",5,12,"across"],
+["LILLIES","you favorite flower",6,2,"down"],
+["LIGHTMODE","the sickest most controversial thing you like",6,4,"across"],
+["LUNA","your favorite gf",6,4,"down"],
+["RIN","your nickname for me",7,12,"across"],
+["NOVEMBER","when we got together",8,6,"down"],
+["POLKADOTS","your favorite pattern",9,0,"across"]
 ];
 
-const ROWS = rawGrid.length;
-const COLS = 17;
+let cells={};
+let numbered={};
+let solved=false;
 
-function getCellLetter(row, col) {
-    return rawGrid[row][col] || ".";
+function key(r,c){return r+"-"+c}
+
+function buildNumbers(){
+let n=1;
+
+[...answers]
+.sort((a,b)=>a[2]-b[2]||a[3]-b[3])
+.forEach(a=>{
+let k=key(a[2],a[3]);
+if(!numbered[k]) numbered[k]=n++;
+});
+
+answers.forEach(a=>a[5]=numbered[key(a[2],a[3])]);
 }
 
-function buildNumberMap() {
-    const map = {};
+function buildGrid(){
+buildNumbers();
 
-    answers.forEach(answer => {
-        map[`${answer.row}-${answer.col}`] = answer.number;
-    });
+const grid=document.getElementById("crossword-grid");
+grid.innerHTML="";
+cells={};
 
-    return map;
+for(let r=0;r<16;r++){
+for(let c=0;c<17;c++){
+
+const char=rawGrid[r][c];
+const cell=document.createElement("div");
+
+cell.className=char==="."?"cell block":"cell";
+
+if(char!=="."){
+
+const k=key(r,c);
+
+if(numbered[k]){
+const num=document.createElement("span");
+num.className="cell-number";
+num.textContent=numbered[k];
+cell.appendChild(num);
 }
 
-const numberMap = buildNumberMap();
+const input=document.createElement("input");
+input.type="text";
+input.maxLength=1;
+input.autocomplete="off";
+input.autocorrect="off";
+input.autocapitalize="characters";
+input.spellcheck=false;
 
-function createGrid() {
-    const crossword = document.getElementById("crossword");
-    crossword.innerHTML = "";
+input.addEventListener("input",function(){
+this.value=this.value
+.replace(/[^a-zA-Z]/g,"")
+.toUpperCase()
+.slice(0,1);
 
-    for (let row = 0; row < ROWS; row++) {
-        for (let col = 0; col < COLS; col++) {
+cell.classList.remove("correct","wrong");
+});
 
-            const letter = getCellLetter(row, col);
-            const cell = document.createElement("div");
+cell.appendChild(input);
 
-            if (letter === ".") {
-                cell.className = "cell black";
-                crossword.appendChild(cell);
-                continue;
-            }
-
-            cell.className = "cell";
-
-            const number = numberMap[`${row}-${col}`];
-
-            if (number) {
-                const numberElement = document.createElement("span");
-                numberElement.className = "cell-number";
-                numberElement.textContent = number;
-                cell.appendChild(numberElement);
-            }
-
-            const input = document.createElement("input");
-
-            input.type = "text";
-            input.maxLength = 1;
-            input.autocomplete = "off";
-            input.autocapitalize = "characters";
-            input.spellcheck = false;
-
-            input.dataset.row = row;
-            input.dataset.col = col;
-            input.dataset.answer = letter.toUpperCase();
-
-            input.addEventListener("input", function() {
-                this.value = this.value
-                    .replace(/[^a-zA-Z]/g, "")
-                    .toUpperCase()
-                    .slice(0, 1);
-
-                this.parentElement.classList.remove("correct");
-                this.parentElement.classList.remove("incorrect");
-            });
-
-            cell.appendChild(input);
-            crossword.appendChild(cell);
-        }
-    }
+cells[k]={
+cell:cell,
+input:input,
+answer:char.toUpperCase()
+};
 }
 
-function clearFeedback() {
-    document.querySelectorAll(".cell.correct, .cell.incorrect").forEach(cell => {
-        cell.classList.remove("correct");
-        cell.classList.remove("incorrect");
-    });
+grid.appendChild(cell);
+}
+}
 }
 
-function checkAnswers() {
-    clearFeedback();
+function buildClues(){
+const box=document.getElementById("clues");
+box.innerHTML="";
 
-    const inputs = document.querySelectorAll(".cell input");
-    let filled = 0;
-    let correct = 0;
+[...answers]
+.sort((a,b)=>a[5]-b[5])
+.forEach(a=>{
 
-    inputs.forEach(input => {
-        const cell = input.parentElement;
-        const answer = input.dataset.answer;
-        const value = input.value.toUpperCase();
+const clue=document.createElement("div");
+clue.className="clue";
 
-        if (!value) {
-            return;
-        }
+clue.innerHTML=
+`<span class="clue-number">${a[5]}</span>
+<div><span class="clue-word">${a[0].toLowerCase()}</span>${a[1]}</div>`;
 
-        filled++;
-
-        if (value === answer) {
-            correct++;
-            cell.classList.add("correct");
-        } else {
-            cell.classList.add("incorrect");
-        }
-    });
-
-    const totalLetters = inputs.length;
-    const success = document.getElementById("success-message");
-
-    success.classList.remove("show");
-
-    if (filled === totalLetters && correct === totalLetters) {
-        success.classList.add("show");
-
-        if (!localStorage.getItem("crossword_rewarded")) {
-            localStorage.setItem("crossword_rewarded", "true");
-
-            if (typeof addCoins === "function") {
-                addCoins(50);
-            }
-
-            if (typeof updateCoinDisplays === "function") {
-                updateCoinDisplays();
-            }
-        }
-    }
-
-    setTimeout(() => {
-        document.querySelectorAll(".cell.correct, .cell.incorrect").forEach(cell => {
-            cell.style.transition = "background 1.8s ease, border-color 1.8s ease";
-
-            cell.classList.remove("correct");
-            cell.classList.remove("incorrect");
-        });
-    }, 2800);
+box.appendChild(clue);
+});
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-    loadSavedTheme();
+function checkPuzzle(){
 
-    createGrid();
+if(solved)return;
 
-    if (typeof updateCoinDisplays === "function") {
-        updateCoinDisplays();
-    }
+let all=true;
+
+Object.values(cells).forEach(x=>{
+
+x.cell.classList.remove("correct","wrong");
+
+if(x.input.value.toUpperCase()===x.answer){
+x.cell.classList.add("correct");
+}else{
+x.cell.classList.add("wrong");
+all=false;
+}
+});
+
+const button=document.getElementById("check-btn");
+
+button.style.pointerEvents="none";
+button.style.opacity="0";
+button.style.transition="opacity .6s ease";
+
+setTimeout(()=>{
+Object.values(cells).forEach(x=>{
+x.cell.classList.remove("correct","wrong");
+});
+},1800);
+
+if(all){
+solved=true;
+setTimeout(winPuzzle,700);
+}
+}function winPuzzle(){
+
+if(typeof addCoins==="function")
+addCoins(50);
+
+if(typeof updateCoinDisplays==="function")
+updateCoinDisplays();
+
+document.getElementById("reward-modal").style.display="flex";
+}
+
+function goBack(){
+if(window.history.length>1)
+window.history.back();
+else
+window.location.href="../index.html";
+}
+
+document.addEventListener("DOMContentLoaded",function(){
+
+loadSavedTheme();
+
+if(typeof updateCoinDisplays==="function")
+updateCoinDisplays();
+
+buildGrid();
+buildClues();
+
 });
 </script>
 
