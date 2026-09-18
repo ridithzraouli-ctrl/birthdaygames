@@ -1,23 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 
-<title>Bunny Run ♡</title>
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"
+>
+
+<title>Bunny Jump ♡</title>
 
 <style>
+
 :root{
     --bg-base:#f2f7fa;
     --bg-grad-1:#dce8f3;
     --bg-grad-2:#d3e2ea;
+
     --text:#405563;
     --heading:#49677a;
     --border:#a9c2d0;
     --accent:#7e9eaf;
-    --accent-soft:#e8f1f5;
-    --card:#ffffffd9;
-    --shadow:rgba(63,82,96,.14);
+
+    --card:rgba(255,255,255,.82);
+    --shadow:rgba(63,82,96,.15);
 }
 
 *{
@@ -25,21 +32,39 @@
     -webkit-tap-highlight-color:transparent;
 }
 
-html,body{
-    margin:0;
+html,
+body{
     width:100%;
     min-height:100%;
+    margin:0;
 }
 
 body{
     min-height:100vh;
+
     overflow-x:hidden;
-    font-family:Georgia,"Times New Roman",serif;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
     color:var(--text);
+
     background:
-        radial-gradient(circle at 15% 10%,rgba(255,255,255,.75),transparent 28%),
-        linear-gradient(145deg,var(--bg-grad-1),var(--bg-grad-2));
-    transition:background .35s ease;
+        radial-gradient(
+            circle at 15% 10%,
+            rgba(255,255,255,.8),
+            transparent 28%
+        ),
+        linear-gradient(
+            145deg,
+            var(--bg-grad-1),
+            var(--bg-grad-2)
+        );
+
+    transition:
+        background .35s ease;
 }
 
 button,
@@ -53,217 +78,343 @@ button{
 
 .page-decoration{
     position:fixed;
+
     pointer-events:none;
+
     color:var(--accent);
+
     opacity:.45;
-    font-size:20px;
+
     z-index:0;
 }
 
-.decoration-1{
-    top:105px;
+.decoration-one{
     left:7%;
+    top:110px;
+    font-size:20px;
 }
 
-.decoration-2{
-    top:180px;
+.decoration-two{
     right:8%;
+    top:175px;
     font-size:15px;
 }
 
-.decoration-3{
-    bottom:12%;
-    left:8%;
+.decoration-three{
+    left:9%;
+    bottom:13%;
     font-size:14px;
 }
 
-.decoration-4{
-    bottom:18%;
+.decoration-four{
     right:10%;
+    bottom:18%;
     font-size:21px;
 }
 
+
+/* HEADER */
+
 header{
-    width:min(1100px,calc(100% - 28px));
+    width:min(
+        1100px,
+        calc(100% - 28px)
+    );
+
     margin:18px auto 0;
+
     display:flex;
+
     align-items:center;
+
     justify-content:space-between;
+
     gap:12px;
+
     position:relative;
+
     z-index:5;
 }
 
 .header-left,
 .header-right{
     display:flex;
+
     align-items:center;
+
     gap:10px;
 }
 
 .nav-button,
 .fullscreen-button{
     border:1px solid var(--border);
+
     background:rgba(255,255,255,.72);
+
     color:var(--text);
+
     padding:9px 15px;
+
     border-radius:999px;
+
     text-decoration:none;
-    box-shadow:0 4px 15px var(--shadow);
-    transition:.2s ease;
+
+    box-shadow:
+        0 4px 15px var(--shadow);
+
+    transition:
+        transform .2s ease,
+        background .2s ease;
 }
 
 .nav-button:hover,
 .fullscreen-button:hover{
     transform:translateY(-1px);
-    background:white;
+
+    background:#fff;
 }
 
 .coin-display{
     display:flex;
+
     align-items:center;
+
     gap:7px;
+
     padding:9px 15px;
+
     border-radius:999px;
+
     background:rgba(255,255,255,.76);
+
     border:1px solid var(--border);
-    box-shadow:0 4px 15px var(--shadow);
+
+    box-shadow:
+        0 4px 15px var(--shadow);
+
     white-space:nowrap;
+
     font-size:14px;
 }
 
 .coin-display .coin-count{
     font-weight:bold;
+
     color:var(--heading);
 }
 
+
+/* MAIN */
+
 main{
-    width:min(1100px,calc(100% - 28px));
-    margin:30px auto 45px;
+    width:min(
+        1100px,
+        calc(100% - 28px)
+    );
+
+    margin:28px auto 40px;
+
     position:relative;
+
     z-index:1;
 }
 
 .game-heading{
     text-align:center;
+
     margin-bottom:20px;
 }
 
-.game-heading .ornament{
+.ornament{
     color:var(--accent);
+
     font-size:15px;
+
     letter-spacing:8px;
-    margin-bottom:5px;
+
+    margin-bottom:6px;
 }
 
 .game-heading h1{
     margin:0;
+
     color:var(--heading);
-    font-size:clamp(34px,6vw,55px);
+
+    font-size:
+        clamp(
+            36px,
+            6vw,
+            55px
+        );
+
     font-weight:normal;
+
     letter-spacing:1px;
 }
 
-.game-heading p{
-    margin:8px 0 0;
-    opacity:.72;
-    font-size:15px;
-}
+
+/* GAME */
 
 .game-shell{
     position:relative;
+
     width:100%;
+
     max-width:1000px;
+
     margin:auto;
+
     padding:14px;
+
     border-radius:30px;
+
     background:rgba(255,255,255,.48);
-    border:1px solid rgba(255,255,255,.75);
+
+    border:
+        1px solid
+        rgba(255,255,255,.8);
+
     box-shadow:
         0 22px 55px var(--shadow),
         inset 0 1px 0 rgba(255,255,255,.8);
+
     backdrop-filter:blur(10px);
 }
 
 .game-shell::before,
 .game-shell::after{
     position:absolute;
-    color:var(--accent);
-    opacity:.7;
+
     pointer-events:none;
-    z-index:3;
+
+    z-index:4;
+
+    color:var(--accent);
+
+    opacity:.7;
 }
 
 .game-shell::before{
     content:"✦";
-    left:24px;
+
     top:18px;
+    left:24px;
+
     font-size:15px;
 }
 
 .game-shell::after{
     content:"✧";
+
+    top:18px;
     right:25px;
-    top:19px;
+
     font-size:18px;
 }
 
 canvas{
     display:block;
+
     width:100%;
+
     height:auto;
+
     aspect-ratio:16 / 9;
+
     border-radius:21px;
+
     background:#a9bec5;
+
     touch-action:none;
+
     user-select:none;
+
     box-shadow:
-        inset 0 0 0 1px rgba(255,255,255,.5),
-        0 8px 25px rgba(40,60,70,.13);
+        inset 0 0 0 1px
+        rgba(255,255,255,.45),
+
+        0 8px 25px
+        rgba(40,60,70,.13);
 }
+
+
+/* FULLSCREEN */
 
 .fullscreen-exit{
     display:none;
+
     position:absolute;
+
     top:18px;
+
     right:18px;
-    z-index:20;
-    border:1px solid rgba(255,255,255,.65);
-    background:rgba(255,255,255,.84);
+
+    z-index:30;
+
+    border:
+        1px solid
+        rgba(255,255,255,.7);
+
+    background:
+        rgba(255,255,255,.88);
+
     color:var(--text);
+
     padding:9px 14px;
+
     border-radius:999px;
-    box-shadow:0 5px 18px rgba(0,0,0,.12);
+
+    box-shadow:
+        0 5px 18px
+        rgba(0,0,0,.12);
 }
 
 .fullscreen-info{
     display:none;
+
     position:absolute;
+
     top:18px;
+
     left:18px;
-    z-index:20;
+
+    z-index:30;
+
     gap:8px;
+
     align-items:center;
 }
 
 .fullscreen-pill{
     padding:8px 13px;
+
     border-radius:999px;
-    background:rgba(255,255,255,.84);
-    border:1px solid rgba(255,255,255,.7);
+
+    background:
+        rgba(255,255,255,.88);
+
+    border:
+        1px solid
+        rgba(255,255,255,.75);
+
     color:var(--text);
+
     font-size:13px;
-    box-shadow:0 5px 18px rgba(0,0,0,.1);
+
+    box-shadow:
+        0 5px 18px
+        rgba(0,0,0,.1);
 }
 
-.game-hint{
-    text-align:center;
-    margin-top:13px;
-    font-size:13px;
-    opacity:.6;
+.fullscreen-pill strong{
+    color:var(--heading);
 }
+
+
+/* MOBILE */
 
 @media(max-width:650px){
+
     header{
         margin-top:12px;
     }
@@ -272,23 +423,25 @@ canvas{
     .fullscreen-button,
     .coin-display{
         padding:8px 11px;
+
         font-size:12px;
-    }
-
-    .game-heading{
-        margin-top:24px;
-    }
-
-    .game-heading h1{
-        font-size:38px;
     }
 
     main{
         margin-top:20px;
     }
 
+    .game-heading{
+        margin-bottom:15px;
+    }
+
+    .game-heading h1{
+        font-size:38px;
+    }
+
     .game-shell{
         padding:8px;
+
         border-radius:22px;
     }
 
@@ -297,41 +450,59 @@ canvas{
     }
 }
 
-/* fullscreen */
+
+/* FULLSCREEN MODE */
 
 body.game-fullscreen{
-    overflow:hidden;
     width:100vw;
+
     height:100vh;
-    background:var(--bg-base);
+
+    overflow:hidden;
+
+    background:
+        var(--bg-base);
 }
 
 body.game-fullscreen header,
 body.game-fullscreen main > .game-heading,
-body.game-fullscreen .game-hint,
 body.game-fullscreen .page-decoration{
     display:none;
 }
 
 body.game-fullscreen main{
     width:100vw;
+
     height:100vh;
+
     margin:0;
 }
 
 body.game-fullscreen .game-shell{
     width:100vw;
+
     height:100vh;
+
     max-width:none;
-    padding:0;
+
     margin:0;
+
+    padding:0;
+
     border:0;
+
     border-radius:0;
+
     background:var(--bg-base);
+
     box-shadow:none;
+
     backdrop-filter:none;
+
     display:flex;
+
     align-items:center;
+
     justify-content:center;
 }
 
@@ -342,12 +513,19 @@ body.game-fullscreen .game-shell::after{
 
 body.game-fullscreen canvas{
     width:100vw;
+
     height:100vh;
+
     max-width:none;
+
     max-height:none;
+
     aspect-ratio:auto;
+
     object-fit:contain;
+
     border-radius:0;
+
     box-shadow:none;
 }
 
@@ -357,121 +535,222 @@ body.game-fullscreen .fullscreen-info{
 }
 
 @media(max-aspect-ratio:16/9){
+
     body.game-fullscreen canvas{
         width:100vw;
+
         height:auto;
     }
 }
 
 @media(min-aspect-ratio:16/9){
+
     body.game-fullscreen canvas{
         width:auto;
+
         height:100vh;
     }
 }
+
 </style>
+
 </head>
 
 <body>
 
-<div class="page-decoration decoration-1">✦</div>
-<div class="page-decoration decoration-2">✧</div>
-<div class="page-decoration decoration-3">✦</div>
-<div class="page-decoration decoration-4">✧</div>
+<div class="page-decoration decoration-one">✦</div>
+<div class="page-decoration decoration-two">✧</div>
+<div class="page-decoration decoration-three">✦</div>
+<div class="page-decoration decoration-four">✧</div>
+
 
 <header>
+
     <div class="header-left">
-        <a href="../index.html" class="nav-button">← Games</a>
+
+        <a
+            href="../index.html"
+            class="nav-button"
+        >
+            ← Games
+        </a>
+
     </div>
 
+
     <div class="header-right">
-        <button class="fullscreen-button" id="fullscreen-button">
+
+        <button
+            class="fullscreen-button"
+            id="fullscreen-button"
+            type="button"
+        >
             ⛶ Fullscreen
         </button>
 
+
         <div class="coin-display">
-            <span class="coin-count" id="coin-count">0</span>
+
+            <span
+                class="coin-count"
+                id="coin-count"
+            >0</span>
+
             Coins
+
         </div>
+
     </div>
+
 </header>
 
+
 <main>
+
     <div class="game-heading">
-        <div class="ornament">✦ ✧ ✦</div>
-        <h1>Bunny Run</h1>
-        <p>Jump, run, and see how far you can go.</p>
-    </div>
 
-    <div class="game-shell" id="game-shell">
-
-        <div class="fullscreen-info">
-            <div class="fullscreen-pill">
-                Score <strong id="fullscreen-score">0</strong>
-            </div>
-
-            <div class="fullscreen-pill">
-                <span class="coin-count" id="fullscreen-coin-count">0</span> Coins
-            </div>
+        <div class="ornament">
+            ✦ ✧ ✦
         </div>
 
-        <button class="fullscreen-exit" id="fullscreen-exit">
+        <h1>
+            Bunny Jump
+        </h1>
+
+    </div>
+
+
+    <div
+        class="game-shell"
+        id="game-shell"
+    >
+
+        <div class="fullscreen-info">
+
+            <div class="fullscreen-pill">
+                Score
+                <strong id="fullscreen-score">0</strong>
+            </div>
+
+            <div class="fullscreen-pill">
+                Top
+                <strong id="fullscreen-top-score">0</strong>
+            </div>
+
+            <div class="fullscreen-pill">
+                <span
+                    class="coin-count"
+                    id="fullscreen-coin-count"
+                >0</span>
+                Coins
+            </div>
+
+        </div>
+
+
+        <button
+            class="fullscreen-exit"
+            id="fullscreen-exit"
+            type="button"
+        >
             × Exit Fullscreen
         </button>
 
-        <canvas id="gameCanvas" width="960" height="540"></canvas>
+
+        <canvas
+            id="gameCanvas"
+            width="960"
+            height="540"
+        ></canvas>
+
     </div>
 
-    <div class="game-hint">
-        Tap / click / press Space to jump
-    </div>
 </main>
 
+
 <script src="../script.js"></script>
+
 <script>
+
 /* =========================================================
-   BUNNY RUN ♡
-   Shared Arcade coin system
-   10 coins for every 1000 score
-   Coins are awarded ONLY when the run ends.
+   BUNNY JUMP ♡
    ========================================================= */
 
-const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d");
 
-const gameShell = document.getElementById("game-shell");
-const fullscreenButton = document.getElementById("fullscreen-button");
-const fullscreenExit = document.getElementById("fullscreen-exit");
+/* ---------------------------------------------------------
+   CANVAS
+   --------------------------------------------------------- */
 
-const scoreDisplay = document.getElementById("fullscreen-score");
+const canvas =
+    document.getElementById("gameCanvas");
+
+const ctx =
+    canvas.getContext("2d");
+
+const gameShell =
+    document.getElementById("game-shell");
+
+const fullscreenButton =
+    document.getElementById("fullscreen-button");
+
+const fullscreenExit =
+    document.getElementById("fullscreen-exit");
+
+const fullscreenScore =
+    document.getElementById("fullscreen-score");
+
+const fullscreenTopScore =
+    document.getElementById("fullscreen-top-score");
+
 
 const W = 960;
 const H = 540;
+
 const GROUND = 425;
 
+
+/* ---------------------------------------------------------
+   GAME STATE
+   --------------------------------------------------------- */
+
 let started = false;
+
 let gameOver = false;
 
 let score = 0;
-let topScore = Number(localStorage.getItem("bunnyRunHighScore") || 0);
+
+let topScore =
+    Number(
+        localStorage.getItem(
+            "bunnyJumpHighScore"
+        ) || 0
+    );
 
 let runCoinsEarned = 0;
-let coinsAlreadyAwarded = false;
+
+let coinsAwarded = false;
 
 let lastTime = 0;
+
 let animationFrame = null;
 
 let speed = 6;
+
 let obstacleTimer = 0;
-let nextObstacle = 1450;
+
+let nextObstacle =
+    1500 +
+    Math.random() * 650;
 
 let manualFullscreen = false;
+
 
 /* ---------------------------------------------------------
    THEME
    --------------------------------------------------------- */
 
 const THEMES = {
+
     blue:{
         bgBase:"#f2f7fa",
         grad1:"#dce8f3",
@@ -483,6 +762,7 @@ const THEMES = {
 
         skyTop:"#a8c3cb",
         skyBottom:"#dbe5df",
+
         ground:"#aebfc0",
         groundDark:"#91a9ad",
         groundLine:"#d7e1dd"
@@ -499,6 +779,7 @@ const THEMES = {
 
         skyTop:"#d7bfc9",
         skyBottom:"#f1dfdc",
+
         ground:"#cdb4b9",
         groundDark:"#b4969e",
         groundLine:"#eadbdd"
@@ -515,6 +796,7 @@ const THEMES = {
 
         skyTop:"#b8cbb9",
         skyBottom:"#dfe9d9",
+
         ground:"#b4c2b0",
         groundDark:"#94aa91",
         groundLine:"#dbe6d5"
@@ -531,6 +813,7 @@ const THEMES = {
 
         skyTop:"#c4b9d1",
         skyBottom:"#e7dfeb",
+
         ground:"#bdb3c6",
         groundDark:"#9f94ac",
         groundLine:"#e1d9e5"
@@ -547,111 +830,178 @@ const THEMES = {
 
         skyTop:"#d8cc9f",
         skyBottom:"#eee8d3",
+
         ground:"#c9bf99",
         groundDark:"#aaa078",
         groundLine:"#e5ddbd"
     }
+
 };
 
-function getThemeName(){
-    return localStorage.getItem("arcade_theme") || "blue";
-}
 
 function getTheme(){
-    return THEMES[getThemeName()] || THEMES.blue;
+
+    const name =
+        localStorage.getItem(
+            "arcade_theme"
+        ) || "blue";
+
+    return THEMES[name] || THEMES.blue;
 }
+
 
 function applyTheme(){
-    const theme = getTheme();
-    const root = document.documentElement;
 
-    root.style.setProperty("--bg-base",theme.bgBase);
-    root.style.setProperty("--bg-grad-1",theme.grad1);
-    root.style.setProperty("--bg-grad-2",theme.grad2);
-    root.style.setProperty("--text",theme.text);
-    root.style.setProperty("--heading",theme.heading);
-    root.style.setProperty("--border",theme.border);
-    root.style.setProperty("--accent",theme.accent);
+    const theme = getTheme();
+
+    const root =
+        document.documentElement;
+
+    root.style.setProperty(
+        "--bg-base",
+        theme.bgBase
+    );
+
+    root.style.setProperty(
+        "--bg-grad-1",
+        theme.grad1
+    );
+
+    root.style.setProperty(
+        "--bg-grad-2",
+        theme.grad2
+    );
+
+    root.style.setProperty(
+        "--text",
+        theme.text
+    );
+
+    root.style.setProperty(
+        "--heading",
+        theme.heading
+    );
+
+    root.style.setProperty(
+        "--border",
+        theme.border
+    );
+
+    root.style.setProperty(
+        "--accent",
+        theme.accent
+    );
 }
+
 
 applyTheme();
 
+
 /* ---------------------------------------------------------
-   BUNNY SPRITES
+   YOUR BUNNY IMAGES
    --------------------------------------------------------- */
 
-const runImage = new Image();
+const idleImage =
+    new Image();
+
+const runImage =
+    new Image();
+
+const jumpImage =
+    new Image();
+
+
+idleImage.src =
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAA9klEQVR42u1UMQ6EIBAEYmdvjIUlhbVP8AE+1Qf4BGsLSwtj6K25inPv2EU8OGPhdggyzOzMMvbUU0/dtoo81UWe6tj3CtdmJTMGQWM8QlDsKplZ39qmZm1TsxBQcXWrSMBxUha7vwEu68bhGoJ1/WDt31pSTpkGkzCUHcowZr+wSkIGg0//nZKa/MmyJH/o+sEy0jTPH852gXIq8Aa06wfmKzEEpkAFlj+YwTMFlaEk566xBi8wr3fJDc9SLBO86Upf6tL9ZQple8R6Xyv9zTLKpDHAwaNtWTduDGTigIGcMdnPwT8C8TYN5thxUu8sYsGnhgNWL5sPiDbAGkWfAAAAAElFTkSuQmCC";
+
 
 runImage.src =
-"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAcCAYAAAB4fbODAAADlElEQVR42u1aPZKzMAw1Gbr0O5kUlBRb5wg5QI7KATgCdQpKip0d+q35im+U1RpjJGMLCNLMFlkIz3rWz5ODMWpqampqampqampqampqampqamr7sevlPFwv50GZoNtJKVCLaZ/lh8FJqEmpCagm1P0+y4/R/x73m3ncb0aTkJmA0pVLK+V78QrJZ4wxVd2Yr++fbM9+pcI7bUlOSOIdqcBI8vpse2OMMZB87yR3XXhJElBaTqwlX965wKzJK06+VN1vK/G5FOuQM+BRCoy0LFxzPyX9wnjJJChIidiAW8E7kqWWhbBfZVEk735ryd1UeM4EtElLTao03hELTCpOfb5IdHfJhE+Bd0gJeoQCo7YPy+eqWlkUu64wW5lR1pyLUu2ha7Z9B7+W4Ln22reuPOWAucZQu7VNtH2TDhoJa7vu5VdVN3+K6ON+M1XdDByFsMU4oRZYuL/tOnRHP0z5mMeu6tyACnFyT3jSfEpjwmyLC4tP1eCkhe9fL+dhj0oH+HP5N+bDnYSZS1L4yKzqZkQqJpO7gXMJsWe8tfiUxMQyFGPC83zrsHF9mBy/lnZaKh5HIUz5mM2RaUuKGGT6nJTGi0UkJzhT4a21h/izPRNS/G67jpyAXL/swkJNxCU8uorPlI8nl6TAi+UYBuQcPPzVy7J4c1VzKZ7NZ2o8yT2EIMVJh3Ht5Gu7zrnXZVGM3hKK5VdZFK/nw1/o3lHiaiqWpwpRFltSUCva1PAa2plC8TjdgYvn4hPwUvApvYfU/YOi41MDoV2Q6xc3Xqh4rk7r4sQ+eMvdOrkXOTb/+v7JwEl8khZCaiiefWoVE8/FJ2Cn5hUwn21vUv1UAIGEE9HV4X8D7v+aQjnmxibmOQSTigcJbceYzQW8eljVzetAJvcPq/0wV7Vc134/97OnW5xg2SOeNJ/uOWcaN1bhgWCjrM91CMTp7Fga+k5Y52Qp/DziWzMklK+z2d0UYgw4h+tV3YwOAPMYldDuXjEqqS8o9oYnzac0Jrco2B0C3iOlzFvPtifJXcr30BgyW9hwMnG6Jy7wkITkBMQPsWclXGWebR8lYDCe/cx3w5Pgk4I7hcmZOUMNeOeOEDS5O57jXPdzurAriX0vU7gkrH1vcAecIy72Bipen/yldCnDBcFXFKa+S5GOvhncloUpJffc9ZyqufGpIfXUi2uKFxcvBJczyy1dD0VSLpG8U/Mw51lT3MXi5x/WB9z8URHs6QAAAABJRU5ErkJggg==";  
-const jumpImage = new Image();
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAcCAYAAAB4fbODAAADlElEQVR42u1aPZKzMAw1Gbr0O5kUlBRb5wg5QI7KATgCdQpKip0d+q35im+U1RpjJGMLCNLMFlkIz3rWz5ODMWpqampqampqampqampqampqamr7sevlPFwv50GZoNtJKVCLaZ/lh8FJqEmpCagm1P0+y4/R/x73m3ncb0aTkJmA0pVLK+V78QrJZ4wxVd2Yr++fbM9+pcI7bUlOSOIdqcBI8vpse2OMMZB87yR3XXhJElBaTqwlX965wKzJK06+VN1vK/G5FOuQM+BRCoy0LFxzPyX9wnjJJChIidiAW8E7kqWWhbBfZVEk735ryd1UeM4EtElLTao03hELTCpOfb5IdHfJhE+Bd0gJeoQCo7YPy+eqWlkUu64wW5lR1pyLUu2ha7Z9B7+W4Ln22reuPOWAucZQu7VNtH2TDhoJa7vu5VdVN3+K6ON+M1XdDByFsMU4oRZYuL/tOnRHP0z5mMeu6tyACnFyT3jSfEpjwmyLC4tP1eCkhe9fL+dhj0oH+HP5N+bDnYSZS1L4yKzqZkQqJpO7gXMJsWe8tfiUxMQyFGPC83zrsHF9mBy/lnZaKh5HIUz5mM2RaUuKGGT6nJTGi0UkJzhT4a21h/izPRNS/G67jpyAXL/swkJNxCU8uorPlI8nl6TAi+UYBuQcPPzVy7J4c1VzKZ7NZ2o8yT2EIMVJh3Ht5Gu7zrnXZVGM3hKK5VdZFK/nw1/o3lHiaiqWpwpRFltSUCva1PAa2plC8TjdgYvn4hPwUvApvYfU/YOi41MDoV2Q6xc3Xqh4rk7r4sQ+eMvdOrkXOTb/+v7JwEl8khZCaiiefWoVE8/FJ2Cn5hUwn21vUv1UAIGEE9HV4X8D7v+aQjnmxibmOQSTigcJbceYzQW8eljVzetAJvcPq/0wV7Vc134/97OnW5xg2SOeNJ/uOWcaN1bhgWCjrM91CMTp7Fga+k5Y52Qp/DziWzMklK+z2d0UYgw4h+tV3YwOAPMYldDuXjEqqS8o9oYnzac0Jrco2B0C3iOlzFvPtifJXcr30BgyW9hwMnG6Jy7wkITkBMQPsWclXGWebR8lYDCe/cx3w5Pgk4I7hcmZOUMNeOeOEDS5O57jXPdzurAriX0vU7gkrH1vcAecIy72Bipen/yldCnDBcFXFKa+S5GOvhncloUpJffc9ZyqufGpIfXUi2uKFxcvBJczyy1dD0VSLpG8U/Mw51lT3MXi5x/WB9z8URHs6QAAAABJRU5ErkJggg==";
+
 
 jumpImage.src =
-"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAkCAYAAACQVDZDAAADgUlEQVR42u2aPXLyMBCGRcYdfYahoKRIzRE4AEflAByBmsKlC4ZxT+2vyCeyiJW0sq0VUd6nIzi8Xu0/2BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWNar5bBeLQecBLB84Ah0+dp+GpqESEok4FtU61KBqKW7Xi2Hr+3ny98O+5057HfmtydhzfGSU+vjnap1qe5QQtcmnzHGHE9nc73dF7+9oNUcL5xWtgTUrtalukMJ3UvbG2OMsclXQ0LUHC8hrTl0sAMqdiULTb5c3a/kuKt1jiX0qFbWEdRW6hyi76Cn2ZWsPdvNJnvylQxQze6urZdLi01A10G5g0ZbT7MrhYpJ7m6knRAlfKepl0MLI2jllChmQE4Tq9rbzabKiqZhI7eLaY6bGr6rXc/qUK3Y/cUmvGACau9fJTS19dquezjweDo/FZnDfmeOp/OQMqL/1XN8Vz2adPb6tuvIFf3g82Ez5eamBMsUI6foadto97BQBeXstw68tL1Zr5YDRsf3w8YH579Xf/NJuOBGplCwHE/nl6ChwZIaoLEEzKGnaSMdQ6mm/bzYaEN1Q5opdk3ttNBLn4B8PlzEgsUdmeYIlpCROfVK2UhfuzuhxMFt14kTMNUut7BIAxV6cU234HI+bMaMTKFl1YqnjE10R9LQ07KROtFqXtrecB0x1BV/XvdBvTF28df2orOEHp94vvugRYDtgHOMTNKK7Vtex7b4qV0wh41S++zo5EvMKV0w1a5U/0HP32k5n7vf1jb8nNyrPMR7vd0X1ki3C6YeaqqutZF2pDw6z4nI7Sk/Dvm+p7E2p/qOVuwxmtB7Tmg3pl1f20cBj6fzowOPqgCSJEnpSjRAQzvSXHopdvo0x9on7Zjcl0DSDhirwtyoxJ2pDSCfZu16Er9wXY1bP2xi/k/Ax/Wjf4aYY4cLdYpQ1Zqqp22jtCjQc6AV1D5Hyu0Q3N4iGXcl/0eeH/XuTLXruY1B4gPaPWlDud7uC/c330b6Ie43QLTKXNp+loSgeu5n5tCT2OnTHNttU3CrvXSkl427r5Wauz4U7LXrSZI49AQON8JGvwVNuZnY+3MGqLaeVDff7vhdEEJFwfe/tspKzsMNEndskjylU7NerNPG7iH2fiPZjWjmcz9SS8cA6S6mpTdGV3rwc9yPZOSaMvLy14cr9l/T88XGXP7/B8eoAeUpIH/9AAAAAElFTkSuQmCC";  
-/*
-   Keep your existing complete base64 sprite data here
-   if your original file has longer sprite strings.
-*/
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAkCAYAAACQVDZDAAADgUlEQVR42u2aPXLyMBCGRcYdfYahoKRIzRE4AEflAByBmsKlC4ZxT+2vyCeyiJW0sq0VUd6nIzi8Xu0/2BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWNar5bBeLQecBLB84Ah0+dp+GpqESEok4FtU61KBqKW7Xi2Hr+3ny98O+5057HfmtydhzfGSU+vjnap1qe5QQtcmnzHGHE9nc73dF7+9oNUcL5xWtgTUrtalukMJ3UvbG2OMsclXQ0LUHC8hrTl0sAMqdiULTb5c3a/kuKt1jiX0qFbWEdRW6hyi76Cn2ZWsPdvNJnvylQxQze6urZdLi01A10G5g0ZbT7MrhYpJ7m6knRAlfKepl0MLI2jllChmQE4Tq9rbzabKiqZhI7eLaY6bGr6rXc/qUK3Y/cUmvGACau9fJTS19dquezjweDo/FZnDfmeOp/OQMqL/1XN8Vz2adPb6tuvIFf3g82Ez5eamBMsUI6foadto97BQBeXstw68tL1Zr5YDRsf3w8YH579Xf/NJuOBGplCwHE/nl6ChwZIaoLEEzKGnaSMdQ6mm/bzYaEN1Q5opdk3ttNBLn4B8PlzEgsUdmeYIlpCROfVK2UhfuzuhxMFt14kTMNUut7BIAxV6cU234HI+bMaMTKFl1YqnjE10R9LQ07KROtFqXtrecB0x1BV/XvdBvTF28df2orOEHp94vvugRYDtgHOMTNKK7Vtex7b4qV0wh41S++zo5EvMKV0w1a5U/0HP32k5n7vf1jb8nNyrPMR7vd0X1ki3C6YeaqqutZF2pDw6z4nI7Sk/Dvm+p7E2p/qOVuwxmtB7Tmg3pl1f20cBj6fzowOPqgCSJEnpSjRAQzvSXHopdvo0x9on7Zjcl0DSDhirwtyoxJ2pDSCfZu16Er9wXY1bP2xi/k/Ax/Wjf4aYY4cLdYpQ1Zqqp22jtCjQc6AV1D5Hyu0Q3N4iGXcl/0eeH/XuTLXruY1B4gPaPWlDud7uC/c330b6Ie43QLTKXNp+loSgeu5n5tCT2OnTHNttU3CrvXSkl427r5Wauz4U7LXrSZI49AQON8JGvwVNuZnY+3MGqLaeVDff7vhdEEJFwfe/tspKzsMNEndskjylU7NerNPG7iH2fiPZjWjmcz9SS8cA6S6mpTdGV3rwc9yPZOSaMvLy14cr9l/T88XGXP7/B8eoAeUpIH/9AAAAAElFTkSuQmCC";
 
-let runFrame = 0;
-let runFrameTimer = 0;
-let jumpFrame = 0;
-let jumpFrameTimer = 0;
 
-const RUN_FRAME_W = 28;
-const RUN_FRAME_H = 28;
+const RUN_FRAME_WIDTH = 28;
+const RUN_FRAME_HEIGHT = 28;
 
-const JUMP_FRAME_W = 28;
-const JUMP_FRAME_H = 36;
+const JUMP_FRAME_WIDTH = 28;
+const JUMP_FRAME_HEIGHT = 36;
+
 
 /* ---------------------------------------------------------
    BUNNY
    --------------------------------------------------------- */
 
 const bunny = {
+
     x:110,
+
     y:GROUND - 28,
+
     width:28,
+
     height:28,
 
     velocityY:0,
+
     gravity:.72,
+
     jumpPower:-16.2,
 
     grounded:true
 };
 
+
+let runFrame = 0;
+
+let runFrameTimer = 0;
+
+let jumpFrame = 0;
+
+let jumpFrameTimer = 0;
+
+
 /* ---------------------------------------------------------
    OBSTACLES
    --------------------------------------------------------- */
 
-const cactusImages = [];
-
-const cactusSources = [
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...",
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...",
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...",
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
-];
-
-cactusSources.forEach(src=>{
-    const image = new Image();
-    image.src = src;
-    cactusImages.push(image);
-});
-
 const obstacles = [];
+
 
 /* ---------------------------------------------------------
    CLOUDS
    --------------------------------------------------------- */
 
 const clouds = [
-    {x:120,y:100,size:1},
-    {x:430,y:75,size:.8},
-    {x:760,y:130,size:1.1},
-    {x:1040,y:90,size:.75}
+
+    {
+        x:120,
+        y:100,
+        size:1
+    },
+
+    {
+        x:430,
+        y:75,
+        size:.8
+    },
+
+    {
+        x:760,
+        y:130,
+        size:1.1
+    },
+
+    {
+        x:1050,
+        y:90,
+        size:.75
+    }
+
 ];
+
 
 /* ---------------------------------------------------------
    AUDIO
@@ -659,308 +1009,665 @@ const clouds = [
 
 let audioContext = null;
 
+
 function getAudio(){
+
     if(!audioContext){
+
         try{
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+            audioContext =
+                new (
+                    window.AudioContext ||
+                    window.webkitAudioContext
+                )();
+
         }catch(e){}
+
     }
 
-    if(audioContext && audioContext.state === "suspended"){
-        audioContext.resume().catch(()=>{});
+    if(
+        audioContext &&
+        audioContext.state === "suspended"
+    ){
+
+        audioContext
+            .resume()
+            .catch(()=>{});
+
     }
 
     return audioContext;
 }
 
+
 function playJumpSound(){
+
     const audio = getAudio();
+
     if(!audio) return;
 
-    const oscillator = audio.createOscillator();
-    const gain = audio.createGain();
+    const oscillator =
+        audio.createOscillator();
+
+    const gain =
+        audio.createGain();
 
     oscillator.type = "sine";
-    oscillator.frequency.setValueAtTime(420,audio.currentTime);
+
+    oscillator.frequency.setValueAtTime(
+        420,
+        audio.currentTime
+    );
+
     oscillator.frequency.exponentialRampToValueAtTime(
         700,
         audio.currentTime + .12
     );
 
-    gain.gain.setValueAtTime(.045,audio.currentTime);
+    gain.gain.setValueAtTime(
+        .045,
+        audio.currentTime
+    );
+
     gain.gain.exponentialRampToValueAtTime(
         .001,
         audio.currentTime + .13
     );
 
     oscillator.connect(gain);
-    gain.connect(audio.destination);
+
+    gain.connect(
+        audio.destination
+    );
 
     oscillator.start();
-    oscillator.stop(audio.currentTime + .14);
+
+    oscillator.stop(
+        audio.currentTime + .14
+    );
 }
 
+
 function playGameOverSound(){
+
     const audio = getAudio();
+
     if(!audio) return;
 
-    const oscillator = audio.createOscillator();
-    const gain = audio.createGain();
+    const oscillator =
+        audio.createOscillator();
+
+    const gain =
+        audio.createGain();
 
     oscillator.type = "sine";
-    oscillator.frequency.setValueAtTime(300,audio.currentTime);
+
+    oscillator.frequency.setValueAtTime(
+        300,
+        audio.currentTime
+    );
+
     oscillator.frequency.exponentialRampToValueAtTime(
         110,
         audio.currentTime + .35
     );
 
-    gain.gain.setValueAtTime(.05,audio.currentTime);
+    gain.gain.setValueAtTime(
+        .05,
+        audio.currentTime
+    );
+
     gain.gain.exponentialRampToValueAtTime(
         .001,
         audio.currentTime + .38
     );
 
     oscillator.connect(gain);
-    gain.connect(audio.destination);
+
+    gain.connect(
+        audio.destination
+    );
 
     oscillator.start();
-    oscillator.stop(audio.currentTime + .4);
-}
+
+    oscillator.stop(
+        audio.currentTime + .4
+    );
+}<script>
 
 /* ---------------------------------------------------------
-   SHARED COIN SYSTEM
+   SHARED ARCADE COINS
    --------------------------------------------------------- */
 
 function updateCoinDisplay(){
-    if(typeof updateCoinDisplays === "function"){
+
+    if(
+        typeof updateCoinDisplays ===
+        "function"
+    ){
+
         updateCoinDisplays();
+
     }
 
-    const main = document.getElementById("coin-count");
-    const fullscreen = document.getElementById("fullscreen-coin-count");
+    const main =
+        document.getElementById(
+            "coin-count"
+        );
 
-    if(main && fullscreen){
-        fullscreen.textContent = main.textContent;
+    const fullscreen =
+        document.getElementById(
+            "fullscreen-coin-count"
+        );
+
+    if(
+        main &&
+        fullscreen
+    ){
+
+        fullscreen.textContent =
+            main.textContent;
+
     }
 }
 
+
+/*
+   Coins are deliberately NOT awarded
+   during the run.
+
+   They are calculated and added once
+   when the player dies.
+*/
+
 function awardRunCoins(){
-    if(coinsAlreadyAwarded) return;
 
-    coinsAlreadyAwarded = true;
+    if(coinsAwarded) return;
 
-    const milestones = Math.floor(score / 1000);
-    runCoinsEarned = milestones * 10;
+    coinsAwarded = true;
 
-    if(runCoinsEarned > 0){
-        if(typeof addCoins === "function"){
-            addCoins(runCoinsEarned);
-        }
+    const milestones =
+        Math.floor(
+            score / 1000
+        );
+
+    runCoinsEarned =
+        milestones * 10;
+
+    if(
+        runCoinsEarned > 0 &&
+        typeof addCoins === "function"
+    ){
+
+        addCoins(
+            runCoinsEarned
+        );
+
     }
 
     updateCoinDisplay();
 }
+
 
 /* ---------------------------------------------------------
    RESET
    --------------------------------------------------------- */
 
 function resetRun(){
+
     score = 0;
 
     runCoinsEarned = 0;
-    coinsAlreadyAwarded = false;
+
+    coinsAwarded = false;
 
     speed = 6;
 
     obstacleTimer = 0;
-    nextObstacle = 1450;
+
+    nextObstacle =
+        1450 +
+        Math.random() * 750;
 
     obstacles.length = 0;
 
     bunny.x = 110;
-    bunny.y = GROUND - bunny.height;
+
+    bunny.y =
+        GROUND -
+        bunny.height;
+
     bunny.velocityY = 0;
+
     bunny.grounded = true;
 
     runFrame = 0;
+
     runFrameTimer = 0;
 
     jumpFrame = 0;
+
     jumpFrameTimer = 0;
 
     gameOver = false;
 
     updateCoinDisplay();
-    updateFullscreenScore();
+
+    updateFullscreenDisplays();
 }
+
 
 /* ---------------------------------------------------------
    START
    --------------------------------------------------------- */
 
 function startGame(){
-    if(started && !gameOver) return;
+
+    if(
+        started &&
+        !gameOver
+    ){
+
+        return;
+
+    }
 
     resetRun();
 
     started = true;
+
     gameOver = false;
 
-    lastTime = performance.now();
+    lastTime =
+        performance.now();
 
     if(animationFrame){
-        cancelAnimationFrame(animationFrame);
+
+        cancelAnimationFrame(
+            animationFrame
+        );
+
     }
 
-    animationFrame = requestAnimationFrame(gameLoop);
+    animationFrame =
+        requestAnimationFrame(
+            gameLoop
+        );
 
     draw();
 }
 
+
+/* ---------------------------------------------------------
+   JUMP
+   --------------------------------------------------------- */
+
 function jump(){
+
     getAudio();
 
     if(!started){
+
         startGame();
+
         return;
+
     }
 
     if(gameOver){
+
         startGame();
+
         return;
+
     }
 
     if(bunny.grounded){
-        bunny.velocityY = bunny.jumpPower;
+
+        bunny.velocityY =
+            bunny.jumpPower;
+
         bunny.grounded = false;
+
         playJumpSound();
+
     }
 }
 
+
 /* ---------------------------------------------------------
-   OBSTACLE CREATION
+   CACTUS GENERATION
    --------------------------------------------------------- */
 
 function spawnObstacle(){
-    const imageIndex =
-        Math.floor(Math.random() * cactusImages.length);
 
-    const image = cactusImages[imageIndex];
+    const type =
+        Math.floor(
+            Math.random() * 4
+        );
 
-    const height =
-        45 + Math.floor(Math.random() * 42);
+    let width;
+    let height;
 
-    const width =
-        25 + Math.floor(Math.random() * 25);
+    if(type === 0){
+
+        width = 31;
+        height = 58;
+
+    }
+
+    else if(type === 1){
+
+        width = 42;
+        height = 73;
+
+    }
+
+    else if(type === 2){
+
+        width = 53;
+        height = 67;
+
+    }
+
+    else{
+
+        width = 38;
+        height = 88;
+
+    }
+
 
     obstacles.push({
-        x:W + 30,
-        y:GROUND - height,
+
+        x:W + 40,
+
+        y:
+            GROUND -
+            height,
+
         width,
+
         height,
-        image,
+
+        type,
+
         passed:false
+
     });
+
 }
 
+
 function getNextObstacleDelay(){
-    return 1450 + Math.random() * 750;
-}<script>
+
+    /*
+       Larger spacing keeps the beginning
+       of the game comfortable.
+    */
+
+    return (
+        1550 +
+        Math.random() * 800
+    );
+}
+
+
 /* ---------------------------------------------------------
    DRAWING HELPERS
    --------------------------------------------------------- */
 
-function roundedRectPath(x,y,w,h,r){
-    r = Math.min(r,w/2,h/2);
+function roundedRectPath(
+    x,
+    y,
+    width,
+    height,
+    radius
+){
+
+    radius =
+        Math.min(
+            radius,
+            width / 2,
+            height / 2
+        );
 
     ctx.beginPath();
-    ctx.moveTo(x+r,y);
-    ctx.lineTo(x+w-r,y);
-    ctx.quadraticCurveTo(x+w,y,x+w,y+r);
-    ctx.lineTo(x+w,y+h-r);
-    ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
-    ctx.lineTo(x+r,y+h);
-    ctx.quadraticCurveTo(x,y+h,x,y+h-r);
-    ctx.lineTo(x,y+r);
-    ctx.quadraticCurveTo(x,y,x+r,y);
+
+    ctx.moveTo(
+        x + radius,
+        y
+    );
+
+    ctx.lineTo(
+        x + width - radius,
+        y
+    );
+
+    ctx.quadraticCurveTo(
+        x + width,
+        y,
+        x + width,
+        y + radius
+    );
+
+    ctx.lineTo(
+        x + width,
+        y + height - radius
+    );
+
+    ctx.quadraticCurveTo(
+        x + width,
+        y + height,
+        x + width - radius,
+        y + height
+    );
+
+    ctx.lineTo(
+        x + radius,
+        y + height
+    );
+
+    ctx.quadraticCurveTo(
+        x,
+        y + height,
+        x,
+        y + height - radius
+    );
+
+    ctx.lineTo(
+        x,
+        y + radius
+    );
+
+    ctx.quadraticCurveTo(
+        x,
+        y,
+        x + radius,
+        y
+    );
+
     ctx.closePath();
 }
 
-function fillRoundedRect(x,y,w,h,r,fill,stroke=null,lineWidth=1){
-    roundedRectPath(x,y,w,h,r);
+
+function fillRoundedRect(
+    x,
+    y,
+    width,
+    height,
+    radius,
+    fill,
+    stroke = null
+){
+
+    roundedRectPath(
+        x,
+        y,
+        width,
+        height,
+        radius
+    );
 
     ctx.fillStyle = fill;
+
     ctx.fill();
 
     if(stroke){
-        ctx.lineWidth = lineWidth;
-        ctx.strokeStyle = stroke;
+
+        ctx.strokeStyle =
+            stroke;
+
+        ctx.lineWidth = 1;
+
         ctx.stroke();
+
     }
 }
+
 
 /* ---------------------------------------------------------
    BACKGROUND
    --------------------------------------------------------- */
 
 function drawBackground(){
-    const theme = getTheme();
 
-    const gradient = ctx.createLinearGradient(0,0,0,H);
+    const theme =
+        getTheme();
 
-    gradient.addColorStop(0,theme.skyTop);
-    gradient.addColorStop(.68,theme.skyBottom);
-    gradient.addColorStop(1,theme.ground);
+    const gradient =
+        ctx.createLinearGradient(
+            0,
+            0,
+            0,
+            H
+        );
 
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0,0,W,H);
+    gradient.addColorStop(
+        0,
+        theme.skyTop
+    );
 
-    /* soft distant hills */
+    gradient.addColorStop(
+        .68,
+        theme.skyBottom
+    );
 
-    ctx.fillStyle = "rgba(255,255,255,.16)";
+    gradient.addColorStop(
+        1,
+        theme.ground
+    );
+
+    ctx.fillStyle =
+        gradient;
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+
+    /*
+       Distant soft hills
+    */
+
+    ctx.fillStyle =
+        "rgba(255,255,255,.17)";
 
     ctx.beginPath();
-    ctx.moveTo(0,350);
 
-    for(let x=0;x<=W;x+=100){
+    ctx.moveTo(
+        0,
+        350
+    );
+
+    for(
+        let x = 0;
+        x <= W;
+        x += 100
+    ){
+
         ctx.quadraticCurveTo(
-            x+50,
-            320 + Math.sin(x*.018)*15,
-            x+100,
+            x + 50,
+            320 +
+                Math.sin(
+                    x * .018
+                ) * 15,
+
+            x + 100,
             350
         );
+
     }
 
-    ctx.lineTo(W,H);
-    ctx.lineTo(0,H);
+    ctx.lineTo(
+        W,
+        H
+    );
+
+    ctx.lineTo(
+        0,
+        H
+    );
+
     ctx.closePath();
+
     ctx.fill();
+
 
     drawClouds();
 }
 
+
 function drawClouds(){
-    const now = performance.now();
 
-    clouds.forEach(cloud=>{
-        let x =
-            (cloud.x - (now / 70) % 1180 + 1180) % 1180;
+    const now =
+        performance.now();
 
-        if(x > W + 120) x -= 1180;
+    clouds.forEach(
+        cloud => {
 
-        drawCloud(
-            x,
-            cloud.y,
-            cloud.size
-        );
-    });
+            let x =
+                (
+                    cloud.x -
+                    (now / 70) %
+                    1180 +
+                    1180
+                ) % 1180;
+
+            if(
+                x >
+                W + 120
+            ){
+
+                x -= 1180;
+
+            }
+
+            drawCloud(
+                x,
+                cloud.y,
+                cloud.size
+            );
+
+        }
+    );
 }
 
-function drawCloud(x,y,size){
+
+function drawCloud(
+    x,
+    y,
+    size
+){
+
     ctx.save();
 
-    ctx.fillStyle = "rgba(255,255,255,.42)";
+    ctx.fillStyle =
+        "rgba(255,255,255,.43)";
 
     ctx.beginPath();
 
@@ -989,30 +1696,56 @@ function drawCloud(x,y,size){
     );
 
     ctx.closePath();
+
     ctx.fill();
 
     ctx.restore();
 }
+
 
 /* ---------------------------------------------------------
    GROUND
    --------------------------------------------------------- */
 
 function drawGround(){
-    const theme = getTheme();
 
-    ctx.fillStyle = theme.ground;
-    ctx.fillRect(0,GROUND,W,H-GROUND);
+    const theme =
+        getTheme();
 
-    ctx.fillStyle = theme.groundDark;
-    ctx.fillRect(0,GROUND,W,5);
+    ctx.fillStyle =
+        theme.ground;
 
-    ctx.fillStyle = theme.groundLine;
+    ctx.fillRect(
+        0,
+        GROUND,
+        W,
+        H - GROUND
+    );
+
+    ctx.fillStyle =
+        theme.groundDark;
+
+    ctx.fillRect(
+        0,
+        GROUND,
+        W,
+        5
+    );
+
+
+    ctx.fillStyle =
+        theme.groundLine;
 
     const offset =
-        (performance.now() / 7) % 44;
+        (performance.now() / 7) %
+        44;
 
-    for(let x=-44+offset;x<W+44;x+=44){
+    for(
+        let x = -44 + offset;
+        x < W + 44;
+        x += 44
+    ){
+
         ctx.fillRect(
             x,
             GROUND + 28,
@@ -1033,146 +1766,420 @@ function drawGround(){
             18,
             2
         );
+
     }
-}
+    }<script>
 
 /* ---------------------------------------------------------
    BUNNY DRAWING
    --------------------------------------------------------- */
 
 function drawBunny(){
+
     ctx.save();
 
-    /*
-       Keep the bunny facing right.
-       The actual sprite itself is not modified.
-    */
 
     if(bunny.grounded){
-        if(runImage.complete && runImage.naturalWidth){
+
+        if(
+            runImage.complete &&
+            runImage.naturalWidth
+        ){
+
             const frameX =
-                runFrame * RUN_FRAME_W;
+                runFrame *
+                RUN_FRAME_WIDTH;
 
             ctx.drawImage(
+
                 runImage,
+
                 frameX,
                 0,
-                RUN_FRAME_W,
-                RUN_FRAME_H,
+
+                RUN_FRAME_WIDTH,
+                RUN_FRAME_HEIGHT,
+
                 bunny.x,
                 bunny.y,
+
                 84,
                 84
+
             );
+
         }
-    }else{
-        if(jumpImage.complete && jumpImage.naturalWidth){
-            const frameX =
-                jumpFrame * JUMP_FRAME_W;
+
+        else if(
+            idleImage.complete &&
+            idleImage.naturalWidth
+        ){
 
             ctx.drawImage(
+
+                idleImage,
+
+                0,
+                0,
+
+                28,
+                28,
+
+                bunny.x,
+                bunny.y,
+
+                84,
+                84
+
+            );
+
+        }
+
+    }
+
+    else{
+
+        if(
+            jumpImage.complete &&
+            jumpImage.naturalWidth
+        ){
+
+            const frameX =
+                jumpFrame *
+                JUMP_FRAME_WIDTH;
+
+            ctx.drawImage(
+
                 jumpImage,
+
                 frameX,
                 0,
-                JUMP_FRAME_W,
-                JUMP_FRAME_H,
+
+                JUMP_FRAME_WIDTH,
+                JUMP_FRAME_HEIGHT,
+
                 bunny.x,
                 bunny.y - 8,
+
                 84,
                 108
+
             );
+
         }
+
     }
 
     ctx.restore();
 }
 
+
 /* ---------------------------------------------------------
-   CACTI
+   CACTUS DRAWING
    --------------------------------------------------------- */
 
 function drawObstacles(){
-    obstacles.forEach(obstacle=>{
 
-        if(
-            obstacle.image &&
-            obstacle.image.complete &&
-            obstacle.image.naturalWidth
-        ){
-            ctx.drawImage(
-                obstacle.image,
-                obstacle.x,
-                obstacle.y,
-                obstacle.width,
-                obstacle.height
+    obstacles.forEach(
+        obstacle => {
+
+            drawCactus(
+                obstacle
             );
-        }else{
-            drawFallbackCactus(obstacle);
+
         }
-    });
+    );
 }
 
-function drawFallbackCactus(obstacle){
-    const x = obstacle.x;
-    const y = obstacle.y;
-    const w = obstacle.width;
-    const h = obstacle.height;
 
-    ctx.fillStyle = "#66836d";
+function drawCactus(
+    obstacle
+){
 
-    roundedRectPath(
-        x + w*.32,
-        y,
-        w*.36,
-        h,
-        4
+    const x =
+        obstacle.x;
+
+    const y =
+        obstacle.y;
+
+    const w =
+        obstacle.width;
+
+    const h =
+        obstacle.height;
+
+
+    ctx.save();
+
+
+    /*
+       Soft cactus shadow
+    */
+
+    ctx.fillStyle =
+        "rgba(45,65,55,.10)";
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        x + w / 2,
+        GROUND + 4,
+        w * .7,
+        5,
+        0,
+        0,
+        Math.PI * 2
     );
 
     ctx.fill();
 
-    roundedRectPath(
-        x,
-        y + h*.42,
-        w*.4,
-        h*.12,
-        3
+
+    /*
+       Four slightly different
+       cactus shapes.
+    */
+
+    ctx.fillStyle =
+        "#6f8d76";
+
+
+    if(obstacle.type === 0){
+
+        fillRoundedRect(
+            x + w * .30,
+            y,
+            w * .40,
+            h,
+            5,
+            "#6f8d76"
+        );
+
+        fillRoundedRect(
+            x,
+            y + h * .48,
+            w * .34,
+            h * .13,
+            4,
+            "#6f8d76"
+        );
+
+        fillRoundedRect(
+            x,
+            y + h * .29,
+            w * .13,
+            h * .32,
+            4,
+            "#6f8d76"
+        );
+
+    }
+
+
+    else if(obstacle.type === 1){
+
+        fillRoundedRect(
+            x + w * .30,
+            y,
+            w * .40,
+            h,
+            5,
+            "#6b8872"
+        );
+
+        fillRoundedRect(
+            x,
+            y + h * .39,
+            w * .38,
+            h * .14,
+            4,
+            "#6b8872"
+        );
+
+        fillRoundedRect(
+            x,
+            y + h * .19,
+            w * .13,
+            h * .34,
+            4,
+            "#6b8872"
+        );
+
+        fillRoundedRect(
+            x + w * .62,
+            y + h * .55,
+            w * .38,
+            h * .14,
+            4,
+            "#6b8872"
+        );
+
+        fillRoundedRect(
+            x + w * .86,
+            y + h * .37,
+            w * .14,
+            h * .30,
+            4,
+            "#6b8872"
+        );
+
+    }
+
+
+    else if(obstacle.type === 2){
+
+        fillRoundedRect(
+            x + w * .36,
+            y,
+            w * .28,
+            h,
+            5,
+            "#718f78"
+        );
+
+        fillRoundedRect(
+            x,
+            y + h * .54,
+            w * .39,
+            h * .13,
+            4,
+            "#718f78"
+        );
+
+        fillRoundedRect(
+            x,
+            y + h * .35,
+            w * .13,
+            h * .32,
+            4,
+            "#718f78"
+        );
+
+        fillRoundedRect(
+            x + w * .61,
+            y + h * .28,
+            w * .39,
+            h * .13,
+            4,
+            "#718f78"
+        );
+
+        fillRoundedRect(
+            x + w * .87,
+            y + h * .12,
+            w * .13,
+            h * .30,
+            4,
+            "#718f78"
+        );
+
+    }
+
+
+    else{
+
+        fillRoundedRect(
+            x + w * .32,
+            y,
+            w * .36,
+            h,
+            5,
+            "#688570"
+        );
+
+        fillRoundedRect(
+            x,
+            y + h * .43,
+            w * .37,
+            h * .14,
+            4,
+            "#688570"
+        );
+
+        fillRoundedRect(
+            x,
+            y + h * .21,
+            w * .13,
+            h * .36,
+            4,
+            "#688570"
+        );
+
+        fillRoundedRect(
+            x + w * .63,
+            y + h * .60,
+            w * .37,
+            h * .13,
+            4,
+            "#688570"
+        );
+
+        fillRoundedRect(
+            x + w * .87,
+            y + h * .40,
+            w * .13,
+            h * .34,
+            4,
+            "#688570"
+        );
+
+    }
+
+
+    /*
+       Tiny highlight
+    */
+
+    ctx.fillStyle =
+        "rgba(255,255,255,.17)";
+
+    ctx.fillRect(
+        x + w * .39,
+        y + 8,
+        Math.max(
+            2,
+            w * .06
+        ),
+        h - 18
     );
 
-    ctx.fill();
 
-    roundedRectPath(
-        x + w*.65,
-        y + h*.28,
-        w*.35,
-        h*.12,
-        3
-    );
-
-    ctx.fill();
+    ctx.restore();
 }
+
 
 /* ---------------------------------------------------------
    SCORE
    --------------------------------------------------------- */
 
 function drawScore(){
+
+    const theme =
+        getTheme();
+
     ctx.save();
 
-    ctx.textAlign = "right";
+    ctx.textAlign =
+        "right";
 
-    const theme = getTheme();
+    ctx.font =
+        "bold 23px Georgia";
 
-    ctx.font = "bold 23px Georgia";
-    ctx.fillStyle = "rgba(255,255,255,.72)";
+    ctx.fillStyle =
+        "rgba(255,255,255,.78)";
 
     ctx.fillText(
-        String(Math.floor(score)).padStart(5,"0"),
+        String(
+            Math.floor(score)
+        ).padStart(5,"0"),
         W - 30,
         43
     );
 
-    ctx.font = "13px Georgia";
-    ctx.fillStyle = theme.text;
+    ctx.font =
+        "13px Georgia";
+
+    ctx.fillStyle =
+        theme.text;
 
     ctx.fillText(
         "SCORE",
@@ -1183,33 +2190,57 @@ function drawScore(){
     ctx.restore();
 }
 
-function updateFullscreenScore(){
-    scoreDisplay.textContent = Math.floor(score);
+
+function updateFullscreenDisplays(){
+
+    fullscreenScore.textContent =
+        Math.floor(score);
+
+    fullscreenTopScore.textContent =
+        topScore;
 }
+
 
 /* ---------------------------------------------------------
    START SCREEN
    --------------------------------------------------------- */
 
 function drawStartScreen(){
-    const theme = getTheme();
 
-    ctx.fillStyle = "rgba(43,57,64,.08)";
-    ctx.fillRect(0,0,W,H);
+    const theme =
+        getTheme();
 
-    const panelW = 490;
-    const panelH = 230;
-    const panelX = (W-panelW)/2;
-    const panelY = 145;
+    ctx.fillStyle =
+        "rgba(43,57,64,.08)";
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+
+    const panelW = 470;
+
+    const panelH = 205;
+
+    const panelX =
+        (W - panelW) / 2;
+
+    const panelY =
+        (H - panelH) / 2;
+
 
     fillRoundedRect(
-        panelX + 5,
+        panelX + 6,
         panelY + 8,
         panelW,
         panelH,
         30,
-        "rgba(45,60,65,.12)"
+        "rgba(45,60,65,.13)"
     );
+
 
     fillRoundedRect(
         panelX,
@@ -1217,583 +2248,1127 @@ function drawStartScreen(){
         panelW,
         panelH,
         30,
-        "rgba(255,255,255,.91)",
-        "rgba(255,255,255,.9)",
-        1
+        "rgba(255,255,255,.93)",
+        "rgba(255,255,255,.9)"
     );
 
-    ctx.textAlign = "center";
 
-    ctx.fillStyle = theme.accent;
-    ctx.font = "20px Georgia";
-    ctx.fillText("✦   ✧   ✦",W/2,panelY+45);
+    ctx.textAlign =
+        "center";
 
-    ctx.fillStyle = theme.heading;
-    ctx.font = "normal 38px Georgia";
-    ctx.fillText("Bunny Run",W/2,panelY+94);
 
-    ctx.fillStyle = theme.text;
-    ctx.font = "16px Georgia";
+    ctx.fillStyle =
+        theme.accent;
+
+    ctx.font =
+        "20px Georgia";
+
+    ctx.fillText(
+        "✦   ✧   ✦",
+        W / 2,
+        panelY + 43
+    );
+
+
+    ctx.fillStyle =
+        theme.heading;
+
+    ctx.font =
+        "normal 38px Georgia";
+
+    ctx.fillText(
+        "Bunny Jump",
+        W / 2,
+        panelY + 92
+    );
+
+
+    ctx.fillStyle =
+        theme.text;
+
+    ctx.font =
+        "16px Georgia";
+
     ctx.fillText(
         "Tap to start",
-        W/2,
-        panelY+140
+        W / 2,
+        panelY + 143
     );
 
-    ctx.font = "13px Georgia";
-    ctx.globalAlpha = .65;
+
+    ctx.font =
+        "13px Georgia";
+
+    ctx.globalAlpha =
+        .62;
+
     ctx.fillText(
-        "Jump over the cacti and keep running.",
-        W/2,
-        panelY+174
+        "Jump over the cacti",
+        W / 2,
+        panelY + 174
     );
 
-    ctx.globalAlpha = 1;
+    ctx.globalAlpha =
+        1;
 }
 
+
 /* ---------------------------------------------------------
-   GAME OVER SCREEN
+   GAME OVER
    --------------------------------------------------------- */
 
 function drawGameOver(){
-    const theme = getTheme();
 
-    ctx.fillStyle = "rgba(38,49,54,.28)";
-    ctx.fillRect(0,0,W,H);
+    const theme =
+        getTheme();
 
-    const panelW = 560;
-    const panelH = 310;
 
-    const panelX = (W-panelW)/2;
-    const panelY = (H-panelH)/2;
+    ctx.fillStyle =
+        "rgba(38,49,54,.28)";
 
-    /* shadow */
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+
+    const panelW = 590;
+
+    const panelH = 325;
+
+    const panelX =
+        (W - panelW) / 2;
+
+    const panelY =
+        (H - panelH) / 2;
+
+
+    /*
+       Shadow
+    */
 
     fillRoundedRect(
-        panelX + 7,
-        panelY + 9,
+        panelX + 8,
+        panelY + 10,
         panelW,
         panelH,
-        32,
+        34,
         "rgba(38,49,54,.16)"
     );
 
-    /* main card */
+
+    /*
+       Card
+    */
 
     fillRoundedRect(
         panelX,
         panelY,
         panelW,
         panelH,
-        32,
-        "rgba(255,255,255,.94)",
-        "rgba(255,255,255,.9)",
-        1
+        34,
+        "rgba(255,255,255,.95)",
+        "rgba(255,255,255,.95)"
     );
 
-    ctx.textAlign = "center";
 
-    ctx.fillStyle = theme.accent;
-    ctx.font = "20px Georgia";
+    ctx.textAlign =
+        "center";
+
+
+    ctx.fillStyle =
+        theme.accent;
+
+    ctx.font =
+        "20px Georgia";
+
     ctx.fillText(
         "✦   ✧   ✦",
-        W/2,
-        panelY+43
+        W / 2,
+        panelY + 43
     );
 
-    ctx.fillStyle = theme.heading;
-    ctx.font = "normal 39px Georgia";
+
+    ctx.fillStyle =
+        theme.heading;
+
+    ctx.font =
+        "normal 40px Georgia";
+
     ctx.fillText(
         "Game Over",
-        W/2,
-        panelY+91
+        W / 2,
+        panelY + 92
     );
 
-    ctx.fillStyle = theme.text;
-    ctx.font = "16px Georgia";
+
+    /*
+       Score row
+    */
+
+    ctx.fillStyle =
+        theme.text;
+
+    ctx.font =
+        "16px Georgia";
+
+    ctx.textAlign =
+        "left";
 
     ctx.fillText(
         "Score",
-        W/2 - 95,
-        panelY+136
+        panelX + 105,
+        panelY + 142
     );
 
-    ctx.font = "bold 22px Georgia";
+
+    ctx.textAlign =
+        "right";
+
+    ctx.fillStyle =
+        theme.heading;
+
+    ctx.font =
+        "bold 23px Georgia";
 
     ctx.fillText(
-        Math.floor(score),
-        W/2 + 95,
-        panelY+136
+        String(
+            Math.floor(score)
+        ),
+        panelX + panelW - 105,
+        panelY + 142
     );
 
-    /* divider */
 
-    ctx.strokeStyle = theme.border;
+    /*
+       Divider
+    */
+
+    ctx.strokeStyle =
+        theme.border;
+
     ctx.lineWidth = 1;
-    ctx.globalAlpha = .7;
+
+    ctx.globalAlpha =
+        .65;
 
     ctx.beginPath();
-    ctx.moveTo(panelX+65,panelY+160);
-    ctx.lineTo(panelX+panelW-65,panelY+160);
+
+    ctx.moveTo(
+        panelX + 75,
+        panelY + 165
+    );
+
+    ctx.lineTo(
+        panelX + panelW - 75,
+        panelY + 165
+    );
+
     ctx.stroke();
 
-    ctx.globalAlpha = 1;
+    ctx.globalAlpha =
+        1;
 
-    /* coins earned */
 
-    ctx.fillStyle = theme.text;
-    ctx.font = "16px Georgia";
+    /*
+       Coins earned
+    */
+
+    ctx.textAlign =
+        "left";
+
+    ctx.fillStyle =
+        theme.text;
+
+    ctx.font =
+        "16px Georgia";
 
     ctx.fillText(
         "Coins earned",
-        W/2 - 95,
-        panelY+205
+        panelX + 105,
+        panelY + 213
     );
 
-    ctx.fillStyle = theme.heading;
-    ctx.font = "bold 24px Georgia";
+
+    ctx.textAlign =
+        "right";
+
+    ctx.fillStyle =
+        theme.heading;
+
+    ctx.font =
+        "bold 25px Georgia";
 
     ctx.fillText(
-        "+" + runCoinsEarned,
-        W/2 + 95,
-        panelY+205
+        "+" +
+        runCoinsEarned,
+        panelX + panelW - 105,
+        panelY + 213
     );
 
-    ctx.fillStyle = theme.text;
-    ctx.font = "13px Georgia";
-    ctx.globalAlpha = .68;
+
+    /*
+       Top score
+    */
+
+    ctx.textAlign =
+        "left";
+
+    ctx.fillStyle =
+        theme.text;
+
+    ctx.font =
+        "15px Georgia";
 
     ctx.fillText(
-        "Tap anywhere to run again",
-        W/2,
-        panelY+257
+        "Top score",
+        panelX + 105,
+        panelY + 251
     );
 
-    ctx.globalAlpha = 1;
+
+    ctx.textAlign =
+        "right";
+
+    ctx.fillStyle =
+        theme.heading;
+
+    ctx.font =
+        "bold 18px Georgia";
+
+    ctx.fillText(
+        String(topScore),
+        panelX + panelW - 105,
+        panelY + 251
+    );
+
+
+    /*
+       Restart
+    */
+
+    ctx.textAlign =
+        "center";
+
+    ctx.fillStyle =
+        theme.text;
+
+    ctx.font =
+        "13px Georgia";
+
+    ctx.globalAlpha =
+        .66;
+
+    ctx.fillText(
+        "Tap anywhere to play again",
+        W / 2,
+        panelY + 292
+    );
+
+    ctx.globalAlpha =
+        1;
 }
 
+
 /* ---------------------------------------------------------
-   MAIN DRAW
+   DRAW
    --------------------------------------------------------- */
 
 function draw(){
-    ctx.clearRect(0,0,W,H);
+
+    ctx.clearRect(
+        0,
+        0,
+        W,
+        H
+    );
 
     drawBackground();
+
     drawGround();
+
     drawObstacles();
+
     drawBunny();
+
     drawScore();
 
+
     if(!started){
+
         drawStartScreen();
+
     }
+
 
     if(gameOver){
+
         drawGameOver();
+
     }
 
-    updateFullscreenScore();
+
+    updateFullscreenDisplays();
 }
+
 
 /* ---------------------------------------------------------
    COLLISION
    --------------------------------------------------------- */
 
-function checkCollision(obstacle){
+function checkCollision(
+    obstacle
+){
+
     /*
-       Slightly forgiving hitbox around the bunny.
+       Forgiving bunny hitbox.
     */
 
     const bunnyBox = {
-        x:bunny.x + 15,
-        y:bunny.y + 17,
+
+        x:
+            bunny.x + 15,
+
+        y:
+            bunny.y + 17,
+
         width:48,
+
         height:59
+
     };
+
 
     const obstacleBox = {
-        x:obstacle.x + 3,
-        y:obstacle.y + 4,
-        width:Math.max(1,obstacle.width - 6),
-        height:Math.max(1,obstacle.height - 5)
+
+        x:
+            obstacle.x + 3,
+
+        y:
+            obstacle.y + 4,
+
+        width:
+            Math.max(
+                1,
+                obstacle.width - 6
+            ),
+
+        height:
+            Math.max(
+                1,
+                obstacle.height - 5
+            )
+
     };
 
+
     return (
-        bunnyBox.x < obstacleBox.x + obstacleBox.width &&
-        bunnyBox.x + bunnyBox.width > obstacleBox.x &&
-        bunnyBox.y < obstacleBox.y + obstacleBox.height &&
-        bunnyBox.y + bunnyBox.height > obstacleBox.y
+
+        bunnyBox.x <
+        obstacleBox.x +
+        obstacleBox.width
+
+        &&
+
+        bunnyBox.x +
+        bunnyBox.width >
+        obstacleBox.x
+
+        &&
+
+        bunnyBox.y <
+        obstacleBox.y +
+        obstacleBox.height
+
+        &&
+
+        bunnyBox.y +
+        bunnyBox.height >
+        obstacleBox.y
+
     );
-}
-</script><script>
+    }<script>
+
 /* ---------------------------------------------------------
-   GAME UPDATE
+   UPDATE
    --------------------------------------------------------- */
 
 function update(delta){
-    if(!started || gameOver) return;
 
-    const dt = Math.min(delta,32);
+    if(
+        !started ||
+        gameOver
+    ){
 
-    /* bunny physics */
+        return;
 
-    bunny.velocityY += bunny.gravity * (dt / 16.67);
-    bunny.y += bunny.velocityY * (dt / 16.67);
-
-    const groundY = GROUND - bunny.height;
-
-    if(bunny.y >= groundY){
-        bunny.y = groundY;
-        bunny.velocityY = 0;
-        bunny.grounded = true;
-    }else{
-        bunny.grounded = false;
     }
 
-    /* running animation */
+
+    const dt =
+        Math.min(
+            delta,
+            32
+        );
+
+
+    /*
+       Bunny physics
+    */
+
+    bunny.velocityY +=
+        bunny.gravity *
+        (dt / 16.67);
+
+    bunny.y +=
+        bunny.velocityY *
+        (dt / 16.67);
+
+
+    const groundY =
+        GROUND -
+        bunny.height;
+
+
+    if(
+        bunny.y >= groundY
+    ){
+
+        bunny.y =
+            groundY;
+
+        bunny.velocityY =
+            0;
+
+        bunny.grounded =
+            true;
+
+    }
+
+    else{
+
+        bunny.grounded =
+            false;
+
+    }
+
+
+    /*
+       Run animation
+    */
 
     if(bunny.grounded){
+
         runFrameTimer += dt;
 
-        if(runFrameTimer >= 45){
+        if(
+            runFrameTimer >= 45
+        ){
+
             runFrameTimer = 0;
-            runFrame = (runFrame + 1) % 8;
+
+            runFrame =
+                (
+                    runFrame + 1
+                ) % 8;
+
         }
+
     }
 
-    /* jumping animation */
+
+    /*
+       Jump animation
+    */
 
     if(!bunny.grounded){
+
         jumpFrameTimer += dt;
 
-        if(jumpFrameTimer >= 55){
+        if(
+            jumpFrameTimer >= 55
+        ){
+
             jumpFrameTimer = 0;
-            jumpFrame = (jumpFrame + 1) % 8;
+
+            jumpFrame =
+                (
+                    jumpFrame + 1
+                ) % 8;
+
         }
+
     }
 
-    /* speed */
 
-    speed += .0008 * dt;
+    /*
+       Gradually increase speed
+    */
 
-    /* score */
+    speed +=
+        .0008 * dt;
 
-    score += .12 * dt;
 
-    /* obstacles */
+    /*
+       Score
+    */
+
+    score +=
+        .12 * dt;
+
+
+    /*
+       Obstacles
+    */
 
     obstacleTimer += dt;
 
-    if(obstacleTimer >= nextObstacle){
+
+    if(
+        obstacleTimer >=
+        nextObstacle
+    ){
+
         obstacleTimer = 0;
-        nextObstacle = getNextObstacleDelay();
+
+        nextObstacle =
+            getNextObstacleDelay();
 
         spawnObstacle();
+
     }
 
-    obstacles.forEach(obstacle=>{
-        obstacle.x -= speed * (dt / 16.67);
 
-        if(
-            !obstacle.passed &&
-            obstacle.x + obstacle.width < bunny.x
-        ){
-            obstacle.passed = true;
+    obstacles.forEach(
+        obstacle => {
+
+            obstacle.x -=
+                speed *
+                (dt / 16.67);
+
+
+            if(
+                !obstacle.passed &&
+                obstacle.x +
+                obstacle.width <
+                bunny.x
+            ){
+
+                obstacle.passed = true;
+
+            }
+
         }
-    });
+    );
 
-    /* remove old obstacles */
+
+    /*
+       Remove old obstacles
+    */
 
     while(
+
         obstacles.length &&
-        obstacles[0].x + obstacles[0].width < -50
+
+        obstacles[0].x +
+        obstacles[0].width <
+        -60
+
     ){
+
         obstacles.shift();
+
     }
 
-    /* collision */
 
-    for(const obstacle of obstacles){
-        if(checkCollision(obstacle)){
+    /*
+       Collision
+    */
+
+    for(
+        const obstacle of obstacles
+    ){
+
+        if(
+            checkCollision(
+                obstacle
+            )
+        ){
+
             endGame();
+
             break;
+
         }
+
     }
 
-    updateFullscreenScore();
+
+    updateFullscreenDisplays();
 }
+
 
 /* ---------------------------------------------------------
    END GAME
    --------------------------------------------------------- */
 
 function endGame(){
-    if(gameOver) return;
+
+    if(gameOver){
+
+        return;
+
+    }
+
 
     gameOver = true;
 
-    playGameOverSound();
 
-    score = Math.floor(score);
+    score =
+        Math.floor(score);
+
 
     /*
-       IMPORTANT:
-       Coins are NOT awarded during the run.
+       Award ALL coins only now.
 
-       We calculate them here and add them once.
-       Every complete 1000 score = 10 coins.
+       1000 score = 10 coins
+       2000 score = 20 coins
+       3000 score = 30 coins
+       etc.
     */
 
     awardRunCoins();
 
-    if(score > topScore){
-        topScore = score;
+
+    /*
+       High score
+    */
+
+    if(
+        score > topScore
+    ){
+
+        topScore =
+            score;
+
         localStorage.setItem(
-            "bunnyRunHighScore",
+            "bunnyJumpHighScore",
             String(topScore)
         );
+
     }
+
+
+    updateFullscreenDisplays();
+
+    playGameOverSound();
 
     draw();
 }
+
 
 /* ---------------------------------------------------------
    GAME LOOP
    --------------------------------------------------------- */
 
 function gameLoop(timestamp){
-    if(!started) return;
+
+    if(!started){
+
+        return;
+
+    }
+
 
     if(!lastTime){
-        lastTime = timestamp;
+
+        lastTime =
+            timestamp;
+
     }
 
-    const delta = timestamp - lastTime;
-    lastTime = timestamp;
+
+    const delta =
+        timestamp -
+        lastTime;
+
+
+    lastTime =
+        timestamp;
+
 
     update(delta);
+
     draw();
 
-    animationFrame = requestAnimationFrame(gameLoop);
+
+    animationFrame =
+        requestAnimationFrame(
+            gameLoop
+        );
 }
 
+
 /* ---------------------------------------------------------
-   INPUT
+   TOUCH / POINTER
    --------------------------------------------------------- */
 
-canvas.addEventListener("pointerdown",event=>{
-    event.preventDefault();
-    event.stopPropagation();
+canvas.addEventListener(
+    "pointerdown",
+    event => {
 
-    jump();
-},{
-    passive:false
-});
-
-document.addEventListener("keydown",event=>{
-    if(
-        event.code === "Space" ||
-        event.code === "ArrowUp" ||
-        event.code === "KeyW"
-    ){
         event.preventDefault();
+
+        event.stopPropagation();
+
         jump();
-    }
 
-    if(event.code === "KeyF"){
-        event.preventDefault();
-        toggleFullscreen();
+    },
+    {
+        passive:false
     }
-});
+);
+
 
 /*
-   When fullscreen is active, tapping the small letterbox area
-   outside the canvas can still jump.
-
-   The canvas itself is excluded so it cannot trigger jump twice.
+   Fullscreen letterbox areas can also
+   be tapped to jump, but the canvas itself
+   is excluded so jumping cannot happen twice.
 */
 
-document.addEventListener("pointerdown",event=>{
-    const fullscreenActive =
-        document.body.classList.contains("game-fullscreen");
+document.addEventListener(
+    "pointerdown",
+    event => {
 
-    if(!fullscreenActive) return;
+        if(
+            !document.body.classList.contains(
+                "game-fullscreen"
+            )
+        ){
 
-    if(event.target === canvas) return;
+            return;
 
-    if(
-        event.target.closest &&
-        event.target.closest("button,a")
-    ){
-        return;
+        }
+
+
+        if(
+            event.target === canvas
+        ){
+
+            return;
+
+        }
+
+
+        if(
+            event.target.closest &&
+            event.target.closest(
+                "button,a"
+            )
+        ){
+
+            return;
+
+        }
+
+
+        event.preventDefault();
+
+        jump();
+
+    },
+    {
+        passive:false
     }
+);
 
-    event.preventDefault();
-    jump();
-},{
-    passive:false
-});
+
+/* ---------------------------------------------------------
+   KEYBOARD
+   --------------------------------------------------------- */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if(
+            event.code === "Space" ||
+            event.code === "ArrowUp" ||
+            event.code === "KeyW"
+        ){
+
+            event.preventDefault();
+
+            jump();
+
+        }
+
+
+        if(
+            event.code === "KeyF"
+        ){
+
+            event.preventDefault();
+
+            toggleFullscreen();
+
+        }
+
+    }
+);
+
 
 /* ---------------------------------------------------------
    FULLSCREEN
    --------------------------------------------------------- */
 
-function setFullscreenClass(active){
+function setFullscreenClass(
+    active
+){
+
     document.body.classList.toggle(
         "game-fullscreen",
         active
     );
+
 }
+
 
 async function toggleFullscreen(){
-    try{
-        if(document.fullscreenElement){
+
+    /*
+       Real browser fullscreen is preferred.
+    */
+
+    if(
+        document.fullscreenElement
+    ){
+
+        try{
+
             await document.exitFullscreen();
-            manualFullscreen = false;
-            setFullscreenClass(false);
-            return;
-        }
 
-        if(document.body.classList.contains("game-fullscreen")){
-            manualFullscreen = false;
-            setFullscreenClass(false);
-            return;
-        }
+        }catch(e){}
 
-        if(
-            gameShell.requestFullscreen &&
-            document.fullscreenEnabled !== false
-        ){
-            try{
-                await gameShell.requestFullscreen();
+        manualFullscreen = false;
 
-                manualFullscreen = false;
-                setFullscreenClass(true);
+        setFullscreenClass(
+            false
+        );
 
-                return;
-            }catch(error){
-                /*
-                   Some mobile browsers expose the API but don't
-                   allow it for this element. Use the visual fallback.
-                */
-            }
-        }
+        return;
 
-        manualFullscreen = true;
-        setFullscreenClass(true);
-
-    }catch(error){
-        manualFullscreen = true;
-        setFullscreenClass(true);
     }
+
+
+    /*
+       If visual fallback is already active,
+       turn it off.
+    */
+
+    if(
+        document.body.classList.contains(
+            "game-fullscreen"
+        )
+    ){
+
+        manualFullscreen = false;
+
+        setFullscreenClass(
+            false
+        );
+
+        return;
+
+    }
+
+
+    /*
+       Try real fullscreen first.
+    */
+
+    if(
+        gameShell.requestFullscreen &&
+        document.fullscreenEnabled !== false
+    ){
+
+        try{
+
+            await gameShell.requestFullscreen();
+
+            manualFullscreen = false;
+
+            setFullscreenClass(
+                true
+            );
+
+            return;
+
+        }catch(error){
+
+            /*
+               Mobile browser rejected
+               the native fullscreen request.
+               Use the visual fallback below.
+            */
+
+        }
+
+    }
+
+
+    /*
+       Mobile fallback.
+    */
+
+    manualFullscreen = true;
+
+    setFullscreenClass(
+        true
+    );
+
 }
 
-fullscreenButton.addEventListener("click",event=>{
-    event.preventDefault();
-    event.stopPropagation();
 
-    toggleFullscreen();
-});
+/*
+   Native fullscreen state changes.
+*/
 
-fullscreenExit.addEventListener("click",event=>{
-    event.preventDefault();
-    event.stopPropagation();
+document.addEventListener(
+    "fullscreenchange",
+    () => {
 
-    toggleFullscreen();
-});
+        if(
+            document.fullscreenElement
+        ){
 
-document.addEventListener("fullscreenchange",()=>{
-    if(document.fullscreenElement){
-        manualFullscreen = false;
-        setFullscreenClass(true);
-    }else if(!manualFullscreen){
-        setFullscreenClass(false);
+            manualFullscreen = false;
+
+            setFullscreenClass(
+                true
+            );
+
+        }
+
+        else if(
+            !manualFullscreen
+        ){
+
+            setFullscreenClass(
+                false
+            );
+
+        }
+
     }
-});
+);
+
+
+fullscreenButton.addEventListener(
+    "click",
+    event => {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+        toggleFullscreen();
+
+    }
+);
+
+
+fullscreenExit.addEventListener(
+    "click",
+    event => {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+        toggleFullscreen();
+
+    }
+);
+
 
 /* ---------------------------------------------------------
-   THEME CHANGES
+   THEME
    --------------------------------------------------------- */
 
-window.addEventListener("storage",event=>{
-    if(event.key === "arcade_theme"){
-        applyTheme();
-        draw();
+window.addEventListener(
+    "storage",
+    event => {
+
+        if(
+            event.key ===
+            "arcade_theme"
+        ){
+
+            applyTheme();
+
+            draw();
+
+        }
+
     }
-});
+);
+
 
 /* ---------------------------------------------------------
-   COIN DISPLAY
+   IMAGE LOADING
+   --------------------------------------------------------- */
+
+idleImage.onload =
+    () => draw();
+
+runImage.onload =
+    () => draw();
+
+jumpImage.onload =
+    () => draw();
+
+
+/* ---------------------------------------------------------
+   INITIAL STATE
    --------------------------------------------------------- */
 
 updateCoinDisplay();
 
-/* ---------------------------------------------------------
-   INITIAL DRAW
-   --------------------------------------------------------- */
+updateFullscreenDisplays();
 
 draw();
 
+
 /* ---------------------------------------------------------
-   IMAGE REDRAW
+   KEEP COINS SYNCED WITH ARCADE
    --------------------------------------------------------- */
 
-runImage.onload = ()=>{
-    draw();
-};
+setInterval(
+    () => {
 
-jumpImage.onload = ()=>{
-    draw();
-};
+        updateCoinDisplay();
 
-cactusImages.forEach(image=>{
-    image.onload = ()=>{
+    },
+    1000
+);
+
+
+/* ---------------------------------------------------------
+   RESPONSIVE REDRAW
+   --------------------------------------------------------- */
+
+window.addEventListener(
+    "resize",
+    () => {
+
         draw();
-    };
-});
-        </script><script>
-/* ---------------------------------------------------------
-   KEEP THE GAME DRAWING RESPONSIVE
-   --------------------------------------------------------- */
 
-window.addEventListener("resize",()=>{
-    draw();
-});
+    }
+);
 
-/* ---------------------------------------------------------
-   PREVENT MOBILE BROWSER GESTURES
-   --------------------------------------------------------- */
-
-document.addEventListener("gesturestart",event=>{
-    event.preventDefault();
-});
-
-document.addEventListener("gesturechange",event=>{
-    event.preventDefault();
-});
-
-document.addEventListener("gestureend",event=>{
-    event.preventDefault();
-});
-
-/* ---------------------------------------------------------
-   KEEP COIN DISPLAY IN SYNC
-   --------------------------------------------------------- */
-
-setInterval(()=>{
-    updateCoinDisplay();
-},1000);
-
-/* ---------------------------------------------------------
-   FINAL SAFETY REDRAW
-   --------------------------------------------------------- */
-
-requestAnimationFrame(()=>{
-    applyTheme();
-    updateCoinDisplay();
-    draw();
-});
 </script>
 
 </body>
