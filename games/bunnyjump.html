@@ -21,6 +21,62 @@
     --header-bg:rgba(255,255,255,.88);
 }
 
+body[data-theme="pink"]{
+    --bg-base:#faf2f5;
+    --bg-grad-1:#f3dce5;
+    --bg-grad-2:#ead3dc;
+    --text-main:#603f4c;
+    --text-heading:#7a4659;
+    --accent-border:#bd8297;
+    --accent-soft:#f9e9f0;
+    --accent-badge:#f8dfe8;
+    --ornament-color:#b87992;
+    --card-bg:rgba(255,255,255,.88);
+    --header-bg:rgba(255,255,255,.88);
+}
+
+body[data-theme="green"]{
+    --bg-base:#f3f7f2;
+    --bg-grad-1:#dce8dc;
+    --bg-grad-2:#d3ead3;
+    --text-main:#3f6043;
+    --text-heading:#467a4c;
+    --accent-border:#82bd8b;
+    --accent-soft:#e9f9eb;
+    --accent-badge:#dff8e2;
+    --ornament-color:#79b882;
+    --card-bg:rgba(255,255,255,.88);
+    --header-bg:rgba(255,255,255,.88);
+}
+
+body[data-theme="lavender"]{
+    --bg-base:#f5f2fa;
+    --bg-grad-1:#e3dcf3;
+    --bg-grad-2:#dad3ea;
+    --text-main:#4a3f60;
+    --text-heading:#59467a;
+    --accent-border:#9882bd;
+    --accent-soft:#f0e9f9;
+    --accent-badge:#e9dff8;
+    --ornament-color:#9379b8;
+    --card-bg:rgba(255,255,255,.88);
+    --header-bg:rgba(255,255,255,.88);
+}
+
+body[data-theme="yellow"]{
+    --bg-base:#faf8f2;
+    --bg-grad-1:#f3edd2;
+    --bg-grad-2:#eae3c5;
+    --text-main:#60573f;
+    --text-heading:#7a6e46;
+    --accent-border:#bdb182;
+    --accent-soft:#f9f5e9;
+    --accent-badge:#f8f3df;
+    --ornament-color:#b8aa79;
+    --card-bg:rgba(255,255,255,.88);
+    --header-bg:rgba(255,255,255,.88);
+}
+
 *{
     box-sizing:border-box;
 }
@@ -52,6 +108,9 @@ body{
     display:flex;
     flex-direction:column;
     align-items:center;
+    transition:
+        background .25s ease,
+        color .25s ease;
 }
 
 header{
@@ -267,7 +326,7 @@ h1{
     overflow:hidden;
     border:1px solid var(--accent-border);
     box-shadow:0 12px 35px rgba(50,70,80,.14);
-    background:#b8cbd1;
+    background:var(--bg-base);
     touch-action:none;
 }
 
@@ -293,8 +352,8 @@ canvas{
     top:16px;
     left:16px;
     z-index:50;
-    border:1px solid rgba(70,99,122,.65);
-    background:rgba(255,255,255,.82);
+    border:1px solid var(--accent-border);
+    background:var(--accent-soft);
     color:var(--text-heading);
     border-radius:100px;
     padding:8px 12px;
@@ -311,8 +370,8 @@ canvas{
     top:16px;
     right:16px;
     z-index:50;
-    background:rgba(255,255,255,.82);
-    border:1px solid rgba(70,99,122,.65);
+    background:var(--accent-soft);
+    border:1px solid var(--accent-border);
     color:var(--text-heading);
     border-radius:100px;
     padding:8px 13px;
@@ -322,6 +381,8 @@ canvas{
 }
 
 body.game-fullscreen{
+    width:100vw;
+    height:100vh;
     background:
         radial-gradient(
             circle at top left,
@@ -407,6 +468,7 @@ body.game-fullscreen .fullscreen-high-score{
 }
 
 @media(max-width:600px){
+
     header{
         padding:12px 14px;
         min-height:62px;
@@ -491,6 +553,7 @@ body.game-fullscreen .fullscreen-high-score{
 </div>
 
 <main>
+
     <div class="ornament">
         <span>✦</span>
         <i></i>
@@ -529,7 +592,8 @@ body.game-fullscreen .fullscreen-high-score{
             class="fullscreen-high-score"
             id="fullscreenHighScore"
         >
-            Top Score: <span id="fullscreen-top-score">00000</span>
+            Top Score:
+            <span id="fullscreen-top-score">00000</span>
         </div>
 
         <canvas
@@ -537,6 +601,7 @@ body.game-fullscreen .fullscreen-high-score{
             width="960"
             height="540"
         ></canvas>
+
     </div>
 
     <div class="ornament bottom-ornament">
@@ -548,6 +613,8 @@ body.game-fullscreen .fullscreen-high-score{
     </div>
 
 </main>
+
+<script src="../script.js"></script>
 
 <script>
 const canvas=document.getElementById("game");
@@ -698,7 +765,40 @@ function getThemeSky(){
     };
 
     return themes[theme]||themes.blue;
+}function applyArcadeTheme(){
+
+    const savedTheme=
+        localStorage.getItem(
+            "arcade_theme"
+        );
+
+    const validThemes=[
+        "pink",
+        "green",
+        "lavender",
+        "yellow"
+    ];
+
+    if(
+        validThemes.includes(savedTheme)
+    ){
+
+        document.body.setAttribute(
+            "data-theme",
+            savedTheme
+        );
+
+    }else{
+
+        document.body.removeAttribute(
+            "data-theme"
+        );
+    }
+
+    draw();
 }
+
+applyArcadeTheme();
 
 function drawSky(){
 
@@ -826,8 +926,11 @@ function drawClouds(){
 
 function drawGround(){
 
+    const sky=
+        getThemeSky();
+
     ctx.fillStyle=
-        GROUND_TOP;
+        sky.ground;
 
     ctx.fillRect(
         0,
@@ -967,7 +1070,9 @@ loadCactusImage(
     cactusImages.wide=new Image(),
     "games/1000082081-removebg-preview.png",
     "../games/1000082081-removebg-preview.png"
-);const cactusTypes=[
+);
+
+const cactusTypes=[
 
     {
         image:cactusImages.small,
@@ -1040,31 +1145,6 @@ function spawnObstacle(){
 
         passed:false
     });
-
-    const difficulty=
-        Math.min(
-            score/100,
-            30
-        );
-
-    const minimum=
-        1250-
-        Math.min(
-            difficulty*8,
-            240
-        );
-
-    const maximum=
-        1700-
-        Math.min(
-            difficulty*8,
-            240
-        );
-
-    nextSpawn=
-        minimum+
-        Math.random()*
-        (maximum-minimum);
 }
 
 function drawObstacles(){
@@ -1074,90 +1154,70 @@ function drawObstacles(){
     ){
 
         if(
-            obstacle.image &&
-            obstacle.image.complete &&
-            obstacle.image.naturalWidth
+            !obstacle.image.complete ||
+            !obstacle.image.naturalWidth
         ){
 
-            ctx.drawImage(
-                obstacle.image,
-                obstacle.x,
-                obstacle.y,
-                obstacle.width,
-                obstacle.height
-            );
+            continue;
         }
+
+        ctx.drawImage(
+            obstacle.image,
+            obstacle.x,
+            obstacle.y,
+            obstacle.width,
+            obstacle.height
+        );
     }
-}
-
-function getBunnyHitbox(){
-
-    return{
-
-        x:bunny.x+13,
-
-        y:bunny.y+12,
-
-        width:52,
-
-        height:60
-    };
 }
 
 function checkCollision(){
 
-    const b=
-        getBunnyHitbox();
+    const bunnyHit={
+        x:bunny.x+5,
+        y:bunny.y+4,
+        width:bunny.width-10,
+        height:bunny.height-5
+    };
 
     for(
-        const o of obstacles
+        const obstacle of obstacles
     ){
 
-        const hitWidth=
-            o.hitboxWidth;
-
-        const hitHeight=
-            o.hitboxHeight;
-
         const cactusHit={
-
             x:
-                o.x+
-                (o.width-hitWidth)/2,
+                obstacle.x+
+                (obstacle.width-
+                obstacle.hitboxWidth)/2,
 
             y:
-                GROUND-
-                hitHeight,
+                obstacle.y+
+                (obstacle.height-
+                obstacle.hitboxHeight),
 
             width:
-                hitWidth,
+                obstacle.hitboxWidth,
 
             height:
-                hitHeight
+                obstacle.hitboxHeight
         };
 
         if(
-
-            b.x<
+            bunnyHit.x<
                 cactusHit.x+
-                cactusHit.width
+                cactusHit.width &&
 
-            &&
+            bunnyHit.x+
+                bunnyHit.width>
+                cactusHit.x &&
 
-            b.x+b.width>
-                cactusHit.x
-
-            &&
-
-            b.y<
+            bunnyHit.y<
                 cactusHit.y+
-                cactusHit.height
+                cactusHit.height &&
 
-            &&
-
-            b.y+b.height>
+            bunnyHit.y+
+                bunnyHit.height>
                 cactusHit.y
-
         ){
 
             return true;
@@ -1308,9 +1368,7 @@ function drawScore(){
     );
 
     ctx.restore();
-}
-
-function initAudio(){
+    }function initAudio(){
 
     if(audioContext){
         return;
@@ -1397,7 +1455,7 @@ function showCoinToast(amount){
         "100px";
 
     toast.style.background=
-        "rgba(255,255,255,.94)";
+        "var(--card-bg)";
 
     toast.style.border=
         "1px solid var(--accent-border)";
@@ -1677,7 +1735,9 @@ function updateGame(delta){
     }
 
     checkTopScore();
-    }function drawGameOver(){
+}
+
+function drawGameOver(){
 
     ctx.save();
 
@@ -1691,8 +1751,8 @@ function updateGame(delta){
         H
     );
 
-    const panelWidth=390;
-    const panelHeight=245;
+    const panelWidth=450;
+    const panelHeight=285;
 
     const panelX=
         (W-panelWidth)/2;
@@ -1700,11 +1760,14 @@ function updateGame(delta){
     const panelY=
         (H-panelHeight)/2;
 
+    const theme=
+        getThemeSky();
+
     ctx.fillStyle=
-        "rgba(250,247,240,.96)";
+        "rgba(250,247,240,.97)";
 
     ctx.strokeStyle=
-        "rgba(130,168,189,.9)";
+        theme.top;
 
     ctx.lineWidth=2;
 
@@ -1715,7 +1778,7 @@ function updateGame(delta){
         panelY,
         panelWidth,
         panelHeight,
-        22
+        24
     );
 
     ctx.fill();
@@ -1724,53 +1787,56 @@ function updateGame(delta){
     ctx.textAlign="center";
     ctx.textBaseline="middle";
 
-    ctx.fillStyle=
-        "#46637a";
-
     ctx.font=
-        "38px Georgia,serif";
+        "48px Georgia,serif";
+
+    ctx.fillStyle=
+        theme.top;
 
     ctx.fillText(
-        "☠",
+        "💔",
         W/2,
-        panelY+52
+        panelY+58
     );
 
     ctx.font=
-        "bold 31px Georgia,serif";
+        "bold 34px Georgia,serif";
+
+    ctx.fillStyle=
+        theme.top;
 
     ctx.fillText(
         "Game Over",
         W/2,
-        panelY+92
+        panelY+112
     );
 
     ctx.fillStyle=
         "#3f5260";
 
     ctx.font=
-        "19px Georgia,serif";
+        "21px Georgia,serif";
 
     ctx.fillText(
         "Score: "+Math.floor(score),
         W/2,
-        panelY+132
+        panelY+158
     );
 
     ctx.font=
-        "bold 19px Georgia,serif";
+        "bold 21px Georgia,serif";
 
     ctx.fillStyle=
-        "#46637a";
+        theme.top;
 
     ctx.fillText(
         "Coins earned: "+runCoinsEarned,
         W/2,
-        panelY+165
+        panelY+194
     );
 
     ctx.font=
-        "14px Georgia,serif";
+        "15px Georgia,serif";
 
     ctx.fillStyle=
         "#5c6b75";
@@ -1778,7 +1844,7 @@ function updateGame(delta){
     ctx.fillText(
         "Tap anywhere to play again",
         W/2,
-        panelY+207
+        panelY+242
     );
 
     ctx.restore();
@@ -1947,9 +2013,7 @@ function jump(){
 
         jumpTime=0;
     }
-}
-
-function loop(time){
+                }function loop(time){
 
     if(
         !started||
@@ -2054,7 +2118,9 @@ document.addEventListener(
     {
         passive:false
     }
-);const gameShell=
+);
+
+const gameShell=
     document.getElementById(
         "gameShell"
     );
@@ -2159,7 +2225,14 @@ window.addEventListener(
             event.key==="arcade_theme"
         ){
 
-            draw();
+            applyArcadeTheme();
+        }
+
+        if(
+            event.key==="arcade_coins"
+        ){
+
+            updateCoinDisplay();
         }
     }
 );
