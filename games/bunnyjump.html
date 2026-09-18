@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
 <title>Bunny Run ♡</title>
 
 <style>
@@ -24,14 +25,23 @@
     box-sizing:border-box;
 }
 
-html,body{
+html,
+body{
     margin:0;
     width:100%;
     min-height:100%;
     overflow-x:hidden;
     background:
-        radial-gradient(circle at top left,var(--bg-grad-1),transparent 45%),
-        radial-gradient(circle at bottom right,var(--bg-grad-2),transparent 50%),
+        radial-gradient(
+            circle at top left,
+            var(--bg-grad-1),
+            transparent 45%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            var(--bg-grad-2),
+            transparent 50%
+        ),
         var(--bg-base);
     color:var(--text-main);
     font-family:Georgia,serif;
@@ -109,7 +119,7 @@ header{
     font-family:Georgia,serif;
     font-size:13px;
     cursor:pointer;
-    transition:all .2s ease;
+    transition:opacity .2s ease;
 }
 
 .fullscreen-button:hover{
@@ -190,6 +200,7 @@ main{
     0%,100%{
         transform:translateY(0) rotate(0);
     }
+
     50%{
         transform:translateY(-7px) rotate(7deg);
     }
@@ -281,10 +292,10 @@ body.game-fullscreen{
 }
 
 body.game-fullscreen header,
-body.game-fullscreen main > .ornament,
-body.game-fullscreen main > h1,
-body.game-fullscreen main > .subtitle,
-body.game-fullscreen main > .game-info,
+body.game-fullscreen main>.ornament,
+body.game-fullscreen main>h1,
+body.game-fullscreen main>.subtitle,
+body.game-fullscreen main>.game-info,
 body.game-fullscreen .bottom-ornament{
     display:none;
 }
@@ -362,17 +373,25 @@ body.game-fullscreen canvas{
 
 <header>
     <div class="header-left">
-        <a class="nav-link" href="../index.html">← Back to Games</a>
+        <a class="nav-link" href="../index.html">
+            ← Back to Games
+        </a>
     </div>
 
     <div class="header-right">
-        <button class="fullscreen-button" id="fullscreenButton" type="button">
+
+        <button
+            class="fullscreen-button"
+            id="fullscreenButton"
+            type="button"
+        >
             ⛶ Fullscreen
         </button>
 
         <div class="coin-display">
             ♡ <span id="coin-count">0</span> Coins
         </div>
+
     </div>
 </header>
 
@@ -386,6 +405,7 @@ body.game-fullscreen canvas{
 </div>
 
 <main>
+
     <div class="ornament">
         <span>✦</span>
         <i></i>
@@ -402,12 +422,20 @@ body.game-fullscreen canvas{
 
     <div class="game-info">
         <div class="info-pill">
-            Top Score: <span id="top-score">00000</span>
+            Top Score:
+            <span id="top-score">00000</span>
         </div>
     </div>
 
-    <div class="game-shell" id="gameShell">
-        <canvas id="game" width="960" height="540"></canvas>
+    <div
+        class="game-shell"
+        id="gameShell"
+    >
+        <canvas
+            id="game"
+            width="960"
+            height="540"
+        ></canvas>
     </div>
 
     <div class="ornament bottom-ornament">
@@ -417,6 +445,7 @@ body.game-fullscreen canvas{
         <i></i>
         <span>✧</span>
     </div>
+
 </main>
 
 <script src="../script.js"></script>
@@ -431,7 +460,6 @@ const H=540;
 const GROUND=425;
 
 const BG="#b8cbd1";
-const DARK="#29332f";
 
 const GROUND_TOP="#756d59";
 const GROUND_BASE="#625b4b";
@@ -478,10 +506,17 @@ let runCoinsEarned=0;
 
 const TOP_SCORE_KEY="bunnyRun_topScore";
 
-let topScore=Number(localStorage.getItem(TOP_SCORE_KEY))||0;
+let topScore=
+    Number(
+        localStorage.getItem(TOP_SCORE_KEY)
+    )||0;
 
 function updateTopScoreDisplay(){
-    const element=document.getElementById("top-score");
+
+    const element=
+        document.getElementById(
+            "top-score"
+        );
 
     if(!element)return;
 
@@ -492,9 +527,12 @@ function updateTopScoreDisplay(){
 }
 
 function checkTopScore(){
-    const current=Math.floor(score);
+
+    const current=
+        Math.floor(score);
 
     if(current>topScore){
+
         topScore=current;
 
         localStorage.setItem(
@@ -507,64 +545,75 @@ function checkTopScore(){
 }
 
 updateTopScoreDisplay();<script>
-function applyArcadeTheme(){
-    const theme=localStorage.getItem("arcade_theme")||"blue";
+function getThemeSky(){
+
+    const theme=
+        localStorage.getItem(
+            "arcade_theme"
+        )||"blue";
 
     const themes={
+
         blue:{
-            base:"#b8cbd1",
             top:"#a8c7d0",
-            bottom:"#d5e1d9"
+            bottom:"#d5e1d9",
+            ground:"#b8cbd1"
         },
 
         pink:{
-            base:"#d8c2cb",
-            top:"#e9c8d4",
-            bottom:"#f2dfe4"
+            top:"#e7c5d1",
+            bottom:"#f3dfe5",
+            ground:"#d9c1ca"
         },
 
         green:{
-            base:"#c1d0c0",
-            top:"#b4cfb7",
-            bottom:"#dce9d8"
+            top:"#b9d0bb",
+            bottom:"#dce9d8",
+            ground:"#c1d0c0"
         },
 
         lavender:{
-            base:"#c9c1d4",
-            top:"#c2b6d6",
-            bottom:"#e2dceb"
+            top:"#c4b9d7",
+            bottom:"#e4ddef",
+            ground:"#c9c1d4"
         },
 
         yellow:{
-            base:"#d6ceb0",
-            top:"#d9d0a9",
-            bottom:"#eee7cc"
+            top:"#d8ceaa",
+            bottom:"#eee7cc",
+            ground:"#d6ceb0"
         }
+
     };
 
-    const selected=themes[theme]||themes.blue;
-
-    return selected;
-}
-
-function getSkyColors(){
-    return applyArcadeTheme();
+    return themes[theme]||themes.blue;
 }
 
 function drawSky(){
-    const colors=getSkyColors();
 
-    const gradient=ctx.createLinearGradient(
+    const sky=
+        getThemeSky();
+
+    const gradient=
+        ctx.createLinearGradient(
+            0,
+            0,
+            0,
+            GROUND
+        );
+
+    gradient.addColorStop(
         0,
-        0,
-        0,
-        GROUND
+        sky.top
     );
 
-    gradient.addColorStop(0,colors.top);
-    gradient.addColorStop(1,colors.bottom);
+    gradient.addColorStop(
+        1,
+        sky.bottom
+    );
 
     ctx.fillStyle=gradient;
+
     ctx.fillRect(
         0,
         0,
@@ -574,32 +623,43 @@ function drawSky(){
 }
 
 const clouds=[
+
     {
         x:80,
         y:85,
         scale:1
     },
+
     {
         x:360,
         y:125,
         scale:.72
     },
+
     {
         x:650,
         y:75,
         scale:1.15
     },
+
     {
         x:850,
         y:155,
         scale:.65
     }
+
 ];
 
-function drawCloud(x,y,scale){
+function drawCloud(
+    x,
+    y,
+    scale
+){
+
     ctx.save();
 
-    ctx.fillStyle="rgba(255,255,255,.52)";
+    ctx.fillStyle=
+        "rgba(255,255,255,.52)";
 
     ctx.beginPath();
 
@@ -634,11 +694,17 @@ function drawCloud(x,y,scale){
         18*scale
     );
 
+    ctx.fill();
+
     ctx.restore();
 }
 
 function drawClouds(){
-    for(const cloud of clouds){
+
+    for(
+        const cloud of clouds
+    ){
+
         drawCloud(
             cloud.x,
             cloud.y,
@@ -648,7 +714,9 @@ function drawClouds(){
 }
 
 function drawGround(){
-    ctx.fillStyle=GROUND_TOP;
+
+    ctx.fillStyle=
+        GROUND_TOP;
 
     ctx.fillRect(
         0,
@@ -657,7 +725,8 @@ function drawGround(){
         8
     );
 
-    ctx.fillStyle=GROUND_BASE;
+    ctx.fillStyle=
+        GROUND_BASE;
 
     ctx.fillRect(
         0,
@@ -680,7 +749,9 @@ function drawGround(){
         x<W+tileSize;
         x+=tileSize
     ){
-        ctx.fillStyle=GROUND_LIGHT;
+
+        ctx.fillStyle=
+            GROUND_LIGHT;
 
         ctx.fillRect(
             x,
@@ -689,7 +760,8 @@ function drawGround(){
             4
         );
 
-        ctx.fillStyle=GROUND_DARK;
+        ctx.fillStyle=
+            GROUND_DARK;
 
         ctx.fillRect(
             x+19,
@@ -698,7 +770,8 @@ function drawGround(){
             4
         );
 
-        ctx.fillStyle=GROUND_LIGHT;
+        ctx.fillStyle=
+            GROUND_LIGHT;
 
         ctx.fillRect(
             x+5,
@@ -712,6 +785,7 @@ function drawGround(){
 }
 
 function drawBackground(){
+
     drawSky();
     drawClouds();
     drawGround();
@@ -724,11 +798,11 @@ function loadCactusImage(
     rootPath,
     fallbackPath
 ){
-    const filename=rootPath
-        .split("/")
-        .pop();
 
-    const candidates=[
+    const filename=
+        rootPath.split("/").pop();
+
+    const paths=[
         rootPath,
         fallbackPath,
         filename
@@ -737,21 +811,24 @@ function loadCactusImage(
     let index=0;
 
     function tryNext(){
-        if(index>=candidates.length){
+
+        if(index>=paths.length){
             return;
         }
 
-        const source=candidates[index++];
+        const source=
+            paths[index++];
 
-        image.src=source;
+        image.onload=null;
+        image.onerror=null;
+
+        image.onload=function(){};
 
         image.onerror=function(){
             tryNext();
         };
 
-        image.onload=function(){
-            image.onerror=null;
-        };
+        image.src=source;
     }
 
     tryNext();
@@ -782,6 +859,7 @@ loadCactusImage(
 );
 
 const cactusTypes=[
+
     {
         image:cactusImages.small,
         width:55,
@@ -813,6 +891,7 @@ const cactusTypes=[
         hitboxWidth:44,
         hitboxHeight:32
     }
+
 ];
 
 const obstacles=[];
@@ -821,28 +900,43 @@ let spawnTimer=0;
 let nextSpawn=1400;
 
 function spawnObstacle(){
+
     const type=
         cactusTypes[
             Math.floor(
-                Math.random()*cactusTypes.length
+                Math.random()*
+                cactusTypes.length
             )
         ];
 
     obstacles.push({
+
         x:W+30,
-        y:GROUND-type.height,
+
+        y:
+            GROUND-
+            type.height,
+
         width:type.width,
+
         height:type.height,
+
         image:type.image,
-        hitboxWidth:type.hitboxWidth,
-        hitboxHeight:type.hitboxHeight,
+
+        hitboxWidth:
+            type.hitboxWidth,
+
+        hitboxHeight:
+            type.hitboxHeight,
+
         passed:false
     });
 
-    const difficulty=Math.min(
-        score/100,
-        30
-    );
+    const difficulty=
+        Math.min(
+            score/100,
+            30
+        );
 
     const minimum=
         1250-
@@ -865,13 +959,17 @@ function spawnObstacle(){
 }
 
 function drawObstacles(){
-    for(const obstacle of obstacles){
+
+    for(
+        const obstacle of obstacles
+    ){
 
         if(
             obstacle.image &&
             obstacle.image.complete &&
             obstacle.image.naturalWidth
         ){
+
             ctx.drawImage(
                 obstacle.image,
                 obstacle.x,
@@ -884,47 +982,75 @@ function drawObstacles(){
 }
 
 function getBunnyHitbox(){
+
     return{
+
         x:bunny.x+13,
+
         y:bunny.y+12,
+
         width:52,
+
         height:60
     };
 }
 
 function checkCollision(){
-    const b=getBunnyHitbox();
 
-    for(const o of obstacles){
+    const b=
+        getBunnyHitbox();
 
-        const hitWidth=o.hitboxWidth;
-        const hitHeight=o.hitboxHeight;
+    for(
+        const o of obstacles
+    ){
+
+        const hitWidth=
+            o.hitboxWidth;
+
+        const hitHeight=
+            o.hitboxHeight;
 
         const cactusHit={
-            x:o.x+
+
+            x:
+                o.x+
                 (o.width-hitWidth)/2,
 
-            y:GROUND-hitHeight,
+            y:
+                GROUND-
+                hitHeight,
 
-            width:hitWidth,
-            height:hitHeight
+            width:
+                hitWidth,
+
+            height:
+                hitHeight
         };
 
         if(
+
             b.x<
                 cactusHit.x+
-                cactusHit.width &&
+                cactusHit.width
+
+            &&
 
             b.x+b.width>
-                cactusHit.x &&
+                cactusHit.x
+
+            &&
 
             b.y<
                 cactusHit.y+
-                cactusHit.height &&
+                cactusHit.height
+
+            &&
 
             b.y+b.height>
                 cactusHit.y
+
         ){
+
             return true;
         }
     }
@@ -933,34 +1059,47 @@ function checkCollision(){
 }
 
 function drawBunny(){
+
     let image;
+
     let frameWidth=28;
     let frameHeight=28;
+
     let frameIndex=0;
 
-    if(!started && !dead){
+    if(
+        !started &&
+        !dead
+    ){
 
         image=idleImage;
+
         frameIndex=0;
 
-    }else if(!bunny.grounded){
+    }else if(
+        !bunny.grounded
+    ){
 
         image=jumpImage;
+
         frameWidth=28;
         frameHeight=36;
 
         const jumpAnimationDuration=560;
 
-        frameIndex=Math.min(
-            7,
-            Math.floor(
-                (jumpTime/jumpAnimationDuration)*8
-            )
-        );
+        frameIndex=
+            Math.min(
+                7,
+                Math.floor(
+                    (jumpTime/
+                    jumpAnimationDuration)*8
+                )
+            );
 
     }else{
 
         image=runImage;
+
         frameWidth=28;
         frameHeight=28;
 
@@ -974,16 +1113,21 @@ function drawBunny(){
         !image.complete ||
         !image.naturalWidth
     ){
+
         return;
     }
 
-    const drawW=frameWidth*3;
-    const drawH=frameHeight*3;
+    const drawW=
+        frameWidth*3;
+
+    const drawH=
+        frameHeight*3;
 
     const feetY=
         bunny.y+bunny.height;
 
-    const drawX=bunny.x;
+    const drawX=
+        bunny.x;
 
     const drawY=
         feetY-drawH;
@@ -998,14 +1142,23 @@ function drawBunny(){
     ctx.scale(-1,1);
 
     ctx.drawImage(
+
         image,
+
         frameIndex*frameWidth,
+
         0,
+
         frameWidth,
+
         frameHeight,
+
         0,
+
         0,
+
         drawW,
+
         drawH
     );
 
@@ -1013,6 +1166,7 @@ function drawBunny(){
 }
 
 function drawScore(){
+
     const displayScore=
         Math.floor(score)
         .toString()
@@ -1035,7 +1189,8 @@ function drawScore(){
         20
     );
 
-    ctx.fillStyle="#f1eee2";
+    ctx.fillStyle=
+        "#f1eee2";
 
     ctx.fillText(
         displayScore,
@@ -1044,23 +1199,32 @@ function drawScore(){
     );
 
     ctx.restore();
-        }<script>
+    }<script>
 function initAudio(){
-    if(audioContext)return;
+
+    if(audioContext){
+        return;
+    }
 
     try{
+
         audioContext=
-            new (
+            new(
                 window.AudioContext||
                 window.webkitAudioContext
             )();
+
     }catch(e){}
 }
 
 function playScoreSound(){
-    if(!audioContext)return;
+
+    if(!audioContext){
+        return;
+    }
 
     try{
+
         const oscillator=
             audioContext.createOscillator();
 
@@ -1097,11 +1261,14 @@ function playScoreSound(){
         oscillator.stop(
             audioContext.currentTime+.1
         );
+
     }catch(e){}
 }
 
 function showCoinToast(amount){
-    const toast=document.createElement("div");
+
+    const toast=
+        document.createElement("div");
 
     toast.textContent=
         "+"+amount+" Coins";
@@ -1109,6 +1276,7 @@ function showCoinToast(amount){
     toast.style.position="fixed";
     toast.style.left="50%";
     toast.style.top="82px";
+
     toast.style.transform=
         "translateX(-50%) translateY(-8px)";
 
@@ -1137,28 +1305,36 @@ function showCoinToast(amount){
     toast.style.opacity="0";
 
     toast.style.transition=
-        "opacity .2s ease, transform .3s ease";
+        "opacity .2s ease,transform .3s ease";
 
     document.body.appendChild(toast);
 
-    requestAnimationFrame(()=>{
+    requestAnimationFrame(function(){
+
         toast.style.opacity="1";
+
         toast.style.transform=
             "translateX(-50%) translateY(0)";
     });
 
-    setTimeout(()=>{
+    setTimeout(function(){
+
         toast.style.opacity="0";
+
         toast.style.transform=
             "translateX(-50%) translateY(-8px)";
 
-        setTimeout(()=>{
+        setTimeout(function(){
+
             toast.remove();
+
         },300);
+
     },900);
 }
 
 function awardCoinsForScore(){
+
     const currentCoinMilestone=
         Math.floor(score/1000);
 
@@ -1177,16 +1353,21 @@ function awardCoinsForScore(){
         if(
             typeof addCoins==="function"
         ){
-            addCoins(coinsEarned);
+
+            addCoins(
+                coinsEarned
+            );
         }
 
         if(
             typeof updateCoinDisplays==="function"
         ){
+
             updateCoinDisplays();
         }
 
-        runCoinsEarned+=coinsEarned;
+        runCoinsEarned+=
+            coinsEarned;
 
         lastCoinMilestone=
             currentCoinMilestone;
@@ -1198,27 +1379,36 @@ function awardCoinsForScore(){
 }
 
 function updateCoinDisplay(){
+
     if(
         typeof updateCoinDisplays==="function"
     ){
+
         updateCoinDisplays();
     }
 }
 
 function updateGame(delta){
-    if(!started || dead)return;
 
-    const dt=Math.min(
-        delta,
-        32
-    );
+    if(
+        !started||
+        dead
+    ){
+
+        return;
+    }
+
+    const dt=
+        Math.min(
+            delta,
+            32
+        );
 
     const seconds=
         dt/16.6667;
 
     score+=
-        0.55*
-        seconds;
+        .55*seconds;
 
     speed=
         6+
@@ -1236,30 +1426,38 @@ function updateGame(delta){
         seconds;
 
     if(
-        bunny.y>=GROUND-bunny.height
+        bunny.y>=
+        GROUND-bunny.height
     ){
+
         bunny.y=
             GROUND-bunny.height;
 
         bunny.velocityY=0;
+
         bunny.grounded=true;
     }
 
-    if(!bunny.grounded){
+    if(
+        !bunny.grounded
+    ){
+
         jumpTime+=dt;
+
     }else{
+
         jumpTime=0;
     }
 
     runAnimTime+=dt;
 
     groundOffset+=
-        speed*
-        seconds;
+        speed*seconds;
 
     if(
         groundOffset>=34
     ){
+
         groundOffset%=34;
     }
 
@@ -1268,18 +1466,23 @@ function updateGame(delta){
     if(
         spawnTimer>=nextSpawn
     ){
+
         spawnTimer=0;
+
         spawnObstacle();
     }
 
-    for(let i=obstacles.length-1;i>=0;i--){
+    for(
+        let i=obstacles.length-1;
+        i>=0;
+        i--
+    ){
 
         const obstacle=
             obstacles[i];
 
         obstacle.x-=
-            speed*
-            seconds;
+            speed*seconds;
 
         if(
             !obstacle.passed &&
@@ -1301,10 +1504,13 @@ function updateGame(delta){
             ){
 
                 for(
-                    let i=lastScoreMilestone;
-                    i<currentMilestone;
-                    i++
+                    let n=
+                        lastScoreMilestone;
+                    n<
+                        currentMilestone;
+                    n++
                 ){
+
                     playScoreSound();
                 }
 
@@ -1320,7 +1526,11 @@ function updateGame(delta){
             obstacle.width<
             -100
         ){
-            obstacles.splice(i,1);
+
+            obstacles.splice(
+                i,
+                1
+            );
         }
     }
 
@@ -1333,10 +1543,13 @@ function updateGame(delta){
     ){
 
         for(
-            let i=lastScoreMilestone;
-            i<currentMilestone;
-            i++
+            let n=
+                lastScoreMilestone;
+            n<
+                currentMilestone;
+            n++
         ){
+
             playScoreSound();
         }
 
@@ -1346,7 +1559,10 @@ function updateGame(delta){
 
     awardCoinsForScore();
 
-    if(checkCollision()){
+    if(
+        checkCollision()
+    ){
+
         gameOver();
     }
 
@@ -1354,6 +1570,7 @@ function updateGame(delta){
 }
 
 function drawGameOver(){
+
     ctx.save();
 
     ctx.fillStyle=
@@ -1368,7 +1585,8 @@ function drawGameOver(){
 
     ctx.textAlign="center";
 
-    ctx.fillStyle="#f1eee2";
+    ctx.fillStyle=
+        "#f1eee2";
 
     ctx.font=
         "38px Georgia,serif";
@@ -1421,6 +1639,7 @@ function drawGameOver(){
 }
 
 function drawStartScreen(){
+
     ctx.save();
 
     ctx.textAlign="center";
@@ -1440,7 +1659,8 @@ function drawStartScreen(){
     ctx.font=
         "15px Georgia,serif";
 
-    ctx.fillStyle="#f1eee2";
+    ctx.fillStyle=
+        "#f1eee2";
 
     ctx.fillText(
         "jump with a tap",
@@ -1452,6 +1672,7 @@ function drawStartScreen(){
 }
 
 function draw(){
+
     drawBackground();
 
     drawObstacles();
@@ -1460,17 +1681,25 @@ function draw(){
 
     drawScore();
 
-    if(!started && !dead){
+    if(
+        !started &&
+        !dead
+    ){
+
         drawStartScreen();
     }
 
     if(dead){
+
         drawGameOver();
     }
 }
 
 function gameOver(){
-    if(dead)return;
+
+    if(dead){
+        return;
+    }
 
     dead=true;
 
@@ -1482,10 +1711,13 @@ function gameOver(){
 }
 
 function restart(){
+
     score=0;
+
     speed=6;
 
     lastScoreMilestone=0;
+
     lastCoinMilestone=0;
 
     runCoinsEarned=0;
@@ -1493,34 +1725,43 @@ function restart(){
     obstacles.length=0;
 
     spawnTimer=0;
+
     nextSpawn=1400;
 
     bunny.y=
         GROUND-bunny.height;
 
     bunny.velocityY=0;
+
     bunny.grounded=true;
 
     runAnimTime=0;
+
     jumpTime=0;
+
     groundOffset=0;
 
     dead=false;
+
     started=true;
 
     lastTime=
         performance.now();
 
-    requestAnimationFrame(loop);
+    requestAnimationFrame(
+        loop
+    );
 }
 
 function jump(){
+
     initAudio();
 
     if(
         audioContext &&
         audioContext.state==="suspended"
     ){
+
         audioContext.resume();
     }
 
@@ -1531,18 +1772,23 @@ function jump(){
         bunny.grounded=true;
 
         runAnimTime=0;
+
         jumpTime=0;
 
         lastTime=
             performance.now();
 
-        requestAnimationFrame(loop);
+        requestAnimationFrame(
+            loop
+        );
 
         return;
     }
 
     if(dead){
+
         restart();
+
         return;
     }
 
@@ -1558,12 +1804,19 @@ function jump(){
 }
 
 function loop(time){
-    if(!started || dead){
+
+    if(
+        !started||
+        dead
+    ){
+
         draw();
+
         return;
     }
 
     if(!lastTime){
+
         lastTime=time;
     }
 
@@ -1577,35 +1830,33 @@ function loop(time){
     draw();
 
     if(!dead){
-        requestAnimationFrame(loop);
+
+        requestAnimationFrame(
+            loop
+        );
     }
 }
-
-/*
-    Normal controls:
-    tap/click = jump
-    Space / ArrowUp = jump
-
-    Fullscreen controls:
-    ANYWHERE you tap/click on the screen = jump
-*/
 
 document.addEventListener(
     "keydown",
     function(event){
 
         if(
-            event.code==="Space" ||
+            event.code==="Space"||
             event.code==="ArrowUp"
         ){
+
             event.preventDefault();
+
             jump();
         }
 
         if(
             event.key.toLowerCase()==="f"
         ){
+
             event.preventDefault();
+
             toggleFullscreen();
         }
     }
@@ -1614,23 +1865,32 @@ document.addEventListener(
 canvas.addEventListener(
     "pointerdown",
     function(event){
-        event.preventDefault();
-        jump();
-    },
-    {passive:false}
-);
 
+        event.preventDefault();
+
+        jump();
+
+    },
+    {
+        passive:false
+    }
+);<script>
 /*
-    This is the important fullscreen mobile control.
-    When fullscreen is active, tapping anywhere outside
-    buttons/header controls will make Bunny Run jump.
+    FULLSCREEN TOUCH
+
+    When fullscreen is active, touching anywhere
+    on the game screen makes the bunny jump.
+
+    Buttons are ignored so the fullscreen button
+    itself does not accidentally make the bunny jump.
 */
+
 document.addEventListener(
     "pointerdown",
     function(event){
 
         const fullscreenActive=
-            document.fullscreenElement ||
+            !!document.fullscreenElement||
             document.body.classList.contains(
                 "game-fullscreen"
             );
@@ -1641,8 +1901,11 @@ document.addEventListener(
 
         if(
             event.target.closest &&
-            event.target.closest("button,a")
+            event.target.closest(
+                "button,a"
+            )
         ){
+
             return;
         }
 
@@ -1651,11 +1914,15 @@ document.addEventListener(
         jump();
 
     },
-    {passive:false}
+    {
+        passive:false
+    }
 );
 
 const gameShell=
-    document.getElementById("gameShell");
+    document.getElementById(
+        "gameShell"
+    );
 
 const fullscreenButton=
     document.getElementById(
@@ -1706,7 +1973,9 @@ async function toggleFullscreen(){
 fullscreenButton.addEventListener(
     "click",
     function(event){
+
         event.stopPropagation();
+
         toggleFullscreen();
     }
 );
@@ -1732,10 +2001,6 @@ document.addEventListener(
     }
 );
 
-function syncTheme(){
-    applyArcadeTheme();
-}
-
 window.addEventListener(
     "storage",
     function(event){
@@ -1743,6 +2008,7 @@ window.addEventListener(
         if(
             event.key==="arcade_theme"
         ){
+
             draw();
         }
     }
@@ -1752,5 +2018,6 @@ updateCoinDisplay();
 
 draw();
 </script>
+
 </body>
 </html>
