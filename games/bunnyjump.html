@@ -287,8 +287,53 @@ canvas{
     margin-bottom:0;
 }
 
+.fullscreen-exit-button{
+    display:none;
+    position:absolute;
+    top:16px;
+    left:16px;
+    z-index:50;
+    border:1px solid rgba(70,99,122,.65);
+    background:rgba(255,255,255,.82);
+    color:var(--text-heading);
+    border-radius:100px;
+    padding:8px 12px;
+    font-family:Georgia,serif;
+    font-size:12px;
+    cursor:pointer;
+    box-shadow:0 4px 14px rgba(50,70,80,.14);
+    backdrop-filter:blur(6px);
+}
+
+.fullscreen-high-score{
+    display:none;
+    position:absolute;
+    top:16px;
+    right:16px;
+    z-index:50;
+    background:rgba(255,255,255,.82);
+    border:1px solid rgba(70,99,122,.65);
+    color:var(--text-heading);
+    border-radius:100px;
+    padding:8px 13px;
+    font-size:12px;
+    box-shadow:0 4px 14px rgba(50,70,80,.14);
+    backdrop-filter:blur(6px);
+}
+
 body.game-fullscreen{
-    background:#000;
+    background:
+        radial-gradient(
+            circle at top left,
+            var(--bg-grad-1),
+            transparent 45%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            var(--bg-grad-2),
+            transparent 50%
+        ),
+        var(--bg-base);
 }
 
 body.game-fullscreen header,
@@ -311,7 +356,18 @@ body.game-fullscreen main{
     display:flex;
     align-items:center;
     justify-content:center;
-    background:#000;
+    background:
+        radial-gradient(
+            circle at top left,
+            var(--bg-grad-1),
+            transparent 45%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            var(--bg-grad-2),
+            transparent 50%
+        ),
+        var(--bg-base);
     z-index:9999;
 }
 
@@ -325,13 +381,29 @@ body.game-fullscreen .game-shell{
     display:flex;
     align-items:center;
     justify-content:center;
-    background:#000;
+    background:
+        radial-gradient(
+            circle at top left,
+            var(--bg-grad-1),
+            transparent 45%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            var(--bg-grad-2),
+            transparent 50%
+        ),
+        var(--bg-base);
 }
 
 body.game-fullscreen canvas{
     width:100vw;
     height:100vh;
     object-fit:contain;
+}
+
+body.game-fullscreen .fullscreen-exit-button,
+body.game-fullscreen .fullscreen-high-score{
+    display:block;
 }
 
 @media(max-width:600px){
@@ -364,6 +436,20 @@ body.game-fullscreen canvas{
 
     .subtitle{
         font-size:14px;
+    }
+
+    .fullscreen-exit-button{
+        top:10px;
+        left:10px;
+        padding:7px 10px;
+        font-size:11px;
+    }
+
+    .fullscreen-high-score{
+        top:10px;
+        right:10px;
+        padding:7px 10px;
+        font-size:11px;
     }
 }
 </style>
@@ -405,7 +491,6 @@ body.game-fullscreen canvas{
 </div>
 
 <main>
-
     <div class="ornament">
         <span>✦</span>
         <i></i>
@@ -431,6 +516,22 @@ body.game-fullscreen canvas{
         class="game-shell"
         id="gameShell"
     >
+
+        <button
+            class="fullscreen-exit-button"
+            id="fullscreenExitButton"
+            type="button"
+        >
+            × Exit Fullscreen
+        </button>
+
+        <div
+            class="fullscreen-high-score"
+            id="fullscreenHighScore"
+        >
+            Top Score: <span id="fullscreen-top-score">00000</span>
+        </div>
+
         <canvas
             id="game"
             width="960"
@@ -447,8 +548,6 @@ body.game-fullscreen canvas{
     </div>
 
 </main>
-
-<script src="../script.js"></script>
 
 <script>
 const canvas=document.getElementById("game");
@@ -481,12 +580,12 @@ const idleImage=new Image();
 const runImage=new Image();
 const jumpImage=new Image();
 
-idleImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAA9klEQVR42u1UMQ6EIBAEYmdvjIUlhbVP8AE+1Qf4BGsLSwtj6K25inPv2EU8OGPhdggyzOzMMvbUU0/dtoo81UWe6tj3CtdmJTMGQWM8QlDsKplZ39qmZm1TsxBQcXWrSMBxUha7vwEu68bhGoJ1/WDt31pSTpkGkzCUHcowZr+wSkIGg0//nZKa/MmyJH/o+sEy0jTPH852gXIq8Aa06wfmKzEEpkAFlj+YwTMFlaEk566xBi8wr3fJDc9SLBO86Upf6tL9ZQple8R6Xyv9zTLKpDHAwaNtWTduDGTigIGcMdnPwT8C8TYN5thxUu8sYsGnhgNWL5sPiDbAGkWfAAAAAElFTkSuQmCC";  
-  
-runImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAcCAYAAAB4fbODAAADlElEQVR42u1aPZKzMAw1Gbr0O5kUlBRb5wg5QI7KATgCdQpKip0d+q35im+U1RpjJGMLCNLMFlkIz3rWz5ODMWpqampqampqampqampqampqamr7sevlPFwv50GZoNtJKVCLaZ/lh8FJqEmpCagm1P0+y4/R/x73m3ncb0aTkJmA0pVLK+V78QrJZ4wxVd2Yr++fbM9+pcI7bUlOSOIdqcBI8vpse2OMMZB87yR3XXhJElBaTqwlX965wKzJK06+VN1vK/G5FOuQM+BRCoy0LFxzPyX9wnjJJChIidiAW8E7kqWWhbBfZVEk735ryd1UeM4EtElLTao03hELTCpOfb5IdHfJhE+Bd0gJeoQCo7YPy+eqWlkUu64wW5lR1pyLUu2ha7Z9B7+W4Ln22reuPOWAucZQu7VNtH2TDhoJa7vu5VdVN3+K6ON+M1XdDByFsMU4oRZYuL/tOnRHP0z5mMeu6tyACnFyT3jSfEpjwmyLC4tP1eCkhe9fL+dhj0oH+HP5N+bDnYSZS1L4yKzqZkQqJpO7gXMJsWe8tfiUxMQyFGPC83zrsHF9mBy/lnZaKh5HIUz5mM2RaUuKGGT6nJTGi0UkJzhT4a21h/izPRNS/G67jpyAXL/swkJNxCU8uorPlI8nl6TAi+UYBuQcPPzVy7J4c1VzKZ7NZ2o8yT2EIMVJh3Ht5Gu7zrnXZVGM3hKK5VdZFK/nw1/o3lHiaiqWpwpRFltSUCva1PAa2plC8TjdgYvn4hPwUvApvYfU/YOi41MDoV2Q6xc3Xqh4rk7r4sQ+eMvdOrkXOTb/+v7JwEl8khZCaiiefWoVE8/FJ2Cn5hUwn21vUv1UAIGEE9HV4X8D7v+aQjnmxibmOQSTigcJbceYzQW8eljVzetAJvcPq/0wV7Vc134/97OnW5xg2SOeNJ/uOWcaN1bhgWCjrM91CMTp7Fga+k5Y52Qp/DziWzMklK+z2d0UYgw4h+tV3YwOAPMYldDuXjEqqS8o9oYnzac0Jrco2B0C3iOlzFvPtifJXcr30BgyW9hwMnG6Jy7wkITkBMQPsWclXGWebR8lYDCe/cx3w5Pgk4I7hcmZOUMNeOeOEDS5O57jXPdzurAriX0vU7gkrH1vcAecIy72Bipen/yldCnDBcFXFKa+S5GOvhncloUpJffc9ZyqufGpIfXUi2uKFxcvBJczyy1dD0VSLpG8U/Mw51lT3MXi5x/WB9z8URHs6QAAAABJRU5ErkJggg==";  
-  
-jumpImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAkCAYAAACQVDZDAAADgUlEQVR42u2aPXLyMBCGRcYdfYahoKRIzRE4AEflAByBmsKlC4ZxT+2vyCeyiJW0sq0VUd6nIzi8Xu0/2BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWNar5bBeLQecBLB84Ah0+dp+GpqESEok4FtU61KBqKW7Xi2Hr+3ny98O+5057HfmtydhzfGSU+vjnap1qe5QQtcmnzHGHE9nc73dF7+9oNUcL5xWtgTUrtalukMJ3UvbG2OMsclXQ0LUHC8hrTl0sAMqdiULTb5c3a/kuKt1jiX0qFbWEdRW6hyi76Cn2ZWsPdvNJnvylQxQze6urZdLi01A10G5g0ZbT7MrhYpJ7m6knRAlfKepl0MLI2jllChmQE4Tq9rbzabKiqZhI7eLaY6bGr6rXc/qUK3Y/cUmvGACau9fJTS19dquezjweDo/FZnDfmeOp/OQMqL/1XN8Vz2adPb6tuvIFf3g82Ez5eamBMsUI6foadto97BQBeXstw68tL1Zr5YDRsf3w8YH579Xf/NJuOBGplCwHE/nl6ChwZIaoLEEzKGnaSMdQ6mm/bzYaEN1Q5opdk3ttNBLn4B8PlzEgsUdmeYIlpCROfVK2UhfuzuhxMFt14kTMNUut7BIAxV6cU234HI+bMaMTKFl1YqnjE10R9LQ07KROtFqXtrecB0x1BV/XvdBvTF28df2orOEHp94vvugRYDtgHOMTNKK7Vtex7b4qV0wh41S++zo5EvMKV0w1a5U/0HP32k5n7vf1jb8nNyrPMR7vd0X1ki3C6YeaqqutZF2pDw6z4nI7Sk/Dvm+p7E2p/qOVuwxmtB7Tmg3pl1f20cBj6fzowOPqgCSJEnpSjRAQzvSXHopdvo0x9on7Zjcl0DSDhirwtyoxJ2pDSCfZu16Er9wXY1bP2xi/k/Ax/Wjf4aYY4cLdYpQ1Zqqp22jtCjQc6AV1D5Hyu0Q3N4iGXcl/0eeH/XuTLXruY1B4gPaPWlDud7uC/c330b6Ie43QLTKXNp+loSgeu5n5tCT2OnTHNttU3CrvXSkl427r5Wauz4U7LXrSZI49AQON8JGvwVNuZnY+3MGqLaeVDff7vhdEEJFwfe/tspKzsMNEndskjylU7NerNPG7iH2fiPZjWjmcz9SS8cA6S6mpTdGV3rwc9yPZOSaMvLy14cr9l/T88XGXP7/B8eoAeUpIH/9AAAAAElFTkSuQmCC";  
-    
+idleImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAA9klEQVR42u1UMQ6EIBAEYmdvjIUlhbVP8AE+1Qf4BGsLSwtj6K25inPv2EU8OGPhdggyzOzMMvbUU0/dtoo81UWe6tj3CtdmJTMGQWM8QlDsKplZ39qmZm1TsxBQcXWrSMBxUha7vwEu68bhGoJ1/WDt31pSTpkGkzCUHcowZr+wSkIGg0//nZKa/MmyJH/o+sEy0jTPH852gXIq8Aa06wfmKzEEpkAFlj+YwTMFlaEk566xBi8wr3fJDc9SLBO86Upf6tL9ZQple8R6Xyv9zTLKpDHAwaNtWTduDGTigIGcMdnPwT8C8TYN5thxUu8sYsGnhgNWL5sPiDbAGkWfAAAAAElFTkSuQmCC";
+
+runImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAcCAYAAAB4fbODAAADlElEQVR42u1aPZKzMAw1Gbr0O5kUlBRb5wg5QI7KATgCdQpKip0d+q35im+U1RpjJGMLCNLMFlkIz3rWz5ODMWpqampqampqampqampqampqamr7sevlPFwv50GZoNtJKVCLaZ/lh8FJqEmpCagm1P0+y4/R/x73m3ncb0aTkJmA0pVLK+V78QrJZ4wxVd2Yr++fbM9+pcI7bUlOSOIdqcBI8vpse2OMMZB87yR3XXhJElBaTqwlX965wKzJK06+VN1vK/G5FOuQM+BRCoy0LFxzPyX9wnjJJChIidiAW8E7kqWWhbBfZVEk735ryd1UeM4EtElLTao03hELTCpOfb5IdHfJhE+Bd0gJeoQCo7YPy+eqWlkUu64wW5lR1pyLUu2ha7Z9B7+W4Ln22reuPOWAucZQu7VNtH2TDhoJa7vu5VdVN3+K6ON+M1XdDByFsMU4oRZYuL/tOnRHP0z5mMeu6tyACnFyT3jSfEpjwmyLC4tP1eCkhe9fL+dhj0oH+HP5N+bDnYSZS1L4yKzqZkQqJpO7gXMJsWe8tfiUxMQyFGPC83zrsHF9mBy/lnZaKh5HIUz5mM2RaUuKGGT6nJTGi0UkJzhT4a21h/izPRNS/G67jpyAXL/swkJNxCU8uorPlI8nl6TAi+UYBuQcPPzVy7J4c1VzKZ7NZ2o8yT2EIMVJh3Ht5Gu7zrnXZVGM3hKK5VdZFK/nw1/o3lHiaiqWpwpRFltSUCva1PAa2plC8TjdgYvn4hPwUvApvYfU/YOi41MDoV2Q6xc3Xqh4rk7r4sQ+eMvdOrkXOTb/+v7JwEl8khZCaiiefWoVE8/FJ2Cn5hUwn21vUv1UAIGEE9HV4X8D7v+aQjnmxibmOQSTigcJbceYzQW8eljVzetAJvcPq/0wV7Vc134/97OnW5xg2SOeNJ/uOWcaN1bhgWCjrM91CMTp7Fga+k5Y52Qp/DziWzMklK+z2d0UYgw4h+tV3YwOAPMYldDuXjEqqS8o9oYnzac0Jrco2B0C3iOlzFvPtifJXcr30BgyW9hwMnG6Jy7wkITkBMQPsWclXGWebR8lYDCe/cx3w5Pgk4I7hcmZOUMNeOeOEDS5O57jXPdzurAriX0vU7gkrH1vcAecIy72Bipen/yldCnDBcFXFKa+S5GOvhncloUpJffc9ZyqufGpIfXUi2uKFxcvBJczyy1dD0VSLpG8U/Mw51lT3MXi5x/WB9z8URHs6QAAAABJRU5ErkJggg==";
+
+jumpImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAkCAYAAACQVDZDAAADgUlEQVR42u2aPXLyMBCGRcYdfYahoKRIzRE4AEflAByBmsKlC4ZxT+2vyCeyiJW0sq0VUd6nIzi8Xu0/2BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWNar5bBeLQecBLB84Ah0+dp+GpqESEok4FtU61KBqKW7Xi2Hr+3ny98O+5057HfmtydhzfGSU+vjnap1qe5QQtcmnzHGHE9nc73dF7+9oNUcL5xWtgTUrtalukMJ3UvbG2OMsclXQ0LUHC8hrTl0sAMqdiULTb5c3a/kuKt1jiX0qFbWEdRW6hyi76Cn2ZWsPdvNJnvylQxQze6urZdLi01A10G5g0ZbT7MrhYpJ7m6knRAlfKepl0MLI2jllChmQE4Tq9rbzabKiqZhI7eLaY6bGr6rXc/qUK3Y/cUmvGACau9fJTS19dquezjweDo/FZnDfmeOp/OQMqL/1XN8Vz2adPb6tuvIFf3g82Ez5eamBMsUI6foadto97BQBeXstw68tL1Zr5YDRsf3w8YH579Xf/NJuOBGplCwHE/nl6ChwZIaoLEEzKGnaSMdQ6mm/bzYaEN1Q5opdk3ttNBLn4B8PlzEgsUdmeYIlpCROfVK2UhfuzuhxMFt14kTMNUut7BIAxV6cU234HI+bMaMTKFl1YqnjE10R9LQ07KROtFqXtrecB0x1BV/XvdBvTF28df2orOEHp94vvugRYDtgHOMTNKK7Vtex7b4qV0wh41S++zo5EvMKV0w1a5U/0HP32k5n7vf1jb8nNyrPMR7vd0X1ki3C6YeaqqutZF2pDw6z4nI7Sk/Dvm+p7E2p/qOVuwxmtB7Tmg3pl1f20cBj6fzowOPqgCSJEnpSjRAQzvSXHopdvo0x9on7Zjcl0DSDhirwtyoxJ2pDSCfZu16Er9wXY1bP2xi/k/Ax/Wjf4aYY4cLdYpQ1Zqqp22jtCjQc6AV1D5Hyu0Q3N4iGXcl/0eeH/XuTLXruY1B4gPaPWlDud7uC/c330b6Ie43QLTKXNp+loSgeu5n5tCT2OnTHNttU3CrvXSkl427r5Wauz4U7LXrSZI49AQON8JGvwVNuZnY+3MGqLaeVDff7vhdEEJFwfe/tspKzsMNEndskjylU7NerNPG7iH2fiPZjWjmcz9SS8cA6S6mpTdGV3rwc9yPZOSaMvLy14cr9l/T88XGXP7/B8eoAeUpIH/9AAAAAElFTkSuQmCC";
+
 let started=false;
 let dead=false;
 let lastTime=0;
@@ -518,12 +617,23 @@ function updateTopScoreDisplay(){
             "top-score"
         );
 
-    if(!element)return;
+    const fullscreenElement=
+        document.getElementById(
+            "fullscreen-top-score"
+        );
 
-    element.textContent=
+    const formatted=
         Math.floor(topScore)
         .toString()
         .padStart(5,"0");
+
+    if(element){
+        element.textContent=formatted;
+    }
+
+    if(fullscreenElement){
+        fullscreenElement.textContent=formatted;
+    }
 }
 
 function checkTopScore(){
@@ -544,7 +654,8 @@ function checkTopScore(){
     }
 }
 
-updateTopScoreDisplay();<script>
+updateTopScoreDisplay();
+
 function getThemeSky(){
 
     const theme=
@@ -856,9 +967,7 @@ loadCactusImage(
     cactusImages.wide=new Image(),
     "games/1000082081-removebg-preview.png",
     "../games/1000082081-removebg-preview.png"
-);
-
-const cactusTypes=[
+);const cactusTypes=[
 
     {
         image:cactusImages.small,
@@ -1199,7 +1308,8 @@ function drawScore(){
     );
 
     ctx.restore();
-    }<script>
+}
+
 function initAudio(){
 
     if(audioContext){
@@ -1567,14 +1677,12 @@ function updateGame(delta){
     }
 
     checkTopScore();
-}
-
-function drawGameOver(){
+    }function drawGameOver(){
 
     ctx.save();
 
     ctx.fillStyle=
-        "rgba(41,51,47,.42)";
+        "rgba(35,43,48,.58)";
 
     ctx.fillRect(
         0,
@@ -1583,18 +1691,49 @@ function drawGameOver(){
         H
     );
 
-    ctx.textAlign="center";
+    const panelWidth=390;
+    const panelHeight=245;
+
+    const panelX=
+        (W-panelWidth)/2;
+
+    const panelY=
+        (H-panelHeight)/2;
 
     ctx.fillStyle=
-        "#f1eee2";
+        "rgba(250,247,240,.96)";
+
+    ctx.strokeStyle=
+        "rgba(130,168,189,.9)";
+
+    ctx.lineWidth=2;
+
+    ctx.beginPath();
+
+    ctx.roundRect(
+        panelX,
+        panelY,
+        panelWidth,
+        panelHeight,
+        22
+    );
+
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.textAlign="center";
+    ctx.textBaseline="middle";
+
+    ctx.fillStyle=
+        "#46637a";
 
     ctx.font=
         "38px Georgia,serif";
 
     ctx.fillText(
-        "♡",
+        "☠",
         W/2,
-        171
+        panelY+52
     );
 
     ctx.font=
@@ -1603,36 +1742,43 @@ function drawGameOver(){
     ctx.fillText(
         "Game Over",
         W/2,
-        220
+        panelY+92
+    );
+
+    ctx.fillStyle=
+        "#3f5260";
+
+    ctx.font=
+        "19px Georgia,serif";
+
+    ctx.fillText(
+        "Score: "+Math.floor(score),
+        W/2,
+        panelY+132
     );
 
     ctx.font=
-        "20px Georgia,serif";
+        "bold 19px Georgia,serif";
+
+    ctx.fillStyle=
+        "#46637a";
 
     ctx.fillText(
-        "Score: "+
-        Math.floor(score),
+        "Coins earned: "+runCoinsEarned,
         W/2,
-        258
-    );
-
-    ctx.fillText(
-        "You earned "+
-        runCoinsEarned+
-        " Coins",
-        W/2,
-        287
+        panelY+165
     );
 
     ctx.font=
-        "15px Georgia,serif";
+        "14px Georgia,serif";
 
-    ctx.globalAlpha=.9;
+    ctx.fillStyle=
+        "#5c6b75";
 
     ctx.fillText(
-        "tap anywhere to start again",
+        "Tap anywhere to play again",
         W/2,
-        321
+        panelY+207
     );
 
     ctx.restore();
@@ -1874,16 +2020,7 @@ canvas.addEventListener(
     {
         passive:false
     }
-);<script>
-/*
-    FULLSCREEN TOUCH
-
-    When fullscreen is active, touching anywhere
-    on the game screen makes the bunny jump.
-
-    Buttons are ignored so the fullscreen button
-    itself does not accidentally make the bunny jump.
-*/
+);
 
 document.addEventListener(
     "pointerdown",
@@ -1917,9 +2054,7 @@ document.addEventListener(
     {
         passive:false
     }
-);
-
-const gameShell=
+);const gameShell=
     document.getElementById(
         "gameShell"
     );
@@ -1927,6 +2062,11 @@ const gameShell=
 const fullscreenButton=
     document.getElementById(
         "fullscreenButton"
+    );
+
+const fullscreenExitButton=
+    document.getElementById(
+        "fullscreenExitButton"
     );
 
 async function toggleFullscreen(){
@@ -1971,6 +2111,16 @@ async function toggleFullscreen(){
 }
 
 fullscreenButton.addEventListener(
+    "click",
+    function(event){
+
+        event.stopPropagation();
+
+        toggleFullscreen();
+    }
+);
+
+fullscreenExitButton.addEventListener(
     "click",
     function(event){
 
