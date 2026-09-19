@@ -21,16 +21,27 @@
     --header-bg:rgba(255,255,255,.88);
 }
 
-*{box-sizing:border-box;}
+*{
+    box-sizing:border-box;
+}
 
-html,body{
+html,
+body{
     margin:0;
     width:100%;
     min-height:100%;
     overflow-x:hidden;
     background:
-        radial-gradient(circle at top left,var(--bg-grad-1),transparent 45%),
-        radial-gradient(circle at bottom right,var(--bg-grad-2),transparent 50%),
+        radial-gradient(
+            circle at top left,
+            var(--bg-grad-1),
+            transparent 45%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            var(--bg-grad-2),
+            transparent 50%
+        ),
         var(--bg-base);
     color:var(--text-main);
     font-family:Georgia,serif;
@@ -66,7 +77,9 @@ header{
     min-width:0;
 }
 
-.header-left{gap:12px;}
+.header-left{
+    gap:12px;
+}
 
 .header-right{
     justify-content:flex-end;
@@ -82,7 +95,9 @@ header{
     transition:opacity .2s ease;
 }
 
-.nav-link:hover{opacity:.7;}
+.nav-link:hover{
+    opacity:.7;
+}
 
 .coin-display{
     background:var(--accent-soft);
@@ -107,7 +122,9 @@ header{
     transition:opacity .2s ease;
 }
 
-.fullscreen-button:hover{opacity:.75;}
+.fullscreen-button:hover{
+    opacity:.75;
+}
 
 main{
     width:100%;
@@ -138,16 +155,55 @@ main{
     animation:float 5s ease-in-out infinite;
 }
 
-.decorations span:nth-child(1){top:13%;left:7%;font-size:20px;}
-.decorations span:nth-child(2){top:28%;right:8%;font-size:13px;animation-delay:1s;}
-.decorations span:nth-child(3){top:55%;left:5%;font-size:14px;animation-delay:2s;}
-.decorations span:nth-child(4){top:68%;right:6%;font-size:21px;animation-delay:1.5s;}
-.decorations span:nth-child(5){bottom:12%;left:12%;font-size:12px;animation-delay:.5s;}
-.decorations span:nth-child(6){bottom:20%;right:13%;font-size:16px;animation-delay:2.5s;}
+.decorations span:nth-child(1){
+    top:13%;
+    left:7%;
+    font-size:20px;
+}
+
+.decorations span:nth-child(2){
+    top:28%;
+    right:8%;
+    font-size:13px;
+    animation-delay:1s;
+}
+
+.decorations span:nth-child(3){
+    top:55%;
+    left:5%;
+    font-size:14px;
+    animation-delay:2s;
+}
+
+.decorations span:nth-child(4){
+    top:68%;
+    right:6%;
+    font-size:21px;
+    animation-delay:1.5s;
+}
+
+.decorations span:nth-child(5){
+    bottom:12%;
+    left:12%;
+    font-size:12px;
+    animation-delay:.5s;
+}
+
+.decorations span:nth-child(6){
+    bottom:20%;
+    right:13%;
+    font-size:16px;
+    animation-delay:2.5s;
+}
 
 @keyframes float{
-    0%,100%{transform:translateY(0) rotate(0);}
-    50%{transform:translateY(-7px) rotate(7deg);}
+    0%,100%{
+        transform:translateY(0) rotate(0);
+    }
+
+    50%{
+        transform:translateY(-7px) rotate(7deg);
+    }
 }
 
 .ornament{
@@ -169,7 +225,9 @@ main{
     opacity:.7;
 }
 
-.ornament span{font-size:15px;}
+.ornament span{
+    font-size:15px;
+}
 
 h1{
     margin:0;
@@ -188,7 +246,9 @@ h1{
     text-align:center;
 }
 
-.game-info{margin-bottom:14px;}
+.game-info{
+    margin-bottom:14px;
+}
 
 .info-pill{
     background:var(--card-bg);
@@ -263,8 +323,16 @@ canvas{
 
 body.game-fullscreen{
     background:
-        radial-gradient(circle at top left,var(--bg-grad-1),transparent 45%),
-        radial-gradient(circle at bottom right,var(--bg-grad-2),transparent 50%),
+        radial-gradient(
+            circle at top left,
+            var(--bg-grad-1),
+            transparent 45%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            var(--bg-grad-2),
+            transparent 50%
+        ),
         var(--bg-base);
 }
 
@@ -289,8 +357,16 @@ body.game-fullscreen main{
     align-items:center;
     justify-content:center;
     background:
-        radial-gradient(circle at top left,var(--bg-grad-1),transparent 45%),
-        radial-gradient(circle at bottom right,var(--bg-grad-2),transparent 50%),
+        radial-gradient(
+            circle at top left,
+            var(--bg-grad-1),
+            transparent 45%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            var(--bg-grad-2),
+            transparent 50%
+        ),
         var(--bg-base);
     z-index:9999;
 }
@@ -306,8 +382,16 @@ body.game-fullscreen .game-shell{
     align-items:center;
     justify-content:center;
     background:
-        radial-gradient(circle at top left,var(--bg-grad-1),transparent 45%),
-        radial-gradient(circle at bottom right,var(--bg-grad-2),transparent 50%),
+        radial-gradient(
+            circle at top left,
+            var(--bg-grad-1),
+            transparent 45%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            var(--bg-grad-2),
+            transparent 50%
+        ),
         var(--bg-base);
 }
 
@@ -323,15 +407,50 @@ body.game-fullscreen .fullscreen-high-score{
 }
 
 @media(max-width:600px){
-    header{padding:12px 14px;min-height:62px;}
-    .nav-link{font-size:13px;}
-    .coin-display{padding:8px 11px;font-size:12px;}
-    .fullscreen-button{padding:8px 10px;font-size:12px;}
-    main{padding-top:22px;}
-    h1{font-size:29px;}
-    .subtitle{font-size:14px;}
-    .fullscreen-exit-button{top:10px;left:10px;padding:7px 10px;font-size:11px;}
-    .fullscreen-high-score{top:10px;right:10px;padding:7px 10px;font-size:11px;}
+    header{
+        padding:12px 14px;
+        min-height:62px;
+    }
+
+    .nav-link{
+        font-size:13px;
+    }
+
+    .coin-display{
+        padding:8px 11px;
+        font-size:12px;
+    }
+
+    .fullscreen-button{
+        padding:8px 10px;
+        font-size:12px;
+    }
+
+    main{
+        padding-top:22px;
+    }
+
+    h1{
+        font-size:29px;
+    }
+
+    .subtitle{
+        font-size:14px;
+    }
+
+    .fullscreen-exit-button{
+        top:10px;
+        left:10px;
+        padding:7px 10px;
+        font-size:11px;
+    }
+
+    .fullscreen-high-score{
+        top:10px;
+        right:10px;
+        padding:7px 10px;
+        font-size:11px;
+    }
 }
 </style>
 </head>
@@ -340,17 +459,25 @@ body.game-fullscreen .fullscreen-high-score{
 
 <header>
     <div class="header-left">
-        <a class="nav-link" href="../index.html">← Back to Games</a>
+        <a class="nav-link" href="../index.html">
+            ← Back to Games
+        </a>
     </div>
 
     <div class="header-right">
-        <button class="fullscreen-button" id="fullscreenButton" type="button">
+
+        <button
+            class="fullscreen-button"
+            id="fullscreenButton"
+            type="button"
+        >
             ⛶ Fullscreen
         </button>
 
         <div class="coin-display">
             ♡ <span id="coin-count">0</span> Coins
         </div>
+
     </div>
 </header>
 
@@ -374,7 +501,9 @@ body.game-fullscreen .fullscreen-high-score{
 
     <h1>Bunny Run</h1>
 
-    <p class="subtitle">Run as far as you can ♡</p>
+    <p class="subtitle">
+        Run as far as you can ♡
+    </p>
 
     <div class="game-info">
         <div class="info-pill">
@@ -383,7 +512,10 @@ body.game-fullscreen .fullscreen-high-score{
         </div>
     </div>
 
-    <div class="game-shell" id="gameShell">
+    <div
+        class="game-shell"
+        id="gameShell"
+    >
 
         <button
             class="fullscreen-exit-button"
@@ -393,12 +525,18 @@ body.game-fullscreen .fullscreen-high-score{
             × Exit Fullscreen
         </button>
 
-        <div class="fullscreen-high-score" id="fullscreenHighScore">
-            Top Score:
-            <span id="fullscreen-top-score">00000</span>
+        <div
+            class="fullscreen-high-score"
+            id="fullscreenHighScore"
+        >
+            Top Score: <span id="fullscreen-top-score">00000</span>
         </div>
 
-        <canvas id="game" width="960" height="540"></canvas>
+        <canvas
+            id="game"
+            width="960"
+            height="540"
+        ></canvas>
     </div>
 
     <div class="ornament bottom-ornament">
@@ -408,6 +546,7 @@ body.game-fullscreen .fullscreen-high-score{
         <i></i>
         <span>✧</span>
     </div>
+
 </main>
 
 <script>
@@ -416,7 +555,9 @@ const ctx=canvas.getContext("2d");
 
 const W=960;
 const H=540;
+
 const GROUND=425;
+
 const BG="#b8cbd1";
 
 const GROUND_TOP="#756d59";
@@ -457,33 +598,59 @@ let runAnimTime=0;
 let jumpTime=0;
 
 let lastScoreMilestone=0;
-let lastCoinMilestone=0;
 
 let audioContext=null;
 let runCoinsEarned=0;
 
+let reward5000Claimed=false;
+
 const TOP_SCORE_KEY="bunnyRun_topScore";
 
 let topScore=
-    Number(localStorage.getItem(TOP_SCORE_KEY))||0;
+    Number(
+        localStorage.getItem(TOP_SCORE_KEY)
+    )||0;
 
 function updateTopScoreDisplay(){
-    const element=document.getElementById("top-score");
-    const fullscreenElement=document.getElementById("fullscreen-top-score");
+
+    const element=
+        document.getElementById(
+            "top-score"
+        );
+
+    const fullscreenElement=
+        document.getElementById(
+            "fullscreen-top-score"
+        );
 
     const formatted=
-        Math.floor(topScore).toString().padStart(5,"0");
+        Math.floor(topScore)
+        .toString()
+        .padStart(5,"0");
 
-    if(element) element.textContent=formatted;
-    if(fullscreenElement) fullscreenElement.textContent=formatted;
+    if(element){
+        element.textContent=formatted;
+    }
+
+    if(fullscreenElement){
+        fullscreenElement.textContent=formatted;
+    }
 }
 
 function checkTopScore(){
-    const current=Math.floor(score);
+
+    const current=
+        Math.floor(score);
 
     if(current>topScore){
+
         topScore=current;
-        localStorage.setItem(TOP_SCORE_KEY,String(topScore));
+
+        localStorage.setItem(
+            TOP_SCORE_KEY,
+            String(topScore)
+        );
+
         updateTopScoreDisplay();
     }
 }
@@ -492,14 +659,43 @@ updateTopScoreDisplay();
 
 function getThemeSky(){
 
-    const theme=localStorage.getItem("arcade_theme")||"blue";
+    const theme=
+        localStorage.getItem(
+            "arcade_theme"
+        )||"blue";
 
     const themes={
-        blue:{top:"#a8c7d0",bottom:"#d5e1d9",ground:"#b8cbd1"},
-        pink:{top:"#e7c5d1",bottom:"#f3dfe5",ground:"#d9c1ca"},
-        green:{top:"#b9d0bb",bottom:"#dce9d8",ground:"#c1d0c0"},
-        lavender:{top:"#c4b9d7",bottom:"#e4ddef",ground:"#c9c1d4"},
-        yellow:{top:"#d8ceaa",bottom:"#eee7cc",ground:"#d6ceb0"}
+
+        blue:{
+            top:"#a8c7d0",
+            bottom:"#d5e1d9",
+            ground:"#b8cbd1"
+        },
+
+        pink:{
+            top:"#e7c5d1",
+            bottom:"#f3dfe5",
+            ground:"#d9c1ca"
+        },
+
+        green:{
+            top:"#b9d0bb",
+            bottom:"#dce9d8",
+            ground:"#c1d0c0"
+        },
+
+        lavender:{
+            top:"#c4b9d7",
+            bottom:"#e4ddef",
+            ground:"#c9c1d4"
+        },
+
+        yellow:{
+            top:"#d8ceaa",
+            bottom:"#eee7cc",
+            ground:"#d6ceb0"
+        }
+
     };
 
     return themes[theme]||themes.blue;
@@ -507,34 +703,99 @@ function getThemeSky(){
 
 function drawSky(){
 
-    const sky=getThemeSky();
+    const sky=
+        getThemeSky();
 
-    const gradient=ctx.createLinearGradient(0,0,0,GROUND);
+    const gradient=
+        ctx.createLinearGradient(
+            0,
+            0,
+            0,
+            GROUND
+        );
 
-    gradient.addColorStop(0,sky.top);
-    gradient.addColorStop(1,sky.bottom);
+    gradient.addColorStop(
+        0,
+        sky.top
+    );
+
+    gradient.addColorStop(
+        1,
+        sky.bottom
+    );
 
     ctx.fillStyle=gradient;
-    ctx.fillRect(0,0,W,GROUND);
-}
 
-const clouds=[
-    {x:80,y:85,scale:1},
-    {x:360,y:125,scale:.72},
-    {x:650,y:75,scale:1.15},
-    {x:850,y:155,scale:.65}
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        GROUND
+    );
+}const clouds=[
+
+    {
+        x:80,
+        y:85,
+        scale:1
+    },
+
+    {
+        x:360,
+        y:125,
+        scale:.72
+    },
+
+    {
+        x:650,
+        y:75,
+        scale:1.15
+    },
+
+    {
+        x:850,
+        y:155,
+        scale:.65
+    }
+
 ];
 
-function drawCloud(x,y,scale){
+function drawCloud(
+    x,
+    y,
+    scale
+){
 
     ctx.save();
 
-    ctx.fillStyle="rgba(255,255,255,.52)";
+    ctx.fillStyle=
+        "rgba(255,255,255,.52)";
+
     ctx.beginPath();
 
-    ctx.arc(x,y+9*scale,18*scale,0,Math.PI*2);
-    ctx.arc(x+22*scale,y,24*scale,0,Math.PI*2);
-    ctx.arc(x+50*scale,y+10*scale,18*scale,0,Math.PI*2);
+    ctx.arc(
+        x,
+        y+9*scale,
+        18*scale,
+        0,
+        Math.PI*2
+    );
+
+    ctx.arc(
+        x+22*scale,
+        y,
+        24*scale,
+        0,
+        Math.PI*2
+    );
+
+    ctx.arc(
+        x+50*scale,
+        y+10*scale,
+        18*scale,
+        0,
+        Math.PI*2
+    );
 
     ctx.fillRect(
         x-3*scale,
@@ -544,45 +805,97 @@ function drawCloud(x,y,scale){
     );
 
     ctx.fill();
+
     ctx.restore();
 }
 
 function drawClouds(){
 
-    for(const cloud of clouds){
-        drawCloud(cloud.x,cloud.y,cloud.scale);
+    for(
+        const cloud of clouds
+    ){
+
+        drawCloud(
+            cloud.x,
+            cloud.y,
+            cloud.scale
+        );
     }
 }
 
 function drawGround(){
 
-    ctx.fillStyle=GROUND_TOP;
-    ctx.fillRect(0,GROUND,W,8);
+    ctx.fillStyle=
+        GROUND_TOP;
 
-    ctx.fillStyle=GROUND_BASE;
-    ctx.fillRect(0,GROUND+8,W,H-GROUND-8);
+    ctx.fillRect(
+        0,
+        GROUND,
+        W,
+        8
+    );
+
+    ctx.fillStyle=
+        GROUND_BASE;
+
+    ctx.fillRect(
+        0,
+        GROUND+8,
+        W,
+        H-GROUND-8
+    );
 
     const tileSize=34;
 
     ctx.save();
-    ctx.translate(-groundOffset,0);
 
-    for(let x=-tileSize;x<W+tileSize;x+=tileSize){
+    ctx.translate(
+        -groundOffset,
+        0
+    );
 
-        ctx.fillStyle=GROUND_LIGHT;
-        ctx.fillRect(x,GROUND+15,18,4);
+    for(
+        let x=-tileSize;
+        x<W+tileSize;
+        x+=tileSize
+    ){
 
-        ctx.fillStyle=GROUND_DARK;
-        ctx.fillRect(x+19,GROUND+29,10,4);
+        ctx.fillStyle=
+            GROUND_LIGHT;
 
-        ctx.fillStyle=GROUND_LIGHT;
-        ctx.fillRect(x+5,GROUND+44,9,3);
+        ctx.fillRect(
+            x,
+            GROUND+15,
+            18,
+            4
+        );
+
+        ctx.fillStyle=
+            GROUND_DARK;
+
+        ctx.fillRect(
+            x+19,
+            GROUND+29,
+            10,
+            4
+        );
+
+        ctx.fillStyle=
+            GROUND_LIGHT;
+
+        ctx.fillRect(
+            x+5,
+            GROUND+44,
+            9,
+            3
+        );
     }
 
     ctx.restore();
 }
 
 function drawBackground(){
+
     drawSky();
     drawClouds();
     drawGround();
@@ -590,9 +903,14 @@ function drawBackground(){
 
 const cactusImages={};
 
-function loadCactusImage(image,rootPath,fallbackPath){
+function loadCactusImage(
+    image,
+    rootPath,
+    fallbackPath
+){
 
-    const filename=rootPath.split("/").pop();
+    const filename=
+        rootPath.split("/").pop();
 
     const paths=[
         rootPath,
@@ -604,9 +922,12 @@ function loadCactusImage(image,rootPath,fallbackPath){
 
     function tryNext(){
 
-        if(index>=paths.length) return;
+        if(index>=paths.length){
+            return;
+        }
 
-        const source=paths[index++];
+        const source=
+            paths[index++];
 
         image.onload=null;
         image.onerror=null;
@@ -645,7 +966,9 @@ loadCactusImage(
     cactusImages.wide=new Image(),
     "games/1000082081-removebg-preview.png",
     "../games/1000082081-removebg-preview.png"
-);const cactusTypes=[
+);
+
+const cactusTypes=[
 
     {
         image:cactusImages.small,
@@ -705,25 +1028,39 @@ function spawnObstacle(){
             type.height,
 
         width:type.width,
+
         height:type.height,
+
         image:type.image,
 
-        hitboxWidth:type.hitboxWidth,
-        hitboxHeight:type.hitboxHeight,
+        hitboxWidth:
+            type.hitboxWidth,
+
+        hitboxHeight:
+            type.hitboxHeight,
 
         passed:false
     });
 
     const difficulty=
-        Math.min(score/100,30);
+        Math.min(
+            score/100,
+            30
+        );
 
     const minimum=
         1250-
-        Math.min(difficulty*8,240);
+        Math.min(
+            difficulty*8,
+            240
+        );
 
     const maximum=
         1700-
-        Math.min(difficulty*8,240);
+        Math.min(
+            difficulty*8,
+            240
+        );
 
     nextSpawn=
         minimum+
@@ -733,7 +1070,9 @@ function spawnObstacle(){
 
 function drawObstacles(){
 
-    for(const obstacle of obstacles){
+    for(
+        const obstacle of obstacles
+    ){
 
         if(
             obstacle.image &&
@@ -755,44 +1094,73 @@ function drawObstacles(){
 function getBunnyHitbox(){
 
     return{
+
         x:bunny.x+13,
+
         y:bunny.y+12,
+
         width:52,
+
         height:60
     };
 }
 
 function checkCollision(){
 
-    const b=getBunnyHitbox();
+    const b=
+        getBunnyHitbox();
 
-    for(const o of obstacles){
+    for(
+        const o of obstacles
+    ){
 
-        const hitWidth=o.hitboxWidth;
-        const hitHeight=o.hitboxHeight;
+        const hitWidth=
+            o.hitboxWidth;
+
+        const hitHeight=
+            o.hitboxHeight;
 
         const cactusHit={
-            x:o.x+(o.width-hitWidth)/2,
-            y:GROUND-hitHeight,
-            width:hitWidth,
-            height:hitHeight
+
+            x:
+                o.x+
+                (o.width-hitWidth)/2,
+
+            y:
+                GROUND-
+                hitHeight,
+
+            width:
+                hitWidth,
+
+            height:
+                hitHeight
         };
 
         if(
+
             b.x<
                 cactusHit.x+
                 cactusHit.width
+
             &&
+
             b.x+b.width>
                 cactusHit.x
+
             &&
+
             b.y<
                 cactusHit.y+
                 cactusHit.height
+
             &&
+
             b.y+b.height>
                 cactusHit.y
+
         ){
+
             return true;
         }
     }
@@ -806,14 +1174,21 @@ function drawBunny(){
 
     let frameWidth=28;
     let frameHeight=28;
+
     let frameIndex=0;
 
-    if(!started&&!dead){
+    if(
+        !started &&
+        !dead
+    ){
 
         image=idleImage;
+
         frameIndex=0;
 
-    }else if(!bunny.grounded){
+    }else if(
+        !bunny.grounded
+    ){
 
         image=jumpImage;
 
@@ -839,37 +1214,61 @@ function drawBunny(){
         frameHeight=28;
 
         frameIndex=
-            Math.floor(runAnimTime/45)%8;
+            Math.floor(
+                runAnimTime/45
+            )%8;
     }
 
     if(
-        !image.complete||
+        !image.complete ||
         !image.naturalWidth
     ){
+
         return;
     }
 
-    const drawW=frameWidth*3;
-    const drawH=frameHeight*3;
+    const drawW=
+        frameWidth*3;
 
-    const feetY=bunny.y+bunny.height;
-    const drawX=bunny.x;
-    const drawY=feetY-drawH;
+    const drawH=
+        frameHeight*3;
+
+    const feetY=
+        bunny.y+bunny.height;
+
+    const drawX=
+        bunny.x;
+
+    const drawY=
+        feetY-drawH;
 
     ctx.save();
 
-    ctx.translate(drawX+drawW,drawY);
+    ctx.translate(
+        drawX+drawW,
+        drawY
+    );
+
     ctx.scale(-1,1);
 
     ctx.drawImage(
+
         image,
+
         frameIndex*frameWidth,
+
         0,
+
         frameWidth,
+
         frameHeight,
+
         0,
+
         0,
+
         drawW,
+
         drawH
     );
 
@@ -885,11 +1284,14 @@ function drawScore(){
 
     ctx.save();
 
-    ctx.font="bold 23px Georgia,serif";
+    ctx.font=
+        "bold 23px Georgia,serif";
+
     ctx.textAlign="right";
     ctx.textBaseline="top";
 
-    ctx.fillStyle="rgba(41,51,47,0.28)";
+    ctx.fillStyle=
+        "rgba(41,51,47,0.28)";
 
     ctx.fillText(
         displayScore,
@@ -897,7 +1299,8 @@ function drawScore(){
         20
     );
 
-    ctx.fillStyle="#f1eee2";
+    ctx.fillStyle=
+        "#f1eee2";
 
     ctx.fillText(
         displayScore,
@@ -973,256 +1376,35 @@ function playScoreSound(){
     }catch(e){}
 }
 
-function showCoinToast(amount){
-
-    const toast=document.createElement("div");
-
-    toast.textContent="+"+amount+" Coins";
-
-    toast.style.position="fixed";
-    toast.style.left="50%";
-    toast.style.top="82px";
-
-    toast.style.transform=
-        "translateX(-50%) translateY(-8px)";
-
-    toast.style.padding="9px 16px";
-    toast.style.borderRadius="100px";
-
-    toast.style.background=
-        "rgba(255,255,255,.94)";
-
-    toast.style.border=
-        "1px solid var(--accent-border)";
-
-    toast.style.color=
-        "var(--text-heading)";
-
-    toast.style.font=
-        "bold 13px Georgia,serif";
-
-    toast.style.zIndex="10000";
-    toast.style.pointerEvents="none";
-    toast.style.opacity="0";
-
-    toast.style.transition=
-        "opacity .2s ease,transform .3s ease";
-
-    document.body.appendChild(toast);
-
-    requestAnimationFrame(function(){
-
-        toast.style.opacity="1";
-
-        toast.style.transform=
-            "translateX(-50%) translateY(0)";
-    });
-
-    setTimeout(function(){
-
-        toast.style.opacity="0";
-
-        toast.style.transform=
-            "translateX(-50%) translateY(-8px)";
-
-        setTimeout(function(){
-            toast.remove();
-        },300);
-
-    },900);
-}
-
-
-/* =========================================================
-   ARCADE COIN SYSTEM
-   ========================================================= */
-
-function getArcadeCurrentUser(){
-
-    return localStorage.getItem(
-        "arcade_current_user"
-    )||"Player";
-}
-
-function getArcadeUsers(){
-
-    try{
-
-        const saved=
-            localStorage.getItem(
-                "arcade_users"
-            );
-
-        if(!saved){
-            return {};
-        }
-
-        const users=JSON.parse(saved);
-
-        if(
-            users &&
-            typeof users==="object"
-        ){
-            return users;
-        }
-
-    }catch(error){}
-
-    return {};
-}
-
-function saveArcadeUsers(users){
-
-    localStorage.setItem(
-        "arcade_users",
-        JSON.stringify(users)
-    );
-}
-
-function getArcadeCoins(){
-
-    const users=getArcadeUsers();
-    const currentUser=getArcadeCurrentUser();
-
-    if(
-        users[currentUser] &&
-        typeof users[currentUser].coins==="number"
-    ){
-
-        return users[currentUser].coins;
-    }
-
-    return Number(
-        localStorage.getItem("arcade_coins")
-    )||0;
-}
-
-function setArcadeCoins(amount){
-
-    amount=Math.max(
-        0,
-        Math.floor(Number(amount)||0)
-    );
-
-    const users=getArcadeUsers();
-    const currentUser=getArcadeCurrentUser();
-
-    if(!users[currentUser]){
-
-        users[currentUser]={
-            coins:0
-        };
-    }
-
-    if(
-        typeof users[currentUser]==="number"
-    ){
-
-        users[currentUser]={
-            coins:users[currentUser]
-        };
-    }
-
-    users[currentUser].coins=amount;
-
-    localStorage.setItem(
-        "arcade_coins",
-        String(amount)
-    );
-
-    saveArcadeUsers(users);
-
-    updateCoinDisplays();
-
-    try{
-
-        if(
-            typeof syncAndRenderLeaderboard==="function"
-        ){
-
-            syncAndRenderLeaderboard();
-        }
-
-    }catch(error){}
-}
-
-function addCoins(amount){
-
-    amount=Math.floor(
-        Number(amount)||0
-    );
-
-    if(amount<=0){
-        return;
-    }
-
-    const current=
-        getArcadeCoins();
-
-    setArcadeCoins(
-        current+amount
-    );
-}
-
-function updateCoinDisplays(){
-
-    const coins=
-        getArcadeCoins();
-
-    const element=
-        document.getElementById("coin-count");
-
-    if(element){
-        element.textContent=
-            coins.toString();
-    }
-}
-
-function awardCoinsForScore(){
-
-    const currentCoinMilestone=
-        Math.floor(score/1000);
-
-    if(
-        currentCoinMilestone>
-        lastCoinMilestone
-    ){
-
-        const earned=
-            currentCoinMilestone-
-            lastCoinMilestone;
-
-        const coinsEarned=
-            earned*10;
-
-        addCoins(
-            coinsEarned
-        );
-
-        runCoinsEarned+=
-            coinsEarned;
-
-        lastCoinMilestone=
-            currentCoinMilestone;
-
-        showCoinToast(
-            coinsEarned
-        );
-    }
-}
-
 function updateCoinDisplay(){
-    updateCoinDisplays();
+
+    if(
+        typeof updateCoinDisplays==="function"
+    ){
+
+        updateCoinDisplays();
+    }
     }function updateGame(delta){
 
-    if(!started||dead){
+    if(
+        !started||
+        dead
+    ){
+
         return;
     }
 
-    const dt=Math.min(delta,32);
-    const seconds=dt/16.6667;
+    const dt=
+        Math.min(
+            delta,
+            32
+        );
 
-    score+=.55*seconds;
+    const seconds=
+        dt/16.6667;
+
+    score+=
+        .55*seconds;
 
     speed=
         6+
@@ -1232,10 +1414,12 @@ function updateCoinDisplay(){
         );
 
     bunny.velocityY+=
-        bunny.gravity*seconds;
+        bunny.gravity*
+        seconds;
 
     bunny.y+=
-        bunny.velocityY*seconds;
+        bunny.velocityY*
+        seconds;
 
     if(
         bunny.y>=
@@ -1246,12 +1430,18 @@ function updateCoinDisplay(){
             GROUND-bunny.height;
 
         bunny.velocityY=0;
+
         bunny.grounded=true;
     }
 
-    if(!bunny.grounded){
+    if(
+        !bunny.grounded
+    ){
+
         jumpTime+=dt;
+
     }else{
+
         jumpTime=0;
     }
 
@@ -1260,15 +1450,21 @@ function updateCoinDisplay(){
     groundOffset+=
         speed*seconds;
 
-    if(groundOffset>=34){
+    if(
+        groundOffset>=34
+    ){
+
         groundOffset%=34;
     }
 
     spawnTimer+=dt;
 
-    if(spawnTimer>=nextSpawn){
+    if(
+        spawnTimer>=nextSpawn
+    ){
 
         spawnTimer=0;
+
         spawnObstacle();
     }
 
@@ -1304,8 +1500,10 @@ function updateCoinDisplay(){
             ){
 
                 for(
-                    let n=lastScoreMilestone;
-                    n<currentMilestone;
+                    let n=
+                        lastScoreMilestone;
+                    n<
+                        currentMilestone;
                     n++
                 ){
 
@@ -1315,8 +1513,6 @@ function updateCoinDisplay(){
                 lastScoreMilestone=
                     currentMilestone;
             }
-
-            awardCoinsForScore();
         }
 
         if(
@@ -1325,7 +1521,10 @@ function updateCoinDisplay(){
             -100
         ){
 
-            obstacles.splice(i,1);
+            obstacles.splice(
+                i,
+                1
+            );
         }
     }
 
@@ -1338,8 +1537,10 @@ function updateCoinDisplay(){
     ){
 
         for(
-            let n=lastScoreMilestone;
-            n<currentMilestone;
+            let n=
+                lastScoreMilestone;
+            n<
+                currentMilestone;
             n++
         ){
 
@@ -1350,9 +1551,10 @@ function updateCoinDisplay(){
             currentMilestone;
     }
 
-    awardCoinsForScore();
+    if(
+        checkCollision()
+    ){
 
-    if(checkCollision()){
         gameOver();
     }
 
@@ -1406,9 +1608,11 @@ function drawGameOver(){
     ctx.textAlign="center";
     ctx.textBaseline="middle";
 
-    ctx.fillStyle="#46637a";
+    ctx.fillStyle=
+        "#46637a";
 
-    ctx.font="38px Georgia,serif";
+    ctx.font=
+        "38px Georgia,serif";
 
     ctx.fillText(
         "☠",
@@ -1416,7 +1620,8 @@ function drawGameOver(){
         panelY+52
     );
 
-    ctx.font="bold 31px Georgia,serif";
+    ctx.font=
+        "bold 31px Georgia,serif";
 
     ctx.fillText(
         "Game Over",
@@ -1424,9 +1629,11 @@ function drawGameOver(){
         panelY+92
     );
 
-    ctx.fillStyle="#3f5260";
+    ctx.fillStyle=
+        "#3f5260";
 
-    ctx.font="19px Georgia,serif";
+    ctx.font=
+        "19px Georgia,serif";
 
     ctx.fillText(
         "Score: "+Math.floor(score),
@@ -1434,8 +1641,11 @@ function drawGameOver(){
         panelY+132
     );
 
-    ctx.font="bold 19px Georgia,serif";
-    ctx.fillStyle="#46637a";
+    ctx.font=
+        "bold 19px Georgia,serif";
+
+    ctx.fillStyle=
+        "#46637a";
 
     ctx.fillText(
         "Coins earned: "+runCoinsEarned,
@@ -1443,8 +1653,11 @@ function drawGameOver(){
         panelY+165
     );
 
-    ctx.font="14px Georgia,serif";
-    ctx.fillStyle="#5c6b75";
+    ctx.font=
+        "14px Georgia,serif";
+
+    ctx.fillStyle=
+        "#5c6b75";
 
     ctx.fillText(
         "Tap anywhere to play again",
@@ -1464,7 +1677,8 @@ function drawStartScreen(){
     ctx.fillStyle=
         "rgba(41,51,47,.55)";
 
-    ctx.font="31px Georgia,serif";
+    ctx.font=
+        "31px Georgia,serif";
 
     ctx.fillText(
         "Tap to start",
@@ -1472,9 +1686,11 @@ function drawStartScreen(){
         220
     );
 
-    ctx.font="15px Georgia,serif";
+    ctx.font=
+        "15px Georgia,serif";
 
-    ctx.fillStyle="#f1eee2";
+    ctx.fillStyle=
+        "#f1eee2";
 
     ctx.fillText(
         "jump with a tap",
@@ -1488,15 +1704,23 @@ function drawStartScreen(){
 function draw(){
 
     drawBackground();
+
     drawObstacles();
+
     drawBunny();
+
     drawScore();
 
-    if(!started&&!dead){
+    if(
+        !started &&
+        !dead
+    ){
+
         drawStartScreen();
     }
 
     if(dead){
+
         drawGameOver();
     }
 }
@@ -1513,41 +1737,85 @@ function gameOver(){
 
     checkTopScore();
 
+    /*
+     * Bunny Run gives exactly 50 Coins
+     * when the final score reaches 5000.
+     *
+     * The reward is given here, on the
+     * existing game-over screen.
+     *
+     * No rewards are given at 1000,
+     * 2000, 3000, or 4000.
+     */
+
+    if(
+        score>=5000 &&
+        !reward5000Claimed
+    ){
+
+        if(
+            typeof addCoins==="function"
+        ){
+
+            addCoins(50);
+        }
+
+        if(
+            typeof updateCoinDisplays==="function"
+        ){
+
+            updateCoinDisplays();
+        }
+
+        runCoinsEarned=50;
+
+        reward5000Claimed=true;
+    }
+
     draw();
 }
 
 function restart(){
 
     score=0;
+
     speed=6;
 
     lastScoreMilestone=0;
-    lastCoinMilestone=0;
 
     runCoinsEarned=0;
+
+    reward5000Claimed=false;
 
     obstacles.length=0;
 
     spawnTimer=0;
+
     nextSpawn=1400;
 
     bunny.y=
         GROUND-bunny.height;
 
     bunny.velocityY=0;
+
     bunny.grounded=true;
 
     runAnimTime=0;
+
     jumpTime=0;
+
     groundOffset=0;
 
     dead=false;
+
     started=true;
 
     lastTime=
         performance.now();
 
-    requestAnimationFrame(loop);
+    requestAnimationFrame(
+        loop
+    );
 }
 
 function jump(){
@@ -1569,12 +1837,15 @@ function jump(){
         bunny.grounded=true;
 
         runAnimTime=0;
+
         jumpTime=0;
 
         lastTime=
             performance.now();
 
-        requestAnimationFrame(loop);
+        requestAnimationFrame(
+            loop
+        );
 
         return;
     }
@@ -1592,19 +1863,25 @@ function jump(){
             bunny.jumpPower;
 
         bunny.grounded=false;
+
         jumpTime=0;
     }
 }
 
 function loop(time){
 
-    if(!started||dead){
+    if(
+        !started||
+        dead
+    ){
 
         draw();
+
         return;
     }
 
     if(!lastTime){
+
         lastTime=time;
     }
 
@@ -1614,14 +1891,16 @@ function loop(time){
     lastTime=time;
 
     updateGame(delta);
+
     draw();
 
     if(!dead){
-        requestAnimationFrame(loop);
-    }
-}
 
-document.addEventListener(
+        requestAnimationFrame(
+            loop
+        );
+    }
+    }document.addEventListener(
     "keydown",
     function(event){
 
@@ -1631,6 +1910,7 @@ document.addEventListener(
         ){
 
             event.preventDefault();
+
             jump();
         }
 
@@ -1639,6 +1919,7 @@ document.addEventListener(
         ){
 
             event.preventDefault();
+
             toggleFullscreen();
         }
     }
@@ -1649,10 +1930,13 @@ canvas.addEventListener(
     function(event){
 
         event.preventDefault();
+
         jump();
 
     },
-    {passive:false}
+    {
+        passive:false
+    }
 );
 
 document.addEventListener(
@@ -1671,26 +1955,38 @@ document.addEventListener(
 
         if(
             event.target.closest &&
-            event.target.closest("button,a")
+            event.target.closest(
+                "button,a"
+            )
         ){
+
             return;
         }
 
         event.preventDefault();
+
         jump();
 
     },
-    {passive:false}
+    {
+        passive:false
+    }
 );
 
 const gameShell=
-    document.getElementById("gameShell");
+    document.getElementById(
+        "gameShell"
+    );
 
 const fullscreenButton=
-    document.getElementById("fullscreenButton");
+    document.getElementById(
+        "fullscreenButton"
+    );
 
 const fullscreenExitButton=
-    document.getElementById("fullscreenExitButton");
+    document.getElementById(
+        "fullscreenExitButton"
+    );
 
 async function toggleFullscreen(){
 
@@ -1698,7 +1994,9 @@ async function toggleFullscreen(){
 
     try{
 
-        if(document.fullscreenElement){
+        if(
+            document.fullscreenElement
+        ){
 
             await document.exitFullscreen();
 
@@ -1706,7 +2004,9 @@ async function toggleFullscreen(){
                 "game-fullscreen"
             );
 
-        }else if(gameShell.requestFullscreen){
+        }else if(
+            gameShell.requestFullscreen
+        ){
 
             await gameShell.requestFullscreen();
 
@@ -1753,7 +2053,9 @@ document.addEventListener(
     "fullscreenchange",
     function(){
 
-        if(document.fullscreenElement){
+        if(
+            document.fullscreenElement
+        ){
 
             document.body.classList.add(
                 "game-fullscreen"
@@ -1772,17 +2074,11 @@ window.addEventListener(
     "storage",
     function(event){
 
-        if(event.key==="arcade_theme"){
-            draw();
-        }
-
         if(
-            event.key==="arcade_coins"||
-            event.key==="arcade_users"||
-            event.key==="arcade_current_user"
+            event.key==="arcade_theme"
         ){
 
-            updateCoinDisplays();
+            draw();
         }
     }
 );
