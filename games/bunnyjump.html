@@ -21,27 +21,16 @@
     --header-bg:rgba(255,255,255,.88);
 }
 
-*{
-    box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
-html,
-body{
+html,body{
     margin:0;
     width:100%;
     min-height:100%;
     overflow-x:hidden;
     background:
-        radial-gradient(
-            circle at top left,
-            var(--bg-grad-1),
-            transparent 45%
-        ),
-        radial-gradient(
-            circle at bottom right,
-            var(--bg-grad-2),
-            transparent 50%
-        ),
+        radial-gradient(circle at top left,var(--bg-grad-1),transparent 45%),
+        radial-gradient(circle at bottom right,var(--bg-grad-2),transparent 50%),
         var(--bg-base);
     color:var(--text-main);
     font-family:Georgia,serif;
@@ -70,16 +59,13 @@ header{
     gap:16px;
 }
 
-.header-left,
-.header-right{
+.header-left,.header-right{
     display:flex;
     align-items:center;
     min-width:0;
 }
 
-.header-left{
-    gap:12px;
-}
+.header-left{gap:12px}
 
 .header-right{
     justify-content:flex-end;
@@ -95,20 +81,7 @@ header{
     transition:opacity .2s ease;
 }
 
-.nav-link:hover{
-    opacity:.7;
-}
-
-.coin-display{
-    background:var(--accent-soft);
-    border:1px solid var(--accent-border);
-    padding:9px 15px;
-    border-radius:100px;
-    font-size:13px;
-    font-weight:bold;
-    color:var(--text-heading);
-    white-space:nowrap;
-}
+.nav-link:hover{opacity:.7}
 
 .fullscreen-button{
     border:1px solid var(--accent-border);
@@ -122,9 +95,7 @@ header{
     transition:opacity .2s ease;
 }
 
-.fullscreen-button:hover{
-    opacity:.75;
-}
+.fullscreen-button:hover{opacity:.75}
 
 main{
     width:100%;
@@ -155,55 +126,16 @@ main{
     animation:float 5s ease-in-out infinite;
 }
 
-.decorations span:nth-child(1){
-    top:13%;
-    left:7%;
-    font-size:20px;
-}
-
-.decorations span:nth-child(2){
-    top:28%;
-    right:8%;
-    font-size:13px;
-    animation-delay:1s;
-}
-
-.decorations span:nth-child(3){
-    top:55%;
-    left:5%;
-    font-size:14px;
-    animation-delay:2s;
-}
-
-.decorations span:nth-child(4){
-    top:68%;
-    right:6%;
-    font-size:21px;
-    animation-delay:1.5s;
-}
-
-.decorations span:nth-child(5){
-    bottom:12%;
-    left:12%;
-    font-size:12px;
-    animation-delay:.5s;
-}
-
-.decorations span:nth-child(6){
-    bottom:20%;
-    right:13%;
-    font-size:16px;
-    animation-delay:2.5s;
-}
+.decorations span:nth-child(1){top:13%;left:7%;font-size:20px}
+.decorations span:nth-child(2){top:28%;right:8%;font-size:13px;animation-delay:1s}
+.decorations span:nth-child(3){top:55%;left:5%;font-size:14px;animation-delay:2s}
+.decorations span:nth-child(4){top:68%;right:6%;font-size:21px;animation-delay:1.5s}
+.decorations span:nth-child(5){bottom:12%;left:12%;font-size:12px;animation-delay:.5s}
+.decorations span:nth-child(6){bottom:20%;right:13%;font-size:16px;animation-delay:2.5s}
 
 @keyframes float{
-    0%,100%{
-        transform:translateY(0) rotate(0);
-    }
-
-    50%{
-        transform:translateY(-7px) rotate(7deg);
-    }
+    0%,100%{transform:translateY(0) rotate(0)}
+    50%{transform:translateY(-7px) rotate(7deg)}
 }
 
 .ornament{
@@ -225,9 +157,7 @@ main{
     opacity:.7;
 }
 
-.ornament span{
-    font-size:15px;
-}
+.ornament span{font-size:15px}
 
 h1{
     margin:0;
@@ -246,9 +176,7 @@ h1{
     text-align:center;
 }
 
-.game-info{
-    margin-bottom:14px;
-}
+.game-info{margin-bottom:14px}
 
 .info-pill{
     background:var(--card-bg);
@@ -287,52 +215,10 @@ canvas{
     margin-bottom:0;
 }
 
-.fullscreen-exit-button{
-    display:none;
-    position:absolute;
-    top:16px;
-    left:16px;
-    z-index:50;
-    border:1px solid rgba(70,99,122,.65);
-    background:rgba(255,255,255,.82);
-    color:var(--text-heading);
-    border-radius:100px;
-    padding:8px 12px;
-    font-family:Georgia,serif;
-    font-size:12px;
-    cursor:pointer;
-    box-shadow:0 4px 14px rgba(50,70,80,.14);
-    backdrop-filter:blur(6px);
-}
-
-.fullscreen-high-score{
-    display:none;
-    position:absolute;
-    top:16px;
-    right:16px;
-    z-index:50;
-    background:rgba(255,255,255,.82);
-    border:1px solid rgba(70,99,122,.65);
-    color:var(--text-heading);
-    border-radius:100px;
-    padding:8px 13px;
-    font-size:12px;
-    box-shadow:0 4px 14px rgba(50,70,80,.14);
-    backdrop-filter:blur(6px);
-}
-
 body.game-fullscreen{
     background:
-        radial-gradient(
-            circle at top left,
-            var(--bg-grad-1),
-            transparent 45%
-        ),
-        radial-gradient(
-            circle at bottom right,
-            var(--bg-grad-2),
-            transparent 50%
-        ),
+        radial-gradient(circle at top left,var(--bg-grad-1),transparent 45%),
+        radial-gradient(circle at bottom right,var(--bg-grad-2),transparent 50%),
         var(--bg-base);
 }
 
@@ -357,16 +243,8 @@ body.game-fullscreen main{
     align-items:center;
     justify-content:center;
     background:
-        radial-gradient(
-            circle at top left,
-            var(--bg-grad-1),
-            transparent 45%
-        ),
-        radial-gradient(
-            circle at bottom right,
-            var(--bg-grad-2),
-            transparent 50%
-        ),
+        radial-gradient(circle at top left,var(--bg-grad-1),transparent 45%),
+        radial-gradient(circle at bottom right,var(--bg-grad-2),transparent 50%),
         var(--bg-base);
     z-index:9999;
 }
@@ -381,18 +259,7 @@ body.game-fullscreen .game-shell{
     display:flex;
     align-items:center;
     justify-content:center;
-    background:
-        radial-gradient(
-            circle at top left,
-            var(--bg-grad-1),
-            transparent 45%
-        ),
-        radial-gradient(
-            circle at bottom right,
-            var(--bg-grad-2),
-            transparent 50%
-        ),
-        var(--bg-base);
+    background:var(--bg-base);
 }
 
 body.game-fullscreen canvas{
@@ -401,56 +268,24 @@ body.game-fullscreen canvas{
     object-fit:contain;
 }
 
-body.game-fullscreen .fullscreen-exit-button,
-body.game-fullscreen .fullscreen-high-score{
-    display:block;
-}
-
 @media(max-width:600px){
     header{
         padding:12px 14px;
         min-height:62px;
     }
 
-    .nav-link{
-        font-size:13px;
-    }
-
-    .coin-display{
-        padding:8px 11px;
-        font-size:12px;
-    }
+    .nav-link{font-size:13px}
 
     .fullscreen-button{
         padding:8px 10px;
         font-size:12px;
     }
 
-    main{
-        padding-top:22px;
-    }
+    main{padding-top:22px}
 
-    h1{
-        font-size:29px;
-    }
+    h1{font-size:29px}
 
-    .subtitle{
-        font-size:14px;
-    }
-
-    .fullscreen-exit-button{
-        top:10px;
-        left:10px;
-        padding:7px 10px;
-        font-size:11px;
-    }
-
-    .fullscreen-high-score{
-        top:10px;
-        right:10px;
-        padding:7px 10px;
-        font-size:11px;
-    }
+    .subtitle{font-size:14px}
 }
 </style>
 </head>
@@ -459,25 +294,15 @@ body.game-fullscreen .fullscreen-high-score{
 
 <header>
     <div class="header-left">
-        <a class="nav-link" href="../index.html">
-            ← Back to Games
-        </a>
+        <a class="nav-link" href="../index.html">← Back to Games</a>
     </div>
 
     <div class="header-right">
-
         <button
             class="fullscreen-button"
             id="fullscreenButton"
             type="button"
-        >
-            ⛶ Fullscreen
-        </button>
-
-        <div class="coin-display">
-            ♡ <span id="coin-count">0</span> Coins
-        </div>
-
+        >⛶ Fullscreen</button>
     </div>
 </header>
 
@@ -501,9 +326,7 @@ body.game-fullscreen .fullscreen-high-score{
 
     <h1>Bunny Run</h1>
 
-    <p class="subtitle">
-        Run as far as you can ♡
-    </p>
+    <p class="subtitle">Run as far as you can ♡</p>
 
     <div class="game-info">
         <div class="info-pill">
@@ -512,31 +335,8 @@ body.game-fullscreen .fullscreen-high-score{
         </div>
     </div>
 
-    <div
-        class="game-shell"
-        id="gameShell"
-    >
-
-        <button
-            class="fullscreen-exit-button"
-            id="fullscreenExitButton"
-            type="button"
-        >
-            × Exit Fullscreen
-        </button>
-
-        <div
-            class="fullscreen-high-score"
-            id="fullscreenHighScore"
-        >
-            Top Score: <span id="fullscreen-top-score">00000</span>
-        </div>
-
-        <canvas
-            id="game"
-            width="960"
-            height="540"
-        ></canvas>
+    <div class="game-shell" id="gameShell">
+        <canvas id="game" width="960" height="540"></canvas>
     </div>
 
     <div class="ornament bottom-ornament">
@@ -546,8 +346,9 @@ body.game-fullscreen .fullscreen-high-score{
         <i></i>
         <span>✧</span>
     </div>
-
 </main>
+
+<script src="../script.js"></script>
 
 <script>
 const canvas=document.getElementById("game");
@@ -600,47 +401,27 @@ let jumpTime=0;
 let lastScoreMilestone=0;
 
 let audioContext=null;
-let runCoinsEarned=0;
-
-let reward5000Claimed=false;
 
 const TOP_SCORE_KEY="bunnyRun_topScore";
 
 let topScore=
-    Number(
-        localStorage.getItem(TOP_SCORE_KEY)
-    )||0;
+    Number(localStorage.getItem(TOP_SCORE_KEY))||0;
 
 function updateTopScoreDisplay(){
 
-    const element=
-        document.getElementById(
-            "top-score"
-        );
+    const element=document.getElementById("top-score");
 
-    const fullscreenElement=
-        document.getElementById(
-            "fullscreen-top-score"
-        );
+    if(!element)return;
 
-    const formatted=
+    element.textContent=
         Math.floor(topScore)
         .toString()
         .padStart(5,"0");
-
-    if(element){
-        element.textContent=formatted;
-    }
-
-    if(fullscreenElement){
-        fullscreenElement.textContent=formatted;
-    }
 }
 
 function checkTopScore(){
 
-    const current=
-        Math.floor(score);
+    const current=Math.floor(score);
 
     if(current>topScore){
 
@@ -657,12 +438,109 @@ function checkTopScore(){
 
 updateTopScoreDisplay();
 
+function getTheme(){
+
+    const theme=
+        localStorage.getItem("arcade_theme")||"blue";
+
+    const themes={
+
+        blue:{
+            base:"#f2f7fa",
+            grad1:"#dce8f3",
+            grad2:"#d3e2ea",
+            text:"#3f5260",
+            heading:"#46637a",
+            border:"#82a8bd",
+            soft:"#e9f3f9",
+            badge:"#dfe8f8",
+            ornament:"#799eb8",
+            card:"rgba(255,255,255,.88)",
+            header:"rgba(255,255,255,.88)"
+        },
+
+        pink:{
+            base:"#faf3f6",
+            grad1:"#f0dce5",
+            grad2:"#ead2dc",
+            text:"#654f59",
+            heading:"#765264",
+            border:"#bd8da1",
+            soft:"#f8e8ee",
+            badge:"#f0dce5",
+            ornament:"#a87389",
+            card:"rgba(255,255,255,.88)",
+            header:"rgba(255,255,255,.88)"
+        },
+
+        green:{
+            base:"#f2f7f1",
+            grad1:"#dce9d8",
+            grad2:"#d1e1d0",
+            text:"#4e6250",
+            heading:"#536f58",
+            border:"#88a78b",
+            soft:"#e6f1e5",
+            badge:"#dce9d8",
+            ornament:"#739579",
+            card:"rgba(255,255,255,.88)",
+            header:"rgba(255,255,255,.88)"
+        },
+
+        lavender:{
+            base:"#f6f3fa",
+            grad1:"#e4ddef",
+            grad2:"#dcd2e9",
+            text:"#5b5367",
+            heading:"#655879",
+            border:"#9b8ab6",
+            soft:"#eee8f5",
+            badge:"#e4ddef",
+            ornament:"#8875a3",
+            card:"rgba(255,255,255,.88)",
+            header:"rgba(255,255,255,.88)"
+        },
+
+        yellow:{
+            base:"#faf8ef",
+            grad1:"#eee7cc",
+            grad2:"#e5dcbb",
+            text:"#655f4c",
+            heading:"#756b4e",
+            border:"#b3a475",
+            soft:"#f2edda",
+            badge:"#eee7cc",
+            ornament:"#96885d",
+            card:"rgba(255,255,255,.88)",
+            header:"rgba(255,255,255,.88)"
+        }
+    };
+
+    return themes[theme]||themes.blue;
+}
+
+function applyTheme(){
+
+    const theme=getTheme();
+    const root=document.documentElement;
+
+    root.style.setProperty("--bg-base",theme.base);
+    root.style.setProperty("--bg-grad-1",theme.grad1);
+    root.style.setProperty("--bg-grad-2",theme.grad2);
+    root.style.setProperty("--text-main",theme.text);
+    root.style.setProperty("--text-heading",theme.heading);
+    root.style.setProperty("--accent-border",theme.border);
+    root.style.setProperty("--accent-soft",theme.soft);
+    root.style.setProperty("--accent-badge",theme.badge);
+    root.style.setProperty("--ornament-color",theme.ornament);
+    root.style.setProperty("--card-bg",theme.card);
+    root.style.setProperty("--header-bg",theme.header);
+}
+
 function getThemeSky(){
 
     const theme=
-        localStorage.getItem(
-            "arcade_theme"
-        )||"blue";
+        localStorage.getItem("arcade_theme")||"blue";
 
     const themes={
 
@@ -701,101 +579,41 @@ function getThemeSky(){
     return themes[theme]||themes.blue;
 }
 
+applyTheme();
+
 function drawSky(){
 
-    const sky=
-        getThemeSky();
+    const sky=getThemeSky();
 
     const gradient=
-        ctx.createLinearGradient(
-            0,
-            0,
-            0,
-            GROUND
-        );
+        ctx.createLinearGradient(0,0,0,GROUND);
 
-    gradient.addColorStop(
-        0,
-        sky.top
-    );
-
-    gradient.addColorStop(
-        1,
-        sky.bottom
-    );
+    gradient.addColorStop(0,sky.top);
+    gradient.addColorStop(1,sky.bottom);
 
     ctx.fillStyle=gradient;
 
-    ctx.fillRect(
-        0,
-        0,
-        W,
-        GROUND
-    );
-}const clouds=[
+    ctx.fillRect(0,0,W,GROUND);
+}
 
-    {
-        x:80,
-        y:85,
-        scale:1
-    },
-
-    {
-        x:360,
-        y:125,
-        scale:.72
-    },
-
-    {
-        x:650,
-        y:75,
-        scale:1.15
-    },
-
-    {
-        x:850,
-        y:155,
-        scale:.65
-    }
-
+const clouds=[
+    {x:80,y:85,scale:1},
+    {x:360,y:125,scale:.72},
+    {x:650,y:75,scale:1.15},
+    {x:850,y:155,scale:.65}
 ];
 
-function drawCloud(
-    x,
-    y,
-    scale
-){
+function drawCloud(x,y,scale){
 
     ctx.save();
 
-    ctx.fillStyle=
-        "rgba(255,255,255,.52)";
+    ctx.fillStyle="rgba(255,255,255,.52)";
 
     ctx.beginPath();
 
-    ctx.arc(
-        x,
-        y+9*scale,
-        18*scale,
-        0,
-        Math.PI*2
-    );
-
-    ctx.arc(
-        x+22*scale,
-        y,
-        24*scale,
-        0,
-        Math.PI*2
-    );
-
-    ctx.arc(
-        x+50*scale,
-        y+10*scale,
-        18*scale,
-        0,
-        Math.PI*2
-    );
+    ctx.arc(x,y+9*scale,18*scale,0,Math.PI*2);
+    ctx.arc(x+22*scale,y,24*scale,0,Math.PI*2);
+    ctx.arc(x+50*scale,y+10*scale,18*scale,0,Math.PI*2);
 
     ctx.fillRect(
         x-3*scale,
@@ -811,9 +629,7 @@ function drawCloud(
 
 function drawClouds(){
 
-    for(
-        const cloud of clouds
-    ){
+    for(const cloud of clouds){
 
         drawCloud(
             cloud.x,
@@ -825,8 +641,7 @@ function drawClouds(){
 
 function drawGround(){
 
-    ctx.fillStyle=
-        GROUND_TOP;
+    ctx.fillStyle=GROUND_TOP;
 
     ctx.fillRect(
         0,
@@ -835,8 +650,7 @@ function drawGround(){
         8
     );
 
-    ctx.fillStyle=
-        GROUND_BASE;
+    ctx.fillStyle=GROUND_BASE;
 
     ctx.fillRect(
         0,
@@ -849,10 +663,7 @@ function drawGround(){
 
     ctx.save();
 
-    ctx.translate(
-        -groundOffset,
-        0
-    );
+    ctx.translate(-groundOffset,0);
 
     for(
         let x=-tileSize;
@@ -860,8 +671,7 @@ function drawGround(){
         x+=tileSize
     ){
 
-        ctx.fillStyle=
-            GROUND_LIGHT;
+        ctx.fillStyle=GROUND_LIGHT;
 
         ctx.fillRect(
             x,
@@ -870,8 +680,7 @@ function drawGround(){
             4
         );
 
-        ctx.fillStyle=
-            GROUND_DARK;
+        ctx.fillStyle=GROUND_DARK;
 
         ctx.fillRect(
             x+19,
@@ -880,8 +689,7 @@ function drawGround(){
             4
         );
 
-        ctx.fillStyle=
-            GROUND_LIGHT;
+        ctx.fillStyle=GROUND_LIGHT;
 
         ctx.fillRect(
             x+5,
@@ -899,18 +707,11 @@ function drawBackground(){
     drawSky();
     drawClouds();
     drawGround();
-}
+}const cactusImages={};
 
-const cactusImages={};
+function loadCactusImage(image,rootPath,fallbackPath){
 
-function loadCactusImage(
-    image,
-    rootPath,
-    fallbackPath
-){
-
-    const filename=
-        rootPath.split("/").pop();
+    const filename=rootPath.split("/").pop();
 
     const paths=[
         rootPath,
@@ -926,8 +727,7 @@ function loadCactusImage(
             return;
         }
 
-        const source=
-            paths[index++];
+        const source=paths[index++];
 
         image.onload=null;
         image.onerror=null;
@@ -1014,8 +814,7 @@ function spawnObstacle(){
     const type=
         cactusTypes[
             Math.floor(
-                Math.random()*
-                cactusTypes.length
+                Math.random()*cactusTypes.length
             )
         ];
 
@@ -1070,9 +869,7 @@ function spawnObstacle(){
 
 function drawObstacles(){
 
-    for(
-        const obstacle of obstacles
-    ){
+    for(const obstacle of obstacles){
 
         if(
             obstacle.image &&
@@ -1107,18 +904,12 @@ function getBunnyHitbox(){
 
 function checkCollision(){
 
-    const b=
-        getBunnyHitbox();
+    const b=getBunnyHitbox();
 
-    for(
-        const o of obstacles
-    ){
+    for(const o of obstacles){
 
-        const hitWidth=
-            o.hitboxWidth;
-
-        const hitHeight=
-            o.hitboxHeight;
+        const hitWidth=o.hitboxWidth;
+        const hitHeight=o.hitboxHeight;
 
         const cactusHit={
 
@@ -1130,11 +921,9 @@ function checkCollision(){
                 GROUND-
                 hitHeight,
 
-            width:
-                hitWidth,
+            width:hitWidth,
 
-            height:
-                hitHeight
+            height:hitHeight
         };
 
         if(
@@ -1177,18 +966,12 @@ function drawBunny(){
 
     let frameIndex=0;
 
-    if(
-        !started &&
-        !dead
-    ){
+    if(!started&&!dead){
 
         image=idleImage;
-
         frameIndex=0;
 
-    }else if(
-        !bunny.grounded
-    ){
+    }else if(!bunny.grounded){
 
         image=jumpImage;
 
@@ -1227,20 +1010,13 @@ function drawBunny(){
         return;
     }
 
-    const drawW=
-        frameWidth*3;
+    const drawW=frameWidth*3;
+    const drawH=frameHeight*3;
 
-    const drawH=
-        frameHeight*3;
+    const feetY=bunny.y+bunny.height;
 
-    const feetY=
-        bunny.y+bunny.height;
-
-    const drawX=
-        bunny.x;
-
-    const drawY=
-        feetY-drawH;
+    const drawX=bunny.x;
+    const drawY=feetY-drawH;
 
     ctx.save();
 
@@ -1252,23 +1028,14 @@ function drawBunny(){
     ctx.scale(-1,1);
 
     ctx.drawImage(
-
         image,
-
         frameIndex*frameWidth,
-
         0,
-
         frameWidth,
-
         frameHeight,
-
         0,
-
         0,
-
         drawW,
-
         drawH
     );
 
@@ -1376,21 +1143,9 @@ function playScoreSound(){
     }catch(e){}
 }
 
-function updateCoinDisplay(){
+function updateGame(delta){
 
-    if(
-        typeof updateCoinDisplays==="function"
-    ){
-
-        updateCoinDisplays();
-    }
-    }function updateGame(delta){
-
-    if(
-        !started||
-        dead
-    ){
-
+    if(!started||dead){
         return;
     }
 
@@ -1403,8 +1158,7 @@ function updateCoinDisplay(){
     const seconds=
         dt/16.6667;
 
-    score+=
-        .55*seconds;
+    score+=.55*seconds;
 
     speed=
         6+
@@ -1434,14 +1188,9 @@ function updateCoinDisplay(){
         bunny.grounded=true;
     }
 
-    if(
-        !bunny.grounded
-    ){
-
+    if(!bunny.grounded){
         jumpTime+=dt;
-
     }else{
-
         jumpTime=0;
     }
 
@@ -1450,18 +1199,13 @@ function updateCoinDisplay(){
     groundOffset+=
         speed*seconds;
 
-    if(
-        groundOffset>=34
-    ){
-
+    if(groundOffset>=34){
         groundOffset%=34;
     }
 
     spawnTimer+=dt;
 
-    if(
-        spawnTimer>=nextSpawn
-    ){
+    if(spawnTimer>=nextSpawn){
 
         spawnTimer=0;
 
@@ -1474,8 +1218,7 @@ function updateCoinDisplay(){
         i--
     ){
 
-        const obstacle=
-            obstacles[i];
+        const obstacle=obstacles[i];
 
         obstacle.x-=
             speed*seconds;
@@ -1500,10 +1243,8 @@ function updateCoinDisplay(){
             ){
 
                 for(
-                    let n=
-                        lastScoreMilestone;
-                    n<
-                        currentMilestone;
+                    let n=lastScoreMilestone;
+                    n<currentMilestone;
                     n++
                 ){
 
@@ -1537,10 +1278,8 @@ function updateCoinDisplay(){
     ){
 
         for(
-            let n=
-                lastScoreMilestone;
-            n<
-                currentMilestone;
+            let n=lastScoreMilestone;
+            n<currentMilestone;
             n++
         ){
 
@@ -1551,10 +1290,7 @@ function updateCoinDisplay(){
             currentMilestone;
     }
 
-    if(
-        checkCollision()
-    ){
-
+    if(checkCollision()){
         gameOver();
     }
 
@@ -1566,7 +1302,7 @@ function drawGameOver(){
     ctx.save();
 
     ctx.fillStyle=
-        "rgba(35,43,48,.58)";
+        "rgba(41,51,47,.48)";
 
     ctx.fillRect(
         0,
@@ -1575,94 +1311,46 @@ function drawGameOver(){
         H
     );
 
-    const panelWidth=390;
-    const panelHeight=245;
-
-    const panelX=
-        (W-panelWidth)/2;
-
-    const panelY=
-        (H-panelHeight)/2;
-
-    ctx.fillStyle=
-        "rgba(250,247,240,.96)";
-
-    ctx.strokeStyle=
-        "rgba(130,168,189,.9)";
-
-    ctx.lineWidth=2;
-
-    ctx.beginPath();
-
-    ctx.roundRect(
-        panelX,
-        panelY,
-        panelWidth,
-        panelHeight,
-        22
-    );
-
-    ctx.fill();
-    ctx.stroke();
-
     ctx.textAlign="center";
-    ctx.textBaseline="middle";
 
-    ctx.fillStyle=
-        "#46637a";
+    ctx.fillStyle="#f1eee2";
 
-    ctx.font=
-        "38px Georgia,serif";
+    ctx.font="48px Georgia,serif";
 
     ctx.fillText(
         "☠",
         W/2,
-        panelY+52
+        175
     );
 
     ctx.font=
-        "bold 31px Georgia,serif";
+        "bold 34px Georgia,serif";
 
     ctx.fillText(
         "Game Over",
         W/2,
-        panelY+92
-    );
-
-    ctx.fillStyle=
-        "#3f5260";
-
-    ctx.font=
-        "19px Georgia,serif";
-
-    ctx.fillText(
-        "Score: "+Math.floor(score),
-        W/2,
-        panelY+132
+        225
     );
 
     ctx.font=
-        "bold 19px Georgia,serif";
-
-    ctx.fillStyle=
-        "#46637a";
+        "21px Georgia,serif";
 
     ctx.fillText(
-        "Coins earned: "+runCoinsEarned,
+        "Score: "+
+        Math.floor(score),
         W/2,
-        panelY+165
+        265
     );
 
     ctx.font=
-        "14px Georgia,serif";
+        "15px Georgia,serif";
 
-    ctx.fillStyle=
-        "#5c6b75";
+    ctx.globalAlpha=.9;
 
     ctx.fillText(
-        "Tap anywhere to play again",
+        "tap anywhere to start again",
         W/2,
-        panelY+207
+        315
     );
 
     ctx.restore();
@@ -1699,9 +1387,7 @@ function drawStartScreen(){
     );
 
     ctx.restore();
-}
-
-function draw(){
+    }function draw(){
 
     drawBackground();
 
@@ -1711,16 +1397,11 @@ function draw(){
 
     drawScore();
 
-    if(
-        !started &&
-        !dead
-    ){
-
+    if(!started&&!dead){
         drawStartScreen();
     }
 
     if(dead){
-
         drawGameOver();
     }
 }
@@ -1737,41 +1418,6 @@ function gameOver(){
 
     checkTopScore();
 
-    /*
-     * Bunny Run gives exactly 50 Coins
-     * when the final score reaches 5000.
-     *
-     * The reward is given here, on the
-     * existing game-over screen.
-     *
-     * No rewards are given at 1000,
-     * 2000, 3000, or 4000.
-     */
-
-    if(
-        score>=5000 &&
-        !reward5000Claimed
-    ){
-
-        if(
-            typeof addCoins==="function"
-        ){
-
-            addCoins(50);
-        }
-
-        if(
-            typeof updateCoinDisplays==="function"
-        ){
-
-            updateCoinDisplays();
-        }
-
-        runCoinsEarned=50;
-
-        reward5000Claimed=true;
-    }
-
     draw();
 }
 
@@ -1782,10 +1428,6 @@ function restart(){
     speed=6;
 
     lastScoreMilestone=0;
-
-    runCoinsEarned=0;
-
-    reward5000Claimed=false;
 
     obstacles.length=0;
 
@@ -1870,10 +1512,7 @@ function jump(){
 
 function loop(time){
 
-    if(
-        !started||
-        dead
-    ){
+    if(!started||dead){
 
         draw();
 
@@ -1881,7 +1520,6 @@ function loop(time){
     }
 
     if(!lastTime){
-
         lastTime=time;
     }
 
@@ -1900,7 +1538,9 @@ function loop(time){
             loop
         );
     }
-    }document.addEventListener(
+}
+
+document.addEventListener(
     "keydown",
     function(event){
 
@@ -1983,11 +1623,6 @@ const fullscreenButton=
         "fullscreenButton"
     );
 
-const fullscreenExitButton=
-    document.getElementById(
-        "fullscreenExitButton"
-    );
-
 async function toggleFullscreen(){
 
     initAudio();
@@ -2039,16 +1674,6 @@ fullscreenButton.addEventListener(
     }
 );
 
-fullscreenExitButton.addEventListener(
-    "click",
-    function(event){
-
-        event.stopPropagation();
-
-        toggleFullscreen();
-    }
-);
-
 document.addEventListener(
     "fullscreenchange",
     function(){
@@ -2078,12 +1703,14 @@ window.addEventListener(
             event.key==="arcade_theme"
         ){
 
+            applyTheme();
+
             draw();
         }
     }
 );
 
-updateCoinDisplay();
+applyTheme();
 
 draw();
 </script>
