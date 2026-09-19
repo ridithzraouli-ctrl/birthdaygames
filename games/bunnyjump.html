@@ -83,7 +83,8 @@ header{
 
 .nav-link:hover{opacity:.7}
 
-.fullscreen-button{
+.fullscreen-button,
+.fullscreen-exit-button{
     border:1px solid var(--accent-border);
     background:var(--accent-soft);
     color:var(--text-heading);
@@ -95,7 +96,17 @@ header{
     transition:opacity .2s ease;
 }
 
-.fullscreen-button:hover{opacity:.75}
+.fullscreen-button:hover,
+.fullscreen-exit-button:hover{opacity:.75}
+
+.fullscreen-exit-button{
+    display:none;
+    position:absolute;
+    top:18px;
+    left:18px;
+    z-index:20;
+    box-shadow:0 4px 15px rgba(30,40,45,.15);
+}
 
 main{
     width:100%;
@@ -262,6 +273,10 @@ body.game-fullscreen .game-shell{
     background:var(--bg-base);
 }
 
+body.game-fullscreen .fullscreen-exit-button{
+    display:block;
+}
+
 body.game-fullscreen canvas{
     width:100vw;
     height:100vh;
@@ -286,6 +301,13 @@ body.game-fullscreen canvas{
     h1{font-size:29px}
 
     .subtitle{font-size:14px}
+
+    .fullscreen-exit-button{
+        top:12px;
+        left:12px;
+        padding:8px 10px;
+        font-size:12px;
+    }
 }
 </style>
 </head>
@@ -336,6 +358,12 @@ body.game-fullscreen canvas{
     </div>
 
     <div class="game-shell" id="gameShell">
+        <button
+            class="fullscreen-exit-button"
+            id="fullscreenExitButton"
+            type="button"
+        >× Exit Fullscreen</button>
+
         <canvas id="game" width="960" height="540"></canvas>
     </div>
 
@@ -385,7 +413,7 @@ idleImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+
 
 runImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAcCAYAAAB4fbODAAADlElEQVR42u1aPZKzMAw1Gbr0O5kUlBRb5wg5QI7KATgCdQpKip0d+q35im+U1RpjJGMLCNLMFlkIz3rWz5ODMWpqampqampqampqampqampqamr7sevlPFwv50GZoNtJKVCLaZ/lh8FJqEmpCagm1P0+y4/R/x73m3ncb0aTkJmA0pVLK+V78QrJZ4wxVd2Yr++fbM9+pcI7bUlOSOIdqcBI8vpse2OMMZB87yR3XXhJElBaTqwlX965wKzJK06+VN1vK/G5FOuQM+BRCoy0LFxzPyX9wnjJJChIidiAW8E7kqWWhbBfZVEk735ryd1UeM4EtElLTao03hELTCpOfb5IdHfJhE+Bd0gJeoQCo7YPy+eqWlkUu64wW5lR1pyLUu2ha7Z9B7+W4Ln22reuPOWAucZQu7VNtH2TDhoJa7vu5VdVN3+K6ON+M1XdDByFsMU4oRZYuL/tOnRHP0z5mMeu6tyACnFyT3jSfEpjwmyLC4tP1eCkhe9fL+dhj0oH+HP5N+bDnYSZS1L4yKzqZkQqJpO7gXMJsWe8tfiUxMQyFGPC83zrsHF9mBy/lnZaKh5HIUz5mM2RaUuKGGT6nJTGi0UkJzhT4a21h/izPRNS/G67jpyAXL/swkJNxCU8uorPlI8nl6TAi+UYBuQcPPzVy7J4c1VzKZ7NZ2o8yT2EIMVJh3Ht5Gu7zrnXZVGM3hKK5VdZFK/nw1/o3lHiaiqWpwpRFltSUCva1PAa2plC8TjdgYvn4hPwUvApvYfU/YOi41MDoV2Q6xc3Xqh4rk7r4sQ+eMvdOrkXOTb/+v7JwEl8khZCaiiefWoVE8/FJ2Cn5hUwn21vUv1UAIGEE9HV4X8D7v+aQjnmxibmOQSTigcJbceYzQW8eljVzetAJvcPq/0wV7Vc134/97OnW5xg2SOeNJ/uOWcaN1bhgWCjrM91CMTp7Fga+k5Y52Qp/DziWzMklK+z2d0UYgw4h+tV3YwOAPMYldDuXjEqqS8o9oYnzac0Jrco2B0C3iOlzFvPtifJXcr30BgyW9hwMnG6Jy7wkITkBMQPsWclXGWebR8lYDCe/cx3w5Pgk4I7hcmZOUMNeOeOEDS5O57jXPdzurAriX0vU7gkrH1vcAecIy72Bipen/yldCnDBcFXFKa+S5GOvhncloUpJffc9ZyqufGpIfXUi2uKFxcvBJczyy1dD0VSLpG8U/Mw51lT3MXi5x/WB9z8URHs6QAAAABJRU5ErkJggg==";
 
-jumpImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAkCAYAAACQVDZDAAADgUlEQVR42u2aPXLyMBCGRcYdfYahoKRIzRE4AEflAByBmsKlC4ZxT+2vyCeyiJW0sq0VUd6nIzi8Xu0/2BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWNar5bBeLQecBLB84Ah0+dp+GpqESEok4FtU61KBqKW7Xi2Hr+3ny98O+5057HfmtydhzfGSU+vjnap1qe5QQtcmnzHGHE9nc73dF7+9oNUcL5xWtgTUrtalukMJ3UvbG2OMsclXQ0LUHC8hrTl0sAMqdiULTb5c3a/kuKt1jiX0qFbWEdRW6hyi76Cn2ZWsPdvNJnvylQxQze6urZdLi01A10G5g0ZbT7MrhYpJ7m6knRAlfKepl0MLI2jllChmQE4Tq9rbzabKiqZhI7eLaY6bGr6rXc/qUK3Y/cUmvGACau9fJTS19dquezjweDo/FZnDfmeOp/OQMqL/1XN8Vz2adPb6tuvIFf3g82Ez5eamBMsUI6foadto97BQBeXstw68tL1Zr5YDRsf3w8YH579Xf/NJuOBGplCwHE/nl6ChwZIaoLEEzKGnaSMdQ6mm/bzYaEN1Q5opdk3ttNBLn4B8PlzEgsUdmeYIlpCROfVK2UhfuzuhxMFt14kTMNUut7BIAxV6cU234HI+bMaMTKFl1YqnjE10R9LQ07KROtFqXtrecB0x1BV/XvdBvTF28df2orOEHp94vvugRYDtgHOMTNKK7Vtex7b4qV0wh41S++zo5EvMKV0w1a5U/0HP32k5n7vf1jb8nNyrPMR7vd0X1ki3C6YeaqqutZF2pDw6z4nI7Sk/Dvm+p7E2p/qOVuwxmtB7Tmg3pl1f20cBj6fzowOPqgCSJEnpSjRAQzvSXHopdvo0x9on7Zjcl0DSDhirwtyoxJ2pDSCfZu16Er9wXY1bP2xi/k/Ax/Wjf4aYY4cLdYpQ1Zqqp22jtCjQc6AV1D5Hyu0Q3N4iGXcl/0eeH/XuTLXruY1B4gPaPWlDud7uC/c330b6Ie43QLTKXNp+loSgeu5n5tCT2OnTHNttU3CrvXSkl427r5Wauz4U7LXrSZI49AQON8JGvwVNuZnY+3MGqLaeVDff7vhdEEJFwfe/tspKzsMNEndskjylU7NerNPG7iH2fiPZjWjmcz9SS8cA6S6mpTdGV3rwc9yPZOSaMvLy14cr9l/T88XGXP7/B8eoAeUpIH/9AAAAAElFTkSuQmCC";
+jumpImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAkCAYAAACQVDZDAAADgUlEQVR42u2aPXLyMBCGRcYdfYahoKRIzRE4AEflAByBmsKlC4ZxT+2vyCeyiJW0sq0VUd6nIzi8Xu0/2BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWNar5bBeLQecBLB84Ah0+dp+GpqESEok4FtU61KBqKW7Xi2Hr+3ny98O+5057HfmtydhzfGSU+vjnap1qe5QQtcmnzHGHE9nc73dF7+9oNUcL5xWtgTUrtalukMJ3UvbG2OMsclXQ0LUHC8hrTl0sAMqdiULTb5c3a/kuKt1jiX0qFbWEdRW6hyi76Cn2ZWsPdvNJnvylQxQze6urZdLi01A10G5g0ZbT7MrhYpJ7m6knRAlfKepl0MLI2jllChmQE4Tq9rbzabKiqZhI7eLaY6bGr6rXc/qUK3Y/cUmvGACau9fJTS19dquezjweDo/FZnDfmeOp/OQMqL/1XN8Vz2adPb6tuvIFf3g82Ez5eamBMsUI6foadto97BQBeXstw68tL1Zr5YDRsf3w8YH579Xf/NJuOBGplCwHE/nl6ChwZIaoLEEzKGnaSMdQ6mm/bzYaEN1Q5opdk3ttNBLn4B8PlzEgsUdmeYIlpCROfVK2UhfuzuhxMFt14kTMNUut7BIAxV6cU234HI+bMaMTKFl1YqnjE10R9LQ07KROtFqXtrecB0x1BV/XvdBvTF28df2orOEHp94vvugRYDtgHOMTNKK7Vtex7b4qV0wh41S++zo5EvMKV0w1a5U/0HP32k5n7vf1jb8nNyrPMR7vd0X1ki3C6YeaqqutZF2pDw6z4nI7Sk/Dvm+p7E2p/qOVuwxmtB7Tmg3pl1f20cBj6fzowOPqgCSJEnpSjRAQzvSXHopdvo0x9on7Zjcl0DSDhirwtyoxJ2pDSCfZu16Er9wXY1bP2xi/k/Ax/Wjf4aYY4cLdYpQ1Zqqp22jtCjQc6AV1D5Hyu0Q3N4iGXcl/0eeH/XuTLXruY1B4gPaPWlDud7uC/c330b6Ie43QLTKXNp+loSgeu5n5tCT2OnTHNttU3CrvXSkl427r5Wauz4U7LXrSZI49AQON8JGvwVNuZnY+3MGqLaeVDff7vhdEEJFwfe/tspKzsMNEndskjylU7NerNPG7iH2fiPZjWjmcz9SS8A6S6mpTdGV3rwc9yPZOSaMvLy14cr9l/T88XGXP7/B8eoAeUpIH/9AAAAAElFTkSuQmCC";
 
 let started=false;
 let dead=false;
@@ -1049,13 +1077,19 @@ function drawScore(){
         .toString()
         .padStart(5,"0");
 
+    const displayTop=
+        Math.floor(topScore)
+        .toString()
+        .padStart(5,"0");
+
     ctx.save();
 
     ctx.font=
         "bold 23px Georgia,serif";
 
-    ctx.textAlign="right";
     ctx.textBaseline="top";
+
+    ctx.textAlign="right";
 
     ctx.fillStyle=
         "rgba(41,51,47,0.28)";
@@ -1073,6 +1107,29 @@ function drawScore(){
         displayScore,
         W-20,
         18
+    );
+
+    ctx.textAlign="left";
+
+    ctx.font=
+        "bold 15px Georgia,serif";
+
+    ctx.fillStyle=
+        "rgba(41,51,47,0.28)";
+
+    ctx.fillText(
+        "TOP "+displayTop,
+        20,
+        22
+    );
+
+    ctx.fillStyle=
+        "#f1eee2";
+
+    ctx.fillText(
+        "TOP "+displayTop,
+        18,
+        20
     );
 
     ctx.restore();
@@ -1095,13 +1152,16 @@ function initAudio(){
     }catch(e){}
 }
 
-function playScoreSound(){
+function playJumpSound(){
 
     if(!audioContext){
         return;
     }
 
     try{
+
+        const now=
+            audioContext.currentTime;
 
         const oscillator=
             audioContext.createOscillator();
@@ -1112,38 +1172,114 @@ function playScoreSound(){
         oscillator.type="square";
 
         oscillator.frequency.setValueAtTime(
-            620,
-            audioContext.currentTime
+            330,
+            now
         );
 
         oscillator.frequency.exponentialRampToValueAtTime(
-            880,
-            audioContext.currentTime+.08
+            620,
+            now+.075
+        );
+
+        oscillator.frequency.exponentialRampToValueAtTime(
+            790,
+            now+.13
         );
 
         gain.gain.setValueAtTime(
             .045,
-            audioContext.currentTime
+            now
         );
 
         gain.gain.exponentialRampToValueAtTime(
             .001,
-            audioContext.currentTime+.1
+            now+.14
         );
 
         oscillator.connect(gain);
         gain.connect(audioContext.destination);
 
-        oscillator.start();
+        oscillator.start(now);
 
-        oscillator.stop(
-            audioContext.currentTime+.1
-        );
+        oscillator.stop(now+.14);
 
     }catch(e){}
 }
 
-function updateGame(delta){
+function playDinoMilestoneSound(){
+
+    if(!audioContext){
+        return;
+    }
+
+    try{
+
+        const now=
+            audioContext.currentTime;
+
+        const notes=[
+            {frequency:392,time:0,duration:.09},
+            {frequency:523.25,time:.09,duration:.09},
+            {frequency:659.25,time:.18,duration:.09},
+            {frequency:783.99,time:.27,duration:.18}
+        ];
+
+        for(const note of notes){
+
+            const oscillator=
+                audioContext.createOscillator();
+
+            const gain=
+                audioContext.createGain();
+
+            oscillator.type="square";
+
+            oscillator.frequency.setValueAtTime(
+                note.frequency,
+                now+note.time
+            );
+
+            gain.gain.setValueAtTime(
+                .0001,
+                now+note.time
+            );
+
+            gain.gain.exponentialRampToValueAtTime(
+                .065,
+                now+note.time+.015
+            );
+
+            gain.gain.exponentialRampToValueAtTime(
+                .001,
+                now+note.time+note.duration
+            );
+
+            oscillator.connect(gain);
+            gain.connect(audioContext.destination);
+
+            oscillator.start(
+                now+note.time
+            );
+
+            oscillator.stop(
+                now+note.time+note.duration
+            );
+        }
+
+    }catch(e){}
+}
+
+function playMilestoneSound(milestone){
+
+    if(milestone%10===0){
+
+        playDinoMilestoneSound();
+
+    }else{
+
+        playJumpSound();
+    }
+    }function updateGame(delta){
 
     if(!started||dead){
         return;
@@ -1248,7 +1384,7 @@ function updateGame(delta){
                     n++
                 ){
 
-                    playScoreSound();
+                    playMilestoneSound(n+1);
                 }
 
                 lastScoreMilestone=
@@ -1283,7 +1419,7 @@ function updateGame(delta){
             n++
         ){
 
-            playScoreSound();
+            playMilestoneSound(n+1);
         }
 
         lastScoreMilestone=
@@ -1297,12 +1433,147 @@ function updateGame(delta){
     checkTopScore();
 }
 
+function drawSkull(){
+
+    ctx.save();
+
+    ctx.translate(
+        W/2,
+        164
+    );
+
+    ctx.shadowColor=
+        "rgba(20,25,27,.25)";
+
+    ctx.shadowBlur=10;
+
+    ctx.fillStyle=
+        "#f1eee2";
+
+    ctx.beginPath();
+
+    ctx.moveTo(-30,-28);
+
+    ctx.bezierCurveTo(
+        -34,-10,
+        -28,8,
+        -18,15
+    );
+
+    ctx.lineTo(-18,29);
+
+    ctx.lineTo(-8,29);
+
+    ctx.lineTo(-5,20);
+
+    ctx.lineTo(5,20);
+
+    ctx.lineTo(8,29);
+
+    ctx.lineTo(18,29);
+
+    ctx.lineTo(18,15);
+
+    ctx.bezierCurveTo(
+        28,8,
+        34,-10,
+        30,-28
+    );
+
+    ctx.bezierCurveTo(
+        26,-48,
+        12,-58,
+        0,-58
+    );
+
+    ctx.bezierCurveTo(
+        -12,-58,
+        -26,-48,
+        -30,-28
+    );
+
+    ctx.closePath();
+
+    ctx.fill();
+
+    ctx.shadowBlur=0;
+
+    ctx.fillStyle=
+        "#59636a";
+
+    ctx.beginPath();
+
+    ctx.moveTo(-22,-25);
+
+    ctx.lineTo(-7,-18);
+
+    ctx.lineTo(-13,-5);
+
+    ctx.lineTo(-24,-11);
+
+    ctx.closePath();
+
+    ctx.fill();
+
+    ctx.beginPath();
+
+    ctx.moveTo(22,-25);
+
+    ctx.lineTo(7,-18);
+
+    ctx.lineTo(13,-5);
+
+    ctx.lineTo(24,-11);
+
+    ctx.closePath();
+
+    ctx.fill();
+
+    ctx.beginPath();
+
+    ctx.moveTo(0,-3);
+
+    ctx.lineTo(-5,7);
+
+    ctx.lineTo(5,7);
+
+    ctx.closePath();
+
+    ctx.fill();
+
+    ctx.fillRect(
+        -17,
+        13,
+        34,
+        7
+    );
+
+    ctx.fillStyle=
+        "#f1eee2";
+
+    for(
+        let x=-13;
+        x<=13;
+        x+=6
+    ){
+
+        ctx.fillRect(
+            x,
+            12,
+            4,
+            9
+        );
+    }
+
+    ctx.restore();
+}
+
 function drawGameOver(){
 
     ctx.save();
 
     ctx.fillStyle=
-        "rgba(41,51,47,.48)";
+        "rgba(41,51,47,.52)";
 
     ctx.fillRect(
         0,
@@ -1311,17 +1582,42 @@ function drawGameOver(){
         H
     );
 
+    const panelWidth=430;
+    const panelHeight=270;
+
+    const panelX=
+        W/2-panelWidth/2;
+
+    const panelY=
+        H/2-panelHeight/2+10;
+
+    ctx.fillStyle=
+        "rgba(242,247,250,.94)";
+
+    ctx.strokeStyle=
+        "rgba(130,168,189,.8)";
+
+    ctx.lineWidth=2;
+
+    ctx.beginPath();
+
+    ctx.roundRect(
+        panelX,
+        panelY,
+        panelWidth,
+        panelHeight,
+        22
+    );
+
+    ctx.fill();
+    ctx.stroke();
+
+    drawSkull();
+
     ctx.textAlign="center";
 
-    ctx.fillStyle="#f1eee2";
-
-    ctx.font="48px Georgia,serif";
-
-    ctx.fillText(
-        "☠",
-        W/2,
-        175
-    );
+    ctx.fillStyle=
+        "#46637a";
 
     ctx.font=
         "bold 34px Georgia,serif";
@@ -1329,28 +1625,45 @@ function drawGameOver(){
     ctx.fillText(
         "Game Over",
         W/2,
-        225
+        238
     );
+
+    ctx.fillStyle=
+        "#3f5260";
 
     ctx.font=
-        "21px Georgia,serif";
+        "20px Georgia,serif";
 
     ctx.fillText(
-        "Score: "+
-        Math.floor(score),
+        "Score  "+Math.floor(score),
         W/2,
-        265
+        276
     );
+
+    ctx.fillStyle=
+        "#46637a";
+
+    ctx.font=
+        "bold 17px Georgia,serif";
+
+    ctx.fillText(
+        "Top Score  "+Math.floor(topScore),
+        W/2,
+        307
+    );
+
+    ctx.fillStyle=
+        "#3f5260";
 
     ctx.font=
         "15px Georgia,serif";
 
-    ctx.globalAlpha=.9;
+    ctx.globalAlpha=.8;
 
     ctx.fillText(
-        "tap anywhere to start again",
+        "tap anywhere to run again",
         W/2,
-        315
+        350
     );
 
     ctx.restore();
@@ -1387,7 +1700,9 @@ function drawStartScreen(){
     );
 
     ctx.restore();
-    }function draw(){
+}
+
+function draw(){
 
     drawBackground();
 
@@ -1538,9 +1853,7 @@ function loop(time){
             loop
         );
     }
-}
-
-document.addEventListener(
+}document.addEventListener(
     "keydown",
     function(event){
 
@@ -1623,6 +1936,11 @@ const fullscreenButton=
         "fullscreenButton"
     );
 
+const fullscreenExitButton=
+    document.getElementById(
+        "fullscreenExitButton"
+    );
+
 async function toggleFullscreen(){
 
     initAudio();
@@ -1668,6 +1986,17 @@ fullscreenButton.addEventListener(
     "click",
     function(event){
 
+        event.stopPropagation();
+
+        toggleFullscreen();
+    }
+);
+
+fullscreenExitButton.addEventListener(
+    "click",
+    function(event){
+
+        event.preventDefault();
         event.stopPropagation();
 
         toggleFullscreen();
