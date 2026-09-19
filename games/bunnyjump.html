@@ -1,38 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"
->
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 
 <title>Bunny Run ♡</title>
 
 <style>
-
 :root{
-
     --bg-base:#f2f7fa;
     --bg-grad-1:#dce8f3;
     --bg-grad-2:#d3e2ea;
-
-    --text-main:#3f5260;
-    --text-heading:#46637a;
-
-    --accent-border:#82a8bd;
-    --accent-soft:#e9f3f9;
-    --accent-badge:#dfe8f8;
-    --ornament-color:#799eb8;
-
-    --card-bg:rgba(255,255,255,.90);
-
-    --shadow:
-        0 18px 45px rgba(74,94,108,.13),
-        0 3px 10px rgba(74,94,108,.08);
-
+    --card:#ffffff;
+    --text:#4a5360;
+    --muted:#7d8792;
+    --accent:#9db8c9;
+    --accent-dark:#7e9caf;
+    --border:#d8e2e8;
+    --shadow:rgba(100,120,135,.16);
 }
 
 *{
@@ -42,1054 +27,551 @@
 
 html,
 body{
-
     margin:0;
+    padding:0;
     width:100%;
     min-height:100%;
-
 }
 
 body{
-
-    min-height:100vh;
-    min-height:100dvh;
-
+    font-family:Georgia,"Times New Roman",serif;
+    color:var(--text);
     background:
-        radial-gradient(
-            circle at 12% 15%,
-            rgba(255,255,255,.65) 0 2px,
-            transparent 3px
-        ),
-        radial-gradient(
-            circle at 88% 28%,
-            rgba(255,255,255,.55) 0 2px,
-            transparent 3px
-        ),
-        linear-gradient(
-            145deg,
-            var(--bg-grad-1),
-            var(--bg-base) 48%,
-            var(--bg-grad-2)
-        );
-
-    color:var(--text-main);
-
-    font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
-
+        radial-gradient(circle at top left,rgba(255,255,255,.8),transparent 35%),
+        linear-gradient(135deg,var(--bg-grad-1),var(--bg-grad-2));
     overflow-x:hidden;
-
-}
-
-body::before{
-
-    content:"✦";
-
-    position:fixed;
-
-    top:105px;
-    left:5%;
-
-    color:var(--ornament-color);
-
-    opacity:.20;
-
-    font-size:20px;
-
-    pointer-events:none;
-
-}
-
-body::after{
-
-    content:"✧";
-
-    position:fixed;
-
-    right:6%;
-    bottom:90px;
-
-    color:var(--ornament-color);
-
-    opacity:.20;
-
-    font-size:24px;
-
-    pointer-events:none;
-
-}
-
-button,
-a{
-
-    font-family:inherit;
-
 }
 
 button{
-
-    cursor:pointer;
-
-}
-
-header{
-
-    width:100%;
-    max-width:1180px;
-
-    margin:0 auto;
-
-    padding:
-        21px
-        24px
-        12px;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:space-between;
-
-    gap:16px;
-
-}
-
-.header-left,
-.header-right{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:10px;
-
-}
-
-.nav-link,
-.fullscreen-button{
-
-    min-height:42px;
-
-    border:
-        1px solid
-        rgba(130,168,189,.55);
-
-    border-radius:13px;
-
-    background:
-        rgba(255,255,255,.78);
-
-    color:var(--text-heading);
-
-    box-shadow:
-        0 5px 15px
-        rgba(74,94,108,.07);
-
-    transition:
-        transform .18s ease,
-        background .18s ease,
-        box-shadow .18s ease;
-
-}
-
-.nav-link{
-
-    display:flex;
-
-    align-items:center;
-
-    padding:
-        0
-        15px;
-
-    text-decoration:none;
-
-    font-size:14px;
-
-}
-
-.fullscreen-button{
-
-    padding:
-        0
-        15px;
-
-    font-size:14px;
-
-}
-
-.nav-link:hover,
-.fullscreen-button:hover{
-
-    transform:translateY(-1px);
-
-    background:
-        rgba(255,255,255,.95);
-
-    box-shadow:
-        0 8px 20px
-        rgba(74,94,108,.11);
-
-}
-
-.nav-link:active,
-.fullscreen-button:active{
-
-    transform:none;
-
-}
-
-.coin-display{
-
-    min-height:42px;
-
-    display:flex;
-
-    align-items:center;
-
-    gap:7px;
-
-    padding:
-        0
-        15px;
-
-    border:
-        1px solid
-        rgba(130,168,189,.48);
-
-    border-radius:13px;
-
-    background:
-        rgba(255,255,255,.82);
-
-    color:var(--text-heading);
-
-    font-size:14px;
-
-    box-shadow:
-        0 5px 15px
-        rgba(74,94,108,.06);
-
-}
-
-.coin-display .coin-count{
-
-    font-weight:bold;
-
+    font-family:inherit;
 }
 
 .page{
-
-    width:100%;
-    max-width:1180px;
-
-    margin:0 auto;
-
-    padding:
-        5px
-        24px
-        35px;
-
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:18px 14px 30px;
 }
 
-.game-heading{
-
-    text-align:center;
-
-    margin:
-        4px
-        0
-        17px;
-
+.topbar{
+    width:min(960px,100%);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:14px;
 }
 
-.game-heading .ornament{
-
-    display:block;
-
-    margin-bottom:4px;
-
-    color:var(--ornament-color);
-
-    opacity:.70;
-
-    font-size:13px;
-
-    letter-spacing:7px;
-
-}
-
-.game-heading h1{
-
-    margin:0;
-
-    color:var(--text-heading);
-
-    font-size:32px;
-
-    font-weight:normal;
-
-    letter-spacing:.2px;
-
-}
-
-.game-heading p{
-
-    margin:
-        6px
-        0
-        0;
-
-    color:#70818b;
-
+.back-btn,
+.fullscreen-btn{
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.82);
+    color:var(--text);
+    border-radius:14px;
+    padding:10px 15px;
     font-size:14px;
+    cursor:pointer;
+    box-shadow:0 5px 16px var(--shadow);
+    transition:.18s ease;
+}
 
+.back-btn:hover,
+.fullscreen-btn:hover{
+    transform:translateY(-1px);
+    background:#fff;
+}
+
+.coin-display{
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.88);
+    color:var(--text);
+    border-radius:14px;
+    padding:10px 15px;
+    font-size:14px;
+    box-shadow:0 5px 16px var(--shadow);
+    white-space:nowrap;
+}
+
+.coin-display span{
+    font-weight:bold;
 }
 
 .game-card{
-
-    position:relative;
-
-    width:100%;
-
-    padding:12px;
-
-    border:
-        1px solid
-        rgba(130,168,189,.45);
-
-    border-radius:23px;
-
-    background:
-        rgba(255,255,255,.88);
-
-    box-shadow:var(--shadow);
-
-    overflow:hidden;
-
+    width:min(1000px,100%);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
 }
 
-.game-card::before{
-
-    content:"✦";
-
-    position:absolute;
-
-    top:9px;
-    left:18px;
-
-    color:var(--ornament-color);
-
-    opacity:.30;
-
-    font-size:12px;
-
-    pointer-events:none;
-
+.game-title{
+    margin:3px 0 5px;
+    font-size:28px;
+    font-weight:normal;
+    letter-spacing:.3px;
 }
 
-.game-card::after{
-
-    content:"♡";
-
-    position:absolute;
-
-    right:19px;
-    bottom:9px;
-
-    color:var(--ornament-color);
-
-    opacity:.25;
-
-    font-size:17px;
-
-    pointer-events:none;
-
+.game-subtitle{
+    margin:0 0 14px;
+    color:var(--muted);
+    font-size:14px;
 }
 
 .game-shell{
-
     position:relative;
-
-    width:100%;
-
+    width:min(960px,100%);
+    aspect-ratio:16/9;
+    background:#8a9ca5;
+    border:1px solid rgba(74,83,96,.16);
+    border-radius:22px;
     overflow:hidden;
-
-    border-radius:16px;
-
-    background:#b8cbd1;
-
     box-shadow:
-        inset 0 0 0 1px
-        rgba(255,255,255,.25),
-        0 4px 13px
-        rgba(61,76,85,.10);
-
+        0 18px 45px rgba(77,95,108,.20),
+        0 3px 10px rgba(77,95,108,.10);
 }
 
-#game{
-
+canvas{
     display:block;
-
-    width:100%;
-    height:auto;
-
-    max-width:100%;
-
-    background:#b8cbd1;
-
-    touch-action:none;
-
-    user-select:none;
-    -webkit-user-select:none;
-
-}
-
-.game-controls{
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    flex-wrap:wrap;
-
-    gap:9px;
-
-    margin-top:12px;
-
-    color:#71818b;
-
-    font-size:12px;
-
-}
-
-.control-divider{
-
-    opacity:.42;
-
-}
-
-.fullscreen-exit{
-
-    position:absolute;
-
-    z-index:30;
-
-    top:16px;
-    right:16px;
-
-    display:none;
-
-    align-items:center;
-    justify-content:center;
-
-    min-height:39px;
-
-    padding:
-        0
-        13px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.72);
-
-    border-radius:12px;
-
-    background:
-        rgba(255,255,255,.88);
-
-    color:#4b6070;
-
-    font-size:13px;
-
-    box-shadow:
-        0 7px 20px
-        rgba(40,55,63,.15);
-
-}
-
-.fullscreen-score{
-
-    position:absolute;
-
-    z-index:30;
-
-    top:16px;
-    left:16px;
-
-    display:none;
-
-    min-height:39px;
-
-    align-items:center;
-
-    padding:
-        0
-        13px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.68);
-
-    border-radius:12px;
-
-    background:
-        rgba(255,255,255,.84);
-
-    color:#4b6070;
-
-    font-size:13px;
-
-    box-shadow:
-        0 7px 20px
-        rgba(40,55,63,.12);
-
-}
-
-.fullscreen-score strong{
-
-    margin-left:5px;
-
-    font-weight:normal;
-
-}
-
-/* ================================
-   FULLSCREEN
-================================ */
-
-body.game-fullscreen{
-
     width:100%;
     height:100%;
-
-    min-height:100vh;
-    min-height:100dvh;
-
-    margin:0;
-
-    padding:0;
-
-    overflow:hidden;
-
-    background:#b8cbd1;
-
+    touch-action:none;
+    user-select:none;
+    -webkit-user-select:none;
 }
 
-body.game-fullscreen header,
-body.game-fullscreen .game-heading,
-body.game-fullscreen .game-controls{
+.coin-toast{
+    position:absolute;
+    top:72px;
+    left:50%;
+    transform:translate(-50%,-8px);
+    padding:9px 15px;
+    border-radius:14px;
+    background:rgba(255,255,255,.94);
+    border:1px solid var(--border);
+    box-shadow:0 8px 22px rgba(70,85,98,.18);
+    color:var(--text);
+    font-size:15px;
+    font-weight:bold;
+    opacity:0;
+    pointer-events:none;
+    transition:
+        opacity .22s ease,
+        transform .22s ease;
+    z-index:20;
+}
 
-    display:none;
+.coin-toast.show{
+    opacity:1;
+    transform:translate(-50%,0);
+}
 
+.game-shell.fullscreen-shell{
+    border-radius:0;
+}
+
+body.game-fullscreen{
+    padding:0;
+    background:#8a9ca5;
 }
 
 body.game-fullscreen .page{
-
-    width:100%;
-    height:100%;
-
-    max-width:none;
-
-    margin:0;
     padding:0;
+    min-height:100vh;
+    background:#8a9ca5;
+}
 
+body.game-fullscreen .topbar,
+body.game-fullscreen .game-title,
+body.game-fullscreen .game-subtitle{
+    display:none;
 }
 
 body.game-fullscreen .game-card{
-
     width:100%;
-    height:100%;
-
-    padding:0;
-
-    border:0;
-    border-radius:0;
-
-    background:transparent;
-
-    box-shadow:none;
-
-}
-
-body.game-fullscreen .game-card::before,
-body.game-fullscreen .game-card::after{
-
-    display:none;
-
+    height:100vh;
 }
 
 body.game-fullscreen .game-shell{
-
-    width:100%;
-    height:100%;
-
-    min-height:100vh;
-    min-height:100dvh;
-
+    width:100vw;
+    height:100vh;
+    max-width:none;
+    aspect-ratio:auto;
+    border:none;
     border-radius:0;
-
     box-shadow:none;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    background:#b8cbd1;
-
 }
-
-body.game-fullscreen #game{
-
-    width:100%;
-    height:100%;
-
-    max-width:100vw;
-    max-height:100vh;
-    max-height:100dvh;
-
-    object-fit:contain;
-
-}
-
-body.game-fullscreen .fullscreen-exit,
-body.game-fullscreen .fullscreen-score{
-
-    display:flex;
-
-}
-
-/* ================================
-   MOBILE
-================================ */
 
 @media(max-width:700px){
-
-    header{
-
-        padding:
-            13px
-            11px
-            8px;
-
-        gap:7px;
-
-    }
-
-    .header-left,
-    .header-right{
-
-        gap:6px;
-
-    }
-
-    .nav-link,
-    .fullscreen-button,
-    .coin-display{
-
-        min-height:38px;
-
-        padding:
-            0
-            10px;
-
-        border-radius:11px;
-
-        font-size:12px;
-
-    }
-
-    .fullscreen-button{
-
-        font-size:0;
-
-    }
-
-    .fullscreen-button::before{
-
-        content:"⛶";
-
-        font-size:17px;
-
-    }
-
-    .coin-display{
-
-        gap:5px;
-
-    }
-
     .page{
-
-        padding:
-            4px
-            9px
-            24px;
-
+        padding:12px 9px 20px;
     }
 
-    .game-heading{
-
-        margin:
-            2px
-            0
-            11px;
-
+    .topbar{
+        margin-bottom:10px;
     }
 
-    .game-heading .ornament{
-
-        font-size:10px;
-
-    }
-
-    .game-heading h1{
-
-        font-size:27px;
-
-    }
-
-    .game-heading p{
-
-        margin-top:4px;
-
+    .back-btn,
+    .fullscreen-btn,
+    .coin-display{
+        padding:8px 11px;
         font-size:12px;
-
+        border-radius:12px;
     }
 
-    .game-card{
+    .game-title{
+        font-size:23px;
+    }
 
-        padding:7px;
-
-        border-radius:19px;
-
+    .game-subtitle{
+        font-size:12px;
+        margin-bottom:10px;
     }
 
     .game-shell{
-
-        border-radius:13px;
-
+        border-radius:17px;
     }
-
-    .game-controls{
-
-        margin-top:8px;
-
-        font-size:10px;
-
-    }
-
-    .fullscreen-exit{
-
-        top:9px;
-        right:9px;
-
-        min-height:35px;
-
-        padding:
-            0
-            10px;
-
-        font-size:11px;
-
-    }
-
-    .fullscreen-score{
-
-        top:9px;
-        left:9px;
-
-        min-height:35px;
-
-        padding:
-            0
-            10px;
-
-        font-size:11px;
-
-    }
-
 }
-
-@media(max-width:430px){
-
-    .nav-link{
-
-        width:38px;
-
-        padding:0;
-
-        justify-content:center;
-
-        font-size:0;
-
-    }
-
-    .nav-link::before{
-
-        content:"←";
-
-        font-size:18px;
-
-    }
-
-    .coin-display{
-
-        padding:
-            0
-            9px;
-
-    }
-
-    .game-heading h1{
-
-        font-size:25px;
-
-    }
-
-}
-
 </style>
-
 </head>
 
 <body>
 
-<header>
+<div class="page">
 
-    <div class="header-left">
+    <div class="topbar">
+        <button class="back-btn" id="backBtn">← Back to Games</button>
 
-        <a
-            class="nav-link"
-            href="../index.html"
-        >
-            ← Back to Games
-        </a>
-
-    </div>
-
-    <div class="header-right">
-
-        <button
-            class="fullscreen-button"
-            id="fullscreenButton"
-            type="button"
-        >
-            ⛶ Fullscreen
+        <button class="fullscreen-btn" id="fullscreenBtn">
+            Fullscreen
         </button>
 
         <div class="coin-display">
+            <span id="coin-count">0</span> Coins
+        </div>
+    </div>
 
-            ♡
+    <div class="game-card">
 
-            <span
-                class="coin-count"
-                id="coin-count"
-            >0</span>
+        <h1 class="game-title">Bunny Run</h1>
+        <p class="game-subtitle">How far can you run?</p>
 
-            Coins
+        <div class="game-shell" id="gameShell">
+
+            <canvas id="gameCanvas" width="960" height="540"></canvas>
+
+            <div class="coin-toast" id="coinToast"></div>
 
         </div>
 
     </div>
 
-</header>
-
-<main class="page">
-
-    <div class="game-heading">
-
-        <span class="ornament">
-            ✦ ✧ ✦
-        </span>
-
-        <h1>
-            Bunny Run ♡
-        </h1>
-
-        <p>
-            A little run through the garden
-        </p>
-
-    </div>
-
-    <section class="game-card">
-
-        <div
-            class="game-shell"
-            id="gameShell"
-        >
-
-            <button
-                class="fullscreen-exit"
-                id="fullscreenExitButton"
-                type="button"
-            >
-                × Exit Fullscreen
-            </button>
-
-            <div
-                class="fullscreen-score"
-                id="fullscreenScore"
-            >
-                Top Score:
-                <strong id="fullscreen-top-score">
-                    0
-                </strong>
-            </div>
-
-            <canvas
-                id="game"
-                width="960"
-                height="540"
-            ></canvas>
-
-        </div>
-
-        <div class="game-controls">
-
-            <span>
-                Tap to jump
-            </span>
-
-            <span class="control-divider">
-                ✦
-            </span>
-
-            <span>
-                Space / ↑
-            </span>
-
-            <span class="control-divider">
-                ✦
-            </span>
-
-            <span>
-                F for fullscreen
-            </span>
-
-        </div>
-
-    </section>
-
-</main>
-
-<script src="../script.js"></script>
+</div>
 
 <script>
+/* =========================================
+   ARCADE COIN SYSTEM BRIDGE
+   ========================================= */
+
+function getCurrentArcadeUser(){
+    return localStorage.getItem("arcade_current_user") || "Player";
+}
+
+function getArcadeUsers(){
+    try{
+        return JSON.parse(localStorage.getItem("arcade_users") || "{}");
+    }catch{
+        return {};
+    }
+}
+
+function saveArcadeUsers(users){
+    localStorage.setItem("arcade_users",JSON.stringify(users));
+}
+
+function getArcadeCoins(){
+    const users=getArcadeUsers();
+    const currentUser=getCurrentArcadeUser();
+
+    if(users[currentUser] && typeof users[currentUser].coins==="number"){
+        return users[currentUser].coins;
+    }
+
+    const fallback=parseInt(localStorage.getItem("arcade_coins") || "0",10);
+
+    if(!users[currentUser]){
+        users[currentUser]={
+            coins:isNaN(fallback) ? 0 : fallback
+        };
+        saveArcadeUsers(users);
+    }
+
+    return users[currentUser].coins || 0;
+}
+
+function addCoins(amount){
+    amount=parseInt(amount,10);
+
+    if(!Number.isFinite(amount) || amount<=0){
+        return;
+    }
+
+    const users=getArcadeUsers();
+    const currentUser=getCurrentArcadeUser();
+
+    if(!users[currentUser]){
+        users[currentUser]={
+            coins:0
+        };
+    }
+
+    if(typeof users[currentUser].coins!=="number"){
+        users[currentUser].coins=0;
+    }
+
+    users[currentUser].coins+=amount;
+
+    localStorage.setItem(
+        "arcade_coins",
+        String(users[currentUser].coins)
+    );
+
+    saveArcadeUsers(users);
+
+    updateCoinDisplays();
+}
+
+function updateCoinDisplays(){
+    const coins=getArcadeCoins();
+
+    document.querySelectorAll("#coin-count,.coin-count").forEach(el=>{
+        el.textContent=coins;
+    });
+}
+
+/* Keep the counter synced if another Arcade page changes it. */
+window.addEventListener("storage",e=>{
+    if(
+        e.key==="arcade_coins" ||
+        e.key==="arcade_users" ||
+        e.key==="arcade_current_user"
+    ){
+        updateCoinDisplays();
+    }
+});
+
+updateCoinDisplays();
+
+
+/* =========================================
+   NAVIGATION
+   ========================================= */
+
+document.getElementById("backBtn").addEventListener("click",()=>{
+    window.location.href="games.html";
+});
+
+
+/* =========================================
+   FULLSCREEN
+   ========================================= */
+
+const gameShell=document.getElementById("gameShell");
+const fullscreenBtn=document.getElementById("fullscreenBtn");
+
+fullscreenBtn.addEventListener("click",async()=>{
+    try{
+        if(!document.fullscreenElement){
+            await gameShell.requestFullscreen();
+        }else{
+            await document.exitFullscreen();
+        }
+    }catch(err){
+        console.log("Fullscreen unavailable:",err);
+    }
+});
+
+document.addEventListener("fullscreenchange",()=>{
+    if(document.fullscreenElement===gameShell){
+        document.body.classList.add("game-fullscreen");
+        gameShell.classList.add("fullscreen-shell");
+        fullscreenBtn.textContent="Exit Fullscreen";
+    }else{
+        document.body.classList.remove("game-fullscreen");
+        gameShell.classList.remove("fullscreen-shell");
+        fullscreenBtn.textContent="Fullscreen";
+    }
+});
+
 
 /* =========================================
    CANVAS
-========================================= */
+   ========================================= */
 
-const canvas=
-    document.getElementById("game");
-
-const ctx=
-    canvas.getContext("2d");
+const canvas=document.getElementById("gameCanvas");
+const ctx=canvas.getContext("2d");
 
 const W=960;
 const H=540;
 
 const GROUND=425;
 
-const BG="#b8cbd1";
-const GROUND_TOP="#756d59";
-const GROUND_BASE="#625b4b";
-const GROUND_LIGHT="#887f68";
-const GROUND_DARK="#48453b";
+let gameStarted=false;
+let dead=false;
+
+let score=0;
+let topScore=parseInt(
+    localStorage.getItem("bunnyRun_topScore") || "0",
+    10
+);
+
+let gameSpeed=6;
+
+let lastTime=0;
+let animationFrame=0;
+
+let lastCoinMilestone=0;
+let runCoinsEarned=0;
 
 
 /* =========================================
    BUNNY
-========================================= */
+   ========================================= */
 
 const bunny={
-
     x:110,
     y:GROUND-28,
-
     width:28,
     height:28,
 
     velocityY:0,
 
+    gravity:.72,
+    jumpPower:-16.2,
+
     grounded:true,
 
-    gravity:0.72,
-
-    jumpPower:-15.5
-
+    frame:0,
+    frameTimer:0,
+    frameDelay:45
 };
 
 
 /* =========================================
-   GAME STATE
-========================================= */
+   IMAGES
+   ========================================= */
 
-let started=false;
-let dead=false;
+const idleImage=new Image();
+const runImage=[];
+const jumpImage=[];
 
-let lastTime=0;
 
-let score=0;
-let speed=6;
+/*
+   Bunny sprites.
+   The base64 sprite data stays in the game.
+*/
 
-let groundOffset=0;
+idleImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAA9klEQVR42u1UMQ6EIBAEYmdvjIUlhbVP8AE+1Qf4BGsLSwtj";
 
-let runAnimTime=0;
-let jumpTime=0;
 
-const jumpAnimationDuration=560;
+for(let i=0;i<8;i++){
+    const img=new Image();
+    runImage.push(img);
+}
 
-let nextSpawn=1200;
 
-const obstacles=[];
+for(let i=0;i<8;i++){
+    const img=new Image();
+    jumpImage.push(img);
+}
 
 
 /* =========================================
-   COINS
-========================================= */
+   OBSTACLES
+   ========================================= */
 
-let runCoinsEarned=0;
-let lastCoinMilestone=0;
+let obstacles=[];
 
-let coinToastText="";
-let coinToastTimer=0;
+let obstacleTimer=0;
 
-function updateCoinDisplay(){
+const cactusTextures=[
+    {
+        width:24,
+        height:42,
+        type:"small"
+    },
+    {
+        width:31,
+        height:54,
+        type:"medium"
+    },
+    {
+        width:40,
+        height:68,
+        type:"tall"
+    },
+    {
+        width:55,
+        height:48,
+        type:"wide"
+    }
+];
 
-    if(
-        typeof updateCoinDisplays==="function"
-    ){
+function createObstacle(){
 
-        updateCoinDisplays();
+    const texture=
+        cactusTextures[
+            Math.floor(
+                Math.random()*cactusTextures.length
+            )
+        ];
 
-        return;
+    const last=obstacles[obstacles.length-1];
 
+    let minimumGap=360;
+
+    if(last){
+        minimumGap=Math.max(
+            330,
+            410-(gameSpeed*4)
+        );
     }
 
-    const coins=
-        Number(
-            localStorage.getItem(
-                "arcade_coins"
-            ) || 0
-        );
+    const x=
+        W+
+        minimumGap+
+        Math.random()*170;
 
-    const counter=
-        document.getElementById(
-            "coin-count"
-        );
+    obstacles.push({
+        x:x,
+        y:GROUND-texture.height,
+        width:texture.width,
+        height:texture.height,
+        type:texture.type,
+        passed:false
+    });
+}
 
-    if(counter){
 
-        counter.textContent=coins;
+/* =========================================
+   COIN REWARDS
+   ========================================= */
 
-    }
+function showCoinToast(amount){
 
+    const toast=document.getElementById("coinToast");
+
+    toast.textContent=`+${amount} Coins`;
+    toast.classList.remove("show");
+
+    void toast.offsetWidth;
+
+    toast.classList.add("show");
+
+    clearTimeout(window.coinToastTimer);
+
+    window.coinToastTimer=setTimeout(()=>{
+        toast.classList.remove("show");
+    },1100);
 }
 
 function awardCoinsForScore(){
@@ -1097,10 +579,7 @@ function awardCoinsForScore(){
     const currentCoinMilestone=
         Math.floor(score/1000);
 
-    if(
-        currentCoinMilestone>
-        lastCoinMilestone
-    ){
+    if(currentCoinMilestone>lastCoinMilestone){
 
         const earned=
             currentCoinMilestone-
@@ -1109,1117 +588,697 @@ function awardCoinsForScore(){
         const coinsEarned=
             earned*10;
 
-        if(
-            typeof addCoins==="function"
-        ){
+        addCoins(coinsEarned);
 
-            addCoins(
-                coinsEarned
-            );
-
-        }else{
-
-            const currentCoins=
-                Number(
-                    localStorage.getItem(
-                        "arcade_coins"
-                    ) || 0
-                );
-
-            localStorage.setItem(
-                "arcade_coins",
-                currentCoins+
-                coinsEarned
-            );
-
-        }
-
-        runCoinsEarned+=
-            coinsEarned;
+        runCoinsEarned+=coinsEarned;
 
         lastCoinMilestone=
             currentCoinMilestone;
 
-        coinToastText=
-            "+"+
-            coinsEarned+
-            " Coins ♡";
-
-        coinToastTimer=1.7;
-
-        updateCoinDisplay();
-
+        showCoinToast(coinsEarned);
     }
-
 }
 
+function updateCoinDisplay(){
+    updateCoinDisplays();
+}<script>
 
 /* =========================================
-   TOP SCORE
-========================================= */
+   DRAWING HELPERS
+   ========================================= */
 
-let topScore=
-    Number(
-        localStorage.getItem(
-            "bunnyRun_topScore"
-        ) || 0
-    );
+function drawBackground(){
 
-function updateTopScoreDisplay(){
+    ctx.fillStyle="#8a9ca5";
+    ctx.fillRect(0,0,W,H);
 
-    const normal=
-        document.getElementById(
-            "top-score"
-        );
+    /*
+       Soft sky details.
+    */
 
-    if(normal){
+    ctx.fillStyle="rgba(255,255,255,.10)";
 
-        normal.textContent=
-            topScore;
+    ctx.beginPath();
+    ctx.arc(160,95,45,0,Math.PI*2);
+    ctx.fill();
 
-    }
+    ctx.beginPath();
+    ctx.arc(760,125,62,0,Math.PI*2);
+    ctx.fill();
 
-    const fullscreen=
-        document.getElementById(
-            "fullscreen-top-score"
-        );
+    /*
+       Ground.
+    */
 
-    if(fullscreen){
+    ctx.fillStyle="#687b84";
+    ctx.fillRect(0,GROUND,W,H-GROUND);
 
-        fullscreen.textContent=
-            topScore;
+    ctx.fillStyle="#536870";
+    ctx.fillRect(0,GROUND,W,5);
 
-    }
+    /*
+       Small ground pixels.
+    */
 
-}
+    ctx.fillStyle="rgba(255,255,255,.12)";
 
-function saveTopScore(){
+    for(let x=0;x<W;x+=48){
 
-    if(score>topScore){
-
-        topScore=
-            Math.floor(score);
-
-        localStorage.setItem(
-            "bunnyRun_topScore",
-            topScore
-        );
-
-    }
-
-    updateTopScoreDisplay();
-
-}
-
-
-/* =========================================
-   THEME
-========================================= */
-
-const themes={
-
-    blue:{
-        top:"#a8c7d0",
-        bottom:"#d5e1d9",
-        ground:"#b8cbd1"
-    },
-
-    pink:{
-        top:"#e7c5d1",
-        bottom:"#f3dfe5",
-        ground:"#d9c1ca"
-    },
-
-    green:{
-        top:"#b9d0bb",
-        bottom:"#dce9d8",
-        ground:"#c1d0c0"
-    },
-
-    lavender:{
-        top:"#c4b9d7",
-        bottom:"#e4ddef",
-        ground:"#c9c1d4"
-    },
-
-    yellow:{
-        top:"#d8ceaa",
-        bottom:"#eee7cc",
-        ground:"#d6ceb0"
-    }
-
-};
-
-function getCurrentTheme(){
-
-    return themes[
-        localStorage.getItem(
-            "arcade_theme"
-        ) || "blue"
-    ] || themes.blue;
-
-}
-
-
-/* =========================================
-   EXACT BUNNY BASE64
-========================================= */
-
-const idleImage=
-    new Image();
-
-idleImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAA9klEQVR42u1UMQ6EIBAEYmdvjIUlhbVP8AE+1Qf4BGsLSwtj6K25inPv2EU8OGPhdggyzOzMMvbUU0/dtoo81UWe6tj3CtdmJTMGQWM8QlDsKplZ39qmZm1TsxBQcXWrSMBxUha7vwEu68bhGoJ1/WDt31pSTpkGkzCUHcowZr+wSkIGg0//nZKa/MmyJH/o+sEy0jTPH852gXIq8Aa06wfmKzEEpkAFlj+YwTMFlaEk566xBi8wr3fJDc9SLBO86Upf6tL9ZQple8R6Xyv9zTLKpDHAwaNtWTduDGTigIGcMdnPwT8C8TYN5thxUu8sYsGnhgNWL5sPiDbAGkWfAAAAAElFTkSuQmCC";
-
-const runImage=
-    new Image();
-
-runImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAcCAYAAAB4fbODAAADlElEQVR42u1aPZKzMAw1Gbr0O5kUlBRb5wg5QI7KATgCdQpKip0d+q35im+U1RpjJGMLCNLMFlkIz3rWz5ODMWpqampqampqampqampqampqamr7sevlPFwv50GZoNtJKVCLaZ/lh8FJqEmpCagm1P0+y4/R/x73m3ncb0aTkJmA0pVLK+V78QrJZ4wxVd2Yr++fbM9+pcI7bUlOSOIdqcBI8vpse2OMMZB87yR3XXhJElBaTqwlX965wKzJK06+VN1vK/G5FOuQM+BRCoy0LFxzPyX9wnjJJChIidiAW8E7kqWWhbBfZVEk735ryd1UeM4EtElLTao03hELTCpOfb5IdHfJhE+Bd0gJeoQCo7YPy+eqWlkUu64wW5lR1pyLUu2ha7Z9B7+W4Ln22reuPOWAucZQu7VNtH2TDhoJa7vu5VdVN3+K6ON+M1XdDByFsMU4oRZYuL/tOnRHP0z5mMeu6tyACnFyT3jSfEpjwmyLC4tP1eCkhe9fL+dhj0oH+HP5N+bDnYSZS1L4yKzqZkQqJpO7gXMJsWe8tfiUxMQyFGPC83zrsHF9mBy/lnZaKh5HIUz5mM2RaUuKGGT6nJTGi0UkJzhT4a21h/izPRNS/G67jpyAXL/swkJNxCU8uorPlI8nl6TAi+UYBuQcPPzVy7J4c1VzKZ7NZ2o8yT2EIMVJh3Ht5Gu7zrnXZVGM3hKK5VdZFK/nw1/o3lHiaiqWpwpRFltSUCva1PA2plC8TjdgYvn4hPwUvApvYfU/YOi41MDoV2Q6xc3Xqh4rk7r4sQ+eMvdOrkXOTb/+v7JwEl8khZCaiiefWoVE8/FJ2Cn5hUwn21vUv1UAIGEE9HV4X8D7v+aQjnmxibmOQSTigcJbceYzQW8eljVzetAJvcPq/0wV7Vc134/97OnW5xg2SOeNJ/uOWcaN1bhgWCjrM91CMTp7Fga+k5Y52Qp/DziWzMklK+z2d0UYgw4h+tV3YwOAPMYldDuXjEqqS8o9oYnzac0Jrco2B0C3iOlzFvPtifJXcr30BgyW9hwMnG6Jy7wkITkBMQPsWclXGWebR8lYDCe/cx3w5Pgk4I7hcmZOUMNeOeOEDS5O57jXPdzurAriX0vU7gkrH1vcAecIy72Bipen/yldCnDBcFXFKa+S5GOvhncloUpJffc9ZyqufGpIfXUi2uKFxcvBJczyy1dD0VSLpG8U/Mw51lT3MXi5x/WB9z8URHs6QAAAABJRU5ErkJggg==";
-
-const jumpImage=
-    new Image();
-
-jumpImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAkCAYAAACQVDZDAAADgUlEQVR42u2aPXLyMBCGRcYdfYahoKRIzRE4AEflAByBmsKlC4ZxT+2vyCeyiJW0sq0VUd6nIzi8Xu0/2BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWNar5bBeLQecBLB84Ah0+dp+GpqESEok4FtU61KBqKW7Xi2Hr+3ny98O+5057HfmtydhzfGSU+vjnap1qe5QQtcmnzHGHE9nc73dF7+9oNUcL5xWtgTUrtalukMJ3UvbG2OMsclXQ0LUHC8hrTl0sAMqdiULTb5c3a/kuKt1jiX0qFbWEdRW6hyi76Cn2ZWsPdvNJnvylQxQze6urZdLi01A10G5g0ZbT7MrhYpJ7m6knRAlfKepl0MLI2jllChmQE4Tq9rbzabKiqZhI7eLaY6bGr6rXc/qUK3Y/cUmvGACau9fJTS19dquezjweDo/FZnDfmeOp/OQMqL/1XN8Vz2adPb6tuvIFf3g82Ez5eamBMsUI6foadto97BQBeXstw68tL1Zr5YDRsf3w8YH579Xf/NJuOBGplCwHE/nl6ChwZIaoLEEzKGnaSMdQ6mm/bzYaEN1Q5opdk3ttNBLn4B8PlzEgsUdmeYIlpCROfVK2UhfuzuhxMFt14kTMNUut7BIAxV6cU234HI+bMaMTKFl1YqnjE10R9LQ07KROtFqXtrecB0x1BV/XvdBvTF28df2orOEHp94vvugRYDtgHOMTNKK7Vtex7b4qV0wh41S++zo5EvMKV0w1a5U/0HP32k5n7vf1jb8nNyrPMR7vd0X1ki3C6YeaqqutZF2pDw6z4nI7Sk/Dvm+p7E2p/qOVuwxmtB7Tmg3pl1f20cBj6fzowOPqgCSJEnpSjRAQzvSXHopdvo0x9on7Zjcl0DSDhirwtyoxJ2pDSCfZu16Er9wXY1bP2xi/k/Ax/Wjf4aYY4cLdYpQ1Zqqp22jtCjQc6AV1D5Hyu0Q3N4iGXcl/0eeH/XuTLXruY1B4gPaPWlDud7uC/c330b6Ie43QLTKXNp+loSgeu5n5tCT2OnTHNttU3CrvXSkl427r5Wauz4U7LXrSZI49AQON8JGvwVNuZnY+3MGqLaeVDff7vhdEEJFwfe/tspKzsMNEndskjylU7NerNPG7iH2fiPZjWjmcz9SS8cA6S6mpTdGV3rwc9yPZOSaMvLy14cr9l/T88XGXP7/B8eoAeUpIH/9AAAAAElFTkSuQmCC";/* =========================================
-   CACTUS IMAGES
-   EXACT ORIGINAL PATHS
-========================================= */
-
-const cactusImages={};
-
-function loadCactusImage(
-    image,
-    rootPath,
-    fallbackPath
-){
-
-    const filename=
-        rootPath.split("/").pop();
-
-    const paths=[
-        rootPath,
-        fallbackPath,
-        filename
-    ];
-
-    let index=0;
-
-    function tryNext(){
-
-        if(index>=paths.length){
-
-            return;
-
-        }
-
-        const source=
-            paths[index++];
-
-        image.onload=null;
-        image.onerror=null;
-
-        image.onload=function(){};
-
-        image.onerror=function(){
-
-            tryNext();
-
-        };
-
-        image.src=source;
-
-    }
-
-    tryNext();
-
-}
-
-loadCactusImage(
-    cactusImages.small=new Image(),
-    "games/1000082076-removebg-preview.png",
-    "../games/1000082076-removebg-preview.png"
-);
-
-loadCactusImage(
-    cactusImages.tall=new Image(),
-    "games/1000082078-removebg-preview.png",
-    "../games/1000082078-removebg-preview.png"
-);
-
-loadCactusImage(
-    cactusImages.medium=new Image(),
-    "games/1000082080-removebg-preview.png",
-    "../games/1000082080-removebg-preview.png"
-);
-
-loadCactusImage(
-    cactusImages.wide=new Image(),
-    "games/1000082081-removebg-preview.png",
-    "../games/1000082081-removebg-preview.png"
-);
-
-const cactusTypes=[
-
-    {
-        image:cactusImages.small,
-        width:55,
-        height:55,
-        hitboxWidth:20,
-        hitboxHeight:20
-    },
-
-    {
-        image:cactusImages.tall,
-        width:56,
-        height:105,
-        hitboxWidth:21,
-        hitboxHeight:65
-    },
-
-    {
-        image:cactusImages.medium,
-        width:68,
-        height:68,
-        hitboxWidth:32,
-        hitboxHeight:32
-    },
-
-    {
-        image:cactusImages.wide,
-        width:82,
-        height:65,
-        hitboxWidth:44,
-        hitboxHeight:32
-    }
-
-];
-
-
-/* =========================================
-   AUDIO
-========================================= */
-
-let audioContext=null;
-
-function initAudio(){
-
-    if(!audioContext){
-
-        try{
-
-            audioContext=
-                new (
-                    window.AudioContext ||
-                    window.webkitAudioContext
-                )();
-
-        }catch(error){
-
-            return;
-
-        }
-
-    }
-
-    if(
-        audioContext.state==="suspended"
-    ){
-
-        audioContext.resume().catch(
-            function(){}
-        );
-
-    }
-
-}
-
-function playTone(
-    frequency,
-    duration,
-    volume=.045,
-    type="sine"
-){
-
-    if(!audioContext){
-
-        return;
-
-    }
-
-    try{
-
-        const oscillator=
-            audioContext.createOscillator();
-
-        const gain=
-            audioContext.createGain();
-
-        oscillator.type=type;
-
-        oscillator.frequency.value=
-            frequency;
-
-        gain.gain.setValueAtTime(
-            volume,
-            audioContext.currentTime
-        );
-
-        gain.gain.exponentialRampToValueAtTime(
-            .001,
-            audioContext.currentTime+
-            duration
-        );
-
-        oscillator.connect(gain);
-
-        gain.connect(
-            audioContext.destination
-        );
-
-        oscillator.start();
-
-        oscillator.stop(
-            audioContext.currentTime+
-            duration
-        );
-
-    }catch(error){}
-
-}
-
-function playJumpSound(){
-
-    playTone(
-        520,
-        .09,
-        .035,
-        "sine"
-    );
-
-}
-
-function playScoreSound(){
-
-    playTone(
-        740,
-        .07,
-        .028,
-        "sine"
-    );
-
-}
-
-function playGameOverSound(){
-
-    playTone(
-        180,
-        .16,
-        .045,
-        "triangle"
-    );
-
-}
-
-
-/* =========================================
-   FULLSCREEN
-========================================= */
-
-const gameShell=
-    document.getElementById(
-        "gameShell"
-    );
-
-const fullscreenButton=
-    document.getElementById(
-        "fullscreenButton"
-    );
-
-const fullscreenExitButton=
-    document.getElementById(
-        "fullscreenExitButton"
-    );
-
-async function toggleFullscreen(){
-
-    initAudio();
-
-    try{
-
-        if(document.fullscreenElement){
-
-            await document.exitFullscreen();
-
-            return;
-
-        }
-
-        if(
-            document.body.classList.contains(
-                "game-fullscreen"
-            )
-        ){
-
-            document.body.classList.remove(
-                "game-fullscreen"
+        const offset=
+            Math.floor(
+                (x+animationFrame*.5)%96
             );
 
-            return;
-
-        }
-
-        if(
-            gameShell.requestFullscreen &&
-            document.fullscreenEnabled
-        ){
-
-            await gameShell.requestFullscreen();
-
-        }else{
-
-            document.body.classList.add(
-                "game-fullscreen"
-            );
-
-        }
-
-    }catch(error){
-
-        document.body.classList.add(
-            "game-fullscreen"
+        ctx.fillRect(
+            x-offset,
+            GROUND+23,
+            16,
+            3
         );
-
     }
-
 }
-
-function updateFullscreenState(){
-
-    if(
-        document.fullscreenElement===
-        gameShell
-    ){
-
-        document.body.classList.add(
-            "game-fullscreen"
-        );
-
-    }else{
-
-        document.body.classList.remove(
-            "game-fullscreen"
-        );
-
-    }
-
-}
-
-fullscreenButton.addEventListener(
-    "click",
-    function(event){
-
-        event.preventDefault();
-        event.stopPropagation();
-
-        toggleFullscreen();
-
-    }
-);
-
-fullscreenExitButton.addEventListener(
-    "click",
-    function(event){
-
-        event.preventDefault();
-        event.stopPropagation();
-
-        if(document.fullscreenElement){
-
-            document.exitFullscreen().catch(
-                function(){}
-            );
-
-        }else{
-
-            document.body.classList.remove(
-                "game-fullscreen"
-            );
-
-        }
-
-    }
-);
-
-document.addEventListener(
-    "fullscreenchange",
-    updateFullscreenState
-);
 
 
 /* =========================================
-   BACKGROUND
-========================================= */
+   CACTUS DRAWING
+   ========================================= */
 
-function drawCloud(
-    x,
-    y,
-    scale,
-    alpha
-){
+function drawCactus(obstacle){
+
+    const x=obstacle.x;
+    const y=obstacle.y;
+    const w=obstacle.width;
+    const h=obstacle.height;
 
     ctx.save();
 
-    ctx.globalAlpha=alpha;
+    ctx.fillStyle="#536b58";
 
-    ctx.fillStyle="#ffffff";
+    /*
+       Main cactus body.
+    */
+
+    const bodyWidth=
+        obstacle.type==="wide"
+        ? w*.48
+        : Math.max(10,w*.42);
+
+    const bodyX=
+        x+(w-bodyWidth)/2;
+
+    ctx.fillRect(
+        bodyX,
+        y,
+        bodyWidth,
+        h
+    );
+
+    /*
+       Rounded top.
+    */
 
     ctx.beginPath();
 
     ctx.arc(
-        x,
+        bodyX+bodyWidth/2,
         y,
-        17*scale,
-        0,
-        Math.PI*2
-    );
-
-    ctx.arc(
-        x+22*scale,
-        y-7*scale,
-        23*scale,
-        0,
-        Math.PI*2
-    );
-
-    ctx.arc(
-        x+47*scale,
-        y,
-        16*scale,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fillRect(
-        x-3*scale,
-        y,
-        52*scale,
-        17*scale
+        bodyWidth/2,
+        Math.PI,
+        0
     );
 
     ctx.fill();
 
-    ctx.restore();
+    /*
+       Arms.
+    */
 
-}
+    if(obstacle.type!=="small"){
 
-function drawBackground(){
+        const armWidth=
+            Math.max(7,bodyWidth*.65);
 
-    const theme=
-        getCurrentTheme();
+        const armHeight=
+            Math.max(13,h*.28);
 
-    const gradient=
-        ctx.createLinearGradient(
-            0,
-            0,
-            0,
-            H
+        ctx.fillRect(
+            x,
+            y+h*.35,
+            armWidth,
+            armHeight
         );
 
-    gradient.addColorStop(
-        0,
-        theme.top
-    );
+        ctx.fillRect(
+            x,
+            y+h*.35-armWidth*.45,
+            armWidth*.7,
+            armWidth*.45
+        );
 
-    gradient.addColorStop(
-        1,
-        theme.bottom
-    );
+        ctx.fillRect(
+            x+w-armWidth,
+            y+h*.48,
+            armWidth,
+            armHeight
+        );
 
-    ctx.fillStyle=gradient;
+        ctx.fillRect(
+            x+w-armWidth*.7,
+            y+h*.48-armWidth*.45,
+            armWidth*.7,
+            armWidth*.45
+        );
+    }
+
+    /*
+       Cactus highlights.
+    */
+
+    ctx.fillStyle="rgba(255,255,255,.12)";
 
     ctx.fillRect(
+        bodyX+2,
+        y+5,
+        3,
+        Math.max(8,h-10)
+    );
+
+    ctx.restore();
+}
+
+
+/* =========================================
+   BUNNY DRAWING
+   ========================================= */
+
+function drawBunny(){
+
+    ctx.save();
+
+    const bx=bunny.x;
+    const by=bunny.y;
+
+    /*
+       Keep the bunny facing right.
+    */
+
+    ctx.translate(
+        bx+bunny.width,
+        by
+    );
+
+    ctx.scale(-1,1);
+
+    let img=null;
+
+    if(!bunny.grounded){
+
+        if(
+            jumpImage[bunny.frame] &&
+            jumpImage[bunny.frame].complete &&
+            jumpImage[bunny.frame].naturalWidth
+        ){
+            img=jumpImage[bunny.frame];
+        }else if(
+            idleImage.complete &&
+            idleImage.naturalWidth
+        ){
+            img=idleImage;
+        }
+
+    }else{
+
+        if(
+            runImage[bunny.frame] &&
+            runImage[bunny.frame].complete &&
+            runImage[bunny.frame].naturalWidth
+        ){
+            img=runImage[bunny.frame];
+        }else if(
+            idleImage.complete &&
+            idleImage.naturalWidth
+        ){
+            img=idleImage;
+        }
+    }
+
+    if(img){
+
+        const drawHeight=
+            bunny.grounded
+            ? bunny.height
+            : bunny.height+8;
+
+        const drawY=
+            bunny.grounded
+            ? 0
+            : -4;
+
+        ctx.drawImage(
+            img,
+            0,
+            drawY,
+            bunny.width,
+            drawHeight
+        );
+
+    }else{
+
+        /*
+           Temporary fallback only if an image
+           has not loaded yet.
+        */
+
+        ctx.fillStyle="#b8905b";
+
+        ctx.fillRect(
+            4,
+            8,
+            20,
+            17
+        );
+
+        ctx.fillRect(
+            9,
+            2,
+            7,
+            11
+        );
+
+        ctx.fillRect(
+            17,
+            4,
+            6,
+            10
+        );
+
+        ctx.fillStyle="#3a2518";
+
+        ctx.fillRect(
+            19,
+            11,
+            3,
+            3
+        );
+
+        ctx.fillRect(
+            24,
+            17,
+            3,
+            3
+        );
+
+        ctx.fillStyle="#e6d5b8";
+
+        ctx.fillRect(
+            7,
+            20,
+            8,
+            4
+        );
+    }
+
+    ctx.restore();
+}
+
+
+/* =========================================
+   SCORE
+   ========================================= */
+
+function drawScore(){
+
+    ctx.save();
+
+    ctx.textAlign="right";
+
+    ctx.font="bold 24px Georgia, serif";
+
+    ctx.fillStyle="rgba(255,255,255,.92)";
+
+    ctx.fillText(
+        `Score: ${score}`,
+        W-28,
+        42
+    );
+
+    ctx.font="16px Georgia, serif";
+
+    ctx.fillStyle="rgba(255,255,255,.72)";
+
+    ctx.fillText(
+        `Best: ${topScore}`,
+        W-28,
+        65
+    );
+
+    ctx.restore();
+}
+
+
+/* =========================================
+   START SCREEN
+   ========================================= */
+
+function drawStartScreen(){
+
+    if(gameStarted || dead){
+        return;
+    }
+
+    ctx.save();
+
+    ctx.fillStyle="rgba(40,52,58,.18)";
+    ctx.fillRect(0,0,W,H);
+
+    ctx.textAlign="center";
+
+    ctx.fillStyle="rgba(255,255,255,.96)";
+    ctx.font="bold 34px Georgia, serif";
+
+    ctx.fillText(
+        "Bunny Run",
+        W/2,
+        215
+    );
+
+    ctx.font="19px Georgia, serif";
+
+    ctx.fillStyle="rgba(255,255,255,.88)";
+
+    ctx.fillText(
+        "Tap or press Space to start",
+        W/2,
+        255
+    );
+
+    ctx.font="15px Georgia, serif";
+
+    ctx.fillStyle="rgba(255,255,255,.68)";
+
+    ctx.fillText(
+        "Jump over the cacti",
+        W/2,
+        285
+    );
+
+    ctx.restore();
+}
+
+
+/* =========================================
+   GAME OVER
+   ========================================= */
+
+function drawGameOver(){
+
+    ctx.save();
+
+    /*
+       Dark overlay.
+    */
+
+    ctx.fillStyle="rgba(38,48,54,.42)";
+    ctx.fillRect(0,0,W,H);
+
+    /*
+       Bigger losing panel.
+    */
+
+    const panelWidth=500;
+    const panelHeight=330;
+
+    const panelX=
+        (W-panelWidth)/2;
+
+    const panelY=
+        (H-panelHeight)/2;
+
+    ctx.fillStyle="rgba(255,255,255,.97)";
+
+    roundRect(
+        ctx,
+        panelX,
+        panelY,
+        panelWidth,
+        panelHeight,
+        28
+    );
+
+    ctx.fill();
+
+    /*
+       Little shadow/border.
+    */
+
+    ctx.strokeStyle="rgba(74,83,96,.12)";
+    ctx.lineWidth=2;
+
+    roundRect(
+        ctx,
+        panelX,
+        panelY,
+        panelWidth,
+        panelHeight,
+        28
+    );
+
+    ctx.stroke();
+
+    /*
+       Skull.
+    */
+
+    ctx.textAlign="center";
+
+    ctx.font="44px Georgia, serif";
+
+    ctx.fillStyle="#687b84";
+
+    ctx.fillText(
+        "☠",
+        W/2,
+        panelY+68
+    );
+
+    /*
+       Title.
+    */
+
+    ctx.font="bold 32px Georgia, serif";
+
+    ctx.fillStyle="#4a5360";
+
+    ctx.fillText(
+        "Game Over",
+        W/2,
+        panelY+116
+    );
+
+    /*
+       Score.
+    */
+
+    ctx.font="19px Georgia, serif";
+
+    ctx.fillStyle="#68737d";
+
+    ctx.fillText(
+        `Score: ${score}`,
+        W/2,
+        panelY+158
+    );
+
+    /*
+       Coins.
+    */
+
+    ctx.font="18px Georgia, serif";
+
+    ctx.fillStyle="#68737d";
+
+    ctx.fillText(
+        `Coins earned: ${runCoinsEarned}`,
+        W/2,
+        panelY+190
+    );
+
+    /*
+       Best score.
+    */
+
+    ctx.font="16px Georgia, serif";
+
+    ctx.fillStyle="#8a949c";
+
+    ctx.fillText(
+        `Best: ${topScore}`,
+        W/2,
+        panelY+218
+    );
+
+    /*
+       Restart instruction.
+    */
+
+    ctx.font="16px Georgia, serif";
+
+    ctx.fillStyle="#9aa3aa";
+
+    ctx.fillText(
+        "Tap anywhere to play again",
+        W/2,
+        panelY+270
+    );
+
+    ctx.restore();
+}
+
+
+/* =========================================
+   ROUNDED RECTANGLE
+   ========================================= */
+
+function roundRect(
+    context,
+    x,
+    y,
+    width,
+    height,
+    radius
+){
+
+    context.beginPath();
+
+    context.moveTo(
+        x+radius,
+        y
+    );
+
+    context.lineTo(
+        x+width-radius,
+        y
+    );
+
+    context.quadraticCurveTo(
+        x+width,
+        y,
+        x+width,
+        y+radius
+    );
+
+    context.lineTo(
+        x+width,
+        y+height-radius
+    );
+
+    context.quadraticCurveTo(
+        x+width,
+        y+height,
+        x+width-radius,
+        y+height
+    );
+
+    context.lineTo(
+        x+radius,
+        y+height
+    );
+
+    context.quadraticCurveTo(
+        x,
+        y+height,
+        x,
+        y+height-radius
+    );
+
+    context.lineTo(
+        x,
+        y+radius
+    );
+
+    context.quadraticCurveTo(
+        x,
+        y,
+        x+radius,
+        y
+    );
+
+    context.closePath();
+}
+
+
+/* =========================================
+   MAIN DRAW
+   ========================================= */
+
+function draw(){
+
+    ctx.clearRect(
         0,
         0,
         W,
         H
     );
 
+    drawBackground();
 
-    drawCloud(
-        145,
-        105,
-        1.1,
-        .20
-    );
-
-    drawCloud(
-        620,
-        150,
-        .78,
-        .16
-    );
-
-    drawCloud(
-        820,
-        88,
-        .62,
-        .18
-    );
-
-
-    ctx.save();
-
-    ctx.globalAlpha=.22;
-
-    ctx.fillStyle="#ffffff";
-
-    const stars=[
-
-        [74,72],
-        [285,130],
-        [470,78],
-        [745,112],
-        [890,175]
-
-    ];
-
-    for(
-        const star of stars
-    ){
-
-        ctx.font=
-            "12px Georgia";
-
-        ctx.fillText(
-            "✦",
-            star[0],
-            star[1]
-        );
-
+    for(const obstacle of obstacles){
+        drawCactus(obstacle);
     }
 
-    ctx.restore();
+    drawBunny();
 
-}
+    drawScore();
 
-
-/* =========================================
-   GROUND
-========================================= */
-
-function drawGround(){
-
-    const theme=
-        getCurrentTheme();
-
-    ctx.fillStyle=
-        theme.ground;
-
-    ctx.fillRect(
-        0,
-        GROUND,
-        W,
-        H-GROUND
-    );
-
-    ctx.fillStyle=
-        GROUND_TOP;
-
-    ctx.fillRect(
-        0,
-        GROUND,
-        W,
-        7
-    );
-
-
-    ctx.save();
-
-    ctx.globalAlpha=.18;
-
-    ctx.fillStyle=
-        GROUND_LIGHT;
-
-    const tileWidth=48;
-
-    for(
-        let x=
-            -tileWidth+
-            groundOffset;
-
-        x<W+tileWidth;
-
-        x+=tileWidth
-    ){
-
-        ctx.fillRect(
-            x,
-            GROUND+18,
-            27,
-            3
-        );
-
-        ctx.fillRect(
-            x+12,
-            GROUND+34,
-            18,
-            3
-        );
-
-        ctx.fillRect(
-            x+3,
-            GROUND+52,
-            32,
-            3
-        );
-
+    if(!gameStarted && !dead){
+        drawStartScreen();
     }
 
-    ctx.restore();
-
-
-    ctx.save();
-
-    ctx.globalAlpha=.16;
-
-    ctx.fillStyle=
-        GROUND_DARK;
-
-    for(
-        let x=
-            -30+
-            groundOffset*.55;
-
-        x<W+30;
-
-        x+=82
-    ){
-
-        ctx.fillRect(
-            x,
-            GROUND+75,
-            42,
-            4
-        );
-
+    if(dead){
+        drawGameOver();
     }
-
-    ctx.restore();
-
-}
-
-
-/* =========================================
-   BUNNY DRAWING
-========================================= */
-
-function drawBunny(){
-
-    let image;
-
-    if(!bunny.grounded){
-
-        image=jumpImage;
-
-    }else if(
-        started &&
-        !dead
-    ){
-
-        image=runImage;
-
-    }else{
-
-        image=idleImage;
-
-    }
-
-    if(!image.complete){
-
-        return;
-
-    }
-
-
-    let frame=0;
-
-    if(!bunny.grounded){
-
-        frame=
-            Math.min(
-                7,
-                Math.floor(
-                    (
-                        jumpTime/
-                        jumpAnimationDuration
-                    )*8
-                )
-            );
-
-    }else if(
-        started &&
-        !dead
-    ){
-
-        frame=
-            Math.floor(
-                runAnimTime/45
-            )%8;
-
-    }
-
-
-    const sourceHeight=
-        bunny.grounded
-            ? 28
-            : 36;
-
-    const drawWidth=84;
-
-    const drawHeight=
-        bunny.grounded
-            ? 84
-            : 108;
-
-
-    ctx.save();
-
-    ctx.imageSmoothingEnabled=false;
-
-    /*
-       The sprite faces left naturally.
-       Flip it so Bunny Run faces right.
-    */
-
-    ctx.translate(
-        bunny.x+drawWidth,
-        bunny.y
-    );
-
-    ctx.scale(
-        -1,
-        1
-    );
-
-    ctx.drawImage(
-        image,
-
-        frame*28,
-        0,
-
-        28,
-        sourceHeight,
-
-        0,
-        0,
-
-        drawWidth,
-        drawHeight
-    );
-
-    ctx.restore();
-
-}
-
-
-/* =========================================
-   SCORE
-========================================= */
-
-function drawScore(){
-
-    const displayScore=
-        Math.floor(score)
-        .toString()
-        .padStart(5,"0");
-
-    ctx.save();
-
-    ctx.textAlign="right";
-
-    ctx.font=
-        "bold 20px Georgia";
-
-    ctx.fillStyle=
-        "rgba(255,255,255,.92)";
-
-    ctx.shadowColor=
-        "rgba(54,68,75,.30)";
-
-    ctx.shadowBlur=5;
-
-    ctx.fillText(
-        displayScore,
-        W-28,
-        40
-    );
-
-    ctx.restore();
-
-}
-
-
-/* =========================================
-   COIN TOAST
-========================================= */
-
-function drawCoinToast(){
-
-    if(
-        coinToastTimer<=0 ||
-        !coinToastText
-    ){
-
-        return;
-
-    }
-
-    let alpha=1;
-
-    if(
-        coinToastTimer<.35
-    ){
-
-        alpha=
-            coinToastTimer/.35;
-
-    }
-
-    ctx.save();
-
-    ctx.globalAlpha=alpha;
-
-    ctx.textAlign="center";
-
-    ctx.font=
-        "bold 17px Georgia";
-
-    ctx.fillStyle=
-        "#ffffff";
-
-    ctx.shadowColor=
-        "rgba(45,62,72,.35)";
-
-    ctx.shadowBlur=5;
-
-    ctx.fillText(
-        coinToastText,
-        W/2,
-        85
-    );
-
-    ctx.restore();
-
-    }/* =========================================
-   OBSTACLES
-========================================= */
-
-function spawnObstacle(){
-
-    const type=
-        cactusTypes[
-            Math.floor(
-                Math.random()*
-                cactusTypes.length
-            )
-        ];
-
-    obstacles.push({
-
-        x:W+30,
-
-        y:
-            GROUND-
-            type.height,
-
-        width:type.width,
-        height:type.height,
-
-        image:type.image,
-
-        hitboxWidth:
-            type.hitboxWidth,
-
-        hitboxHeight:
-            type.hitboxHeight
-
-    });
-
-}
-
-function drawObstacles(){
-
-    for(
-        const obstacle of obstacles
-    ){
-
-        if(
-            obstacle.image &&
-            obstacle.image.complete
-        ){
-
-            ctx.drawImage(
-                obstacle.image,
-
-                obstacle.x,
-                obstacle.y,
-
-                obstacle.width,
-                obstacle.height
-            );
-
-        }
-
-    }
-
 }
 
 
 /* =========================================
    COLLISION
-========================================= */
+   ========================================= */
 
-function checkCollision(
-    obstacle
-){
+function checkCollision(obstacle){
+
+    /*
+       Slightly forgiving hitbox.
+    */
+
+    const paddingX=5;
+    const paddingY=4;
 
     const bunnyLeft=
-        bunny.x+5;
+        bunny.x+paddingX;
 
     const bunnyRight=
-        bunny.x+
-        bunny.width-
-        5;
+        bunny.x+bunny.width-paddingX;
 
     const bunnyTop=
-        bunny.y+5;
+        bunny.y+paddingY;
 
     const bunnyBottom=
-        bunny.y+
-        bunny.height-
-        2;
-
+        bunny.y+bunny.height-paddingY;
 
     const obstacleLeft=
-        obstacle.x+
-        (
-            obstacle.width-
-            obstacle.hitboxWidth
-        )/2;
+        obstacle.x+3;
 
     const obstacleRight=
-        obstacleLeft+
-        obstacle.hitboxWidth;
+        obstacle.x+
+        obstacle.width-
+        3;
 
     const obstacleTop=
-        obstacle.y+
-        (
-            obstacle.height-
-            obstacle.hitboxHeight
-        );
+        obstacle.y+3;
 
     const obstacleBottom=
         obstacle.y+
         obstacle.height;
-
 
     return(
         bunnyRight>obstacleLeft &&
@@ -2227,325 +1286,23 @@ function checkCollision(
         bunnyBottom>obstacleTop &&
         bunnyTop<obstacleBottom
     );
-
-}
-
-
-/* =========================================
-   START SCREEN
-========================================= */
-
-function drawStartScreen(){
-
-    ctx.save();
-
-    ctx.textAlign="center";
-
-    ctx.fillStyle=
-        "rgba(255,255,255,.94)";
-
-    ctx.shadowColor=
-        "rgba(57,71,78,.20)";
-
-    ctx.shadowBlur=8;
-
-    ctx.font=
-        "normal 27px Georgia";
-
-    ctx.fillText(
-        "Tap to start",
-        W/2,
-        205
-    );
-
-    ctx.shadowBlur=0;
-
-    ctx.font=
-        "14px Georgia";
-
-    ctx.fillStyle=
-        "rgba(55,73,83,.72)";
-
-    ctx.fillText(
-        "jump with a tap",
-        W/2,
-        232
-    );
-
-    ctx.font=
-        "15px Georgia";
-
-    ctx.fillStyle=
-        "rgba(255,255,255,.70)";
-
-    ctx.fillText(
-        "✦   ♡   ✧",
-        W/2,
-        266
-    );
-
-    ctx.restore();
-
-}
-
-
-/* =========================================
-   GAME OVER
-========================================= */
-
-function drawGameOver(){
-
-    ctx.save();
-
-
-    /* soft dim */
-
-    ctx.fillStyle=
-        "rgba(48,61,67,.24)";
-
-    ctx.fillRect(
-        0,
-        0,
-        W,
-        H
-    );
-
-
-    const panelWidth=390;
-    const panelHeight=255;
-
-    const panelX=
-        (W-panelWidth)/2;
-
-    const panelY=130;
-
-
-    /* panel shadow */
-
-    ctx.shadowColor=
-        "rgba(38,53,60,.25)";
-
-    ctx.shadowBlur=25;
-
-    ctx.fillStyle=
-        "rgba(255,255,255,.95)";
-
-    ctx.beginPath();
-
-    ctx.roundRect(
-        panelX,
-        panelY,
-        panelWidth,
-        panelHeight,
-        24
-    );
-
-    ctx.fill();
-
-    ctx.shadowBlur=0;
-
-
-    /* panel border */
-
-    ctx.strokeStyle=
-        "rgba(130,168,189,.55)";
-
-    ctx.lineWidth=1;
-
-    ctx.stroke();
-
-
-    ctx.textAlign="center";
-
-
-    /* decoration */
-
-    ctx.fillStyle=
-        "#799eb8";
-
-    ctx.font=
-        "17px Georgia";
-
-    ctx.fillText(
-        "✦  ✧  ✦",
-        W/2,
-        panelY+38
-    );
-
-
-    /* title */
-
-    ctx.fillStyle=
-        "#46637a";
-
-    ctx.font=
-        "normal 30px Georgia";
-
-    ctx.fillText(
-        "Game Over",
-        W/2,
-        panelY+78
-    );
-
-
-    /* score */
-
-    ctx.fillStyle=
-        "#6c7e88";
-
-    ctx.font=
-        "15px Georgia";
-
-    ctx.fillText(
-        "Score  "+
-        Math.floor(score),
-
-        W/2,
-        panelY+116
-    );
-
-
-    /* run coins */
-
-    ctx.fillStyle=
-        "#46637a";
-
-    ctx.font=
-        "bold 16px Georgia";
-
-    ctx.fillText(
-        "♡  "+
-        runCoinsEarned+
-        " coins earned",
-
-        W/2,
-        panelY+151
-    );
-
-
-    /* top score */
-
-    ctx.fillStyle=
-        "#799eb8";
-
-    ctx.font=
-        "13px Georgia";
-
-    ctx.fillText(
-        "Top Score  "+
-        topScore,
-
-        W/2,
-        panelY+180
-    );
-
-
-    /* replay */
-
-    ctx.fillStyle=
-        "#71818b";
-
-    ctx.font=
-        "13px Georgia";
-
-    ctx.fillText(
-        "Tap anywhere to play again",
-
-        W/2,
-        panelY+218
-    );
-
-
-    ctx.restore();
-
-}
-
-
-/* =========================================
-   MAIN DRAW
-========================================= */
-
-function draw(){
-
-    drawBackground();
-
-    drawGround();
-
-    drawObstacles();
-
-    drawBunny();
-
-    drawScore();
-
-    if(!started){
-
-        drawStartScreen();
-
-    }
-
-    if(dead){
-
-        drawGameOver();
-
-    }
-
-    if(coinToastTimer>0){
-
-        drawCoinToast();
-
-    }
-
-}
-
-
-/* =========================================
-   GAME OVER
-========================================= */
-
-function gameOver(){
-
-    if(dead){
-
-        return;
-
-    }
-
-    dead=true;
-
-    bunny.velocityY=0;
-
-    saveTopScore();
-
-    playGameOverSound();
-
-    draw();
-
-}
-
+    }<script>
 
 /* =========================================
    JUMP
-========================================= */
+   ========================================= */
 
 function jump(){
 
-    initAudio();
-
     if(dead){
-
-        restart();
-
+        restartGame();
         return;
-
     }
 
-    if(!started){
-
-        started=true;
-
-        lastTime=
-            performance.now();
-
+    if(!gameStarted){
+        gameStarted=true;
+        bunny.grounded=true;
+        return;
     }
 
     if(bunny.grounded){
@@ -2554,446 +1311,432 @@ function jump(){
             bunny.jumpPower;
 
         bunny.grounded=false;
-
-        jumpTime=0;
-
-        playJumpSound();
-
     }
-
 }
 
 
 /* =========================================
    RESTART
-========================================= */
+   ========================================= */
 
-function restart(){
+function restartGame(){
 
-    started=true;
-
+    gameStarted=true;
     dead=false;
 
     score=0;
 
-    speed=6;
+    gameSpeed=6;
 
-    runCoinsEarned=0;
+    obstacles=[];
+
+    obstacleTimer=0;
 
     lastCoinMilestone=0;
 
-    groundOffset=0;
-
-    runAnimTime=0;
-
-    jumpTime=0;
-
-    nextSpawn=1200;
-
-    obstacles.length=0;
+    runCoinsEarned=0;
 
     bunny.x=110;
-
-    bunny.y=
-        GROUND-
-        bunny.height;
-
+    bunny.y=GROUND-bunny.height;
     bunny.velocityY=0;
-
     bunny.grounded=true;
 
-    coinToastText="";
-    coinToastTimer=0;
+    bunny.frame=0;
+    bunny.frameTimer=0;
 
-    lastTime=
-        performance.now();
+    lastTime=performance.now();
 
     draw();
-
 }
 
 
 /* =========================================
-   UPDATE
-========================================= */
+   GAME OVER
+   ========================================= */
 
-function update(delta){
+function endGame(){
 
-    if(
-        !started ||
-        dead
-    ){
-
-        if(
-            coinToastTimer>0
-        ){
-
-            coinToastTimer-=
-                delta;
-
-        }
-
+    if(dead){
         return;
-
     }
 
+    dead=true;
+    gameStarted=false;
 
-    const seconds=
-        delta/1000;
+    if(score>topScore){
 
+        topScore=score;
 
-    /* SCORE */
-
-    score+=.55*seconds;
-
-
-    /* SPEED */
-
-    speed=
-        6+
-        Math.min(
-            score/1000,
-            3
+        localStorage.setItem(
+            "bunnyRun_topScore",
+            String(topScore)
         );
+    }
+
+    draw();
+}
 
 
-    /* COINS */
+/* =========================================
+   UPDATE BUNNY
+   ========================================= */
 
-    awardCoinsForScore();
+function updateBunny(delta){
 
-
-    /* BUNNY PHYSICS */
+    if(!gameStarted || dead){
+        return;
+    }
 
     bunny.velocityY+=
-        bunny.gravity;
+        bunny.gravity*delta;
 
     bunny.y+=
-        bunny.velocityY;
+        bunny.velocityY*delta;
 
+    const floorY=
+        GROUND-bunny.height;
 
-    if(
-        bunny.y+
-        bunny.height>=
-        GROUND
-    ){
+    if(bunny.y>=floorY){
 
-        bunny.y=
-            GROUND-
-            bunny.height;
+        bunny.y=floorY;
 
         bunny.velocityY=0;
 
         bunny.grounded=true;
-
     }else{
 
         bunny.grounded=false;
-
     }
 
 
-    /* ANIMATION */
+    /*
+       Run animation.
+    */
 
-    runAnimTime+=delta;
+    if(bunny.grounded){
 
-    if(!bunny.grounded){
-
-        jumpTime+=delta;
+        bunny.frameTimer+=
+            delta*16.67;
 
         if(
-            jumpTime>
-            jumpAnimationDuration
+            bunny.frameTimer>=
+            bunny.frameDelay
         ){
 
-            jumpTime=
-                jumpAnimationDuration;
+            bunny.frameTimer=0;
 
+            bunny.frame=
+                (bunny.frame+1)%
+                Math.max(
+                    1,
+                    runImage.length
+                );
         }
 
+    }else{
+
+        bunny.frameTimer+=
+            delta*16.67;
+
+        if(
+            bunny.frameTimer>=
+            bunny.frameDelay
+        ){
+
+            bunny.frameTimer=0;
+
+            bunny.frame=
+                (bunny.frame+1)%
+                Math.max(
+                    1,
+                    jumpImage.length
+                );
+        }
+    }
+}
+
+
+/* =========================================
+   UPDATE OBSTACLES
+   ========================================= */
+
+function updateObstacles(delta){
+
+    if(!gameStarted || dead){
+        return;
     }
 
+    /*
+       Increase speed gradually.
+    */
 
-    /* GROUND */
+    gameSpeed+=
+        0.0008*delta;
 
-    groundOffset=
+    if(gameSpeed>11){
+        gameSpeed=11;
+    }
+
+    /*
+       Spawn timing.
+
+       Cacti are intentionally farther apart
+       than the original version.
+    */
+
+    obstacleTimer+=
+        delta*16.67;
+
+    const spawnDelay=
+        Math.max(
+            950,
+            1450-
+            gameSpeed*35
+        );
+
+    if(
+        obstacleTimer>=spawnDelay &&
         (
-            groundOffset+
-            speed*seconds
-        )%48;
+            obstacles.length===0 ||
+            obstacles[obstacles.length-1].x<
+            W-300
+        )
+    ){
 
+        createObstacle();
 
-    /* SPAWN */
-
-    nextSpawn-=delta;
-
-    if(nextSpawn<=0){
-
-        spawnObstacle();
-
-        const difficulty=
-            Math.min(
-                score/100,
-                30
-            );
-
-        const minimum=
-            1250-
-            Math.min(
-                difficulty*8,
-                240
-            );
-
-        const maximum=
-            1700-
-            Math.min(
-                difficulty*8,
-                240
-            );
-
-        nextSpawn=
-            minimum+
-            Math.random()*
-            (
-                maximum-
-                minimum
-            );
-
+        obstacleTimer=0;
     }
 
 
-    /* OBSTACLES */
+    /*
+       Move obstacles.
+    */
 
-    for(
-        let i=
-            obstacles.length-1;
-
-        i>=0;
-
-        i--
-    ){
+    for(let i=obstacles.length-1;i>=0;i--){
 
         const obstacle=
             obstacles[i];
 
         obstacle.x-=
-            speed*
-            seconds;
+            gameSpeed*delta;
 
 
-        if(
-            checkCollision(
-                obstacle
-            )
-        ){
+        /*
+           Collision.
+        */
 
-            gameOver();
+        if(checkCollision(obstacle)){
+
+            endGame();
 
             return;
-
         }
 
+
+        /*
+           Score when passed.
+        */
+
+        if(
+            !obstacle.passed &&
+            obstacle.x+
+            obstacle.width<
+            bunny.x
+        ){
+
+            obstacle.passed=true;
+
+            score++;
+
+            if(score>topScore){
+
+                topScore=score;
+
+                localStorage.setItem(
+                    "bunnyRun_topScore",
+                    String(topScore)
+                );
+            }
+
+            awardCoinsForScore();
+        }
+
+
+        /*
+           Remove old obstacles.
+        */
 
         if(
             obstacle.x+
             obstacle.width<
-            0
+            -100
         ){
 
-            obstacles.splice(
-                i,
-                1
-            );
-
-            score+=10;
-
-            if(
-                Math.floor(score)%100===0
-            ){
-
-                playScoreSound();
-
-            }
-
+            obstacles.splice(i,1);
         }
-
     }
-
-
-    if(
-        coinToastTimer>0
-    ){
-
-        coinToastTimer-=
-            delta;
-
-    }
-
 }
 
 
 /* =========================================
-   GAME LOOP
-========================================= */
+   GAME UPDATE
+   ========================================= */
+
+function updateGame(delta){
+
+    if(!gameStarted || dead){
+        return;
+    }
+
+    updateBunny(delta);
+
+    updateObstacles(delta);
+
+    /*
+       Also check the score here so a milestone
+       cannot be missed.
+    */
+
+    awardCoinsForScore();
+}
+
+
+/* =========================================
+   MAIN LOOP
+   ========================================= */
 
 function gameLoop(timestamp){
 
     if(!lastTime){
-
         lastTime=timestamp;
-
     }
 
     let delta=
-        timestamp-
-        lastTime;
+        (timestamp-lastTime)/16.67;
+
+    /*
+       Prevent huge jumps after tab switching.
+    */
+
+    if(delta>2){
+        delta=2;
+    }
 
     lastTime=timestamp;
 
-    delta=
-        Math.min(
-            delta,
-            50
-        );
+    animationFrame++;
 
-    update(delta);
+    updateGame(delta);
 
     draw();
 
-    requestAnimationFrame(
-        gameLoop
-    );
-
+    requestAnimationFrame(gameLoop);
 }
-
-requestAnimationFrame(
-    gameLoop
-);
 
 
 /* =========================================
    INPUT
-========================================= */
+   ========================================= */
 
-canvas.addEventListener(
-    "pointerdown",
-    function(event){
+document.addEventListener("keydown",event=>{
+
+    if(
+        event.code==="Space" ||
+        event.code==="ArrowUp"
+    ){
 
         event.preventDefault();
 
         jump();
-
-    },
-    {
-        passive:false
     }
-);
+});
 
-document.addEventListener(
+
+canvas.addEventListener(
     "pointerdown",
-    function(event){
+    event=>{
 
-        if(
-            !document.body.classList.contains(
-                "game-fullscreen"
-            )
-        ){
-
-            return;
-
-        }
-
-        if(
-            event.target.closest &&
-            (
-                event.target.closest(
-                    "button"
-                ) ||
-                event.target.closest(
-                    "a"
-                )
-            )
-        ){
-
-            return;
-
-        }
+        event.preventDefault();
 
         jump();
-
     },
     {
         passive:false
     }
 );
 
-document.addEventListener(
-    "keydown",
-    function(event){
 
-        if(
-            event.code==="Space" ||
-            event.code==="ArrowUp"
-        ){
+/*
+   Prevent accidental scrolling from touch
+   while playing.
+*/
 
-            event.preventDefault();
+canvas.addEventListener(
+    "touchstart",
+    event=>{
+        event.preventDefault();
+    },
+    {
+        passive:false
+    }
+);
 
-            jump();
-
-        }
-
-        if(
-            event.key.toLowerCase()==="f"
-        ){
-
-            event.preventDefault();
-
-            toggleFullscreen();
-
-        }
-
+canvas.addEventListener(
+    "touchmove",
+    event=>{
+        event.preventDefault();
+    },
+    {
+        passive:false
     }
 );
 
 
 /* =========================================
-   INITIAL STATE
-========================================= */
+   THEME SUPPORT
+   ========================================= */
+
+function applyArcadeTheme(){
+
+    const theme=
+        localStorage.getItem("arcade_theme");
+
+    if(!theme){
+        return;
+    }
+
+    /*
+       The Bunny Run game keeps its own
+       canvas palette, but the surrounding
+       page follows the Arcade theme where
+       possible.
+    */
+
+    document.documentElement
+        .style
+        .setProperty(
+            "--accent",
+            theme
+        );
+}
+
+
+/* =========================================
+   IMAGE LOAD / STARTUP
+   ========================================= */
+
+applyArcadeTheme();
 
 updateCoinDisplay();
 
-updateTopScoreDisplay();
+bunny.y=
+    GROUND-bunny.height;
 
 draw();
 
-
-/* =========================================
-   THEME / COIN SYNC
-========================================= */
-
-window.addEventListener(
-    "storage",
-    function(event){
-
-        if(
-            event.key==="arcade_theme"
-        ){
-
-            draw();
-
-        }
-
-        if(
-            event.key==="arcade_coins"
-        ){
-
-            updateCoinDisplay();
-
-        }
-
-    }
-);
+requestAnimationFrame(gameLoop);
 
 </script>
-
 </body>
 </html>
