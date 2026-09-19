@@ -2,331 +2,619 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bunny Run ♡</title>
 
 <style>
-*{
-    box-sizing:border-box;
+:root {
+    --bg-base: #f2f7fa;
+    --bg-grad-1: #dce8f3;
+    --bg-grad-2: #d3e2ea;
+    --text-main: #3f5260;
+    --text-heading: #46637a;
+    --accent-border: #82a8bd;
+    --accent-soft: #e9f3f9;
+    --accent-badge: #dfe8f8;
+    --ornament-color: #799eb8;
+    --card-bg: rgba(255,255,255,0.88);
+    --header-bg: rgba(255,255,255,0.88);
 }
 
-:root{
-    --bg-base:#f2f7fa;
-    --bg-grad-1:#dce8f3;
-    --bg-grad-2:#edf4f6;
-
-    --card:#ffffffcc;
-    --card-solid:#ffffff;
-
-    --text:#39434a;
-    --soft:#71808a;
-
-    --accent:#9bbdd1;
-    --accent-dark:#7199b2;
-
-    --button:#dbeaf2;
-    --button-hover:#cbdfea;
-
-    --shadow:0 10px 30px rgba(74,92,105,.12);
+body[data-theme="pink"] {
+    --bg-base: #faf2f5;
+    --bg-grad-1: #f3dce5;
+    --bg-grad-2: #ead3dc;
+    --text-main: #603f4c;
+    --text-heading: #7a4659;
+    --accent-border: #bd8297;
+    --accent-soft: #f9e9f0;
+    --accent-badge: #f8dfe8;
+    --ornament-color: #b87992;
+    --card-bg: rgba(255,255,255,0.88);
+    --header-bg: rgba(255,255,255,0.88);
 }
 
-html,body{
-    margin:0;
-    width:100%;
-    height:100%;
-    overflow:hidden;
+body[data-theme="green"] {
+    --bg-base: #f3f7f2;
+    --bg-grad-1: #dce8dc;
+    --bg-grad-2: #d3ead3;
+    --text-main: #3f6043;
+    --text-heading: #467a4c;
+    --accent-border: #82bd8b;
+    --accent-soft: #e9f9eb;
+    --accent-badge: #dff8e2;
+    --ornament-color: #79b882;
+    --card-bg: rgba(255,255,255,0.88);
+    --header-bg: rgba(255,255,255,0.88);
 }
 
-body{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-family:Georgia,serif;
-    color:var(--text);
+body[data-theme="lavender"] {
+    --bg-base: #f5f2fa;
+    --bg-grad-1: #e3dcf3;
+    --bg-grad-2: #dad3ea;
+    --text-main: #4a3f60;
+    --text-heading: #59467a;
+    --accent-border: #9882bd;
+    --accent-soft: #f0e9f9;
+    --accent-badge: #e9dff8;
+    --ornament-color: #9379b8;
+    --card-bg: rgba(255,255,255,0.88);
+    --header-bg: rgba(255,255,255,0.88);
+}
+
+body[data-theme="yellow"] {
+    --bg-base: #faf8f2;
+    --bg-grad-1: #f3edd2;
+    --bg-grad-2: #eae3c5;
+    --text-main: #60573f;
+    --text-heading: #7a6e46;
+    --accent-border: #bdb182;
+    --accent-soft: #f9f5e9;
+    --accent-badge: #f8f3df;
+    --ornament-color: #b8aa79;
+    --card-bg: rgba(255,255,255,0.88);
+    --header-bg: rgba(255,255,255,0.88);
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+}
+
+body {
+    overflow-x: hidden;
     background:
-        radial-gradient(circle at 15% 15%,rgba(255,255,255,.85),transparent 30%),
-        linear-gradient(
-            135deg,
-            var(--bg-grad-1),
-            var(--bg-grad-2)
-        );
+        radial-gradient(circle at 10% 12%, var(--bg-grad-1) 0, transparent 28%),
+        radial-gradient(circle at 90% 85%, var(--bg-grad-2) 0, transparent 30%),
+        var(--bg-base);
+    color: var(--text-main);
+    font-family: Georgia, "Times New Roman", serif;
 }
 
-#page{
-    position:relative;
-    width:100%;
-    height:100%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
+.decorations {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: -1;
 }
 
-.decor{
-    position:absolute;
-    pointer-events:none;
-    user-select:none;
-    color:var(--accent-dark);
-    opacity:.55;
-    font-size:22px;
-    z-index:1;
+.decorations span {
+    position: absolute;
+    color: var(--ornament-color);
+    opacity: 0.35;
+    animation: float 5s ease-in-out infinite;
 }
 
-.decor.one{
-    top:7%;
-    left:7%;
+.decorations span:nth-child(1) {
+    top: 13%;
+    left: 7%;
+    font-size: 20px;
 }
 
-.decor.two{
-    top:15%;
-    right:9%;
-    font-size:16px;
+.decorations span:nth-child(2) {
+    top: 28%;
+    right: 8%;
+    font-size: 13px;
+    animation-delay: 1s;
 }
 
-.decor.three{
-    bottom:8%;
-    left:10%;
-    font-size:18px;
+.decorations span:nth-child(3) {
+    top: 55%;
+    left: 5%;
+    font-size: 14px;
+    animation-delay: 2s;
 }
 
-.decor.four{
-    bottom:13%;
-    right:8%;
+.decorations span:nth-child(4) {
+    top: 68%;
+    right: 6%;
+    font-size: 21px;
+    animation-delay: 1.5s;
 }
 
-#gameCard{
-    position:relative;
-    width:min(1000px,96vw);
-    padding:14px;
-    border-radius:28px;
-    background:var(--card);
-    box-shadow:var(--shadow);
-    border:1px solid rgba(255,255,255,.8);
-    backdrop-filter:blur(8px);
-    z-index:2;
+.decorations span:nth-child(5) {
+    bottom: 12%;
+    left: 12%;
+    font-size: 12px;
+    animation-delay: 0.5s;
 }
 
-#gameWrap{
-    position:relative;
-    width:100%;
-    border-radius:20px;
-    overflow:hidden;
+.decorations span:nth-child(6) {
+    bottom: 20%;
+    right: 13%;
+    font-size: 16px;
+    animation-delay: 2.5s;
 }
 
-#game{
-    width:100%;
-    height:auto;
-    display:block;
-    image-rendering:pixelated;
-    image-rendering:crisp-edges;
-    border-radius:20px;
-}
-
-#topControls{
-    position:absolute;
-    top:18px;
-    left:18px;
-    right:18px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    pointer-events:none;
-    z-index:5;
-}
-
-.arcadeButton{
-    pointer-events:auto;
-    border:1px solid rgba(255,255,255,.8);
-    background:rgba(255,255,255,.72);
-    color:var(--text);
-    font-family:Georgia,serif;
-    border-radius:999px;
-    min-width:44px;
-    height:38px;
-    padding:0 15px;
-    cursor:pointer;
-    box-shadow:0 4px 14px rgba(60,75,85,.10);
-    transition:
-        transform .15s ease,
-        background .15s ease;
-}
-
-.arcadeButton:hover{
-    background:rgba(255,255,255,.9);
-    transform:translateY(-1px);
-}
-
-.arcadeButton:active{
-    transform:translateY(1px);
-}
-
-#fullscreenButton{
-    font-size:17px;
-    line-height:1;
-}
-
-#coinDisplay{
-    position:absolute;
-    top:18px;
-    right:72px;
-    z-index:5;
-    pointer-events:none;
-
-    padding:7px 13px;
-    border-radius:999px;
-    background:rgba(255,255,255,.72);
-    border:1px solid rgba(255,255,255,.8);
-    box-shadow:0 4px 14px rgba(60,75,85,.10);
-
-    font-size:15px;
-    color:var(--text);
-}
-
-#gameOverlay{
-    position:absolute;
-    inset:0;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    background:rgba(44,52,57,.20);
-    backdrop-filter:blur(3px);
-    z-index:10;
-}
-
-#gameOverlay.show{
-    display:flex;
-}
-
-#gameOverModal{
-    width:min(390px,84%);
-    padding:28px 24px 24px;
-    border-radius:25px;
-    background:var(--card-solid);
-    border:1px solid rgba(255,255,255,.9);
-    box-shadow:0 18px 50px rgba(45,58,65,.20);
-    text-align:center;
-    animation:modalIn .25s ease-out;
-}
-
-@keyframes modalIn{
-    from{
-        opacity:0;
-        transform:translateY(8px) scale(.97);
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) rotate(0);
     }
-    to{
-        opacity:1;
-        transform:translateY(0) scale(1);
+    50% {
+        transform: translateY(-7px) rotate(7deg);
     }
 }
 
-#brokenHeart{
-    font-size:39px;
-    line-height:1;
-    margin-bottom:8px;
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 70px;
+    padding: 12px 16px;
+    background: var(--header-bg);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--bg-grad-2);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    gap: 10px;
 }
 
-#gameOverTitle{
-    margin:0;
-    font-size:27px;
-    font-weight:normal;
+.header-left,
+.header-right {
+    display: flex;
+    align-items: center;
+    min-width: 0;
 }
 
-#gameOverScore{
-    margin-top:16px;
-    font-size:18px;
-    line-height:1.7;
+.header-left {
+    gap: 8px;
+    flex-shrink: 1;
 }
 
-#earnedCoins{
-    margin-top:7px;
-    font-size:17px;
+.header-right {
+    justify-content: flex-end;
+    gap: 7px;
+    flex-shrink: 0;
 }
 
-#restartButton{
-    margin-top:19px;
-    border:0;
-    padding:11px 22px;
-    border-radius:999px;
-    background:var(--button);
-    color:var(--text);
-    font-family:Georgia,serif;
-    font-size:16px;
-    cursor:pointer;
-    transition:.15s ease;
+.nav-link {
+    color: var(--text-heading);
+    text-decoration: none;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
 }
 
-#restartButton:hover{
-    background:var(--button-hover);
-    transform:translateY(-1px);
+.coin-display,
+.high-score-display {
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-border);
+    padding: 6px 10px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--text-heading);
+    white-space: nowrap;
 }
 
-#fullscreenExitHint{
-    position:fixed;
-    top:14px;
-    right:14px;
-    z-index:100;
-    display:none;
+.fullscreen-btn {
+    padding: 6px 10px;
+    border: 1px solid var(--accent-border);
+    border-radius: 100px;
+    background: var(--card-bg);
+    color: var(--text-heading);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
 }
 
-:fullscreen #gameCard{
-    width:100vw;
-    height:100vh;
-    padding:0;
-    border-radius:0;
-    background:#000;
-    box-shadow:none;
+.fullscreen-btn:hover {
+    background: var(--accent-soft);
 }
 
-:fullscreen #gameWrap{
-    width:100vw;
-    height:100vh;
-    border-radius:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
+main {
+    width: 100%;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 24px 16px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-:fullscreen #game{
-    width:100vw;
-    height:auto;
-    max-height:100vh;
-    border-radius:0;
+.ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 22px;
+    margin-bottom: 12px;
+    color: var(--ornament-color);
 }
 
-:fullscreen #topControls{
-    top:18px;
-    left:18px;
-    right:18px;
+.ornament span {
+    font-size: 16px;
 }
 
-@media(max-width:700px){
-    #gameCard{
-        width:100vw;
-        padding:7px;
-        border-radius:18px;
+.ornament i {
+    width: 38px;
+    height: 1px;
+    background: var(--ornament-color);
+    opacity: 0.45;
+}
+
+h1 {
+    color: var(--text-heading);
+    font-weight: normal;
+    font-size: 28px;
+    margin: 0 0 6px;
+    text-align: center;
+}
+
+.subtitle {
+    color: var(--text-main);
+    opacity: 0.78;
+    margin: 0 0 18px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.game-wrapper {
+    position: relative;
+    width: min(960px, 100%);
+}
+
+.canvas-shell {
+    position: relative;
+    width: 100%;
+    border: 1px solid var(--accent-border);
+    border-radius: 14px;
+    overflow: hidden;
+    background: #8a9ca5;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+#gameCanvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    touch-action: none;
+    cursor: pointer;
+}
+
+.game-ui {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 12px;
+    gap: 10px;
+}
+
+.score-box,
+.high-score-box {
+    padding: 7px 12px;
+    border: 1px solid var(--accent-border);
+    border-radius: 100px;
+    background: var(--card-bg);
+    color: var(--text-heading);
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.start-hint {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px 18px;
+    border: 1px solid var(--accent-border);
+    border-radius: 100px;
+    background: rgba(255,255,255,0.86);
+    color: var(--text-heading);
+    font-size: 13px;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    white-space: nowrap;
+}
+
+.fullscreen-mode .game-wrapper {
+    width: 100vw;
+    max-width: none;
+}
+
+.fullscreen-mode .canvas-shell {
+    border-radius: 0;
+    border: 0;
+}
+
+:fullscreen {
+    background: var(--bg-base);
+}
+
+:fullscreen .game-wrapper {
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+:fullscreen .canvas-shell {
+    width: min(100vw, 177.777vh);
+    border-radius: 0;
+    border: 0;
+}
+
+:fullscreen #gameCanvas {
+    width: 100%;
+    height: auto;
+}
+
+:fullscreen .game-ui {
+    position: fixed;
+    left: 20px;
+    right: 20px;
+    bottom: 18px;
+    z-index: 20;
+    margin: 0;
+}
+
+:fullscreen .score-box,
+:fullscreen .high-score-box {
+    background: rgba(255,255,255,0.88);
+}
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    padding: 20px;
+    background: rgba(30,25,25,0.3);
+    backdrop-filter: blur(5px);
+    z-index: 500;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-card {
+    position: relative;
+    background: var(--card-bg);
+    border: 1px solid var(--accent-border);
+    border-radius: 18px;
+    padding: 32px 26px 26px;
+    max-width: 360px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 18px 50px rgba(0,0,0,0.16);
+    animation: victoryPop 0.35s ease;
+    overflow: hidden;
+}
+
+.modal-card::before,
+.modal-card::after {
+    content: "✦";
+    position: absolute;
+    color: var(--ornament-color);
+    opacity: 0.5;
+    font-size: 20px;
+}
+
+.modal-card::before {
+    top: 13px;
+    left: 18px;
+}
+
+.modal-card::after {
+    top: 13px;
+    right: 18px;
+}
+
+.victory-decoration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    color: var(--ornament-color);
+    margin-bottom: 13px;
+}
+
+.victory-decoration span {
+    font-size: 15px;
+}
+
+.victory-decoration i {
+    width: 30px;
+    height: 1px;
+    background: var(--ornament-color);
+    opacity: 0.5;
+}
+
+.victory-symbol {
+    width: 66px;
+    height: 66px;
+    margin: 2px auto 14px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ornament-color);
+    animation: victoryFloat 2s ease-in-out infinite;
+}
+
+.modal-card h2 {
+    color: var(--text-heading);
+    font-size: 25px;
+    font-weight: normal;
+    margin: 0 0 9px;
+}
+
+.modal-card p {
+    color: var(--text-main);
+    opacity: 0.82;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0 0 21px;
+}
+
+.reward-amount {
+    display: inline-block;
+    margin: -5px 0 20px;
+    padding: 7px 13px;
+    border-radius: 100px;
+    background: var(--accent-badge);
+    border: 1px solid var(--accent-border);
+    color: var(--text-heading);
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.btn {
+    padding: 11px 20px;
+    border: 1px solid var(--accent-border);
+    border-radius: 100px;
+    background: var(--card-bg);
+    color: var(--text-heading);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn:hover {
+    background: var(--accent-soft);
+    transform: translateY(-1px);
+}
+
+.confetti {
+    position: absolute;
+    pointer-events: none;
+    color: var(--ornament-color);
+    font-size: 14px;
+    animation: confettiFall 1.8s ease-out forwards;
+}
+
+.confetti:nth-child(1) {
+    left: 18%;
+    top: 5%;
+}
+
+.confetti:nth-child(2) {
+    left: 32%;
+    top: 2%;
+    animation-delay: 0.12s;
+}
+
+.confetti:nth-child(3) {
+    left: 50%;
+    top: 4%;
+    animation-delay: 0.2s;
+}
+
+.confetti:nth-child(4) {
+    right: 32%;
+    top: 2%;
+    animation-delay: 0.08s;
+}
+
+.confetti:nth-child(5) {
+    right: 17%;
+    top: 6%;
+    animation-delay: 0.18s;
+}
+
+@keyframes victoryPop {
+    0% {
+        transform: scale(0.88);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes victoryFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+    }
+    15% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(115px) rotate(120deg);
+        opacity: 0;
+    }
+}
+
+@media (max-width: 700px) {
+    header {
+        padding: 11px 10px;
     }
 
-    #gameWrap,
-    #game{
-        border-radius:14px;
+    .nav-link {
+        font-size: 12px;
     }
 
-    #topControls{
-        top:10px;
-        left:10px;
-        right:10px;
+    .coin-display,
+    .high-score-display,
+    .fullscreen-btn {
+        padding: 6px 8px;
+        font-size: 11px;
     }
 
-    #coinDisplay{
-        top:10px;
-        right:58px;
-        font-size:13px;
-        padding:6px 10px;
+    main {
+        padding: 20px 10px 30px;
     }
 
-    .arcadeButton{
-        height:34px;
-        min-width:38px;
-        padding:0 11px;
+    .game-ui {
+        margin-top: 9px;
+    }
+
+    .score-box,
+    .high-score-box {
+        font-size: 11px;
+        padding: 6px 9px;
+    }
+
+    .modal-card {
+        max-width: 340px;
+        padding: 30px 21px 23px;
     }
 }
 </style>
@@ -334,1511 +622,653 @@ body{
 
 <body>
 
-<div id="page">
+<div class="decorations">
+    <span>✦</span>
+    <span>✧</span>
+    <span>♡</span>
+    <span>✦</span>
+    <span>✧</span>
+    <span>♡</span>
+</div>
 
-    <div class="decor one">✦</div>
-    <div class="decor two">✧</div>
-    <div class="decor three">♡</div>
-    <div class="decor four">✦</div>
+<header>
+    <div class="header-left">
+        <a onclick="goBack()" class="nav-link">← Back to Games</a>
+    </div>
 
-    <div id="gameCard">
+    <div class="header-right">
+        <div class="high-score-display">
+            High Score: <span id="header-high-score">0</span>
+        </div>
 
-        <div id="gameWrap">
+        <div class="coin-display">
+            <span class="coin-count">0</span> Coins
+        </div>
 
-            <canvas
-                id="game"
-                width="960"
-                height="540"
-            ></canvas>
+        <button class="fullscreen-btn" onclick="toggleFullscreen()">
+            ⛶ Fullscreen
+        </button>
+    </div>
+</header>
 
-            <div id="topControls">
+<main>
+    <div class="ornament">
+        <span>✦</span><i></i><span>♡</span><i></i><span>✦</span>
+    </div>
 
-                <button
-                    id="fullscreenButton"
-                    class="arcadeButton"
-                    type="button"
-                    aria-label="Fullscreen"
-                >⛶</button>
+    <h1>Bunny Run</h1>
 
+    <p class="subtitle">
+        Jump over the cacti and keep running!
+    </p>
+
+    <div class="game-wrapper" id="game-wrapper">
+
+        <div class="canvas-shell">
+            <canvas id="gameCanvas" width="960" height="540"></canvas>
+
+            <div class="start-hint" id="start-hint">
+                Press Space, ↑ or tap to start
+            </div>
+        </div>
+
+        <div class="game-ui">
+            <div class="score-box">
+                Score: <span id="score">0</span>
             </div>
 
-            <div id="coinDisplay">
-                ♡ <span id="coinAmount">0</span>
+            <div class="high-score-box">
+                High Score: <span id="game-high-score">0</span>
             </div>
-
-            <div id="gameOverlay">
-
-                <div id="gameOverModal">
-
-                    <div id="brokenHeart">♡̷</div>
-
-                    <h2 id="gameOverTitle">
-                        Run Over
-                    </h2>
-
-                    <div id="gameOverScore">
-                        Score: <strong id="finalScore">0</strong><br>
-                        High Score: <strong id="highScoreModal">0</strong>
-                    </div>
-
-                    <div id="earnedCoins">
-                        ✦ Coins earned: <strong id="runCoins">0</strong>
-                    </div>
-
-                    <button
-                        id="restartButton"
-                        type="button"
-                    >
-                        Run Again ♡
-                    </button>
-
-                </div>
-
-            </div>
-
         </div>
 
     </div>
 
+    <div class="ornament" style="margin-top:30px;margin-bottom:0;">
+        <span>✧</span><i></i><span>♡</span><i></i><span>✧</span>
+    </div>
+</main>
+
+<div id="reward-modal" class="modal-overlay">
+    <div class="modal-card" id="modal-card">
+
+        <span class="confetti">✦</span>
+        <span class="confetti">✧</span>
+        <span class="confetti">♡</span>
+        <span class="confetti">✦</span>
+        <span class="confetti">✧</span>
+
+        <div class="victory-decoration">
+            <span>✧</span>
+            <i></i>
+            <span>♡</span>
+            <i></i>
+            <span>✧</span>
+        </div>
+
+        <div class="victory-symbol" id="modal-symbol"></div>
+
+        <h2 id="modal-title">Game Over</h2>
+
+        <p id="modal-desc">
+            The bunny ran into a cactus.
+        </p>
+
+        <div class="reward-amount" id="reward-amount">
+            +0 Coins
+        </div>
+
+        <button class="btn" onclick="closeGameOver()"
+                style="width:100%;">
+            Play Again
+        </button>
+
+    </div>
 </div>
 
+<script src="../script.js"></script>
+
 <script>
+function loadSavedTheme() {
+    const savedTheme = localStorage.getItem("arcade_theme");
 
-const canvas=document.getElementById("game");
-const ctx=canvas.getContext("2d");
-
-ctx.imageSmoothingEnabled=false;
-
-const W=960;
-const H=540;
-const GROUND=425;
-
-
-/* =========================
-   ARCADE THEMES
-========================= */
-
-const themes={
-
-    default:{
-        bg:"#f2f7fa",
-        grad1:"#dce8f3",
-        grad2:"#edf4f6",
-        accent:"#9bbdd1",
-        accentDark:"#7199b2",
-        button:"#dbeaf2",
-        buttonHover:"#cbdfea",
-        skyTop:"#a8c7d0",
-        skyBottom:"#d5e1d9"
-    },
-
-    pink:{
-        bg:"#faf3f6",
-        grad1:"#f1dce5",
-        grad2:"#faf1f4",
-        accent:"#d5a9bb",
-        accentDark:"#b77f99",
-        button:"#f1dce5",
-        buttonHover:"#e8cbd8",
-        skyTop:"#dcb8c5",
-        skyBottom:"#f1ddd9"
-    },
-
-    green:{
-        bg:"#f2f7f1",
-        grad1:"#d9e8d7",
-        grad2:"#eef5ec",
-        accent:"#9fbea0",
-        accentDark:"#729676",
-        button:"#dcebdc",
-        buttonHover:"#cddfcf",
-        skyTop:"#aec7b0",
-        skyBottom:"#dce5d1"
-    },
-
-    lavender:{
-        bg:"#f6f3fa",
-        grad1:"#e2dcef",
-        grad2:"#f3f0f7",
-        accent:"#b4a5cb",
-        accentDark:"#8f7eaa",
-        button:"#e6dff0",
-        buttonHover:"#d8cee6",
-        skyTop:"#bbb0cf",
-        skyBottom:"#e5dce9"
-    },
-
-    yellow:{
-        bg:"#faf8ee",
-        grad1:"#eee6c8",
-        grad2:"#f7f3df",
-        accent:"#c7b879",
-        accentDark:"#a49354",
-        button:"#eee7ca",
-        buttonHover:"#e4d9ad",
-        skyTop:"#d6c98d",
-        skyBottom:"#eee6c8"
+    if (["pink", "green", "lavender", "yellow"].includes(savedTheme)) {
+        document.body.setAttribute("data-theme", savedTheme);
+    } else {
+        document.body.removeAttribute("data-theme");
     }
-
-};
-
-
-function getArcadeTheme(){
-
-    const saved=
-        localStorage.getItem(
-            "arcade_theme"
-        );
-
-    return themes[saved] || themes.default;
 }
 
+loadSavedTheme();
 
-const activeTheme=
-    getArcadeTheme();
+function goBack() {
+    if (window.history.length > 1) {
+        window.history.back();
+    } else {
+        window.location.href = "../index.html";
+    }
+}
 
+function updateCoinUI() {
+    if (typeof updateCoinDisplays === "function") {
+        updateCoinDisplays();
+    }
+}
 
-document.documentElement.style.setProperty(
-    "--bg-base",
-    activeTheme.bg
-);
+const AudioFX = {
+    ctx: null,
 
-document.documentElement.style.setProperty(
-    "--bg-grad-1",
-    activeTheme.grad1
-);
+    init() {
+        if (!this.ctx) {
+            const AudioCtx =
+                window.AudioContext ||
+                window.webkitAudioContext;
 
-document.documentElement.style.setProperty(
-    "--bg-grad-2",
-    activeTheme.grad2
-);
+            if (AudioCtx) {
+                this.ctx = new AudioCtx();
+            }
+        }
+    },
 
-document.documentElement.style.setProperty(
-    "--accent",
-    activeTheme.accent
-);
+    play(type) {
+        this.init();
 
-document.documentElement.style.setProperty(
-    "--accent-dark",
-    activeTheme.accentDark
-);
+        if (!this.ctx) return;
 
-document.documentElement.style.setProperty(
-    "--button",
-    activeTheme.button
-);
+        if (this.ctx.state === "suspended") {
+            this.ctx.resume();
+        }
 
-document.documentElement.style.setProperty(
-    "--button-hover",
-    activeTheme.buttonHover
-);
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
 
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
 
-/* =========================
-   COLORS
-========================= */
+        if (type === "jump") {
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(420, now);
+            osc.frequency.exponentialRampToValueAtTime(
+                700,
+                now + 0.12
+            );
 
-const BG="#b8cbd1";
+            gain.gain.setValueAtTime(0.08, now);
+            gain.gain.exponentialRampToValueAtTime(
+                0.001,
+                now + 0.16
+            );
 
-const SKY_TOP=
-    activeTheme.skyTop;
+            osc.start(now);
+            osc.stop(now + 0.16);
 
-const SKY_BOTTOM=
-    activeTheme.skyBottom;
+        } else if (type === "score") {
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(660, now);
+            osc.frequency.setValueAtTime(880, now + 0.07);
 
-const DARK="#29332f";
+            gain.gain.setValueAtTime(0.08, now);
+            gain.gain.exponentialRampToValueAtTime(
+                0.001,
+                now + 0.15
+            );
 
-const GROUND_TOP="#756d59";
-const GROUND_BASE="#625b4b";
-const GROUND_LIGHT="#887f68";
-const GROUND_DARK="#48453b";
+            osc.start(now);
+            osc.stop(now + 0.15);
 
+        } else if (type === "lose") {
+            osc.type = "triangle";
+            osc.frequency.setValueAtTime(300, now);
+            osc.frequency.exponentialRampToValueAtTime(
+                120,
+                now + 0.4
+            );
 
-/* =========================
-   BUNNY IMAGES
-========================= */
+            gain.gain.setValueAtTime(0.3, now);
+            gain.gain.exponentialRampToValueAtTime(
+                0.001,
+                now + 0.4
+            );
 
-const idleImage=new Image();
-const runImage=new Image();
-const jumpImage=new Image();
+            osc.start(now);
+            osc.stop(now + 0.4);
+        }
+    }
+};
+    </script><script>
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
 
+const GAME_WIDTH = 960;
+const GAME_HEIGHT = 540;
 
-/*
-   PASTE YOUR EXACT ORIGINAL
-   BUNNY BASE64 LINES HERE.
+const GROUND = 425;
 
-   Do not change the sprites.
-*/
+const bunny = {
+    x: 110,
 
+    y: GROUND - 42,
 
-/* =========================
-   CACTUS IMAGES
-========================= */
+    width: 42,
+    height: 42,
 
-const cactusSmallImage=
-    new Image();
+    velocityY: 0,
 
-const cactusTallImage=
-    new Image();
+    gravity: 0.72,
+    jumpPower: -15.5,
 
-const cactusMediumImage=
-    new Image();
+    grounded: true,
 
-const cactusWideImage=
-    new Image();
+    frame: 0,
+    frameTimer: 0,
+    frameDelay: 45
+};
 
+const idleImage = new Image();
 
-cactusSmallImage.src=
+idleImage.src =
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAA9klEQVR42u1UMQ6EIBAEYmdvjIUlhbVP8AE+1Qf4BGsLSwtj6K25inPv2EU8OGPhdggyzOzMMvbUU0/dtoo81UWe6tj3CtdmJTMGQWM8QlDsKplZ39qmZm1TsxBQcXWrSMBxUha7vwEu68bhGoJ1/WDt31pSTpkGkzCUHcowZr+wSkIGg0//nZKa/MmyJH/o+sEy0jTPH852gXIq8Aa06wfmKzEEpkAFlj+YwTMFlaEk566xBi8wr3fJDc9SLBO86Upf6tL9ZQple8R6Xyv9zTLKpDHAwaNtWTduDGTigIGcMdnPwT8C8TYN5thxUu8sYsGnhgNWL5sPiDbAGkWfAAAAAElFTkSuQmCC";
+
+const runImage = new Image();
+
+runImage.src =
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAcCAYAAAB4fbODAAADlElEQVR42u1aPZKzMAw1Gbr0O5kUlBRb5wg5QI7KATgCdQpKip0d+q35im+U1RpjJGMLCNLMFlkIz3rWz5ODMWpqampqampqampqampqampqamr7sevlPFwv50GZoNtJKVCLaZ/lh8FJqEmpCagm1P0+y4/R/x73m3ncb0aTkJmA0pVLK+V78QrJZ4wxVd2Yr++fbM9+pcI7bUlOSOIdqcBI8vpse2OMMZB87yR3XXhJElBaTqwlX965wKzJK06+VN1vK/G5FOuQM+BRCoy0LFxzPyX9wnjJJChIidiAW8E7kqWWhbBfZVEk735ryd1UeM4EtElLTao03hELTCpOfb5IdHfJhE+Bd0gJeoQCo7YPy+eqWlkUu64wW5lR1pyLUu2ha7Z9B7+W4Ln22reuPOWAucZQu7VNtH2TDhoJa7vu5VdVN3+K6ON+M1XdDByFsMU4oRZYuL/tOnRHP0z5mMeu6tyACnFyT3jSfEpjwmyLC4tP1eCkhe9fL+dhj0oH+HP5N+bDnYSZS1L4yKzqZkQqJpO7gXMJsWe8tfiUxMQyFGPC83zrsHF9mBy/lnZaKh5HIUz5mM2RaUuKGGT6nJTGi0UkJzhT4a21h/izPRNS/G67jpyAXL/swkJNxCU8uorPlI8nl6TAi+UYBuQcPPzVy7J4c1VzKZ7NZ2o8yT2EIMVJh3Ht5Gu7zrnXZVGM3hKK5VdZFK/nw1/o3lHiaiqWpwpRFltSUCva1PAa2plC8TjdgYvn4hPwUvApvYfU/YOi41MDoV2Q6xc3Xqh4rk7r4sQ+eMvdOrkXOTb/+v7JwEl8khZCaiiefWoVE8/FJ2Cn5hUwn21vUv1UAIGEE9HV4X8D7v+aQjnmxibmOQSTigcJbceYzQW8eljVzetAJvcPq/0wV7Vc134/97OnW5xg2SOeNJ/uOWcaN1bhgWCjrM91CMTp7Fga+k5Y52Qp/DziWzMklK+z2d0UYgw4h+tV3YwOAPMYldDuXjEqqS8o9oYnzac0Jrco2B0C3iOlzFvPtifJXcr30BgyW9hwMnG6Jy7wkITkBMQPsWclXGWebR8lYDCe/cx3w5Pgk4I7hcmZOUMNeOeOEDS5O57jXPdzurAriX0vU7gkrH1vcAecIy72Bipen/yldCnDBcFXFKa+S5GOvhncloUpJffc9ZyqufGpIfXUi2uKFxcvBJczyy1dD0VSLpG8U/Mw51lT3MXi5x/WB9z8URHs6QAAAABJRU5ErkJggg==";
+
+const jumpImage = new Image();
+
+jumpImage.src =
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAkCAYAAACQVDZDAAADgUlEQVR42u2aPXLyMBCGRcYdfYahoKRIzRE4AEflAByBmsKlC4ZxT+2vyCeyiJW0sq0VUd6nIzi8Xu0/2BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWNar5bBeLQecBLB84Ah0+dp+GpqESEok4FtU61KBqKW7Xi2Hr+3ny98O+5057HfmtydhzfGSU+vjnap1qe5QQtcmnzHGHE9nc73dF7+9oNUcL5xWtgTUrtalukMJ3UvbG2OMsclXQ0LUHC8hrTl0sAMqdiULTb5c3a/kuKt1jiX0qFbWEdRW6hyi76Cn2ZWsPdvNJnvylQxQze6urZdLi01A10G5g0ZbT7MrhYpJ7m6knRAlfKepl0MLI2jllChmQE4Tq9rbzabKiqZhI7eLaY6bGr6rXc/qUK3Y/cUmvGACau9fJTS19dquezjweDo/FZnDfmeOp/OQMqL/1XN8Vz2adPb6tuvIFf3g82Ez5eamBMsUI6foadto97BQBeXstw68tL1Zr5YDRsf3w8YH579Xf/NJuOBGplCwHE/nl6ChwZIaoLEEzKGnaSMdQ6mm/bzYaEN1Q5opdk3ttNBLn4B8PlzEgsUdmeYIlpCROfVK2UhfuzuhxMFt14kTMNUut7BIAxV6cU234HI+bMaMTKFl1YqnjE10R9LQ07KROtFqXtrecB0x1BV/XvdBvTF28df2orOEHp94vvugRYDtgHOMTNKK7Vtex7b4qV0wh41S++zo5EvMKV0w1a5U/0HP32k5n7vf1jb8nNyrPMR7vd0X1ki3C6YeaqqutZF2pDw6z4nI7Sk/Dvm+p7E2p/qOVuwxmtB7Tmg3pl1f20cBj6fzowOPqgCSJEnpSjRAQzvSXHopdvo0x9on7Zjcl0DSDhirwtyoxJ2pDSCfZu16Er9wXY1bP2xi/k/Ax/Wjf4aYY4cLdYpQ1Zqqp22jtCjQc6AV1D5Hyu0Q3N4iGXcl/0eeH/XuTLXruY1B4gPaPWlDud7uC/c330b6Ie43QLTKXNp+loSgeu5n5tCT2OnTHNttU3CrvXSkl427r5Wauz4U7LXrSZI49AQON8JGvwVNuZnY+3MGqLaeVDff7vhdEEJFwfe/tspKzsMNEndskjylU7NerNPG7iH2fiPZjWjmcz9SS8cA6S6mpTdGV3rwc9yPZOSaMvLy14cr9l/T88XGXP7/B8eoAeUpIH/9AAAAAElFTkSuQmCC";
+
+const cactusImages = {
+    small: new Image(),
+    big: new Image(),
+    two: new Image(),
+    wide: new Image()
+};
+
+cactusImages.small.src =
     "games/1000082076-removebg-preview.png";
 
-cactusTallImage.src=
+cactusImages.big.src =
     "games/1000082078-removebg-preview.png";
 
-cactusMediumImage.src=
+cactusImages.two.src =
     "games/1000082080-removebg-preview.png";
 
-cactusWideImage.src=
+cactusImages.wide.src =
     "games/1000082081-removebg-preview.png";
 
 
-/* =========================
-   CACTUS TYPES
-========================= */
-
-const CACTUS_TYPES={
-
-    small:{
-        image:cactusSmallImage,
-
-        hitboxWidth:24,
-        hitboxHeight:24,
-
-        imageWidth:65,
-        imageHeight:65
+const CACTUS_TYPES = [
+    {
+        type: "small",
+        width: 42,
+        height: 42
     },
-
-    tall:{
-        image:cactusTallImage,
-
-        hitboxWidth:24,
-        hitboxHeight:75,
-
-        imageWidth:65,
-        imageHeight:120
+    {
+        type: "big",
+        width: 42,
+        height: 126
     },
-
-    medium:{
-        image:cactusMediumImage,
-
-        hitboxWidth:38,
-        hitboxHeight:38,
-
-        imageWidth:80,
-        imageHeight:80
+    {
+        type: "two",
+        width: 63,
+        height: 84
     },
-
-    wide:{
-        image:cactusWideImage,
-
-        hitboxWidth:70,
-        hitboxHeight:38,
-
-        imageWidth:120,
-        imageHeight:75
+    {
+        type: "wide",
+        width: 84,
+        height: 63
     }
-
-};
-
-
-/* =========================
-   GAME STATE
-========================= */
-
-let started=false;
-let dead=false;
-let lastTime=0;
-
-let score=0;
-let speed=6;
-
-let groundOffset=0;
-
-let runAnimTime=0;
-let jumpTime=0;
-
-let lastScoreMilestone=0;
-
-let runStartCoins=0;
-let runCoinsEarned=0;
+];
 
 
-/* =========================
-   HIGH SCORE
-========================= */
+let cacti = [];
 
-let highScore=
-    Number(
-        localStorage.getItem(
-            "bunnyRunHighScore"
-        ) || 0
-    );
+let gameRunning = false;
+let gameOver = false;
+
+let score = 0;
+let highScore =
+    Number(localStorage.getItem("bunnyRunHighScore")) || 0;
+
+let speed = 7;
+
+let lastTime = 0;
+let animationFrame = null;
+
+let cactusTimer = 0;
+let nextCactusDistance = 420;
+
+let groundOffset = 0;
+
+let scoreCoinMilestone = 0;
+
+const scoreEl = document.getElementById("score");
+const highScoreEl =
+    document.getElementById("game-high-score");
+const headerHighScoreEl =
+    document.getElementById("header-high-score");
+
+const startHint =
+    document.getElementById("start-hint");
 
 
-/* =========================
-   SHARED ARCADE COINS
-========================= */
+function updateHighScoreDisplay() {
+    scoreEl.innerText = Math.floor(score);
 
-function getArcadeCoins(){
+    highScoreEl.innerText = highScore;
 
-    return Number(
-        localStorage.getItem(
-            "arcade_coins"
-        ) || 0
-    );
+    headerHighScoreEl.innerText = highScore;
+}
+
+updateHighScoreDisplay();
+
+
+function random(min, max) {
+    return Math.random() * (max - min) + min;
 }
 
 
-function updateCoinDisplays(){
+function chooseCactus() {
+    const index =
+        Math.floor(Math.random() * CACTUS_TYPES.length);
 
-    const amount=
-        getArcadeCoins();
-
-    const element=
-        document.getElementById(
-            "coinAmount"
-        );
-
-    if(element){
-
-        element.textContent=
-            amount;
-    }
+    return CACTUS_TYPES[index];
 }
 
 
-function addCoins(amount){
+function createCactus(x) {
+    const data = chooseCactus();
 
-    const current=
-        getArcadeCoins();
+    return {
+        type: data.type,
 
-    const next=
-        current+
-        Number(amount);
+        x: x,
 
-    localStorage.setItem(
-        "arcade_coins",
-        String(next)
-    );
+        width: data.width,
+        height: data.height,
 
-    updateCoinDisplays();
-}
-
-
-updateCoinDisplays();
-
-
-/* =========================
-   AUDIO
-========================= */
-
-let audioContext=null;
-
-
-function initAudio(){
-
-    if(!audioContext){
-
-        audioContext=
-            new(
-                window.AudioContext ||
-                window.webkitAudioContext
-            )();
-    }
-
-    if(
-        audioContext &&
-        audioContext.state==="suspended"
-    ){
-
-        audioContext.resume();
-    }
-}
-
-
-function playScoreSound(){
-
-    initAudio();
-
-    if(!audioContext){
-        return;
-    }
-
-    const now=
-        audioContext.currentTime;
-
-
-    const osc1=
-        audioContext.createOscillator();
-
-    const gain1=
-        audioContext.createGain();
-
-    osc1.type="square";
-
-    osc1.frequency.setValueAtTime(
-        880,
-        now
-    );
-
-    gain1.gain.setValueAtTime(
-        0.0001,
-        now
-    );
-
-    gain1.gain.exponentialRampToValueAtTime(
-        0.055,
-        now+0.005
-    );
-
-    gain1.gain.exponentialRampToValueAtTime(
-        0.0001,
-        now+0.055
-    );
-
-    osc1.connect(gain1);
-    gain1.connect(
-        audioContext.destination
-    );
-
-    osc1.start(now);
-    osc1.stop(now+0.06);
-
-
-    const osc2=
-        audioContext.createOscillator();
-
-    const gain2=
-        audioContext.createGain();
-
-    osc2.type="square";
-
-    osc2.frequency.setValueAtTime(
-        1175,
-        now+0.065
-    );
-
-    gain2.gain.setValueAtTime(
-        0.0001,
-        now+0.065
-    );
-
-    gain2.gain.exponentialRampToValueAtTime(
-        0.055,
-        now+0.07
-    );
-
-    gain2.gain.exponentialRampToValueAtTime(
-        0.0001,
-        now+0.12
-    );
-
-    osc2.connect(gain2);
-    gain2.connect(
-        audioContext.destination
-    );
-
-    osc2.start(now+0.065);
-    osc2.stop(now+0.125);
-}
-
-
-/* =========================
-   BUNNY
-========================= */
-
-const bunny={
-
-    x:110,
-
-    y:
-        GROUND-28,
-
-    width:28,
-    height:28,
-
-    velocityY:0,
-
-    grounded:true,
-
-    gravity:0.72,
-
-    jumpPower:-15.5
-};
-
-
-/* =========================
-   CACTUSES
-========================= */
-
-const obstacles=[];
-
-
-/* =========================
-   CREATE CACTUS
-========================= */
-
-function createCactus(
-    typeName,
-    x
-){
-
-    const type=
-        CACTUS_TYPES[typeName];
-
-    return{
-
-        x:x,
-
-        y:
-            GROUND-
-            type.imageHeight,
-
-        width:
-            type.imageWidth,
-
-        height:
-            type.imageHeight,
-
-        typeName:typeName,
-
-        image:type.image,
-
-        hitboxWidth:
-            type.hitboxWidth,
-
-        hitboxHeight:
-            type.hitboxHeight,
-
-        counted:false
+        passed: false
     };
 }
 
 
-/* =========================
-   SPAWN CACTUS
-========================= */
+function spawnCactus() {
+    const last =
+        cacti.length
+            ? cacti[cacti.length - 1]
+            : null;
 
-let spawnTimer=0;
-let nextSpawn=1200;
+    let x = GAME_WIDTH + 40;
 
+    if (last) {
+        x =
+            Math.max(
+                x,
+                last.x +
+                last.width +
+                nextCactusDistance
+            );
+    }
 
-function spawnCactus(){
+    cacti.push(createCactus(x));
 
-    const difficulty=
-        Math.min(
-            score/100,
-            30
-        );
-
-
-    const names=[
-        "small",
-        "tall",
-        "medium",
-        "wide"
-    ];
-
-
-    const typeName=
-        names[
-            Math.floor(
-                Math.random()*
-                names.length
-            )
-        ];
-
-
-    const x=
-        W+50;
-
-
-    const cactus=
-        createCactus(
-            typeName,
-            x
-        );
-
-
-    obstacles.push(
-        cactus
-    );
-
-
-    const minimum=
-        1050-
-        Math.min(
-            difficulty*10,
-            350
-        );
-
-
-    const maximum=
-        1500-
-        Math.min(
-            difficulty*8,
-            300
-        );
-
-
-    nextSpawn=
-        minimum+
-        Math.random()*
-        (
-            maximum-
-            minimum
-        );
-
-
-    spawnTimer=0;
+    nextCactusDistance =
+        random(360, 560);
 }
 
 
-/* =========================
-   WHITE BACKGROUND REMOVAL
-========================= */
+function resetBunny() {
+    bunny.y = GROUND - bunny.height;
+    bunny.velocityY = 0;
+    bunny.grounded = true;
+    bunny.frame = 0;
+    bunny.frameTimer = 0;
+}
 
-const processedCactusImages=
-    new Map();
+
+function resetGame() {
+    score = 0;
+
+    speed = 7;
+
+    cacti = [];
+
+    cactusTimer = 0;
+
+    nextCactusDistance = 420;
+
+    groundOffset = 0;
+
+    scoreCoinMilestone = 0;
+
+    gameRunning = false;
+    gameOver = false;
+
+    resetBunny();
+
+    updateHighScoreDisplay();
+
+    startHint.style.opacity = "1";
+
+    closeModalOnly();
+
+    requestAnimationFrame(render);
+}
 
 
-function getTransparentCactusImage(
-    image
-){
-
-    if(
-        !image.complete ||
-        !image.naturalWidth
-    ){
-
-        return image;
+function startGame() {
+    if (gameOver) {
+        resetGame();
     }
 
+    if (gameRunning) return;
 
-    if(
-        processedCactusImages.has(
-            image
-        )
-    ){
+    gameRunning = true;
+    gameOver = false;
 
-        return processedCactusImages.get(
-            image
-        );
+    startHint.style.opacity = "0";
+
+    lastTime = performance.now();
+
+    requestAnimationFrame(gameLoop);
+}
+
+
+function jump() {
+    if (gameOver) {
+        resetGame();
+        startGame();
+        return;
     }
 
-
-    const offscreen=
-        document.createElement(
-            "canvas"
-        );
-
-
-    offscreen.width=
-        image.naturalWidth;
-
-    offscreen.height=
-        image.naturalHeight;
-
-
-    const offctx=
-        offscreen.getContext(
-            "2d"
-        );
-
-
-    offctx.drawImage(
-        image,
-        0,
-        0
-    );
-
-
-    let data;
-
-    try{
-
-        data=
-            offctx.getImageData(
-                0,
-                0,
-                offscreen.width,
-                offscreen.height
-            );
-
-    }catch(e){
-
-        return image;
+    if (!gameRunning) {
+        startGame();
+        return;
     }
 
+    if (!bunny.grounded) return;
 
-    const pixels=
-        data.data;
+    bunny.velocityY =
+        bunny.jumpPower;
 
+    bunny.grounded = false;
 
-    for(
-        let i=0;
-        i<pixels.length;
-        i+=4
-    ){
+    AudioFX.play("jump");
+}<script>
+function updateBunny(delta) {
+    if (!gameRunning) return;
 
-        const r=pixels[i];
-        const g=pixels[i+1];
-        const b=pixels[i+2];
+    bunny.velocityY +=
+        bunny.gravity * delta;
 
+    bunny.y +=
+        bunny.velocityY * delta;
 
-        if(
-            r>235 &&
-            g>235 &&
-            b>235
-        ){
+    if (bunny.y + bunny.height >= GROUND) {
+        bunny.y =
+            GROUND - bunny.height;
 
-            pixels[i+3]=0;
+        bunny.velocityY = 0;
+
+        bunny.grounded = true;
+    } else {
+        bunny.grounded = false;
+    }
+
+    bunny.frameTimer +=
+        delta * 16.6667;
+
+    if (bunny.frameTimer >= bunny.frameDelay) {
+        bunny.frameTimer = 0;
+
+        bunny.frame++;
+
+        if (bunny.frame >= 8) {
+            bunny.frame = 0;
         }
     }
-
-
-    offctx.putImageData(
-        data,
-        0,
-        0
-    );
-
-
-    processedCactusImages.set(
-        image,
-        offscreen
-    );
-
-
-    return offscreen;
-}/* =========================
-   SKY
-========================= */
-
-function drawSky(){
-
-    const gradient=
-        ctx.createLinearGradient(
-            0,
-            0,
-            0,
-            GROUND
-        );
-
-
-    gradient.addColorStop(
-        0,
-        SKY_TOP
-    );
-
-
-    gradient.addColorStop(
-        1,
-        SKY_BOTTOM
-    );
-
-
-    ctx.fillStyle=gradient;
-
-
-    ctx.fillRect(
-        0,
-        0,
-        W,
-        GROUND
-    );
-
-
-    /*
-        Small pixel clouds
-    */
-
-    ctx.fillStyle="#dfe8e4";
-
-
-    const cloudY=92;
-
-
-    ctx.fillRect(
-        130,
-        cloudY,
-        70,
-        8
-    );
-
-
-    ctx.fillRect(
-        146,
-        cloudY-7,
-        38,
-        7
-    );
-
-
-    ctx.fillRect(
-        158,
-        cloudY-12,
-        20,
-        5
-    );
-
-
-    ctx.fillRect(
-        620,
-        145,
-        86,
-        8
-    );
-
-
-    ctx.fillRect(
-        640,
-        138,
-        42,
-        7
-    );
-
-
-    ctx.fillRect(
-        655,
-        132,
-        22,
-        6
-    );
-
-
-    ctx.fillStyle="#cbdcda";
-
-
-    ctx.fillRect(
-        335,
-        72,
-        45,
-        6
-    );
-
-
-    ctx.fillRect(
-        347,
-        66,
-        25,
-        6
-    );
-
-
-    ctx.fillRect(
-        790,
-        78,
-        58,
-        7
-    );
-
-
-    ctx.fillRect(
-        805,
-        71,
-        27,
-        7
-    );
 }
 
 
-/* =========================
-   GROUND
-========================= */
+function updateCacti(delta) {
+    if (!gameRunning) return;
 
-function drawGround(){
-
-    ctx.fillStyle=
-        GROUND_BASE;
-
-
-    ctx.fillRect(
-        0,
-        GROUND,
-        W,
-        H-GROUND
-    );
-
-
-    ctx.fillStyle=
-        GROUND_TOP;
-
-
-    ctx.fillRect(
-        0,
-        GROUND,
-        W,
-        9
-    );
-
-
-    ctx.fillStyle=
-        GROUND_LIGHT;
-
-
-    ctx.fillRect(
-        0,
-        GROUND,
-        W,
-        3
-    );
-
-
-    const tile=80;
-
-
-    for(
-        let x=
-            groundOffset-tile;
-
-        x<
-            W+tile;
-
-        x+=tile
-    ){
-
-        ctx.fillStyle=
-            GROUND_DARK;
-
-
-        ctx.fillRect(
-            x+7,
-            GROUND+22,
-            22,
-            4
-        );
-
-
-        ctx.fillRect(
-            x+49,
-            GROUND+39,
-            15,
-            4
-        );
-
-
-        ctx.fillRect(
-            x+19,
-            GROUND+57,
-            30,
-            4
-        );
-
-
-        ctx.fillStyle=
-            GROUND_LIGHT;
-
-
-        ctx.fillRect(
-            x+32,
-            GROUND+15,
-            8,
-            3
-        );
-
-
-        ctx.fillRect(
-            x+63,
-            GROUND+28,
-            7,
-            3
-        );
-
-
-        ctx.fillRect(
-            x+3,
-            GROUND+48,
-            10,
-            3
-        );
-
-
-        ctx.fillRect(
-            x+56,
-            GROUND+65,
-            16,
-            3
-        );
+    for (const cactus of cacti) {
+        cactus.x -=
+            speed * delta;
     }
 
-
-    for(
-        let x=
-            groundOffset-40;
-
-        x<
-            W+80;
-
-        x+=120
-    ){
-
-        ctx.fillStyle=
-            GROUND_LIGHT;
-
-
-        ctx.fillRect(
-            x,
-            GROUND+12,
-            3,
-            7
+    cacti =
+        cacti.filter(
+            cactus =>
+                cactus.x + cactus.width > -50
         );
 
+    const last =
+        cacti.length
+            ? cacti[cacti.length - 1]
+            : null;
 
-        ctx.fillRect(
-            x+4,
-            GROUND+15,
-            3,
-            4
-        );
+    if (!last ||
+        last.x + last.width <
+        GAME_WIDTH - nextCactusDistance) {
+
+        spawnCactus();
+    }
+
+    for (const cactus of cacti) {
+        if (!cactus.passed &&
+            cactus.x + cactus.width < bunny.x) {
+
+            cactus.passed = true;
+
+            score += 100;
+
+            AudioFX.play("score");
+
+            const newMilestone =
+                Math.floor(score / 1000);
+
+            if (newMilestone > scoreCoinMilestone) {
+                const difference =
+                    newMilestone -
+                    scoreCoinMilestone;
+
+                scoreCoinMilestone =
+                    newMilestone;
+
+                if (typeof addCoins === "function") {
+                    addCoins(difference * 10);
+                }
+
+                updateCoinUI();
+            }
+        }
     }
 }
 
 
-/* =========================
-   CACTUS DRAWING
-========================= */
-
-function drawCactus(o){
-
-    if(
-        !o.image.complete ||
-        !o.image.naturalWidth
-    ){
-
-        ctx.fillStyle="#63745f";
-
-
-        ctx.fillRect(
-            o.x,
-            GROUND-o.height,
-            o.width,
-            o.height
-        );
-
-
-        return;
-    }
-
-
-    const texture=
-        getTransparentCactusImage(
-            o.image
-        );
-
-
-    const drawX=
-        o.x;
-
-
-    const drawY=
-        GROUND-o.height;
-
-
-    ctx.drawImage(
-        texture,
-        drawX,
-        drawY,
-        o.width,
-        o.height
-    );
-}
-
-
-/* =========================
-   BUNNY ANIMATION
-========================= */
-
-function drawBunny(){
-
-    let image;
-
-    let frameWidth=28;
-
-    let frameHeight=28;
-
-    let frameIndex=0;
-
-
-    if(
-        !started &&
-        !dead
-    ){
-
-        idleImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAA9klEQVR42u1UMQ6EIBAEYmdvjIUlhbVP8AE+1Qf4BGsLSwtj6K25inPv2EU8OGPhdggyzOzMMvbUU0/dtoo81UWe6tj3CtdmJTMGQWM8QlDsKplZ39qmZm1TsxBQcXWrSMBxUha7vwEu68bhGoJ1/WDt31pSTpkGkzCUHcowZr+wSkIGg0//nZKa/MmyJH/o+sEy0jTPH852gXIq8Aa06wfmKzEEpkAFlj+YwTMFlaEk566xBi8wr3fJDc9SLBO86Upf6tL9ZQple8R6Xyv9zTLKpDHAwaNtWTduDGTigIGcMdnPwT8C8TYN5thxUu8sYsGnhgNWL5sPiDbAGkWfAAAAAElFTkSuQmCC";  
-
-        frameIndex=0;
-
-    }
-
-    else if(
-        !bunny.grounded
-    ){
-
-        jumpImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAkCAYAAACQVDZDAAADgUlEQVR42u2aPXLyMBCGRcYdfYahoKRIzRE4AEflAByBmsKlC4ZxT+2vyCeyiJW0sq0VUd6nIzi8Xu0/2BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWNar5bBeLQecBLB84Ah0+dp+GpqESEok4FtU61KBqKW7Xi2Hr+3ny98O+5057HfmtydhzfGSU+vjnap1qe5QQtcmnzHGHE9nc73dF7+9oNUcL5xWtgTUrtalukMJ3UvbG2OMsclXQ0LUHC8hrTl0sAMqdiULTb5c3a/kuKt1jiX0qFbWEdRW6hyi76Cn2ZWsPdvNJnvylQxQze6urZdLi01A10G5g0ZbT7MrhYpJ7m6knRAlfKepl0MLI2jllChmQE4Tq9rbzabKiqZhI7eLaY6bGr6rXc/qUK3Y/cUmvGACau9fJTS19dquezjweDo/FZnDfmeOp/OQMqL/1XN8Vz2adPb6tuvIFf3g82Ez5eamBMsUI6foadto97BQBeXstw68tL1Zr5YDRsf3w8YH579Xf/NJuOBGplCwHE/nl6ChwZIaoLEEzKGnaSMdQ6mm/bzYaEN1Q5opdk3ttNBLn4B8PlzEgsUdmeYIlpCROfVK2UhfuzuhxMFt14kTMNUut7BIAxV6cU234HI+bMaMTKFl1YqnjE10R9LQ07KROtFqXtrecB0x1BV/XvdBvTF28df2orOEHp94vvugRYDtgHOMTNKK7Vtex7b4qV0wh41S++zo5EvMKV0w1a5U/0HP32k5n7vf1jb8nNyrPMR7vd0X1ki3C6YeaqqutZF2pDw6z4nI7Sk/Dvm+p7E2p/qOVuwxmtB7Tmg3pl1f20cBj6fzowOPqgCSJEnpSjRAQzvSXHopdvo0x9on7Zjcl0DSDhirwtyoxJ2pDSCfZu16Er9wXY1bP2xi/k/Ax/Wjf4aYY4cLdYpQ1Zqqp22jtCjQc6AV1D5Hyu0Q3N4iGXcl/0eeH/XuTLXruY1B4gPaPWlDud7uC/c330b6Ie43QLTKXNp+loSgeu5n5tCT2OnTHNttU3CrvXSkl427r5Wauz4U7LXrSZI49AQON8JGvwVNuZnY+3MGqLaeVDff7vhdEEJFwfe/tspKzsMNEndskjylU7NerNPG7iH2fiPZjWjmcz9SS8cA6S6mpTdGV3rwc9yPZOSaMvLy14cr9l/T88XGXP7/B8eoAeUpIH/9AAAAAElFTkSuQmCC";  
-
-        frameWidth=28;
-
-        frameHeight=36;
-
-
-        const jumpAnimationDuration=560;
-
-
-        frameIndex=
-            Math.min(
-                7,
-                Math.floor(
-                    (
-                        jumpTime/
-                        jumpAnimationDuration
-                    )*8
-                )
-            );
-
-    }
-
-    else{
-
-        runImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAcCAYAAAB4fbODAAADlElEQVR42u1aPZKzMAw1Gbr0O5kUlBRb5wg5QI7KATgCdQpKip0d+q35im+U1RpjJGMLCNLMFlkIz3rWz5ODMWpqampqampqampqampqampqamr7sevlPFwv50GZoNtJKVCLaZ/lh8FJqEmpCagm1P0+y4/R/x73m3ncb0aTkJmA0pVLK+V78QrJZ4wxVd2Yr++fbM9+pcI7bUlOSOIdqcBI8vpse2OMMZB87yR3XXhJElBaTqwlX965wKzJK06+VN1vK/G5FOuQM+BRCoy0LFxzPyX9wnjJJChIidiAW8E7kqWWhbBfZVEk735ryd1UeM4EtElLTao03hELTCpOfb5IdHfJhE+Bd0gJeoQCo7YPy+eqWlkUu64wW5lR1pyLUu2ha7Z9B7+W4Ln22reuPOWAucZQu7VNtH2TDhoJa7vu5VdVN3+K6ON+M1XdDByFsMU4oRZYuL/tOnRHP0z5mMeu6tyACnFyT3jSfEpjwmyLC4tP1eCkhe9fL+dhj0oH+HP5N+bDnYSZS1L4yKzqZkQqJpO7gXMJsWe8tfiUxMQyFGPC83zrsHF9mBy/lnZaKh5HIUz5mM2RaUuKGGT6nJTGi0UkJzhT4a21h/izPRNS/G67jpyAXL/swkJNxCU8uorPlI8nl6TAi+UYBuQcPPzVy7J4c1VzKZ7NZ2o8yT2EIMVJh3Ht5Gu7zrnXZVGM3hKK5VdZFK/nw1/o3lHiaiqWpwpRFltSUCva1PAa2plC8TjdgYvn4hPwUvApvYfU/YOi41MDoV2Q6xc3Xqh4rk7r4sQ+eMvdOrkXOTb/+v7JwEl8khZCaiiefWoVE8/FJ2Cn5hUwn21vUv1UAIGEE9HV4X8D7v+aQjnmxibmOQSTigcJbceYzQW8eljVzetAJvcPq/0wV7Vc134/97OnW5xg2SOeNJ/uOWcaN1bhgWCjrM91CMTp7Fga+k5Y52Qp/DziWzMklK+z2d0UYgw4h+tV3YwOAPMYldDuXjEqqS8o9oYnzac0Jrco2B0C3iOlzFvPtifJXcr30BgyW9hwMnG6Jy7wkITkBMQPsWclXGWebR8lYDCe/cx3w5Pgk4I7hcmZOUMNeOeOEDS5O57jXPdzurAriX0vU7gkrH1vcAecIy72Bipen/yldCnDBcFXFKa+S5GOvhncloUpJffc9ZyqufGpIfXUi2uKFxcvBJczyy1dD0VSLpG8U/Mw51lT3MXi5x/WB9z8URHs6QAAAABJRU5ErkJggg==";  
-
-        frameWidth=28;
-
-        frameHeight=28;
-
-
-        frameIndex=
-            Math.floor(
-                runAnimTime/45
-            )%8;
-    }
-
-
-    if(
-        !image.complete ||
-        !image.naturalWidth
-    ){
-
-        return;
-    }
-
-
-    const drawW=
-        frameWidth*3;
-
-
-    const drawH=
-        frameHeight*3;
-
-
-    const feetY=
-        bunny.y+
-        bunny.height;
-
-
-    const drawX=
-        bunny.x;
-
-
-    const drawY=
-        feetY-drawH;
-
-
-    ctx.save();
-
-
-    ctx.translate(
-        drawX+drawW,
-        drawY
-    );
-
-
-    ctx.scale(
-        -1,
-        1
-    );
-
-
-    ctx.drawImage(
-        image,
-
-        frameIndex*
-        frameWidth,
-
-        0,
-
-        frameWidth,
-        frameHeight,
-
-        0,
-        0,
-
-        drawW,
-        drawH
-    );
-
-
-    ctx.restore();
-}
-
-
-/* =========================
-   BUNNY COLLISION
-========================= */
-
-function getBunnyHitbox(){
-
-    return{
-
-        x:
-            bunny.x+13,
-
-        y:
-            bunny.y+12,
-
-        width:52,
-
-        height:60
+function getBunnyHitbox() {
+    return {
+        x: bunny.x + 7,
+        y: bunny.y + 5,
+        width: bunny.width - 12,
+        height: bunny.height - 8
     };
 }
 
 
-/* =========================
-   CACTUS COLLISION
-========================= */
+function getCactusHitbox(cactus) {
+    /*
+     * Collision is deliberately smaller than
+     * the transparent image area.
+     */
+    const paddingX =
+        Math.max(3, cactus.width * 0.12);
 
-function checkCollision(){
+    const paddingTop =
+        Math.max(2, cactus.height * 0.04);
 
-    const b=
+    return {
+        x: cactus.x + paddingX,
+        y: GROUND - cactus.height + paddingTop,
+        width:
+            cactus.width -
+            paddingX * 2,
+        height:
+            cactus.height -
+            paddingTop
+    };
+}
+
+
+function rectanglesOverlap(a, b) {
+    return (
+        a.x < b.x + b.width &&
+        a.x + a.width > b.x &&
+        a.y < b.y + b.height &&
+        a.y + a.height > b.y
+    );
+}
+
+
+function checkCollision() {
+    if (!gameRunning) return;
+
+    const bunnyBox =
         getBunnyHitbox();
 
+    for (const cactus of cacti) {
+        const cactusBox =
+            getCactusHitbox(cactus);
 
-    for(
-        const o of obstacles
-    ){
-
-        const hitWidth=
-            o.hitboxWidth;
-
-
-        const hitHeight=
-            o.hitboxHeight;
-
-
-        const cactusHit={
-
-            x:
-                o.x+
-                (
-                    o.width-
-                    hitWidth
-                )/2,
-
-            y:
-                GROUND-
-                hitHeight,
-
-            width:
-                hitWidth,
-
-            height:
-                hitHeight
-        };
-
-
-        if(
-
-            b.x<
-                cactusHit.x+
-                cactusHit.width
-
-            &&
-
-            b.x+b.width>
-                cactusHit.x
-
-            &&
-
-            b.y<
-                cactusHit.y+
-                cactusHit.height
-
-            &&
-
-            b.y+b.height>
-                cactusHit.y
-
-        ){
-
-            return true;
+        if (rectanglesOverlap(
+            bunnyBox,
+            cactusBox
+        )) {
+            loseGame();
+            return;
         }
     }
-
-
-    return false;
 }
 
 
-/* =========================
-   JUMP
-========================= */
+function loseGame() {
+    if (gameOver) return;
 
-function jump(){
+    gameRunning = false;
+    gameOver = true;
 
-    initAudio();
+    AudioFX.play("lose");
 
-
-    if(!started){
-
-        started=true;
-
-        bunny.grounded=true;
-
-        runAnimTime=0;
-
-        jumpTime=0;
-
-        lastTime=
-            performance.now();
-
-
-        runStartCoins=
-            getArcadeCoins();
-
-
-        runCoinsEarned=0;
-
-
-        requestAnimationFrame(
-            loop
-        );
-
-        return;
-    }
-
-
-    if(dead){
-
-        restart();
-
-        return;
-    }
-
-
-    if(bunny.grounded){
-
-        bunny.velocityY=
-            bunny.jumpPower;
-
-        bunny.grounded=false;
-
-        jumpTime=0;
-    }
-}
-
-
-/* =========================
-   RESTART
-========================= */
-
-function restart(){
-
-    score=0;
-
-    speed=6;
-
-    lastScoreMilestone=0;
-
-    obstacles.length=0;
-
-    spawnTimer=0;
-
-    nextSpawn=1200;
-
-
-    bunny.y=
-        GROUND-28;
-
-    bunny.velocityY=0;
-
-    bunny.grounded=true;
-
-
-    runAnimTime=0;
-
-    jumpTime=0;
-
-    groundOffset=0;
-
-
-    dead=false;
-
-    started=true;
-
-
-    runStartCoins=
-        getArcadeCoins();
-
-    runCoinsEarned=0;
-
-
-    lastTime=
-        performance.now();
-
-
-    document
-        .getElementById(
-            "gameOverlay"
-        )
-        .classList.remove(
-            "show"
-        );
-
-
-    requestAnimationFrame(
-        loop
-    );
-}
-
-
-/* =========================
-   GAME OVER
-========================= */
-
-function gameOver(){
-
-    if(dead){
-        return;
-    }
-
-
-    dead=true;
-
-
-    bunny.velocityY=0;
-
-
-    const finalScore=
+    const roundedScore =
         Math.floor(score);
 
-
-    if(
-        finalScore>
-        highScore
-    ){
-
-        highScore=
-            finalScore;
-
+    if (roundedScore > highScore) {
+        highScore = roundedScore;
 
         localStorage.setItem(
             "bunnyRunHighScore",
@@ -1846,661 +1276,583 @@ function gameOver(){
         );
     }
 
+    updateHighScoreDisplay();
 
-    /*
-        Keep the run's earned
-        coins based on the shared
-        Arcade balance difference.
-    */
-
-    runCoinsEarned=
-        getArcadeCoins()-
-        runStartCoins;
-
-
-    if(runCoinsEarned<0){
-        runCoinsEarned=0;
-    }
-
-
-    document.getElementById(
-        "finalScore"
-    ).textContent=
-        finalScore;
-
-
-    document.getElementById(
-        "highScoreModal"
-    ).textContent=
-        highScore;
-
-
-    document.getElementById(
-        "runCoins"
-    ).textContent=
-        runCoinsEarned;
-
-
-    document
-        .getElementById(
-            "gameOverlay"
-        )
-        .classList.add(
-            "show"
-        );
+    showGameOverModal();
 }
 
 
-/* =========================
-   UPDATE
-========================= */
-
-function update(dt){
-
-    if(
-        !started ||
-        dead
-    ){
-
-        return;
-    }
-
-
-    /*
-        BUNNY ANIMATION
-    */
-
-    if(
-        bunny.grounded
-    ){
-
-        runAnimTime+=dt;
-    }
-
-
-    /*
-        BUNNY PHYSICS
-    */
-
-    if(
-        !bunny.grounded
-    ){
-
-        jumpTime+=dt;
-
-
-        bunny.velocityY+=
-            bunny.gravity*
-            (dt/16.6667);
-
-
-        bunny.y+=
-            bunny.velocityY*
-            (dt/16.6667);
-
-
-        const groundY=
-            GROUND-28;
-
-
-        if(
-            bunny.y>=groundY
-        ){
-
-            bunny.y=groundY;
-
-            bunny.velocityY=0;
-
-            bunny.grounded=true;
-
-            runAnimTime=0;
-
-            jumpTime=0;
-        }
-    }
-
-
-    /*
-        GAME SPEED
-    */
-
-    speed+=
-        0.00035*dt;
-
-
-    const movement=
-        speed*
-        (dt/16.6667);
-
-
-    /*
-        CONTINUOUS SCORE
-    */
-
-    score+=
-        movement*0.055;
-
-
-    /*
-        SCORE SOUND
-        Every 100 points.
-    */
-
-    const currentMilestone=
-        Math.floor(
-            score/100
+function drawBackground() {
+    const gradient =
+        ctx.createLinearGradient(
+            0,
+            0,
+            0,
+            GAME_HEIGHT
         );
 
+    const theme =
+        document.body.getAttribute("data-theme");
 
-    if(
-        currentMilestone>
-        lastScoreMilestone
-    ){
-
-        for(
-            let i=
-                lastScoreMilestone;
-
-            i<
-                currentMilestone;
-
-            i++
-        ){
-
-            playScoreSound();
-        }
-
-
-        lastScoreMilestone=
-            currentMilestone;
+    if (theme === "pink") {
+        gradient.addColorStop(0, "#f3dce5");
+        gradient.addColorStop(1, "#faf2f5");
+    } else if (theme === "green") {
+        gradient.addColorStop(0, "#dce8dc");
+        gradient.addColorStop(1, "#f3f7f2");
+    } else if (theme === "lavender") {
+        gradient.addColorStop(0, "#e3dcf3");
+        gradient.addColorStop(1, "#f5f2fa");
+    } else if (theme === "yellow") {
+        gradient.addColorStop(0, "#f3edd2");
+        gradient.addColorStop(1, "#faf8f2");
+    } else {
+        gradient.addColorStop(0, "#dce8f3");
+        gradient.addColorStop(1, "#f2f7fa");
     }
 
-
-    /*
-        GROUND
-    */
-
-    groundOffset-=movement;
-
-
-    if(
-        groundOffset<=-80
-    ){
-
-        groundOffset+=80;
-    }
-
-
-    /*
-        CACTUSES
-    */
-
-    for(
-        let i=
-            obstacles.length-1;
-
-        i>=0;
-
-        i--
-    ){
-
-        const o=
-            obstacles[i];
-
-
-        o.x-=movement;
-
-
-        /*
-            +10 for every cactus
-            successfully passed.
-        */
-
-        if(
-            !o.counted &&
-            o.x+o.width<
-            bunny.x
-        ){
-
-            o.counted=true;
-
-            score+=10;
-        }
-
-
-        if(
-            o.x+o.width<
-            -40
-        ){
-
-            obstacles.splice(
-                i,
-                1
-            );
-        }
-    }
-
-
-    /*
-        SPAWN
-    */
-
-    spawnTimer+=dt;
-
-
-    if(
-        spawnTimer>=nextSpawn
-    ){
-
-        spawnCactus();
-    }
-
-
-    /*
-        COLLISION
-    */
-
-    if(
-        checkCollision()
-    ){
-
-        gameOver();
-    }
-
-
-    /*
-        HIGH SCORE DISPLAY
-        is drawn every frame.
-    */
+    ctx.fillStyle = gradient;
+    ctx.fillRect(
+        0,
+        0,
+        GAME_WIDTH,
+        GAME_HEIGHT
+    );
 }
 
 
-/* =========================
-   DRAW
-========================= */
+function drawCloud(x, y, scale) {
+    ctx.save();
 
-function draw(){
+    ctx.globalAlpha = 0.28;
 
+    ctx.fillStyle = "#ffffff";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        x,
+        y,
+        18 * scale,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.arc(
+        x + 20 * scale,
+        y - 8 * scale,
+        23 * scale,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.arc(
+        x + 45 * scale,
+        y,
+        17 * scale,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+    ctx.restore();
+}
+
+
+function drawClouds() {
+    drawCloud(
+        145 - groundOffset * 0.05,
+        100,
+        1
+    );
+
+    drawCloud(
+        570 - groundOffset * 0.025,
+        150,
+        0.72
+    );
+
+    drawCloud(
+        820 - groundOffset * 0.04,
+        82,
+        0.6
+    );
+}
+
+
+function drawGround() {
+    const theme =
+        document.body.getAttribute("data-theme");
+
+    let groundColor = "#8a9ca5";
+
+    if (theme === "pink") {
+        groundColor = "#a58d97";
+    } else if (theme === "green") {
+        groundColor = "#8b9f8c";
+    } else if (theme === "lavender") {
+        groundColor = "#9790a5";
+    } else if (theme === "yellow") {
+        groundColor = "#a59c80";
+    }
+
+    ctx.fillStyle = groundColor;
+
+    ctx.fillRect(
+        0,
+        GROUND,
+        GAME_WIDTH,
+        GAME_HEIGHT - GROUND
+    );
+
+    ctx.fillStyle =
+        "rgba(255,255,255,0.16)";
+
+    for (
+        let x = -groundOffset;
+        x < GAME_WIDTH;
+        x += 28
+    ) {
+        ctx.fillRect(
+            x,
+            GROUND + 13,
+            13,
+            2
+        );
+    }
+}
+
+
+function drawCactus(cactus) {
+    const image =
+        cactusImages[cactus.type];
+
+    if (!image.complete) return;
+
+    const y =
+        GROUND - cactus.height;
+
+    ctx.drawImage(
+        image,
+        cactus.x,
+        y,
+        cactus.width,
+        cactus.height
+    );
+}
+
+
+function drawBunny() {
+    let image;
+    let frameWidth = 28;
+    let frameHeight = 28;
+
+    if (!bunny.grounded) {
+        image = jumpImage;
+        frameWidth = 28;
+        frameHeight = 36;
+    } else if (gameRunning) {
+        image = runImage;
+        frameWidth = 28;
+        frameHeight = 28;
+    } else {
+        image = idleImage;
+        frameWidth = 28;
+        frameHeight = 28;
+    }
+
+    if (!image.complete) return;
+
+    /*
+     * The sprite sheet is flipped horizontally
+     * so the bunny faces the opposite direction.
+     */
+    ctx.save();
+
+    ctx.translate(
+        bunny.x + bunny.width,
+        bunny.y
+    );
+
+    ctx.scale(-1, 1);
+
+    if (image === jumpImage) {
+        ctx.drawImage(
+            image,
+            bunny.frame * frameWidth,
+            0,
+            frameWidth,
+            frameHeight,
+            0,
+            0,
+            bunny.width,
+            bunny.height
+        );
+    } else {
+        ctx.drawImage(
+            image,
+            bunny.frame * frameWidth,
+            0,
+            frameWidth,
+            frameHeight,
+            0,
+            0,
+            bunny.width,
+            bunny.height
+        );
+    }
+
+    ctx.restore();
+}
+
+
+function render() {
     ctx.clearRect(
         0,
         0,
-        W,
-        H
+        GAME_WIDTH,
+        GAME_HEIGHT
     );
 
+    drawBackground();
 
-    drawSky();
+    drawClouds();
 
     drawGround();
 
-
-    for(
-        const o of obstacles
-    ){
-
-        drawCactus(o);
+    for (const cactus of cacti) {
+        drawCactus(cactus);
     }
-
 
     drawBunny();
 
-
-    /*
-        SCORE
-    */
-
-    ctx.fillStyle=DARK;
-
-    ctx.font="24px Georgia";
-
-    ctx.textAlign="right";
-
-
-    ctx.fillText(
-        String(
-            Math.floor(score)
-        ).padStart(
-            5,
-            "0"
-        ),
-        W-28,
-        42
-    );
-
-
-    /*
-        HIGH SCORE
-    */
-
-    ctx.font="17px Georgia";
-
-    ctx.fillStyle=
-        "rgba(41,51,47,.72)";
-
-
-    ctx.fillText(
-        "HI "+
-        String(
-            highScore
-        ).padStart(
-            5,
-            "0"
-        ),
-        W-28,
-        65
-    );
-
-
-    /*
-        START SCREEN
-    */
-
-    if(
-        !started
-    ){
-
-        ctx.textAlign="center";
-
-        ctx.font="26px Georgia";
-
-        ctx.fillStyle=DARK;
-
-
-        ctx.fillText(
-            "PRESS SPACE OR TAP",
-            W/2,
-            90
-        );
-    }
-    }/* =========================
-   GAME LOOP
-========================= */
-
-function loop(time){
-
-    const dt=
-        Math.min(
-            time-lastTime,
-            32
-        );
-
-
-    lastTime=time;
-
-
-    update(dt);
-
-    draw();
-
-
-    if(!dead){
-
-        requestAnimationFrame(
-            loop
-        );
-    }
+    updateHighScoreDisplay();
 }
 
 
-/* =========================
-   INPUT
-========================= */
-
-function handleInput(){
-
-    initAudio();
-
-
-    if(dead){
-
-        restart();
-
+function gameLoop(timestamp) {
+    if (!gameRunning) {
+        render();
         return;
     }
 
+    const delta =
+        Math.min(
+            (timestamp - lastTime) / 16.6667,
+            2
+        );
 
-    jump();
+    lastTime = timestamp;
+
+    groundOffset +=
+        speed * delta;
+
+    if (groundOffset > 28) {
+        groundOffset -= 28;
+    }
+
+    updateBunny(delta);
+
+    updateCacti(delta);
+
+    checkCollision();
+
+    score +=
+        0.15 * delta;
+
+    render();
+
+    animationFrame =
+        requestAnimationFrame(gameLoop);
 }
 
 
-window.addEventListener(
-    "keydown",
-    e=>{
+function showGameOverModal() {
+    const modal =
+        document.getElementById(
+            "reward-modal"
+        );
 
-        if(
-            e.code==="Space" ||
-            e.code==="ArrowUp" ||
-            e.code==="KeyW"
-        ){
+    const title =
+        document.getElementById(
+            "modal-title"
+        );
 
-            e.preventDefault();
+    const desc =
+        document.getElementById(
+            "modal-desc"
+        );
 
-            handleInput();
-        }
+    const amount =
+        document.getElementById(
+            "reward-amount"
+        );
+
+    const symbol =
+        document.getElementById(
+            "modal-symbol"
+        );
+
+    title.innerText =
+        "Game Over";
+
+    desc.innerText =
+        `You ran into a cactus! Your score was ${Math.floor(score)}.`;
+
+    amount.style.display =
+        "inline-block";
+
+    amount.innerText =
+        `High Score: ${highScore}`;
+
+    symbol.innerHTML = `
+        <svg width="34" height="34"
+             viewBox="0 0 32 32"
+             fill="currentColor">
+
+            <path
+                d="M16 28l-1.8-1.6
+                   C7.6 20.4 3 16.3 3 11.2
+                   C3 7 6.3 3.5 10.5 3.5
+                   c2.4 0 4.7 1.1 6.2 3
+                   c1.5-1.9 3.8-3 6.2-3
+                   C25.7 3.5 29 7 29 11.2
+                   c0 5.1-4.6 9.2-11.2 15.2L16 28z"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linejoin="round"/>
+
+            <path
+                d="M16 7.5
+                   L13 11
+                   L17 15
+                   L13 19
+                   L17 23
+                   L16 27"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"/>
+        </svg>
+    `;
+
+    modal.style.display = "flex";
+}
+
+
+function closeModalOnly() {
+    document.getElementById(
+        "reward-modal"
+    ).style.display = "none";
+}
+
+
+function closeGameOver() {
+    closeModalOnly();
+
+    resetGame();
+
+    startGame();
+}
+
+
+function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+        document.documentElement
+            .requestFullscreen()
+            .catch(() => {});
+    } else {
+        document.exitFullscreen()
+            .catch(() => {});
     }
+}
+
+
+document.addEventListener(
+    "fullscreenchange",
+    function() {
+        document.body.classList.toggle(
+            "fullscreen-mode",
+            !!document.fullscreenElement
+        );
+    }
+);
+
+
+function handleInput(e) {
+    if (
+        e.code === "Space" ||
+        e.code === "ArrowUp" ||
+        e.code === "KeyW"
+    ) {
+        e.preventDefault();
+        jump();
+    }
+}
+
+
+document.addEventListener(
+    "keydown",
+    handleInput
 );
 
 
 canvas.addEventListener(
     "pointerdown",
-    e=>{
-
+    function(e) {
         e.preventDefault();
-
-        handleInput();
-    }
-);
-
-
-/* =========================
-   RESTART BUTTON
-========================= */
-
-document
-    .getElementById(
-        "restartButton"
-    )
-    .addEventListener(
-        "click",
-        e=>{
-
-            e.stopPropagation();
-
-            initAudio();
-
-            restart();
-        }
-    );
-
-
-/* =========================
-   FULLSCREEN
-========================= */
-
-const fullscreenButton=
-    document.getElementById(
-        "fullscreenButton"
-    );
-
-
-function isFullscreen(){
-
-    return Boolean(
-        document.fullscreenElement
-    );
-}
-
-
-async function toggleFullscreen(){
-
-    try{
-
-        if(!isFullscreen()){
-
-            await document
-                .documentElement
-                .requestFullscreen();
-
-        }else{
-
-            await document
-                .exitFullscreen();
-        }
-
-    }catch(error){
-
-        /*
-            Some mobile browsers do not
-            expose fullscreen. The game
-            itself continues normally.
-        */
-    }
-}
-
-
-fullscreenButton.addEventListener(
-    "click",
-    e=>{
-
-        e.stopPropagation();
-
-        toggleFullscreen();
+        jump();
     }
 );
 
 
 document.addEventListener(
-    "fullscreenchange",
-    ()=>{
+    "visibilitychange",
+    function() {
+        if (document.hidden &&
+            gameRunning) {
+            gameRunning = false;
+            startHint.style.opacity = "1";
+            startHint.innerText =
+                "Press Space, ↑ or tap to continue";
+        }
+    }
+);
 
-        if(isFullscreen()){
 
-            fullscreenButton.textContent="×";
+window.addEventListener(
+    "load",
+    function() {
+        loadSavedTheme();
 
-            fullscreenButton.setAttribute(
-                "aria-label",
-                "Exit fullscreen"
-            );
+        if (typeof updateCoinDisplays === "function") {
+            updateCoinDisplays();
+        }
 
-        }else{
+        resetGame();
+    }
+);
 
-            fullscreenButton.textContent="⛶";
 
-            fullscreenButton.setAttribute(
-                "aria-label",
-                "Fullscreen"
-            );
+window.addEventListener(
+    "resize",
+    function() {
+        render();
+    }
+);
+</script><script>
+/*
+ * Keep the first cactus ready outside the
+ * visible play area so the opening remains
+ * clean and gives the bunny time to start.
+ */
+cacti = [
+    createCactus(
+        GAME_WIDTH + 430
+    )
+];
+
+nextCactusDistance = 420;
+
+resetBunny();
+
+render();
+
+
+/*
+ * Keep the high score synchronized if the
+ * page is restored from another tab.
+ */
+window.addEventListener(
+    "storage",
+    function(e) {
+        if (e.key === "bunnyRunHighScore") {
+            highScore =
+                Number(e.newValue) || 0;
+
+            updateHighScoreDisplay();
+        }
+
+        if (e.key === "arcade_theme") {
+            loadSavedTheme();
+            render();
         }
     }
 );
 
 
 /*
-    Escape is automatically handled
-    by the browser while fullscreen.
-*/
+ * Make sure the bunny's sprite is drawn
+ * correctly as soon as the images finish
+ * loading.
+ */
+[
+    idleImage,
+    runImage,
+    jumpImage,
+    cactusImages.small,
+    cactusImages.big,
+    cactusImages.two,
+    cactusImages.wide
+].forEach(function(image) {
+    image.addEventListener(
+        "load",
+        function() {
+            render();
+        }
+    );
+});
 
-
-/* =========================
-   BUNNY SPRITES
-========================= */
 
 /*
-   PASTE YOUR ORIGINAL THREE
-   LINES BELOW EXACTLY.
+ * Prevent accidental page scrolling while
+ * playing with touch controls.
+ */
+canvas.addEventListener(
+    "touchstart",
+    function(e) {
+        e.preventDefault();
+    },
+    { passive: false }
+);
 
-   I am intentionally leaving
-   your Base64 untouched so the
-   sprites cannot be accidentally
-   changed by this version.
-*/
+canvas.addEventListener(
+    "touchmove",
+    function(e) {
+        e.preventDefault();
+    },
+    { passive: false }
+);
 
 
 /*
-idleImage.src="data:image/png;base64,...";
-
-runImage.src="data:image/png;base64,...";
-
-jumpImage.src="data:image/png;base64,...";
-*/
-
-
-/* =========================
-   IMAGE LOADING
-========================= */
-
-let loaded=0;
-
-
-function imageLoaded(){
-
-    loaded++;
-
-    if(
-        loaded>=3
-    ){
-
-        draw();
+ * Fullscreen keyboard escape is handled by
+ * the browser itself. The game keeps running
+ * when fullscreen is exited.
+ */
+document.addEventListener(
+    "fullscreenchange",
+    function() {
+        setTimeout(function() {
+            render();
+        }, 50);
     }
-}
+);
 
 
-idleImage.onload=
-    imageLoaded;
-
-runImage.onload=
-    imageLoaded;
-
-jumpImage.onload=
-    imageLoaded;
-
-
-/* =========================
-   CACTUS IMAGE REFRESH
-========================= */
-
-cactusSmallImage.onload=
-    ()=>{
-        processedCactusImages.delete(
-            cactusSmallImage
-        );
-        draw();
-    };
-
-
-cactusTallImage.onload=
-    ()=>{
-        processedCactusImages.delete(
-            cactusTallImage
-        );
-        draw();
-    };
-
-
-cactusMediumImage.onload=
-    ()=>{
-        processedCactusImages.delete(
-            cactusMediumImage
-        );
-        draw();
-    };
-
-
-cactusWideImage.onload=
-    ()=>{
-        processedCactusImages.delete(
-            cactusWideImage
-        );
-        draw();
-    };
-
-
-/* =========================
-   INITIAL DRAW
-========================= */
-
-draw();
-
+/*
+ * Start the first frame without starting
+ * the actual run until the player presses
+ * Space / ↑ / W / taps.
+ */
+requestAnimationFrame(
+    function() {
+        render();
+    }
+);
 </script>
 
 </body>
