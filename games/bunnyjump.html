@@ -433,10 +433,8 @@ body.game-fullscreen .fullscreen-high-score{
         </div>
     </div>
 
-    <div
-        class="game-shell"
-        id="gameShell"
-    >
+    <div class="game-shell" id="gameShell">
+
         <button
             class="fullscreen-exit"
             id="fullscreenExit"
@@ -457,6 +455,7 @@ body.game-fullscreen .fullscreen-high-score{
             width="960"
             height="540"
         ></canvas>
+
     </div>
 
     <div class="ornament bottom-ornament">
@@ -477,7 +476,6 @@ const ctx=canvas.getContext("2d");
 
 const W=960;
 const H=540;
-
 const GROUND=425;
 
 const BG="#b8cbd1";
@@ -502,13 +500,11 @@ const idleImage=new Image();
 const runImage=new Image();
 const jumpImage=new Image();
 
-idleImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAA9klEQVR42u1UMQ6EIBAEYmdvjIUlhbVP8AE+1Qf4BGsLSwtj6K25inPv2EU8OGPhdggyzOzMMvbUU0/dtoo81UWe6tj3CtdmJTMGQWM8QlDsKplZ39qmZm1TsxBQcXWrSMBxUha7vwEu68bhGoJ1/WDt31pSTpkGkzCUHcowZr+wSkIGg0//nZKa/MmyJH/o+sEy0jTPH852gXIq8Aa06wfmKzEEpkAFlj+YwTMFlaEk566xBi8wr3fJDc9SLBO86Upf6tL9ZQple8R6Xyv9zTLKpDHAwaNtWTduDGTigIGcMdnPwT8C8TYN5thxUu8sYsGnhgNWL5sPiDbAGkWfAAAAAElFTkSuQmCC";  
-  
-runImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAcCAYAAAB4fbODAAADlElEQVR42u1aPZKzMAw1Gbr0O5kUlBRb5wg5QI7KATgCdQpKip0d+q35im+U1RpjJGMLCNLMFlkIz3rWz5ODMWpqampqampqampqampqampqamr7sevlPFwv50GZoNtJKVCLaZ/lh8FJqEmpCagm1P0+y4/R/x73m3ncb0aTkJmA0pVLK+V78QrJZ4wxVd2Yr++fbM9+pcI7bUlOSOIdqcBI8vpse2OMMZB87yR3XXhJElBaTqwlX965wKzJK06+VN1vK/G5FOuQM+BRCoy0LFxzPyX9wnjJJChIidiAW8E7kqWWhbBfZVEk735ryd1UeM4EtElLTao03hELTCpOfb5IdHfJhE+Bd0gJeoQCo7YPy+eqWlkUu64wW5lR1pyLUu2ha7Z9B7+W4Ln22reuPOWAucZQu7VNtH2TDhoJa7vu5VdVN3+K6ON+M1XdDByFsMU4oRZYuL/tOnRHP0z5mMeu6tyACnFyT3jSfEpjwmyLC4tP1eCkhe9fL+dhj0oH+HP5N+bDnYSZS1L4yKzqZkQqJpO7gXMJsWe8tfiUxMQyFGPC83zrsHF9mBy/lnZaKh5HIUz5mM2RaUuKGGT6nJTGi0UkJzhT4a21h/izPRNS/G67jpyAXL/swkJNxCU8uorPlI8nl6TAi+UYBuQcPPzVy7J4c1VzKZ7NZ2o8yT2EIMVJh3Ht5Gu7zrnXZVGM3hKK5VdZFK/nw1/o3lHiaiqWpwpRFltSUCva1PAa2plC8TjdgYvn4hPwUvApvYfU/YOi41MDoV2Q6xc3Xqh4rk7r4sQ+eMvdOrkXOTb/+v7JwEl8khZCaiiefWoVE8/FJ2Cn5hUwn21vUv1UAIGEE9HV4X8D7v+aQjnmxibmOQSTigcJbceYzQW8eljVzetAJvcPq/0wV7Vc134/97OnW5xg2SOeNJ/uOWcaN1bhgWCjrM91CMTp7Fga+k5Y52Qp/DziWzMklK+z2d0UYgw4h+tV3YwOAPMYldDuXjEqqS8o9oYnzac0Jrco2B0C3iOlzFvPtifJXcr30BgyW9hwMnG6Jy7wkITkBMQPsWclXGWebR8lYDCe/cx3w5Pgk4I7hcmZOUMNeOeOEDS5O57jXPdzurAriX0vU7gkrH1vcAecIy72Bipen/yldCnDBcFXFKa+S5GOvhncloUpJffc9ZyqufGpIfXUi2uKFxcvBJczyy1dD0VSLpG8U/Mw51lT3MXi5x/WB9z8URHs6QAAAABJRU5ErkJggg==";  
-  
-jumpImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAkCAYAAACQVDZDAAADgUlEQVR42u2aPXLyMBCGRcYdfYahoKRIzRE4AEflAByBmsKlC4ZxT+2vyCeyiJW0sq0VUd6nIzi8Xu0/2BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWNar5bBeLQecBLB84Ah0+dp+GpqESEok4FtU61KBqKW7Xi2Hr+3ny98O+5057HfmtydhzfGSU+vjnap1qe5QQtcmnzHGHE9nc73dF7+9oNUcL5xWtgTUrtalukMJ3UvbG2OMsclXQ0LUHC8hrTl0sAMqdiULTb5c3a/kuKt1jiX0qFbWEdRW6hyi76Cn2ZWsPdvNJnvylQxQze6urZdLi01A10G5g0ZbT7MrhYpJ7m6knRAlfKepl0MLI2jllChmQE4Tq9rbzabKiqZhI7eLaY6bGr6rXc/qUK3Y/cUmvGACau9fJTS19dquezjweDo/FZnDfmeOp/OQMqL/1XN8Vz2adPb6tuvIFf3g82Ez5eamBMsUI6foadto97BQBeXstw68tL1Zr5YDRsf3w8YH579Xf/NJuOBGplCwHE/nl6ChwZIaoLEEzKGnaSMdQ6mm/bzYaEN1Q5opdk3ttNBLn4B8PlzEgsUdmeYIlpCROfVK2UhfuzuhxMFt14kTMNUut7BIAxV6cU234HI+bMaMTKFl1YqnjE10R9LQ07KROtFqXtrecB0x1BV/XvdBvTF28df2orOEHp94vvugRYDtgHOMTNKK7Vtex7b4qV0wh41S++zo5EvMKV0w1a5U/0HP32k5n7vf1jb8nNyrPMR7vd0X1ki3C6YeaqqutZF2pDw6z4nI7Sk/Dvm+p7E2p/qOVuwxmtB7Tmg3pl1f20cBj6fzowOPqgCSJEnpSjRAQzvSXHopdvo0x9on7Zjcl0DSDhirwtyoxJ2pDSCfZu16Er9wXY1bP2xi/k/Ax/Wjf4aYY4cLdYpQ1Zqqp22jtCjQc6AV1D5Hyu0Q3N4iGXcl/0eeH/XuTLXruY1B4gPaPWlDud7uC/c330b6Ie43QLTKXNp+loSgeu5n5tCT2OnTHNttU3CrvXSkl427r5Wauz4U7LXrSZI49AQON8JGvwVNuZnY+3MGqLaeVDff7vhdEEJFwfe/tspKzsMNEndskjylU7NerNPG7iH2fiPZjWjmcz9SS8cA6S6mpTdGV3rwc9yPZOSaMvLy14cr9l/T88XGXP7/B8eoAeUpIH/9AAAAAElFTkSuQmCC";  
-    
-let started=false;
+idleImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAAA9klEQVR42u1UMQ6EIBAEYmdvjIUlhbVP8AE+1Qf4BGsLSwtj6K25inPv2EU8OGPhdggyzOzMMvbUU0/dtoo81UWe6tj3CtdmJTMGQWM8QlDsKplZ39qmZm1TsxBQcXWrSMBxUha7vwEu68bhGoJ1/WDt31pSTpkGkzCUHcowZr+wSkIGg0//nZKa/MmyJH/o+sEy0jTPH852gXIq8Aa06wfmKzEEpkAFlj+YwTMFlaEk566xBi8wr3fJDc9SLBO86Upf6tL9ZQple8R6Xyv9zTLKpDHAwaNtWTduDGTigIGcMdnPwT8C8TYN5thxUu8sYsGnhgNWL5sPiDbAGkWfAAAAAElFTkSuQmCC";
+
+runImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAcCAYAAAB4fbODAAADlElEQVR42u1aPZKzMAw1Gbr0O5kUlBRb5wg5QI7KATgCdQpKip0d+q35im+U1RpjJGMLCNLMFlkIz3rWz5ODMWpqampqampqampqampqampqamr7sevlPFwv50GZoNtJKVCLaZ/lh8FJqEmpCagm1P0+y4/R/x73m3ncb0aTkJmA0pVLK+V78QrJZ4wxVd2Yr++fbM9+pcI7bUlOSOIdqcBI8vpse2OMMZB87yR3XXhJElBaTqwlX965wKzJK06+VN1vK/G5FOuQM+BRCoy0LFxzPyX9wnjJJChIidiAW8E7kqWWhbBfZVEk735ryd1UeM4EtElLTao03hELTCpOfb5IdHfJhE+Bd0gJeoQCo7YPy+eqWlkUu64wW5lR1pyLUu2ha7Z9B7+W4Ln22reuPOWAucZQu7VNtH2TDhoJa7vu5VdVN3+K6ON+M1XdDByFsMU4oRZYuL/tOnRHP0z5mMeu6tyACnFyT3jSfEpjwmyLC4tP1eCkhe9fL+dhj0oH+HP5N+bDnYSZS1L4yKzqZkQqJpO7gXMJsWe8tfiUxMQyFGPC83zrsHF9mBy/lnZaKh5HIUz5mM2RaUuKGGT6nJTGi0UkJzhT4a21h/izPRNS/G67jpyAXL/swkJNxCU8uorPlI8nl6TAi+UYBuQcPPzVy7J4c1VzKZ7NZ2o8yT2EIMVJh3Ht5Gu7zrnXZVGM3hKK5VdZFK/nw1/o3lHiaiqWpwpRFltSUCva1PAa2plC8TjdgYvn4hPwUvApvYfU/YOi41MDoV2Q6xc3Xqh4rk7r4sQ+eMvdOrkXOTb/+v7JwEl8khZCaiiefWoVE8/FJ2Cn5hUwn21vUv1UAIGEE9HV4X8D7v+aQjnmxibmOQSTigcJbceYzQW8eljVzetAJvcPq/0wV7Vc134/97OnW5xg2SOeNJ/uOWcaN1bhgWCjrM91CMTp7Fga+k5Y52Qp/DziWzMklK+z2d0UYgw4h+tV3YwOAPMYldDuXjEqqS8o9oYnzac0Jrco2B0C3iOlzFvPtifJXcr30BgyW9hwMnG6Jy7wkITkBMQPsWclXGWebR8lYDCe/cx3w5Pgk4I7hcmZOUMNeOeOEDS5O57jXPdzurAriX0vU7gkrH1vcAecIy72Bipen/yldCnDBcFXFKa+S5GOvhncloUpJffc9ZyqufGpIfXUi2uKFxcvBJczyy1dD0VSLpG8U/Mw51lT3MXi5x/WB9z8URHs6QAAAABJRU5ErkJggg==";
+
+jumpImage.src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAAAkCAYAAACQVDZDAAADgUlEQVR42u2aPXLyMBCGRcYdfYahoKRIzRE4AEflAByBmsKlC4ZxT+2vyCeyiJW0sq0VUd6nIzi8Xu0/2BgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWNar5bBeLQecBLB84Ah0+dp+GpqESEok4FtU61KBqKW7Xi2Hr+3ny98O+5057HfmtydhzfGSU+vjnap1qe5QQtcmnzHGHE9nc73dF7+9oNUcL5xWtgTUrtalukMJ3UvbG2OMsclXQ0LUHC8hrTl0sAMqdiULTb5c3a/kuKt1jiX0qFbWEdRW6hyi76Cn2ZWsPdvNJnvylQxQze6urZdLi01A10G5g0ZbT7MrhYpJ7m6knRAlfKepl0MLI2jllChmQE4Tq9rbzabKiqZhI7eLaY6bGr6rXc/qUK3Y/cUmvGACau9fJTS19dquezjweDo/FZnDfmeOp/OQMqL/1XN8Vz2adPb6tuvIFf3g82Ez5eamBMsUI6foadto97BQBeXstw68tL1Zr5YDRsf3w8YH579Xf/NJuOBGplCwHE/nl6ChwZIaoLEEzKGnaSMdQ6mm/bzYaEN1Q5opdk3ttNBLn4B8PlzEgsUdmeYIlpCROfVK2UhfuzuhxMFt14kTMNUut7BIAxV6cU234HI+bMaMTKFl1YqnjE10R9LQ07KROtFqXtrecB0x1BV/XvdBvTF28df2orOEHp94vvugRYDtgHOMTNKK7Vtex7b4qV0wh41S++zo5EvMKV0w1a5U/0HP32k5n7vf1jb8nNyrPMR7vd0X1ki3C6YeaqqutZF2pDw6z4nI7Sk/Dvm+p7E2p/qOVuwxmtB7Tmg3pl1f20cBj6fzowOPqgCSJEnpSjRAQzvSXHopdvo0x9on7Zjcl0DSDhirwtyoxJ2pDSCfZu16Er9wXY1bP2xi/k/Ax/Wjf4aYY4cLdYpQ1Zqqp22jtCjQc6AV1D5Hyu0Q3N4iGXcl/0eeH/XuTLXruY1B4gPaPWlDud7uC/c330b6Ie43QLTKXNp+loSgeu5n5tCT2OnTHNttU3CrvXSkl427r5Wauz4U7LXrSZI49AQON8JGvwVNuZnY+3MGqLaeVDff7vhdEEJFwfe/tspKzsMNEndskjylU7NerNPG7iH2fiPZjWjmcz9SS8A6S6mpTdGV3rwc9yPZOSaMvLy14cr9l/T88XGXP7/B8eoAeUpIH/9AAAAAElFTkSuQmCC";let started=false;
 let dead=false;
 let lastTime=0;
 
@@ -565,46 +561,154 @@ function checkTopScore(){
     }
 }
 
-updateTopScoreDisplay();
+const themes={
+    blue:{
+        base:"#f2f7fa",
+        grad1:"#dce8f3",
+        grad2:"#d3e2ea",
+        text:"#3f5260",
+        heading:"#46637a",
+        border:"#82a8bd",
+        soft:"#e9f3f9",
+        ornament:"#799eb8",
+        card:"rgba(255,255,255,.88)",
+        header:"rgba(255,255,255,.88)",
+        skyTop:"#a8c7d0",
+        skyBottom:"#d5e1d9",
+        ground:"#b8cbd1"
+    },
+
+    pink:{
+        base:"#fbf1f5",
+        grad1:"#f0d5df",
+        grad2:"#ead1dc",
+        text:"#654c58",
+        heading:"#80566a",
+        border:"#c58da3",
+        soft:"#f8e5ec",
+        ornament:"#b87991",
+        card:"rgba(255,255,255,.88)",
+        header:"rgba(255,255,255,.88)",
+        skyTop:"#e7c5d1",
+        skyBottom:"#f3dfe5",
+        ground:"#d9c1ca"
+    },
+
+    green:{
+        base:"#f1f7f0",
+        grad1:"#d7e8d5",
+        grad2:"#cfe2cc",
+        text:"#4e6150",
+        heading:"#58765b",
+        border:"#91b394",
+        soft:"#e3f0e2",
+        ornament:"#7e9f80",
+        card:"rgba(255,255,255,.88)",
+        header:"rgba(255,255,255,.88)",
+        skyTop:"#b9d0bb",
+        skyBottom:"#dce9d8",
+        ground:"#c1d0c0"
+    },
+
+    lavender:{
+        base:"#f5f2fa",
+        grad1:"#ded7ed",
+        grad2:"#d8d0e8",
+        text:"#5a5368",
+        heading:"#6d6085",
+        border:"#a99bc4",
+        soft:"#ece7f5",
+        ornament:"#9485ad",
+        card:"rgba(255,255,255,.88)",
+        header:"rgba(255,255,255,.88)",
+        skyTop:"#c4b9d7",
+        skyBottom:"#e4ddef",
+        ground:"#c9c1d4"
+    },
+
+    yellow:{
+        base:"#faf8ed",
+        grad1:"#eee7c9",
+        grad2:"#e8dfb9",
+        text:"#625c46",
+        heading:"#756b4c",
+        border:"#b7a86c",
+        soft:"#f2edcf",
+        ornament:"#a79a61",
+        card:"rgba(255,255,255,.88)",
+        header:"rgba(255,255,255,.88)",
+        skyTop:"#d8ceaa",
+        skyBottom:"#eee7cc",
+        ground:"#d6ceb0"
+    }
+};
+
+function applyTheme(){
+
+    const theme=
+        localStorage.getItem("arcade_theme")||"blue";
+
+    const t=
+        themes[theme]||themes.blue;
+
+    const root=
+        document.documentElement;
+
+    root.style.setProperty(
+        "--bg-base",
+        t.base
+    );
+
+    root.style.setProperty(
+        "--bg-grad-1",
+        t.grad1
+    );
+
+    root.style.setProperty(
+        "--bg-grad-2",
+        t.grad2
+    );
+
+    root.style.setProperty(
+        "--text-main",
+        t.text
+    );
+
+    root.style.setProperty(
+        "--text-heading",
+        t.heading
+    );
+
+    root.style.setProperty(
+        "--accent-border",
+        t.border
+    );
+
+    root.style.setProperty(
+        "--accent-soft",
+        t.soft
+    );
+
+    root.style.setProperty(
+        "--ornament-color",
+        t.ornament
+    );
+
+    root.style.setProperty(
+        "--card-bg",
+        t.card
+    );
+
+    root.style.setProperty(
+        "--header-bg",
+        t.header
+    );
+}
 
 function getThemeSky(){
 
     const theme=
         localStorage.getItem("arcade_theme")||"blue";
-
-    const themes={
-
-        blue:{
-            top:"#a8c7d0",
-            bottom:"#d5e1d9",
-            ground:"#b8cbd1"
-        },
-
-        pink:{
-            top:"#e7c5d1",
-            bottom:"#f3dfe5",
-            ground:"#d9c1ca"
-        },
-
-        green:{
-            top:"#b9d0bb",
-            bottom:"#dce9d8",
-            ground:"#c1d0c0"
-        },
-
-        lavender:{
-            top:"#c4b9d7",
-            bottom:"#e4ddef",
-            ground:"#c9c1d4"
-        },
-
-        yellow:{
-            top:"#d8ceaa",
-            bottom:"#eee7cc",
-            ground:"#d6ceb0"
-        }
-
-    };
 
     return themes[theme]||themes.blue;
 }
@@ -618,8 +722,15 @@ function drawSky(){
             0,0,0,GROUND
         );
 
-    gradient.addColorStop(0,sky.top);
-    gradient.addColorStop(1,sky.bottom);
+    gradient.addColorStop(
+        0,
+        sky.skyTop
+    );
+
+    gradient.addColorStop(
+        1,
+        sky.skyBottom
+    );
 
     ctx.fillStyle=gradient;
 
@@ -629,32 +740,29 @@ function drawSky(){
         W,
         GROUND
     );
-}const clouds=[
+}
 
+const clouds=[
     {
         x:80,
         y:85,
         scale:1
     },
-
     {
         x:360,
         y:125,
         scale:.72
     },
-
     {
         x:650,
         y:75,
         scale:1.15
     },
-
     {
         x:850,
         y:155,
         scale:.65
     }
-
 ];
 
 function drawCloud(x,y,scale){
@@ -714,6 +822,8 @@ function drawClouds(){
 }
 
 function drawGround(){
+
+    const sky=getThemeSky();
 
     ctx.fillStyle=GROUND_TOP;
 
@@ -853,7 +963,6 @@ loadCactusImage(
 );
 
 const cactusTypes=[
-
     {
         image:cactusImages.small,
         width:55,
@@ -885,7 +994,6 @@ const cactusTypes=[
         hitboxWidth:44,
         hitboxHeight:32
     }
-
 ];
 
 const obstacles=[];
@@ -904,45 +1012,37 @@ function spawnObstacle(){
         ];
 
     obstacles.push({
-
         x:W+30,
-
-        y:
-            GROUND-
-            type.height,
-
+        y:GROUND-type.height,
         width:type.width,
-
         height:type.height,
-
         image:type.image,
-
         hitboxWidth:type.hitboxWidth,
-
         hitboxHeight:type.hitboxHeight,
-
         passed:false
     });
 
-    const difficulty=
+    /*
+       Cacti gradually get farther apart.
+
+       Starts close to the original spacing,
+       then increases slowly with score,
+       and stops increasing after the cap.
+    */
+
+    const spacingLevel=
         Math.min(
-            score/100,
-            30
+            score/1000,
+            4
         );
 
     const minimum=
-        1250-
-        Math.min(
-            difficulty*8,
-            240
-        );
+        1350+
+        spacingLevel*90;
 
     const maximum=
-        1700-
-        Math.min(
-            difficulty*8,
-            240
-        );
+        1800+
+        spacingLevel*110;
 
     nextSpawn=
         minimum+
@@ -991,7 +1091,6 @@ function checkCollision(){
         const hitHeight=o.hitboxHeight;
 
         const cactusHit={
-
             x:
                 o.x+
                 (o.width-hitWidth)/2,
@@ -1005,27 +1104,19 @@ function checkCollision(){
         };
 
         if(
-
             b.x<
                 cactusHit.x+
-                cactusHit.width
-
-            &&
+                cactusHit.width &&
 
             b.x+b.width>
-                cactusHit.x
-
-            &&
+                cactusHit.x &&
 
             b.y<
                 cactusHit.y+
-                cactusHit.height
-
-            &&
+                cactusHit.height &&
 
             b.y+b.height>
                 cactusHit.y
-
         ){
 
             return true;
@@ -1033,9 +1124,7 @@ function checkCollision(){
     }
 
     return false;
-}
-
-function drawBunny(){
+    }function drawBunny(){
 
     let image;
 
@@ -1288,7 +1377,9 @@ function playMilestoneSound(){
         oscillator.stop(now+.28);
 
     }catch(e){}
-    }function updateGame(delta){
+}
+
+function updateGame(delta){
 
     if(
         !started||
@@ -1308,6 +1399,11 @@ function playMilestoneSound(){
         dt/16.6667;
 
     score+=.55*seconds;
+
+    /*
+       Speed starts at 6 and gradually rises.
+       Maximum speed is 9.
+    */
 
     speed=
         6+
@@ -1670,9 +1766,7 @@ function loop(time){
 
         requestAnimationFrame(loop);
     }
-}
-
-document.addEventListener(
+    }document.addEventListener(
     "keydown",
     function(event){
 
@@ -1850,14 +1944,16 @@ window.addEventListener(
             event.key==="arcade_theme"
         ){
 
+            applyTheme();
             draw();
         }
     }
 );
 
+applyTheme();
 updateTopScoreDisplay();
-
 draw();
+
 </script>
 
 </body>
